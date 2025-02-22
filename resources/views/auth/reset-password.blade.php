@@ -1,39 +1,90 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+    <div class="reset-password-container">
+        <div class="reset-password-box">
+            <h2>Reset Password</h2>
+            <p>Enter Email</p>
+            <form method="POST" action="{{ route('password.email') }}">
+                @csrf
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                <div class="input-group">
+                    <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="Email" />
+                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                </div>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                <div class="button-group">
+                    <x-primary-button class="btn-send">
+                        {{ __('Send') }}
+                    </x-primary-button>
+                    <a href="{{ route('login') }}" class="btn-back">{{ __('Go Back') }}</a>
+                </div>
+            </form>
         </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
+    </div>
 </x-guest-layout>
+
+<style>
+    .reset-password-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #1e2a3a;
+    }
+
+    .reset-password-box {
+        background: #2c3e50;
+        padding: 40px;
+        border-radius: 8px;
+        text-align: center;
+        width: 350px;
+    }
+
+    h2 {
+        color: white;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        color: white;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .block {
+        width: 100%;
+        padding: 10px;
+        border-radius: 4px;
+        border: none;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-send {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+
+    .btn-back {
+        background-color: #7d7d7d;
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+</style>
