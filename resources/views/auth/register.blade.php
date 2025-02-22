@@ -1,7 +1,57 @@
-<x-guest-layout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BuWise</title>
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .register-container {
+            display: flex;
+            min-height: 100dvh;
+        }
+
+        .left-section {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .right-section {
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .register-image {
+            width: 100%;
+            height: 100dvh;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 30px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
     <div class="register-container">
         <div class="left-section">
-            <img src="{{ asset('path/to/images/imgbg.jpg') }}" alt="BuWise" class="register-image">
+            <img src="{{ asset('images/imgbg.jpg') }}" alt="BuWise" class="register-image">
         </div>
 
         <div class="right-section">
@@ -47,45 +97,5 @@
             </form>
         </div>
     </div>
-</x-guest-layout>
-
-<style>
-    .register-container {
-        display: flex;
-        height: 100%;
-        width: 100%;
-    }
-
-    .left-section {
-        width: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #f4f5f7;
-    }
-
-    .right-section {
-        width: 50%;
-        padding: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .register-image {
-        max-width: 100%;
-        height: auto;
-    }
-
-    h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-    }
-
-    p {
-        font-size: 14px;
-        margin-bottom: 30px;
-        color: gray;
-    }
-</style>
+</body>
+</html>
