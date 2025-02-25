@@ -4,48 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BuWise</title>
-    <style>
-        * {
-            margin: 0;
-            box-sizing: border-box;
-        }
-        .register-container {
-            display: flex;
-            min-height: 100dvh;
-        }
-
-        .left-section {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .right-section {
-            width: 100%;
-            padding: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .register-image {
-            width: 100%;
-            height: 100dvh;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 14px;
-            margin-bottom: 30px;
-            color: gray;
-        }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    @vite('resources/css/auth/register.css')
+    @vite('resources/js/register.js')
 </head>
 <body>
 
@@ -61,29 +22,38 @@
                 <h2>Welcome!</h2>
                 <p>Simplifying and Automating Your Workflow</p>
 
-                <div>
-                    <x-input-label for="name" :value="__('Name')" />
-                    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                <div class="input-group">
+                    <label for="name">Name</label>
+                    <div class="input-wrapper">
+                        <span class="icon"><i class="fas fa-user"></i></span>
+                        <input id="name" type="text" name="name" required autocomplete="name">
+                    </div>
                 </div>
-
-                <div class="mt-4">
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                
+                <div class="input-group mt-4">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <span class="icon"><i class="fas fa-envelope"></i></span>
+                        <input id="email" type="email" name="email" required autocomplete="username">
+                    </div>
                 </div>
-
-                <div class="mt-4">
-                    <x-input-label for="password" :value="__('Password')" />
-                    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                
+                <div class="input-group mt-4">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="icon"><i class="fas fa-lock"></i></span>
+                        <input id="password" type="password" name="password" required autocomplete="new-password">
+                    </div>
                 </div>
-
-                <div class="mt-4">
-                    <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                    <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                
+                <div class="input-group mt-4">
+                    <label for="password_confirmation">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <span class="icon"><i class="fas fa-lock"></i></span>
+                        <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
+                    </div>
                 </div>
+                
 
                 <div class="flex items-center justify-end mt-4">
                     <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
@@ -97,5 +67,6 @@
             </form>
         </div>
     </div>
+
 </body>
 </html>
