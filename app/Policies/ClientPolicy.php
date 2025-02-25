@@ -13,7 +13,7 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $this->create($user);
     }
 
     /**
@@ -21,7 +21,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return false;
+        return $this->create($user);
     }
 
     /**
@@ -46,7 +46,7 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
-        return $this->create($user);
+        return $user->role->name === "accountant";
     }
 
     /**
