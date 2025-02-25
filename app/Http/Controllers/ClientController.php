@@ -14,9 +14,13 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Client::class);
+
+        $user = $request->user();
+        $clients = Client::where("bookkeeper_id", $user->id)->get();
+        return view("client.index", ["clients" => $clients]);
     }
 
     /**
