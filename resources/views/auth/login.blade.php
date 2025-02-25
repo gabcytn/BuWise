@@ -19,49 +19,46 @@
                 @csrf
 
                 <h2>Welcome Back!</h2>
-                <p>Simplifying and Automating Your Workflow</p>
+                <p id="sub-title">Simplifying and Automating Your Workflow</p>
 
+                {{-- email field --}}
                 <div class="input-wrapper">
-                    <i class="fas fa-envelope"></i> 
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <label for="email">{{ "Email" }}</label>
+                    <div class="input-box">
+                        <i class="fas fa-envelope"></i>
+                        <input id="email" type="email" name="email" value="{{ old("email") }}" required/>
+                    </div>
+                    @error("email")
+                        <p>{{ $errors->message }}</p>
+                    @enderror
                 </div>
 
-<div class="input-wrapper mt-4">
-    <i class="fas fa-lock lock-icon"></i> 
-    <x-input-label for="password" :value="__('Password')" />
-    <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-    
-</div>
-<div class="toggle mt-4">
-    <i class="fas fa-eye" id="toggle-password" class="eye-icon"></i>
-    <span class="toggle-text"></span>
-</div>
-
-
-
-                <div class="block mt-4">
-                    <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox" name="remember">
-                        <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-                    </label>
+                {{-- password field --}}
+                <div class="input-wrapper">
+                    <label for="password">{{ "Password" }}</label>
+                    <div class="input-box">
+                        <i class="fas fa-lock lock-icon"></i>
+                        <input id="password" type="password" name="password" required />
+                        <i class="fas fa-eye" id="toggle-password"></i>
+                    </div>
+                    @error("password")
+                        <p>{{ $errors->message }}</p>
+                    @enderror
                 </div>
 
-                <div class="flex items-center justify-end mt-4">
-                    @if (Route::has('password.request'))
-                        <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
-                        </a>
-                    @endif
+{{--                <div class="toggle mt-4">--}}
+{{--                    <span class="toggle-text"></span>--}}
+{{--                </div>--}}
 
-                    <button type="submit">{{ __("Login") }}</button>
+                <div class="forgot-password-container">
+                    <a class="#" href="{{ route('password.request') }}">
+                        {{ __('Forgot your password?') }}
+                    </a>
                 </div>
+
+                <button type="submit">{{ __("Login") }}</button>
             </form>
         </div>
     </div>
-
-    <script src="{{ asset('js/login.js') }}"></script>
 </body>
 </html>

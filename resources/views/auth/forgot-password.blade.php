@@ -21,5 +21,10 @@
             <button type="button" class="go-back-btn">Go Back</button>
         </form>
     </div>
+    <script>
+        document.querySelector("button.go-back-btn").addEventListener("click", () => {
+            window.location.href = window.origin + "/login";
+        })
+    </script>
 </body>
 </html>
