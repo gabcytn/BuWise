@@ -12,6 +12,8 @@ class Client extends Model
     protected $fillable = [
         'bookkeeper_id',
         'email',
+        'tin',
+        'phone_number',
         'client_type',
         'name',
         'password',

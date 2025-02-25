@@ -37,6 +37,8 @@ class ClientController extends Controller
         $validated = $request->validate([
             "email" => "required|string|lowercase|max:255|email|unique:" . Client::class,
             "name" => "required|string|max:255",
+            "phone_number" => "required|string|regex:/^0\d{10}$/",
+            "tin" => "required|numeric",
             "client_type" => "required|string|max:100",
             "profile_img" => ["required", File::image()->max(5000)],
         ]);
@@ -51,6 +53,8 @@ class ClientController extends Controller
         Client::create([
             "bookkeeper_id" => $request->user()->id,
             "email" => $validated["email"],
+            "phone_number" => $validated["phone_number"],
+            "tin" => $validated["tin"],
             "client_type" => $validated["client_type"],
             "name" => $validated["name"],
             "profile_img" => $filename,
