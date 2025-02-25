@@ -19,7 +19,8 @@ class ClientController extends Controller
         Gate::authorize('viewAny', Client::class);
 
         $user = $request->user();
-        $clients = Client::where("bookkeeper_id", $user->id)->get();
+        $clients = $user->clients;
+
         return view("client.index", ["clients" => $clients]);
     }
 

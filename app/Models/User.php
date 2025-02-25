@@ -59,6 +59,6 @@ class User extends Authenticatable
 
     public function clients(): HasMany
     {
-        return $this->hasMany(Client::class);
+        return $this->hasMany(Client::class, "bookkeeper_id");
     }
 }
