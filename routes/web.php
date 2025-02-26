@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\StaffController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +20,10 @@ Route::middleware('auth')->group(function () {
 
     // client related routes
     Route::resource("/clients", ClientController::class);
+
+    // staff related routes
+    Route::resource("/staff", StaffController::class)
+        ->only(["index", "create", "store"]);
 });
 
 require __DIR__ . '/auth.php';

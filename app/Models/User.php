@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -60,5 +61,15 @@ class User extends Authenticatable
     public function clients(): HasMany
     {
         return $this->hasMany(Client::class, "bookkeeper_id");
+    }
+
+    public function staff(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, "staffs", "accountant_id", "staff_id");
+    }
+
+    public function accountant(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, "staffs", "staff_id", "accountant_id");
     }
 }

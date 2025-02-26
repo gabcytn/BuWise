@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rules\Password;
+
+class StaffController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $users = $request->user()->staff;
+        return view("staff.index", ["staffs" => $users]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view("staff.create");
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            "first_name" => "required|string|max:100",
+            "last_name" => "required|string|max:100",
+            "email" => "required|string|lowercase|max:255|email|unique:" . User::class,
+            "staff_type" => ["required", Rule::in(["liaison", "clerk"])],
+            "password" => ["required", Password::min(8)],
+            "profile_img" => ["required", File::image()->max(5000)]
+        ]);
+
+        $name = $validated["first_name"] . " " . $validated["last_name"];
+
+        $file = $request->file("profile_img");
+        $filename = $name . '_' . uniqid() . "." . $file->getClientOriginalExtension();
+        Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
+
+        $staff = User::create([
+            "name" => $name,
+            "email" => $validated["email"],
+            "role_id" => Role::where("name", $validated["staff_type"])->first()->id,
+            "password" => Hash::make($validated["password"]),
+            "profile_img" => $filename,
+        ]);
+
+        $request->user()->staff()->attach($staff->id);
+
+        return to_route("staff.index");
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
