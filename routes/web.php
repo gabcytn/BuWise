@@ -18,8 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // client related routes
-    Route::resource("/client", ClientController::class)
-        ->only(["index", "create", "store", "show"]);
+    Route::resource("/clients", ClientController::class);
 });
 
 require __DIR__ . '/auth.php';
