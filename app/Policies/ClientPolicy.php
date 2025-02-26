@@ -38,7 +38,10 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        return $this->create($user);
+        $userIsClientsAccountant = $client->bookkeeper;
+
+        // TODO: allow accountant's staff
+        return $userIsClientsAccountant == $user;
     }
 
     /**
@@ -46,7 +49,7 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
-        return $user->role->name === "accountant";
+        return $client->bookkeeper == $user;
     }
 
     /**
