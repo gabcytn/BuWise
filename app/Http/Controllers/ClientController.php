@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -67,7 +68,7 @@ class ClientController extends Controller
         ]);
 
         // return Storage::disk("s3")->response("images/" . basename($path));
-        return to_route("client.create");
+        return to_route("clients.index");
     }
 
     /**
@@ -92,7 +93,8 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        Gate::authorize("update", $client);
+        return view("client.edit", ["client" => $client]);
     }
 
     /**
@@ -100,14 +102,47 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        Gate::authorize("update", $client);
+
+        $validated = $request->validate([
+            "email" => "string|lowercase|max:255|email",
+            "name" => "string|max:255",
+            "phone_number" => "string|regex:/^0\d{10}$/",
+            "tin" => "numeric",
+            "client_type" => "string|max:100",
+            "profile_img" => [File::image()->max(5000)],
+        ]);
+
+        $data = [
+            "bookkeeper_id" => $request->user()->id,
+            "email" => $validated["email"],
+            "phone_number" => $validated["phone_number"],
+            "tin" => $validated["tin"],
+            "client_type" => $validated["client_type"],
+            "name" => $validated["name"],
+        ];
+
+        $file = $request->file("profile_img");
+        if ($file !== null) {
+            $filename = $validated["name"] . '_' . uniqid() . "." . $file->getClientOriginalExtension();
+            Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
+            $data["profile_img"] = $filename;
+        }
+
+        // TODO: delete old profile image
+        $client->update($data);
+        return to_route("clients.index");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy(Client $client): RedirectResponse
     {
-        //
+        Gate::authorize("delete", $client);
+        Client::destroy($client->id);
+
+        // TODO: delete profile image in the storage
+        return to_route("clients.index");
     }
 }

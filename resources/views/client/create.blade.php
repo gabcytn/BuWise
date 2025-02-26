@@ -6,7 +6,7 @@
     <title>BuWise</title>
 </head>
 <body>
-    <form method="POST" action="{{ route("client.store") }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route("clients.store") }}" enctype="multipart/form-data">
         @csrf
         <input name="name" type="text" placeholder="Name" required/>
         <input name="email" type="email" placeholder="Email" required/>

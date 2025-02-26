@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-    <a href="{{ route("client.create") }}">Add Company</a>
+    <a href="{{ route("clients.create") }}">Add Company</a>
     @if(count($clients) > 0)
     <table>
         <thead>
@@ -35,7 +35,14 @@
                 <td><p>{{ $client->client_type }}</p></td>
                 <td><p>{{ $client->email }}</p></td>
                 <td><p>{{ $client->phone_number }}</p></td>
-                <td><button>Edit</button><button>Delete</button></td>
+                <td class="action-column">
+                    <a href="{{ route('clients.edit', $client) }}">Edit</a>
+                    <form method="post" action="{{ route("clients.destroy", $client) }}">
+                        @method("DELETE")
+                        @csrf
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
         </tbody>
