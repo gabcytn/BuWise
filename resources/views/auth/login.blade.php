@@ -29,7 +29,7 @@
                         <input id="email" type="email" name="email" value="{{ old("email") }}" required/>
                     </div>
                     @error("email")
-                        <p>{{ $errors->message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -42,13 +42,9 @@
                         <i class="fas fa-eye" id="toggle-password"></i>
                     </div>
                     @error("password")
-                        <p>{{ $errors->message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
-
-{{--                <div class="toggle mt-4">--}}
-{{--                    <span class="toggle-text"></span>--}}
-{{--                </div>--}}
 
                 <div class="forgot-password-container">
                     <a class="#" href="{{ route('password.request') }}">
