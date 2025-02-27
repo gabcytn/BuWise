@@ -61,8 +61,14 @@ class ClientController extends Controller
         $filename = $validated["name"] . '_' . uniqid() . "." . $file->getClientOriginalExtension();
         Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
 
+        $currentUser = $request->user();
+        if ($currentUser->role === "accountant")
+            $bookkeeperId = $currentUser->id;
+        else
+            $bookkeeperId = $currentUser->accountant[0]->id;
+
         Client::create([
-            "bookkeeper_id" => $request->user()->id,
+            "bookkeeper_id" => $bookkeeperId,
             "email" => $validated["email"],
             "phone_number" => $validated["phone_number"],
             "tin" => $validated["tin"],
