@@ -20,7 +20,12 @@ class ClientController extends Controller
         Gate::authorize('viewAny', Client::class);
 
         $user = $request->user();
-        $clients = $user->clients;
+        $roleName = $user->role->name;
+
+        if ($roleName === "accountant")
+            $clients = $user->clients;
+        else
+            $clients = $user->accountant[0]->clients;
 
         return view("client.index", ["clients" => $clients]);
     }
