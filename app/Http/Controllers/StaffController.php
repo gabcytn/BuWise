@@ -25,7 +25,7 @@ class StaffController extends Controller
         $roleName = $user->role->name;
 
         if ($roleName === "accountant")
-            $staff = $user->clients;
+            $staff = $user->staff;
         else
             $staff = $user->accountant[0]->staff;
 
