@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -19,8 +19,17 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
-        $users = $request->user()->staff;
-        return view("staff.index", ["staffs" => $users]);
+        Gate::authorize("viewAny", User::class);
+
+        $user = $request->user();
+        $roleName = $user->role->name;
+
+        if ($roleName === "accountant")
+            $staff = $user->clients;
+        else
+            $staff = $user->accountant[0]->staff;
+
+        return view("staff.index", ["staffs" => $staff]);
     }
 
     /**
@@ -28,6 +37,7 @@ class StaffController extends Controller
      */
     public function create()
     {
+        Gate::authorize("create", User::class);
         return view("staff.create");
     }
 
@@ -36,6 +46,7 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize("create", User::class);
         $validated = $request->validate([
             "first_name" => "required|string|max:100",
             "last_name" => "required|string|max:100",
