@@ -25,7 +25,7 @@
             <option value="clerk">Clerk</option>
         </select>
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" required">
+        <input id="password" name="password" type="password" required />
         <button type="submit">Submit</button>
         @if ($errors->any())
             <div>
