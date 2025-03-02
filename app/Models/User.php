@@ -25,6 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'accountant_id',
         'password',
         'role_id',
         'profile_img',
@@ -60,16 +61,16 @@ class User extends Authenticatable
 
     public function clients(): HasMany
     {
-        return $this->hasMany(Client::class, "bookkeeper_id");
+        return $this->hasMany(Client::class, "accountant_id");
     }
 
-    public function staff(): BelongsToMany
+    public function staff(): HasMany
     {
-        return $this->belongsToMany(User::class, "staffs", "accountant_id", "staff_id");
+        return $this->hasMany(User::class, "accountant_id");
     }
 
-    public function accountant(): BelongsToMany
+    public function accountant(): BelongsTo
     {
-        return $this->belongsToMany(User::class, "staffs", "staff_id", "accountant_id");
+        return $this->belongsTo(User::class, "accountant_id");
     }
 }

@@ -10,7 +10,7 @@ class Client extends Model
 {
     use HasUuids;
     protected $fillable = [
-        'bookkeeper_id',
+        'accountant_id',
         'email',
         'tin',
         'phone_number',
@@ -31,7 +31,7 @@ class Client extends Model
         ];
     }
 
-    public function bookkeeper(): BelongsTo
+    public function accountant(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

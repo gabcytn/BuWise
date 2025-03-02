@@ -22,12 +22,7 @@ class StaffController extends Controller
         Gate::authorize("viewAny", User::class);
 
         $user = $request->user();
-        $roleName = $user->role->name;
-
-        if ($roleName === "accountant")
-            $staff = $user->staff;
-        else
-            $staff = $user->accountant[0]->staff;
+        $staff = $user->staff;
 
         return view("staff.index", ["staffs" => $staff]);
     }
@@ -62,15 +57,16 @@ class StaffController extends Controller
         $filename = $name . '_' . uniqid() . "." . $file->getClientOriginalExtension();
         Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
 
-        $staff = User::create([
+        User::create([
             "name" => $name,
             "email" => $validated["email"],
+            "accountant_id" => $request->user()->id,
             "role_id" => Role::where("name", $validated["staff_type"])->first()->id,
             "password" => Hash::make($validated["password"]),
             "profile_img" => $filename,
         ]);
 
-        $request->user()->staff()->attach($staff->id);
+        // $request->user()->staff()->attach($staff->id);
 
         return to_route("staff.index");
     }
@@ -103,10 +99,10 @@ class StaffController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, User $staff)
+    public function destroy(User $staff)
     {
         Gate::authorize("delete", $staff);
-        $request->user()->staff()->detach($staff->id);
+
         User::destroy($staff->id);
         return to_route("staff.index");
     }

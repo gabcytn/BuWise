@@ -25,7 +25,7 @@ class ClientController extends Controller
         if ($roleName === "accountant")
             $clients = $user->clients;
         else
-            $clients = $user->accountant[0]->clients;
+            $clients = $user->accountant->clients;
 
         return view("client.index", ["clients" => $clients]);
     }
@@ -62,13 +62,13 @@ class ClientController extends Controller
         Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
 
         $currentUser = $request->user();
-        if ($currentUser->role === "accountant")
-            $bookkeeperId = $currentUser->id;
+        if ($currentUser->role->name === "accountant")
+            $accountantId = $currentUser->id;
         else
-            $bookkeeperId = $currentUser->accountant[0]->id;
+            $accountantId = $currentUser->accountant->id;
 
         Client::create([
-            "bookkeeper_id" => $bookkeeperId,
+            "accountant_id" => $accountantId,
             "email" => $validated["email"],
             "phone_number" => $validated["phone_number"],
             "tin" => $validated["tin"],
@@ -87,16 +87,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        // Only shows profile image of client
-        // TODO: display appropriate view
-
-        if (!Storage::disk("public")->exists("profiles/" . $client->profile_img)) {
-            abort(404);
-        }
-
-        $url = asset("storage/profiles/" . $client->profile_img);
-
-        return view("client.show", ["image" => $url]);
+        //
     }
 
     /**
@@ -125,7 +116,6 @@ class ClientController extends Controller
         ]);
 
         $data = [
-            "bookkeeper_id" => $request->user()->id,
             "email" => $validated["email"],
             "phone_number" => $validated["phone_number"],
             "tin" => $validated["tin"],

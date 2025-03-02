@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->foreignUuid("bookkeeper_id")->references("id")->on("users")->cascadeOnDelete();
+            $table->foreignUuid("accountant_id")->references("id")->on("users")->cascadeOnDelete();
             $table->string("tin");
             $table->string("phone_number");
             $table->string("email")->unique();

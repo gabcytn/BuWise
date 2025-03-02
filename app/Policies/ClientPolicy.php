@@ -13,7 +13,8 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $this->create($user);
+        $availableRoles = ["accountant", "liaison", "clerk"];
+        return in_array($user->role->name, $availableRoles);
     }
 
     /**
@@ -21,7 +22,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return $this->create($user);
+        return false;
     }
 
     /**
@@ -29,7 +30,7 @@ class ClientPolicy
      */
     public function create(User $user): bool
     {
-        $availableRoles = ["accountant", "liaison", "clerk"];
+        $availableRoles = ["accountant", "liaison"];
         return in_array($user->role->name, $availableRoles);
     }
 
@@ -38,10 +39,14 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        $userIsClientsAccountant = $client->bookkeeper;
+        $userRole = $user->role->name;
 
-        // TODO: allow accountant's staff
-        return $userIsClientsAccountant == $user;
+        if ($userRole === "accountant")
+            return $client->accountant->id === $user->id;
+        else if ($userRole === "liaison")
+            return $client->accountant->id === $user->accountant->id;
+
+        return false;
     }
 
     /**
@@ -49,7 +54,7 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client): bool
     {
-        return $client->bookkeeper == $user;
+        return $client->accountant->id === $user->id;
     }
 
     /**
