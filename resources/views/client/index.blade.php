@@ -9,10 +9,16 @@
             width: 100px;
             height: 100px;
         }
+        #add-company-dialog {
+            border: none;
+        }
+        #add-company-dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 <body>
-    <a href="{{ route("clients.create") }}">Add Company</a>
+    <button id="add-company-btn">Add Company</button>
     @if(count($clients) > 0)
     <table>
         <thead>
@@ -50,5 +56,33 @@
     @else
         <h2>No clients</h2>
     @endif
+
+    <dialog id="add-company-dialog">
+        <form id="add-company-form" method="POST" action="{{ route("clients.store") }}" enctype="multipart/form-data">
+            @csrf
+            <input name="name" type="text" placeholder="Name" value="{{ old("name") }}" required />
+            <input name="email" type="email" placeholder="Email" value="{{ old("email") }}" required />
+            <input name="phone_number" type="tel" placeholder="Phone Number" required value="{{ old("phone_number") }}" />
+            <input name="tin" type="number" placeholder="TIN" required value="{{ old("tin") }}" />
+            <input name="client_type" type="text" placeholder="Client Type" value="{{ old("client_type") }}" required />
+            <input name="profile_img" type="file" placeholder="Profile Image" required />
+            <button type="submit">Submit</button>
+            <button id="close-dialog-btn" type="button">Close</button>
+            @if($errors->any())
+                <p>{{ $errors->first() }}</p>
+            @endif
+        </form>
+    </dialog>
+
+    <script>
+        const addCompanyDialog = document.querySelector("#add-company-dialog");
+        document.querySelector("#add-company-btn").addEventListener("click", () => {
+            addCompanyDialog.showModal();
+        })
+
+        document.querySelector("#close-dialog-btn").addEventListener("click", () => {
+            addCompanyDialog.close();
+        })
+    </script>
 </body>
 </html>

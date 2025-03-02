@@ -35,8 +35,8 @@ class ClientController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create', Client::class);
-        return view("client.create");
+//        Gate::authorize('create', Client::class);
+//        return view("client.create");
     }
 
     /**
@@ -79,7 +79,7 @@ class ClientController extends Controller
         ]);
 
         // return Storage::disk("s3")->response("images/" . basename($path));
-        return to_route("clients.index");
+        return redirect()->back();
     }
 
     /**

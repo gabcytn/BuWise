@@ -32,8 +32,8 @@ class StaffController extends Controller
      */
     public function create()
     {
-        Gate::authorize("create", User::class);
-        return view("staff.create");
+//        Gate::authorize("create", User::class);
+//        return view("staff.create");
     }
 
     /**

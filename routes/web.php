@@ -20,11 +20,11 @@ Route::middleware('auth')->group(function () {
 
     // client related routes
     Route::resource("/clients", ClientController::class)
-        ->only(["index", "create", "store", "edit", "update", "destroy"]);
+        ->only(["index", "store", "edit", "update", "destroy"]);
 
     // staff related routes
     Route::resource("/staff", StaffController::class)
-        ->only(["index", "create", "store", "edit", "update", "destroy"]);
+        ->only(["index", "store", "edit", "update", "destroy"]);
 });
 
 require __DIR__ . '/auth.php';
