@@ -19,11 +19,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // client related routes
-    Route::resource("/clients", ClientController::class);
+    Route::resource("/clients", ClientController::class)
+        ->only(["index", "create", "store", "edit", "update", "destroy"]);
 
     // staff related routes
     Route::resource("/staff", StaffController::class)
-        ->only(["index", "create", "store"]);
+        ->only(["index", "create", "store", "edit", "update", "destroy"]);
 });
 
 require __DIR__ . '/auth.php';

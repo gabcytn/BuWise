@@ -27,17 +27,25 @@
         </thead>
         <tbody>
         @foreach($staffs as $staff)
+            <?php
+                $firstName = $staff->name;
+                list($firstName, $lastName) = explode(' ', $staff->name, 2);
+            ?>
             <tr>
                 <td>
                     <img class="staff-profile" src="{{ asset("storage/profiles/" . $staff->profile_img) }}"  alt="Staff Profile Picture"/>
                 </td>
-                <td>{{ $staff->name }}</td>
-                <td>{{ $staff->name }}</td>
+                <td>{{ $firstName }}</td>
+                <td>{{ $lastName }}</td>
                 <td>{{ $staff->role->name }}</td>
                 <td>{{ $staff->email }}</td>
                 <td>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <a href="{{ route("staff.edit", $staff) }}">Edit</a>
+                    <form action="{{ route("staff.destroy", $staff) }}" method="POST">
+                        @csrf
+                        @method("DELETE")
+                        <button type="submit">Delete</a>
+                    </form>
                 </td>
             </tr>
         @endforeach

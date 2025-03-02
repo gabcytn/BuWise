@@ -12,8 +12,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        $availableRoles = ["accountant", "liaison", "clerk"];
-        return in_array($user->role->name, $availableRoles);
+        return $user->role->name === "accountant";
     }
 
     /**
@@ -29,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role->name !== "clerk";
+        return $user->role->name === "accountant";
     }
 
     /**
@@ -37,15 +36,15 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->role->name !== "clerk";
+        return $user->role->name === "accountant";
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, User $staff): bool
     {
-        return false;
+        return $staff->accountant[0]->id === $user->id;
     }
 
     /**

@@ -86,9 +86,10 @@ class StaffController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $staff)
     {
-        //
+        Gate::authorize("update", $staff);
+        return view("staff.edit", ["staff" => $staff]);
     }
 
     /**
@@ -96,14 +97,17 @@ class StaffController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // TODO: update a staff instance
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, User $staff)
     {
-        //
+        Gate::authorize("delete", $staff);
+        $request->user()->staff()->detach($staff->id);
+        User::destroy($staff->id);
+        return to_route("staff.index");
     }
 }
