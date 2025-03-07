@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -17,12 +18,12 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', Client::class);
+        Gate::authorize("viewAnyClient", User::class);
 
         $user = $request->user();
-        $roleName = $user->role->name;
+        $roleId = $user->role_id;
 
-        if ($roleName === "accountant")
+        if ($roleId === Role::ACCOUNTANT)
             $clients = $user->clients;
         else
             $clients = $user->accountant->clients;
@@ -44,9 +45,9 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Client::class);
+        Gate::authorize('createClient', User::class);
         $validated = $request->validate([
-            "email" => "required|string|lowercase|max:255|email|unique:" . Client::class,
+            "email" => "required|string|lowercase|max:255|email|unique:" . User::class,
             "name" => "required|string|max:255",
             "phone_number" => "required|string|regex:/^0\d{10}$/",
             "tin" => "required|numeric",
@@ -62,13 +63,14 @@ class ClientController extends Controller
         Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
 
         $currentUser = $request->user();
-        if ($currentUser->role->name === "accountant")
+        if ($currentUser->role_id === Role::ACCOUNTANT)
             $accountantId = $currentUser->id;
         else
             $accountantId = $currentUser->accountant->id;
 
-        Client::create([
+        User::create([
             "accountant_id" => $accountantId,
+            "role_id" => Role::CLIENT,
             "email" => $validated["email"],
             "phone_number" => $validated["phone_number"],
             "tin" => $validated["tin"],
@@ -85,7 +87,7 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show(User $client)
     {
         //
     }
@@ -93,18 +95,19 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
+    public function edit(Request $request, User $client)
     {
-        Gate::authorize("update", $client);
+        Gate::authorize("updateClient", $client);
+
         return view("client.edit", ["client" => $client]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, User $client)
     {
-        Gate::authorize("update", $client);
+        Gate::authorize("updateClient", $client);
 
         $validated = $request->validate([
             "email" => "string|lowercase|max:255|email",
@@ -138,10 +141,10 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client): RedirectResponse
+    public function destroy(User $client): RedirectResponse
     {
-        Gate::authorize("delete", $client);
-        Client::destroy($client->id);
+        Gate::authorize("deleteClient", $client);
+        User::destroy($client->id);
 
         // TODO: delete profile image in the storage
         return to_route("clients.index");

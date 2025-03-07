@@ -2,64 +2,56 @@
 
 namespace App\Policies;
 
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAnyStaff(User $user): bool
     {
-        return $user->role->name === "accountant";
+        return $user->role_id === Role::ACCOUNTANT;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, User $model): bool
+    public function viewAnyClient(User $user): bool
     {
-        return false;
+        $roleId = $user->role_id;
+        return $roleId === Role::ACCOUNTANT || $roleId === Role::LIAISON;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function createStaff(User $user): bool
     {
-        return $user->role->name === "accountant";
+        return $user->role_id === Role::ACCOUNTANT;
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, User $model): bool
+    public function createClient(User $user): bool
     {
-        return $user->role->name === "accountant";
+        $roleId = $user->role_id;
+        return $roleId === Role::ACCOUNTANT || $roleId === Role::LIAISON;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, User $staff): bool
+    public function updateStaff(User $user, User $staff): bool
     {
-        return $staff->accountant->id === $user->id;
+        return $staff->accountant_id === $user->id;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, User $model): bool
+    public function updateClient(User $user, User $client):bool
     {
-        return false;
+        $roleId = $user->role_id;
+        if ($roleId === Role::ACCOUNTANT)
+            return $client->accountant_id === $user->id;
+        elseif ($roleId === Role::LIAISON)
+            return $user->accountant_id === $client->accountant_id;
+        else
+            return false;
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, User $model): bool
+    public function deleteStaff(User $user, User $staff):bool
     {
-        return false;
+        return $this->updateStaff($user, $staff);
+    }
+
+    public function deleteClient(User $user, User $client):bool
+    {
+        return $this->updateClient($user, $client);
     }
 }

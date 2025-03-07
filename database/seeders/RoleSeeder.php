@@ -24,6 +24,9 @@ class RoleSeeder extends Seeder
                 [
                     "name" => "clerk",
                 ],
+                [
+                    "name" => "client"
+                ]
             ]
         );
     }

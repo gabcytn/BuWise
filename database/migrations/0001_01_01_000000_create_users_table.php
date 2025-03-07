@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignUuid("accountant_id")->nullable()->references("id")->on("users")->cascadeOnDelete();
             $table->smallInteger("role_id")->default(1);
             $table->string('name');
+            $table->string("tin")->nullable();
+            $table->string("phone_number")->nullable();
+            $table->string("client_type")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string("profile_img")->nullable();
             $table->string('password');

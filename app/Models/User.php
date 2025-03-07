@@ -26,6 +26,9 @@ class User extends Authenticatable
         'name',
         'email',
         'accountant_id',
+        'tin',
+        'phone_number',
+        'client_type',
         'password',
         'role_id',
         'profile_img',
@@ -61,12 +64,14 @@ class User extends Authenticatable
 
     public function clients(): HasMany
     {
-        return $this->hasMany(Client::class, "accountant_id");
+        return $this->hasMany(User::class, "accountant_id")->where("role_id", Role::CLIENT);
     }
 
     public function staff(): HasMany
     {
-        return $this->hasMany(User::class, "accountant_id");
+        return $this->hasMany(User::class, "accountant_id")
+            ->where("role_id", Role::LIAISON)
+            ->orWhere("role_id", Role::CLERK);
     }
 
     public function accountant(): BelongsTo
