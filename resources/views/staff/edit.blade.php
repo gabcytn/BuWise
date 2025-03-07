@@ -26,8 +26,8 @@
         <label for="staff-type>">Staff Type</label>
         <select id="staff-type" name="staff_type" required>
             <option selected disabled>Choose Role</option>
-            <option value="liaison">Liaison Officer</option>
-            <option value="clerk">Clerk</option>
+            <option value="2">Liaison Officer</option>
+            <option value="3">Clerk</option>
         </select>
         <label for="password">Password</label>
         <input id="password" name="password" type="password" required />

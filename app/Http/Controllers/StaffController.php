@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,7 @@ class StaffController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): string
     {
         Gate::authorize("viewAnyStaff", User::class);
 
@@ -28,17 +29,9 @@ class StaffController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         Gate::authorize("createStaff", User::class);
         $validated = $request->validate([
@@ -71,17 +64,9 @@ class StaffController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $staff)
+    public function edit(User $staff): string
     {
         Gate::authorize("updateStaff", $staff);
         return view("staff.edit", ["staff" => $staff]);
@@ -90,19 +75,55 @@ class StaffController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $staff): RedirectResponse
     {
-        // TODO: update a staff instance
+        Gate::authorize("updateStaff", $staff);
+        $validated = $request->validate([
+            "first_name" => "required|string|max:100",
+            "last_name" => "required|string|max:100",
+            "email" => "required|string|lowercase|max:255|email",
+            "staff_type" => "required",
+            "password" => ["required", Password::min(8)],
+            "profile_img" => [File::image()->max(5000)]
+        ]);
+
+        $name = $validated["first_name"] . " " . $validated["last_name"];
+
+        $data = [
+            "name" => $name,
+            "email" => $validated["email"],
+            "role_id" => (int) $validated["staff_type"],
+            "password" => Hash::make($validated["password"])
+        ];
+
+        $file = $request->file("profile_img");
+        if ($file !== null) {
+            $this->deleteOldImage($staff);
+            $filename = $name . '_' . uniqid() . "." . $file->getClientOriginalExtension();
+            Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
+            $data["profile_img"] = $filename;
+        }
+
+        $staff->update($data);
+        return to_route("staff.index");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $staff)
+    public function destroy(User $staff): RedirectResponse
     {
         Gate::authorize("deleteStaff", $staff);
 
+        $this->deleteOldImage($staff);
         User::destroy($staff->id);
+
         return to_route("staff.index");
+    }
+
+    private function deleteOldImage (User $user): void
+    {
+        $path = $user->profile_img;
+        Storage::disk("public")->delete("profiles/" . $path);
     }
 }
