@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rules\Password;
 
 class ClientController extends Controller
 {
@@ -32,15 +33,6 @@ class ClientController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-//        Gate::authorize('create', Client::class);
-//        return view("client.create");
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -52,6 +44,7 @@ class ClientController extends Controller
             "phone_number" => "required|string|regex:/^0\d{10}$/",
             "tin" => "required|numeric",
             "client_type" => "required|string|max:100",
+            "password" => ["required", Password::min(8)],
             "profile_img" => ["required", File::image()->max(5000)],
         ]);
 
@@ -77,19 +70,11 @@ class ClientController extends Controller
             "client_type" => $validated["client_type"],
             "name" => $validated["name"],
             "profile_img" => $filename,
-            "password" => Hash::make(env("CLIENT_DEFAULT_PASSWORD")),
+            "password" => Hash::make($validated["password"]),
         ]);
 
         // return Storage::disk("s3")->response("images/" . basename($path));
         return redirect()->back();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $client)
-    {
-        //
     }
 
     /**
@@ -115,6 +100,7 @@ class ClientController extends Controller
             "phone_number" => "string|regex:/^0\d{10}$/",
             "tin" => "numeric",
             "client_type" => "string|max:100",
+            "password" => [Password::required(), Password::min(8)],
             "profile_img" => [File::image()->max(5000)],
         ]);
 
@@ -122,18 +108,19 @@ class ClientController extends Controller
             "email" => $validated["email"],
             "phone_number" => $validated["phone_number"],
             "tin" => $validated["tin"],
+            "password" => Hash::make($validated["password"]),
             "client_type" => $validated["client_type"],
             "name" => $validated["name"],
         ];
 
         $file = $request->file("profile_img");
         if ($file !== null) {
+            $this->deleteOldImage($client);
             $filename = $validated["name"] . '_' . uniqid() . "." . $file->getClientOriginalExtension();
             Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
             $data["profile_img"] = $filename;
         }
 
-        // TODO: delete old profile image
         $client->update($data);
         return to_route("clients.index");
     }
@@ -144,9 +131,16 @@ class ClientController extends Controller
     public function destroy(User $client): RedirectResponse
     {
         Gate::authorize("deleteClient", $client);
+
+        $this->deleteOldImage($client);
         User::destroy($client->id);
 
-        // TODO: delete profile image in the storage
         return to_route("clients.index");
+    }
+
+    private function deleteOldImage (User $user): void
+    {
+        $path = $user->profile_img;
+        Storage::disk("public")->delete("profiles/" . $path);
     }
 }

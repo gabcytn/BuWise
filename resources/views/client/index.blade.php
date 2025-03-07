@@ -60,12 +60,13 @@
     <dialog id="add-company-dialog">
         <form id="add-company-form" method="POST" action="{{ route("clients.store") }}" enctype="multipart/form-data">
             @csrf
+            <input name="profile_img" type="file" placeholder="Profile Image" required />
             <input name="name" type="text" placeholder="Name" value="{{ old("name") }}" required />
             <input name="email" type="email" placeholder="Email" value="{{ old("email") }}" required />
             <input name="phone_number" type="tel" placeholder="Phone Number" required value="{{ old("phone_number") }}" />
             <input name="tin" type="number" placeholder="TIN" required value="{{ old("tin") }}" />
             <input name="client_type" type="text" placeholder="Client Type" value="{{ old("client_type") }}" required />
-            <input name="profile_img" type="file" placeholder="Profile Image" required />
+            <input name="password" type="password" placeholder="Password" required />
             <button type="submit">Submit</button>
             <button id="close-dialog-btn" type="button">Close</button>
             @if($errors->any())
