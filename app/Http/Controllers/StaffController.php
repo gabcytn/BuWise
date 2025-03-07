@@ -19,7 +19,7 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize("viewAny", User::class);
+        Gate::authorize("viewAnyStaff", User::class);
 
         $user = $request->user();
         $staff = $user->staff;
@@ -32,8 +32,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-//        Gate::authorize("create", User::class);
-//        return view("staff.create");
+        //
     }
 
     /**
@@ -41,12 +40,12 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize("create", User::class);
+        Gate::authorize("createStaff", User::class);
         $validated = $request->validate([
             "first_name" => "required|string|max:100",
             "last_name" => "required|string|max:100",
             "email" => "required|string|lowercase|max:255|email|unique:" . User::class,
-            "staff_type" => ["required", Rule::in(["liaison", "clerk"])],
+            "staff_type" => "required",
             "password" => ["required", Password::min(8)],
             "profile_img" => ["required", File::image()->max(5000)]
         ]);
@@ -61,7 +60,7 @@ class StaffController extends Controller
             "name" => $name,
             "email" => $validated["email"],
             "accountant_id" => $request->user()->id,
-            "role_id" => Role::where("name", $validated["staff_type"])->first()->id,
+            "role_id" => (int) $validated["staff_type"],
             "password" => Hash::make($validated["password"]),
             "profile_img" => $filename,
         ]);
@@ -84,7 +83,7 @@ class StaffController extends Controller
      */
     public function edit(User $staff)
     {
-        Gate::authorize("update", $staff);
+        Gate::authorize("updateStaff", $staff);
         return view("staff.edit", ["staff" => $staff]);
     }
 
@@ -101,7 +100,7 @@ class StaffController extends Controller
      */
     public function destroy(User $staff)
     {
-        Gate::authorize("delete", $staff);
+        Gate::authorize("deleteStaff", $staff);
 
         User::destroy($staff->id);
         return to_route("staff.index");
