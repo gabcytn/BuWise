@@ -71,8 +71,10 @@ class User extends Authenticatable
     public function staff(): HasMany
     {
         return $this->hasMany(User::class, "accountant_id")
-            ->where("role_id", Role::LIAISON)
-            ->orWhere("role_id", Role::CLERK);
+            ->where(function ($query) {
+                $query->where("role_id", Role::LIAISON)
+                    ->orWhere("role_id", Role::CLERK);
+            });
     }
 
     public function accountant(): BelongsTo

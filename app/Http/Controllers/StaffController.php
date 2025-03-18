@@ -18,7 +18,7 @@ class StaffController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): string
+    public function index(Request $request)
     {
         Gate::authorize("viewAnyStaff", User::class);
 
@@ -121,7 +121,7 @@ class StaffController extends Controller
         return to_route("staff.index");
     }
 
-    private function deleteOldImage (User $user): void
+    private function deleteOldImage(User $user): void
     {
         $path = $user->profile_img;
         Storage::disk("public")->delete("profiles/" . $path);
