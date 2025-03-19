@@ -39,7 +39,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-            if ($user->role_id === Role::CLIENT) {
+            if ($user && $user->role_id === Role::CLIENT) {
                 return null;
             }
 
