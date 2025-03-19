@@ -66,7 +66,7 @@ class StaffController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $staff): string
+    public function edit(User $staff)
     {
         Gate::authorize("updateStaff", $staff);
         return view("staff.edit", ["staff" => $staff]);
@@ -81,7 +81,7 @@ class StaffController extends Controller
         $validated = $request->validate([
             "first_name" => "required|string|max:100",
             "last_name" => "required|string|max:100",
-            "email" => "required|string|lowercase|max:255|email",
+            "email" => ["required", "string", "lowercase", "max:255", "email", Rule::unique("users")->ignore($request->user()->id)],
             "staff_type" => "required",
             "password" => ["required", Password::min(8)],
             "profile_img" => [File::image()->max(5000)]
