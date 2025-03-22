@@ -18,6 +18,7 @@
     </style>
 </head>
 <body>
+    <x-app-layout>
     <button id="add-company-btn">Add Company</button>
     @if(count($clients) > 0)
     <table>
@@ -53,6 +54,7 @@
         @endforeach
         </tbody>
     </table>
+    {{ $clients->links() }}
     @else
         <h2>No clients</h2>
     @endif
@@ -74,6 +76,7 @@
             @endif
         </form>
     </dialog>
+    </x-app-layout>
 
     <script>
         const addCompanyDialog = document.querySelector("#add-company-dialog");

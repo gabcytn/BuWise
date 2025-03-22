@@ -1,4 +1,11 @@
-<nav>
+<header class="header-lg">
+    <i class="fa-solid fa-bars"></i>
+    <div>
+        <i class="fa-solid fa-bell"></i>
+        <img src="https://placehold.co/50" alt="Profile Image" />
+    </div>
+</header>
+<nav class="nav-lg">
     <img src="#" alt="Company Logo" />
     <ul>
         <li><a href="#">Dashboard</a></li>
