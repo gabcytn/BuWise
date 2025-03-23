@@ -7,7 +7,7 @@
         <ul>
             <div class="nav-section">
                 <div class="nav-section__item">
-                    <li>
+                    <li class="{{ request()->routeIs("dashboard") ? "active-tab" : "" }}">
                         <i class="fa-solid fa-gauge"></i>
                         <a href="{{ route("dashboard") }}">Dashboard</a>
                     </li>
@@ -54,11 +54,11 @@
             <div class="nav-section">
                 <p>Manage</p>
                 <div class="nav-section__item">
-                    <li>
+                    <li class="{{ request()->routeIs("clients.index") ? "active-tab" : "" }}">
                         <i class="fa-solid fa-briefcase"></i>
                         <a href="{{ route("clients.index") }}">Clients</a>
                     </li>
-                    <li>
+                    <li class="{{ request()->routeIs("staff.index") ? "active-tab" : "" }}">
                         <i class="fa-solid fa-users"></i>
                         <a href="{{ route("staff.index") }}">Staff</a>
                     </li>

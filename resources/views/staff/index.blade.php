@@ -18,6 +18,7 @@
     </style>
 </head>
 <body>
+    <x-app-layout>
     <button id="add-staff-btn">Add Staff</button>
     @if(count($staffs) > 0)
     <table>
@@ -60,6 +61,7 @@
     @else
         <p>No staff</p>
     @endif
+    </x-app-layout>
 
     <dialog id="add-staff-dialog">
         <form action="{{ route("staff.store") }}" method="post" enctype="multipart/form-data">

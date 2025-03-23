@@ -54,7 +54,6 @@
         @endforeach
         </tbody>
     </table>
-    {{ $clients->links() }}
     @else
         <h2>No clients</h2>
     @endif

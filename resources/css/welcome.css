@@ -1,9 +1,10 @@
 :root {
+    --main-blue: #1B80C3;
     --dark-blue: #133E5A;
     --off-white: #EEE;
-    --clear-white: #FFF;
+    --clear-white: #FEFEFE;
     --other-font: "Poppins";
-    --grey: #AAA;
+    --grey: #777;
     --soft-black: #020202;
 }
 
@@ -28,15 +29,38 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
-    min-height: 3.5rem;
+    min-height: 5rem;
+}
+
+.header-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.header-side__account {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.header-side img {
+    border-radius: 100%;
+}
+
+.header-side__account--details,
+.fa-circle-chevron-down {
+    display: none !important;
 }
 
 .nav-sm {
     position: absolute;
-    min-height: calc(100dvh - 3.5rem);
+    min-height: calc(100dvh - 5rem);
     z-index: 10;
     left: 0;
-    top: 3.5rem;
+    top: 5rem;
     background-color: var(--dark-blue);
     transition: left 0.5s;
     color: white;
@@ -118,6 +142,30 @@ section {
 }
 
 @media screen and (min-width: 800px) {
+
+    .header-side__account {
+        display: flex;
+    }
+
+    .header-side__account--details,
+    .fa-circle-chevron-down {
+        display: block !important;
+        color: var(--soft-black) !important;
+    }
+
+    .fa-circle-chevron-down {
+        margin-top: 4px;
+    }
+
+    #account-name {
+        font-size: 0.9rem;
+    }
+
+    #account-role {
+        font-size: 0.8rem;
+        color: var(--grey);
+    }
+
     body {
         display: flex;
     }
@@ -125,11 +173,39 @@ section {
     .nav-sm {
         position: static;
         min-height: 100dvh;
-        width: 15rem;
+        min-width: 13rem;
         background-color: var(--clear-white);
         color: var(--soft-black);
         padding-top: 1rem;
     }
+
+    .nav-section {
+        padding: 1.215rem 1rem;
+    }
+
+    .nav-section p {
+        margin-bottom: 0.75rem;
+        color: var(--grey);
+    }
+
+    .nav-section li {
+        padding: 0.5rem 0 0.5rem 1rem;
+        border-radius: 5px;
+    }
+
+    .active-tab {
+        background-color: var(--main-blue);
+    }
+
+    .active-tab a,
+    .active-tab i {
+        color: var(--clear-white) !important;
+    }
+
+    .nav-section li+li {
+        margin-top: 0;
+    }
+
 
     .nav-sm li a {
         color: var(--soft-black);
