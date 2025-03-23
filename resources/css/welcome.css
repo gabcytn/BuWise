@@ -4,6 +4,7 @@
     --clear-white: #FFF;
     --other-font: "Poppins";
     --grey: #AAA;
+    --soft-black: #020202;
 }
 
 * {
@@ -21,11 +22,6 @@ body {
     background-color: var(--off-white);
 }
 
-.nav-lg,
-.header-lg {
-    display: none;
-}
-
 .header-sm {
     background-color: var(--clear-white);
     display: flex;
@@ -40,6 +36,7 @@ body {
     min-height: calc(100dvh - 3.5rem);
     z-index: 10;
     left: 0;
+    top: 3.5rem;
     background-color: var(--dark-blue);
     transition: left 0.5s;
     color: white;
@@ -121,14 +118,30 @@ section {
 }
 
 @media screen and (min-width: 800px) {
-
-    .nav-lg,
-    .header-lg {
-        display: block;
+    body {
+        display: flex;
     }
 
-    .nav-sm,
-    .header-sm {
-        display: none;
+    .nav-sm {
+        position: static;
+        min-height: 100dvh;
+        width: 15rem;
+        background-color: var(--clear-white);
+        color: var(--soft-black);
+        padding-top: 1rem;
+    }
+
+    .nav-sm li a {
+        color: var(--soft-black);
+        font-size: 0.85rem;
+    }
+
+    .main-section {
+        width: 100%;
+    }
+
+    .fa-bars {
+        opacity: 0;
+        pointer-events: none;
     }
 }

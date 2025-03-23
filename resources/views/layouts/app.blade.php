@@ -18,10 +18,14 @@
         <!-- Navbar -->
         @include('layouts.navigation')
 
-        <!-- Mobile Navbar -->
-        @include('layouts.responsive-navigation')
-
-        <section>
+        <section class="main-section">
+            <header class="header-sm">
+                <i class="fa-solid fa-bars"></i>
+                <div>
+                    <i class="fa-solid fa-bell"></i>
+                    <img src="https://placehold.co/50" alt="Profile Image" />
+                </div>
+            </header>
             <!-- Page Content -->
             <main>
                 {{ $slot }}
