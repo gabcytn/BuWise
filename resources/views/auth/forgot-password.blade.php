@@ -12,7 +12,8 @@
     <div class="forgot-password-container">
         <h2>Forgot Password</h2>
         <p>Enter Email</p>
-        <form action="#" method="POST">
+        <form action="/forgot-password" method="POST">
+            @csrf
             <div class="input-wrapper">
                 <i class="fas fa-envelope"></i>
                 <input type="email" name="email" placeholder="Enter your email" required>
