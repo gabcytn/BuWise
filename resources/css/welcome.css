@@ -4,15 +4,17 @@
     --off-white: #EEE;
     --clear-white: #FEFEFE;
     --other-font: "Poppins";
+    --main-font: "Inter";
     --grey: #777;
     --soft-black: #020202;
 }
 
-* {
+*:not(dialog) {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: var(--other-font);
+    font-family: var(--main-font);
+    text-wrap: balance;
 }
 
 img {
@@ -23,6 +25,10 @@ body {
     background-color: var(--off-white);
 }
 
+.header-container {
+    background-color: var(--clear-white);
+}
+
 .header-sm {
     background-color: var(--clear-white);
     display: flex;
@@ -30,6 +36,8 @@ body {
     justify-content: space-between;
     padding: 0 1rem;
     min-height: 5rem;
+    max-width: 1250px;
+    margin: 0 auto;
 }
 
 .header-side {
@@ -67,10 +75,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-#app-name {
-    font-family: "Inter", sans-serif;
 }
 
 .nav-sm.hidden {
@@ -172,6 +176,7 @@ section {
 
     .nav-sm {
         position: static;
+        border-right: 3px solid var(--off-white);
         min-height: 100dvh;
         min-width: 13rem;
         background-color: var(--clear-white);
@@ -192,6 +197,13 @@ section {
         padding: 0.5rem 0 0.5rem 1rem;
         border-radius: 5px;
     }
+
+    .nav-section li:hover,
+    .nav-section li:hover>a {
+        background-color: var(--main-blue);
+        color: var(--clear-white) !important;
+    }
+
 
     .active-tab {
         background-color: var(--main-blue);

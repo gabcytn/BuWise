@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BuWise</title>
-</head>
-<body>
-<div class="container">
+<x-app-layout>
     <form action="{{ route('clients.update', $client) }}" method="post" enctype="multipart/form-data">
         @method("PUT")
         @csrf
@@ -23,6 +15,4 @@
             <p>{{ $errors->first() }}</p>
         @endif
     </form>
-</div>
-</body>
-</html>
+</x-app-layout>
