@@ -1,26 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{{ __("BuWise") }}</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            min-height: 100dvh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        button[type="submit"] {
-            display: block;
-            margin: 0 auto;
-        }
-    </style>
+    <title>{{ config('app.name') }}</title>
 </head>
+@vite(['resources/css/auth/confirm-password.css'])
 <body>
     <div class="container">
         <h4>
