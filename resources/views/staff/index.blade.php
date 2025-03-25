@@ -1,46 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BuWise</title>
-    <style>
-        .staff-profile {
-            width: 100px;
-            height: 100px;
-        }
-        #add-staff-dialog {
-            border: none;
-        }
-        #add-staff-dialog::backdrop {
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-    </style>
-</head>
-<body>
-    <x-app-layout>
-    <button id="add-staff-btn">Add Staff</button>
+<x-user-management title="Staff Management" subtitle="Manage your bookkeeping staff" buttonText="Add Staff">
     @if(count($staffs) > 0)
     <table>
         <thead>
             <tr>
-                <td>Profile</td>
-                <td>First Name</td>
-                <td>Last Name</td>
-                <td>Type</td>
-                <td>Email</td>
-                <td>Action</td>
+                <th>Profile</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Type</th>
+                <th>Email</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
         @foreach($staffs as $staff)
-            <?php
+            @php
                 $firstName = $staff->name;
                 list($firstName, $lastName) = explode(' ', $staff->name, 2);
-            ?>
+            @endphp
             <tr>
                 <td>
-                    <img class="staff-profile" src="{{ asset("storage/profiles/" . $staff->profile_img) }}"  alt="Staff Profile Picture"/>
+                    <img class="item-img" src="{{ asset('storage/profiles/' . $staff->profile_img) }}"  alt="Staff Profile Picture"/>
                 </td>
                 <td>{{ $firstName }}</td>
                 <td>{{ $lastName }}</td>
@@ -59,55 +38,43 @@
         </tbody>
     </table>
     @else
-        <p>No staff</p>
+        <h2 style="text-align: center;">No staff</h2>
     @endif
-    </x-app-layout>
+</x-user-management>
 
-    <dialog id="add-staff-dialog">
-        <form action="{{ route("staff.store") }}" method="post" enctype="multipart/form-data">
-            @csrf
-            <div class="profile">
-                <label for="profile-img">Upload Profile Picture</label>
-                <input id="profile-img" type="file" name="profile_img" required />
+@vite(['resources/js/staff/index.js'])
+<dialog id="add-staff-dialog">
+    <h2>Add Staff</h2>
+    <form action="{{ route("staff.store") }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="profile">
+            <label for="profile-img">Upload Profile Picture</label>
+            <input id="profile-img" type="file" name="profile_img" required />
+        </div>
+        <label for="first-name">First Name</label>
+        <input id="first-name" name="first_name" type="text" required value="{{ old("first_name") }}">
+        <label for="last-name">Last Name</label>
+        <input id="last-name" name="last_name" type="text" required value="{{ old("last_name") }}">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required value="{{ old("email") }}">
+        <label for="staff-type>">Staff Type</label>
+        <select id="staff-type" name="staff_type">
+            <option selected disabled>Choose Role</option>
+            <option value="2">Liaison Officer</option>
+            <option value="3">Clerk</option>
+        </select>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+        <button type="submit">Submit</button>
+        <button id="close-dialog-btn" type="button">Close</button>
+        @if ($errors->any())
+            <div>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-            <label for="first-name">First Name</label>
-            <input id="first-name" name="first_name" type="text" required value="{{ old("first_name") }}">
-            <label for="last-name">Last Name</label>
-            <input id="last-name" name="last_name" type="text" required value="{{ old("last_name") }}">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required value="{{ old("email") }}">
-            <label for="staff-type>">Staff Type</label>
-            <select id="staff-type" name="staff_type">
-                <option selected disabled>Choose Role</option>
-                <option value="2">Liaison Officer</option>
-                <option value="3">Clerk</option>
-            </select>
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" required />
-            <button type="submit">Submit</button>
-            <button id="close-dialog-btn" type="button">Close</button>
-            @if ($errors->any())
-                <div>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-        </form>
-    </dialog>
-
-    <script>
-        const addStaffDialog = document.querySelector("#add-staff-dialog");
-
-        document.querySelector("#add-staff-btn").addEventListener("click", () => {
-            addStaffDialog.showModal();
-        });
-
-        document.querySelector("#close-dialog-btn").addEventListener("click", () => {
-            addStaffDialog.close();
-        })
-    </script>
-</body>
-</html>
+        @endif
+    </form>
+</dialog>

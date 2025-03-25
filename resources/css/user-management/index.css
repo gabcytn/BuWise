@@ -60,7 +60,7 @@ select {
     border: none;
 }
 
-#add-company-btn {
+#open-dialog-btn {
     width: 100%;
     color: var(--off-white);
     font-size: 1rem;
@@ -72,7 +72,7 @@ select {
     cursor: pointer;
 }
 
-#add-company-btn:hover {
+#open-dialog-btn:hover {
     opacity: 0.8;
 }
 
@@ -103,7 +103,7 @@ tr td {
     text-align: center;
 }
 
-.company-logo {
+.item-img {
     width: 80px;
     height: 80px;
     border-radius: 100%;

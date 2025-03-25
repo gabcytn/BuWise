@@ -1,8 +1,9 @@
-const addCompanyDialog = document.querySelector("#add-company-dialog");
+const addStaffDialog = document.querySelector("#add-staff-dialog");
+
 document.querySelector("#open-dialog-btn").addEventListener("click", () => {
-    addCompanyDialog.showModal();
+    addStaffDialog.showModal();
 });
 
 document.querySelector("#close-dialog-btn").addEventListener("click", () => {
-    addCompanyDialog.close();
+    addStaffDialog.close();
 });

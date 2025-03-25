@@ -6,24 +6,22 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class header extends Component
+class UserManagement extends Component
 {
-    public string $username;
-    public string $role;
     /**
      * Create a new component instance.
      */
-    public function __construct(string $username, string $role)
-    {
-        $this->username = $username;
-        $this->role = $role;
-    }
+    public function __construct(
+        public string $title,
+        public string $subtitle,
+        public string $buttonText,
+    ) {}
 
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View|Closure|string
     {
-        return view('components.header');
+        return view('components.user-management');
     }
 }

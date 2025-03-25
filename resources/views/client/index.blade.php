@@ -1,69 +1,43 @@
-<x-app-layout>
-    @vite(['resources/css/client/index.css', 'resources/js/client/index.js'])
-    <div class="container">
-        <h1 id="page-title">Client Management</h1>
-        <p id="page-subtitle">Manage and access client records</p>
-        <div class="headers">
-            <div class="headers-child">
-                <i class="fa-solid fa-filter"></i>
-                <p>Filter By</p>
-                <select>
-                    <option selected disabled>Type</option>
-                    <option>Name</option>
-                    <option>Date Created</option>
-                </select>
-                <div role="button">
-                    <i class="fa-solid fa-rotate-left"></i>
-                    <p>Reset Filter<p>
-                </div>
-
-            </div>
-            <div class="headers-child">
-                <input id="search" name="search" type="text" placeholder="Search" />
-            </div>
-            <div class="headers-child">
-                <button id="add-company-btn">Add Company</button>
-            </div>
-        </div>
-        @if(count($clients) > 0)
-        <table>
-            <thead>
-                <tr>
-                    <th>Logo</th>
-                    <th>Company Name</th>
-                    <th>TIN</th>
-                    <th>Business Type</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($clients as $client)
-                <tr>
-                    <td><img class="company-logo" src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" /></td>
-                    <td><p>{{ $client->name }}</p></td>
-                    <td><p>{{ $client->tin }}</p></td>
-                    <td><p>{{ $client->client_type }}</p></td>
-                    <td><p>{{ $client->email }}</p></td>
-                    <td><p>{{ $client->phone_number }}</p></td>
-                    <td class="action-column">
-                        <a href="{{ route('clients.edit', $client) }}">Edit</a>
-                        <form method="post" action="{{ route("clients.destroy", $client) }}">
-                            @method("DELETE")
-                            @csrf
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-        @else
-            <h2>No clients</h2>
-        @endif
-    </div>
-</x-app-layout>
+@vite('resources/js/client/index.js')
+<x-user-management title="Client Management" subtitle="Manage and access client records" buttonText="Add Company">
+    @if(count($clients) > 0)
+    <table>
+        <thead>
+            <tr>
+                <th>Logo</th>
+                <th>Company Name</th>
+                <th>TIN</th>
+                <th>Business Type</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach($clients as $client)
+            <tr>
+                <td><img class="item-img" src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" /></td>
+                <td><p>{{ $client->name }}</p></td>
+                <td><p>{{ $client->tin }}</p></td>
+                <td><p>{{ $client->client_type }}</p></td>
+                <td><p>{{ $client->email }}</p></td>
+                <td><p>{{ $client->phone_number }}</p></td>
+                <td class="action-column">
+                    <a href="{{ route('clients.edit', $client) }}">Edit</a>
+                    <form method="post" action="{{ route("clients.destroy", $client) }}">
+                        @method("DELETE")
+                        @csrf
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+    @else
+        <h2 style="text-align: center;">No clients</h2>
+    @endif
+</x-user-management>
 
 <dialog id="add-company-dialog">
     <h2>Add Company</h2>
