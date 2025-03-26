@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 
@@ -95,7 +96,7 @@ class ClientController extends Controller
         Gate::authorize("updateClient", $client);
 
         $validated = $request->validate([
-            "email" => "required|string|lowercase|max:255|email",
+            "email" =>  ["required", "string", "lowercase", "max:255", "email", Rule::unique("users")->ignore($client->id)],
             "name" => "required|string|max:255",
             "phone_number" => "required|string|regex:/^0\d{10}$/",
             "tin" => "required|string|regex:/^\d{3}-\d{3}-\d{3}$/",
