@@ -21,6 +21,9 @@
             <button type="submit" class="send-btn">Send</button>
             <button type="button" class="go-back-btn">Go Back</button>
         </form>
+        @if($errors->any())
+            <p style="color: red;">{{ $errors->first() }}</p>
+        @endif
     </div>
     <script>
         document.querySelector("button.go-back-btn").addEventListener("click", () => {

@@ -2,33 +2,34 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Hankent Grotesk", sans-serif;
 }
 
 .otp-container {
-     min-height: 100dvh;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     background-color: #1e2a3a;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e2a3a;
 }
 
 .otp-box {
-     background: #2c3e50;
-     padding: 2.5rem;
-     border-radius: 8px;
-     text-align: center;
+    background: #2c3e50;
+    padding: 2.5rem;
+    border-radius: 8px;
+    text-align: center;
 }
 
 h2 {
-     color: white;
-     font-size: 24px;
-     margin-bottom: 20px;
+    color: white;
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 p {
-     color: white;
-     font-size: 14px;
-     margin-bottom: 10px;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 button {
@@ -36,46 +37,46 @@ button {
 }
 
 .otp-inputs {
-     display: flex;
-     justify-content: space-between;
-     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .otp-input {
-     width: 40px;
-     height: 40px;
-     font-size: 20px;
-     text-align: center;
-     border-radius: 4px;
-     border: none;
-     background-color: #fff;
-     margin: 0 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 4px;
+    border: none;
+    background-color: #fff;
+    margin: 0 5px;
 }
 
 .button-group {
-     display: flex;
-     flex-direction: column;
-     gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .btn-verify {
-     background-color: #4CAF50;
-     color: white;
-     padding: 10px;
-     border-radius: 4px;
-     text-align: center;
-     border: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    border: none;
 }
 
 .btn-cancel {
-     background-color: #7d7d7d;
-     color: white;
-     padding: 10px;
-     border-radius: 4px;
-     text-align: center;
-     display: block;
-     text-decoration: none;
-     border: none;
+    background-color: #7d7d7d;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    border: none;
 }
 
 form#form-cancel button {
