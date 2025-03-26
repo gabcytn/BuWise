@@ -1,3 +1,4 @@
+@vite(['resources/js/staff/index.js'])
 <x-user-management title="Staff Management" subtitle="Manage your bookkeeping staff" buttonText="Add Staff">
     @if(count($staffs) > 0)
     <table>
@@ -42,31 +43,39 @@
     @endif
 </x-user-management>
 
-@vite(['resources/js/staff/index.js'])
-<dialog id="add-staff-dialog">
-    <h2>Add Staff</h2>
-    <form action="{{ route("staff.store") }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="profile">
-            <label for="profile-img">Upload Profile Picture</label>
-            <input id="profile-img" type="file" name="profile_img" required />
+<x-dialog id="add-staff-dialog" title="Add Staff" formId="add-staff-form" route="staff.store">
+    <div class="form-img">
+        <input type="file" name="profile_img" required />
+    </div>
+    <div class="form-details">
+        <div class="input-box">
+            <label for="first-name">First Name</label>
+            <input id="first-name" name="first_name" type="text" required value="{{ old("first_name") }}">
         </div>
-        <label for="first-name">First Name</label>
-        <input id="first-name" name="first_name" type="text" required value="{{ old("first_name") }}">
-        <label for="last-name">Last Name</label>
-        <input id="last-name" name="last_name" type="text" required value="{{ old("last_name") }}">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required value="{{ old("email") }}">
-        <label for="staff-type>">Staff Type</label>
-        <select id="staff-type" name="staff_type">
-            <option selected disabled>Choose Role</option>
-            <option value="2">Liaison Officer</option>
-            <option value="3">Clerk</option>
-        </select>
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
-        <button type="submit">Submit</button>
-        <button id="close-dialog-btn" type="button">Close</button>
+        <div class="input-box">
+            <label for="last-name">Last Name</label>
+            <input id="last-name" name="last_name" type="text" required value="{{ old("last_name") }}">
+        </div>
+        <div class="input-box">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required value="{{ old("email") }}">
+        </div>
+        <div class="input-box">
+            <label for="staff-type>">Staff Type</label>
+            <select id="staff-type" name="staff_type">
+                <option selected disabled>Choose Role</option>
+                <option value="2">Liaison Officer</option>
+                <option value="3">Clerk</option>
+            </select>
+        </div>
+        <div class="input-box">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required />
+        </div>
+        <div class="buttons">
+            <button type="submit">Add</button>
+            <button id="close-dialog-btn" type="button">Cancel</button>
+        </div>
         @if ($errors->any())
             <div>
                 <ul>
@@ -76,5 +85,5 @@
                 </ul>
             </div>
         @endif
-    </form>
-</dialog>
+    </div>
+</x-dialog>

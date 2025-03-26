@@ -1,15 +1,9 @@
-<?php
+@php
     $firstName = $staff->name;
     list($firstName, $lastName) = explode(' ', $staff->name, 2);
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BuWise</title>
-</head>
-<body>
+@endphp
+<x-app-layout>
+    @vite('resources/css/client/edit.css')
     <form action="{{ route("staff.update", $staff) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method("PUT")
@@ -43,5 +37,4 @@
             </div>
         @endif
     </form>
-</body>
-</html>
+</x-app-layout>
