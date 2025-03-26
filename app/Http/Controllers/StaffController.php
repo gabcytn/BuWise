@@ -83,7 +83,7 @@ class StaffController extends Controller
             "last_name" => "required|string|max:100",
             "email" => ["required", "string", "lowercase", "max:255", "email", Rule::unique("users")->ignore($request->user()->id)],
             "staff_type" => "required",
-            "password" => ["required", Password::min(8)],
+            "password" => [Password::min(8)],
             "profile_img" => [File::image()->max(5000)]
         ]);
 

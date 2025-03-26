@@ -42,7 +42,7 @@ class ClientController extends Controller
             "email" => "required|string|lowercase|max:255|email|unique:" . User::class,
             "name" => "required|string|max:255",
             "phone_number" => "required|string|regex:/^0\d{10}$/",
-            "tin" => "required|numeric",
+            "tin" => "required|string|regex:/^\d{3}-\d{3}-\d{3}$/",
             "client_type" => "required|string|max:100",
             "password" => ["required", Password::min(8)],
             "profile_img" => ["required", File::image()->max(5000)],
@@ -95,12 +95,12 @@ class ClientController extends Controller
         Gate::authorize("updateClient", $client);
 
         $validated = $request->validate([
-            "email" => "string|lowercase|max:255|email",
-            "name" => "string|max:255",
-            "phone_number" => "string|regex:/^0\d{10}$/",
-            "tin" => "numeric",
-            "client_type" => "string|max:100",
-            "password" => [Password::required(), Password::min(8)],
+            "email" => "required|string|lowercase|max:255|email",
+            "name" => "required|string|max:255",
+            "phone_number" => "required|string|regex:/^0\d{10}$/",
+            "tin" => "required|string|regex:/^\d{3}-\d{3}-\d{3}$/",
+            "client_type" => "required|string|max:100",
+            "password" => ["nullable", Password::min(8)],
             "profile_img" => [File::image()->max(5000)],
         ]);
 
@@ -138,7 +138,7 @@ class ClientController extends Controller
         return to_route("clients.index");
     }
 
-    private function deleteOldImage (User $user): void
+    private function deleteOldImage(User $user): void
     {
         $path = $user->profile_img;
         Storage::disk("public")->delete("profiles/" . $path);
