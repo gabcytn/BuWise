@@ -1,33 +1,28 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Hankent Grotesk", sans-serif;
-}
-
-.otp-container {
+body {
     min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1e2a3a;
+    background-color: var(--dark-blue);
 }
 
 .otp-box {
-    background: #2c3e50;
+    background: var(--dark-blue-secondary);
+    max-width: 450px;
+    width: 80%;
     padding: 2.5rem;
     border-radius: 8px;
     text-align: center;
 }
 
-h2 {
-    color: white;
+#title {
+    color: var(--off-white);
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-p {
-    color: white;
+#subtitle {
+    color: var(--subtitle);
     font-size: 14px;
     margin-bottom: 10px;
 }
@@ -38,8 +33,8 @@ button {
 
 .otp-inputs {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: center;
+    margin-bottom: 1.25rem;
 }
 
 .otp-input {
@@ -59,8 +54,14 @@ button {
     gap: 10px;
 }
 
+button {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+}
+
 .btn-verify {
-    background-color: #4CAF50;
+    background-color: var(--green);
     color: white;
     padding: 10px;
     border-radius: 4px;
@@ -69,7 +70,7 @@ button {
 }
 
 .btn-cancel {
-    background-color: #7d7d7d;
+    background-color: var(--grey);
     color: white;
     padding: 10px;
     border-radius: 4px;
@@ -79,7 +80,28 @@ button {
     border: none;
 }
 
+button:hover {
+    opacity: 0.85;
+}
+
 form#form-cancel button {
     width: 100%;
     margin-top: 10px;
+}
+
+@media screen and (max-width: 500px) {
+    .otp-box {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .otp-input {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7rem;
+    }
+
+    button {
+        font-size: 0.8rem;
+    }
 }

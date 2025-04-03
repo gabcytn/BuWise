@@ -1,106 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }}</title>
-
-
-    <!-- Inter and Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Hanken Grotesk", sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100dvh;
-            background-color: #133E5A;
-        }
-
-        .container {
-            max-width: 30rem;
-            text-align: center;
-            background: #EEE;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #greeting {
-            font-family: 'Inter', sans-serif;
-        }
-
-        p {
-            font-size: 1rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .message {
-            color: green;
-            font-size: 0.95rem;
-            margin-bottom: rem;
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            width: 100%;
-            margin-top: 10px;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        form {
-            margin-top: 10px;
-        }
-
-        .logout-button {
-            background-color: #dc3545;
-        }
-
-        .logout-button:hover {
-            background-color: #a71d2a;
-        }
-    </style>
-</head>
-<body>
-
+<x-root-layout>
+    @vite('resources/css/auth/verify-email.css')
     <div class="container">
-        <p id="greeting">{{ __('Thanks for signing up! Before getting started, please verify your email address by clicking on the link we just emailed to you.') }}</p>
-
-        @if (session('status') == 'verification-link-sent')
-            <p class="message">{{ __('A new verification link has been sent to the email address you provided during registration.') }}</p>
-        @endif
+        <p id="greeting">
+            {{ __('Thanks for signing up! Before getting started, please verify your email address by clicking on the link we just emailed to you.') }}
+        </p>
 
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-            <button type="submit">{{ __('Resend Verification Email') }}</button>
+            <button type="submit" id="verify-button">{{ __('Resend Verification Email') }}</button>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="logout-button">{{ __('Log Out') }}</button>
+            <button type="submit" id="logout-button">{{ __('Log Out') }}</button>
         </form>
-    </div>
 
-</body>
-</html>
+        @if (session('status') == 'verification-link-sent')
+            <p id="session-status">
+                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+            </p>
+        @endif
+    </div>
+</x-root-layout>
