@@ -1,14 +1,3 @@
-:root {
-    --main-blue: #1B80C3;
-    --dark-blue: #133E5A;
-    --off-white: #EEE;
-    --clear-white: #FEFEFE;
-    --other-font: "Poppins";
-    --main-font: "Hanken Grotesk";
-    --grey: #777;
-    --soft-black: #020202;
-}
-
 *:not(dialog) {
     padding: 0;
     margin: 0;
