@@ -10,8 +10,8 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <h2>Welcome Back!</h2>
-                <p id="sub-title">Simplifying and Automating Your Workflow</p>
+                <h2 id="title">Welcome Back!</h2>
+                <p id="subtitle">Simplifying and Automating Your Workflow</p>
 
                 {{-- email field --}}
                 <div class="input-wrapper">

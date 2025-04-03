@@ -11,16 +11,3 @@
 
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-<style>
-    :root {
-        --main-blue: #1B80C3;
-        --dark-blue: #133E5A;
-        --off-white: #EEE;
-        --clear-white: #FEFEFE;
-        --other-font: "Poppins";
-        --main-font: "Hanken Grotesk";
-        --grey: #777;
-        --soft-black: #020202;
-    }
-</style>

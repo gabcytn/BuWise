@@ -7,8 +7,8 @@
         <div class="right-section">
             <form method="POST" action="{{ route('register') }}">
                 @csrf
-                <h2>Welcome</h2>
-                <p>Simplifying and Automating Your Workflow</p>
+                <h2 id="title">Welcome</h2>
+                <p id="subtitle">Simplifying and Automating Your Workflow</p>
                 <div class="input-group">
                     <label for="name">Name</label>
                     <div class="input-wrapper">

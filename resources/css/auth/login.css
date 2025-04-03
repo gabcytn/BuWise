@@ -1,4 +1,4 @@
-h2 {
+#title {
     font-size: 2rem;
     margin-bottom: 10px;
     font-weight: bold;
@@ -37,8 +37,8 @@ p {
     width: 100%;
 }
 
-#sub-title {
-    color: #bec6d0;
+#subtitle {
+    color: var(--subtitle);
 }
 
 .right-section form {
