@@ -4,13 +4,14 @@
     font-weight: bold;
 }
 
-p {
+#subtitle {
     font-size: 1.1rem;
     margin-bottom: 30px;
+    color: var(--subtitle);
 }
 
 
-.login-container {
+body {
     display: flex;
     flex-direction: row;
 }
@@ -29,7 +30,7 @@ p {
 
 .right-section {
     background-color: var(--dark-blue);
-    color: white;
+    color: var(--off-white);
     display: flex;
     justify-content: center;
     align-items: center;
