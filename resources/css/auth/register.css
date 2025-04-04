@@ -1,5 +1,6 @@
 body {
     display: flex;
+    flex-direction: row-reverse;
     min-height: 100dvh;
 }
 
@@ -126,25 +127,35 @@ button[type="submit"]:hover {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 450px) {
     .right-section {
         width: 100%;
-        padding: 20px;
+        padding: 0 1rem;
     }
 
-    h2 {
+    #title {
         font-size: 1.5rem;
     }
 
-    p {
-        font-size: 1rem;
+    #subtitle {
+        font-size: 0.9rem;
     }
 
-    form input {
-        font-size: 0.8rem;
+    .input-wrapper input {
+        padding: 9px 0 9px 30px;
+        font-size: 0.85rem;
     }
 
-    button {
+    .input-group label {
+        font-size: 0.9rem;
+    }
+
+    .input-wrapper i {
+        left: 10px;
+        font-size: 0.75rem;
+    }
+
+    button[type="submit"] {
         font-size: 0.9rem;
     }
 }
