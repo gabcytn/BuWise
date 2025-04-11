@@ -1,4 +1,4 @@
-@vite('resources/js/client/index.js')
+@vite(['resources/js/client/index.js', 'resources/js/user-management/index.js'])
 <x-user-management title="Client Management" subtitle="Manage and access client records" buttonText="Add Company">
     @if (count($clients) > 0)
         <div class="table-wrapper">
@@ -40,7 +40,13 @@
                                     <a href="{{ route('clients.edit', $client) }}">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </a>
-                                    <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
+                                    <form action="{{ route('clients.destroy', $client) }}">
+                                        <button type="submit"
+                                            style="background-color: transparent; border: none; outline: none;">
+                                            <i class="fa-regular fa-trash-can"
+                                                style="color: #ff0000; cursor: pointer"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -52,6 +58,16 @@
         <h2 style="text-align: center;">No clients</h2>
     @endif
 </x-user-management>
+
+<dialog class="delete-item-dialog">
+    <h3 style="text-align: center; margin: 1rem 0;">Confirm Delete</h3>
+    <form action="#" method="POST">
+        @csrf
+        @method('DELETE')
+        <button style="margin-right: 0.25rem;" type="submit">Delete</button>
+        <button style="margin-left: 0.25rem;" type="button">Cancel</button>
+    </form>
+</dialog>
 
 <x-dialog id="add-company-dialog" title="Add Company" formId="add-company-form" route="clients.store">
     <div class="form-img">

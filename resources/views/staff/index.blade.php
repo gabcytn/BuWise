@@ -33,7 +33,13 @@
                                     <a href="{{ route('staff.edit', $staff) }}">
                                         <i class="fa-regular fa-pen-to-square"></i>
                                     </a>
-                                    <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
+                                    <form action="{{ route('staff.destroy', $staff) }}">
+                                        <button type="submit"
+                                            style="background-color: transparent; border: none; outline: none;">
+                                            <i class="fa-regular fa-trash-can"
+                                                style="color: #ff0000; cursor: pointer"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -45,6 +51,16 @@
         <h2 style="text-align: center;">No staff</h2>
     @endif
 </x-user-management>
+
+<dialog class="delete-item-dialog">
+    <h3 style="text-align: center; margin: 1rem 0;">Confirm Delete</h3>
+    <form action="#" method="POST">
+        @csrf
+        @method('DELETE')
+        <button style="margin-right: 0.25rem;" type="submit">Delete</button>
+        <button style="margin-left: 0.25rem;" type="button">Cancel</button>
+    </form>
+</dialog>
 
 <x-dialog id="add-staff-dialog" title="Add Staff" formId="add-staff-form" route="staff.store">
     <div class="form-img">
