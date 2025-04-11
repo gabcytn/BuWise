@@ -21,8 +21,14 @@ class StaffController extends Controller
     {
         Gate::authorize('viewAnyStaff', User::class);
 
+        $search = $request->query('search');
+
         $user = $request->user();
-        $staff = $user->staff()->paginate(2);
+        if ($search != null) {
+            $staff = $user->staff()->where('name', 'like', "%$search%")->paginate(2);
+        } else {
+            $staff = $user->staff()->paginate(2);
+        }
 
         return view('staff.index', ['staffs' => $staff]);
     }

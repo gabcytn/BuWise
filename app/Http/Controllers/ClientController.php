@@ -25,10 +25,18 @@ class ClientController extends Controller
         $user = $request->user();
         $roleId = $user->role_id;
 
+        $search = $request->query('search');
+
         if ($roleId === Role::ACCOUNTANT)
-            $clients = $user->clients()->paginate(2);
+            $clients = $user->clients();
         else
-            $clients = $user->accountant->clients()->paginate(2);
+            $clients = $user->accountant->clients();
+
+        if ($search != null) {
+            $clients = $clients->where('name', 'like', "%$search%")->paginate(2);
+        } else {
+            $clients = $clients->paginate(2);
+        }
 
         return view('client.index', ['clients' => $clients]);
     }
