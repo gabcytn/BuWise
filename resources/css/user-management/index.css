@@ -176,3 +176,25 @@ tr td {
         flex: 1;
     }
 }
+
+@media (min-width: 768px) {
+    th {
+        padding: 1rem;
+    }
+
+    th,
+    tr td {
+        font-size: 0.9rem;
+    }
+
+    #td-item-img {
+        padding: 1rem 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .item-img {
+        width: 70px;
+        height: 70px;
+    }
+}
