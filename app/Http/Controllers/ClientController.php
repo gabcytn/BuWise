@@ -32,12 +32,10 @@ class ClientController extends Controller
         else
             $clients = $user->accountant->clients();
 
-        if ($search != null) {
-            $clients = $clients->where('name', 'like', "%$search%")->paginate(2);
-        } else {
-            $clients = $clients->paginate(2);
-        }
+        if ($search != null)
+            $clients = $clients->where('name', 'like', "%$search%");
 
+        $clients = $clients->paginate(2);
         return view('client.index', ['clients' => $clients]);
     }
 

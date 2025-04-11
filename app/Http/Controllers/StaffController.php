@@ -24,11 +24,12 @@ class StaffController extends Controller
         $search = $request->query('search');
 
         $user = $request->user();
-        if ($search != null) {
-            $staff = $user->staff()->where('name', 'like', "%$search%")->paginate(2);
-        } else {
-            $staff = $user->staff()->paginate(2);
-        }
+        $staff = $user->staff();
+
+        if ($search != null)
+            $staff = $staff->where('name', 'like', "%$search%");
+
+        $staff = $staff->paginate(2);
 
         return view('staff.index', ['staffs' => $staff]);
     }
