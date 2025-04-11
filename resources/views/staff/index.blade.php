@@ -1,43 +1,46 @@
 @vite(['resources/js/staff/index.js'])
 <x-user-management title="Staff Management" subtitle="Manage your bookkeeping staff" buttonText="Add Staff">
-    @if(count($staffs) > 0)
-    <table>
-        <thead>
-            <tr>
-                <th>Profile</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Type</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach($staffs as $staff)
-            @php
-                $firstName = $staff->name;
-                list($firstName, $lastName) = explode(' ', $staff->name, 2);
-            @endphp
-            <tr>
-                <td>
-                    <img class="item-img" src="{{ asset('storage/profiles/' . $staff->profile_img) }}"  alt="Staff Profile Picture"/>
-                </td>
-                <td>{{ $firstName }}</td>
-                <td>{{ $lastName }}</td>
-                <td>{{ $staff->role->name }}</td>
-                <td>{{ $staff->email }}</td>
-                <td>
-                    <a href="{{ route("staff.edit", $staff) }}">Edit</a>
-                    <form action="{{ route("staff.destroy", $staff) }}" method="POST">
-                        @csrf
-                        @method("DELETE")
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    @if (count($staffs) > 0)
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Profile</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Type</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($staffs as $staff)
+                        @php
+                            $firstName = $staff->name;
+                            [$firstName, $lastName] = explode(' ', $staff->name, 2);
+                        @endphp
+                        <tr>
+                            <td id="td-item-img">
+                                <img class="item-img" src="{{ asset('storage/profiles/' . $staff->profile_img) }}"
+                                    alt="Staff Profile Picture" />
+                            </td>
+                            <td>{{ $firstName }}</td>
+                            <td>{{ $lastName }}</td>
+                            <td>{{ $staff->role->name }}</td>
+                            <td>{{ $staff->email }}</td>
+                            <td class="action-column">
+                                <div>
+                                    <a href="{{ route('staff.edit', $staff) }}">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                    <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @else
         <h2 style="text-align: center;">No staff</h2>
     @endif
@@ -50,15 +53,15 @@
     <div class="form-details">
         <div class="input-box">
             <label for="first-name">First Name</label>
-            <input id="first-name" name="first_name" type="text" required value="{{ old("first_name") }}">
+            <input id="first-name" name="first_name" type="text" required value="{{ old('first_name') }}">
         </div>
         <div class="input-box">
             <label for="last-name">Last Name</label>
-            <input id="last-name" name="last_name" type="text" required value="{{ old("last_name") }}">
+            <input id="last-name" name="last_name" type="text" required value="{{ old('last_name') }}">
         </div>
         <div class="input-box">
             <label for="email">Email</label>
-            <input id="email" name="email" type="email" required value="{{ old("email") }}">
+            <input id="email" name="email" type="email" required value="{{ old('email') }}">
         </div>
         <div class="input-box">
             <label for="staff-type>">Staff Type</label>
