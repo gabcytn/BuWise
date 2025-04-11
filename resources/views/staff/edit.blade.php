@@ -1,12 +1,11 @@
 @php
-    $firstName = $staff->name;
-    list($firstName, $lastName) = explode(' ', $staff->name, 2);
+    [$firstName, $lastName] = explode(' ', $staff->name, 2);
 @endphp
 <x-app-layout>
     @vite('resources/css/client/edit.css')
-    <form action="{{ route("staff.update", $staff) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('staff.update', $staff) }}" method="post" enctype="multipart/form-data">
         @csrf
-        @method("PUT")
+        @method('PUT')
         <div class="profile">
             <label for="profile-img">Upload Profile Picture</label>
             <input id="profile-img" type="file" name="profile_img" />

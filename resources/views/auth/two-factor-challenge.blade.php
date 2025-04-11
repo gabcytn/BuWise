@@ -16,7 +16,7 @@
             </div>
 
             @if ($errors->any())
-                <p style="color: red; font-size: 0.8rem; margin-bottom: 1rem;">{{ $errors->first() }}
+                <p style="color: red; font-size: 0.8rem; margin-bottom: 1rem;">{{ $errors->first() }}</p>
             @endif
 
             <input type="hidden" type="text" name="code" />
@@ -30,6 +30,10 @@
             @csrf
             <button type="submit" class="btn-cancel">Cancel</button>
         </form>
+
+        <div style="margin-top: 1rem;">
+            <a href="#" style="color: var(--off-white); text-decoration: none;">Login with a recovery code</a>
+        </div>
 
     </div>
 </x-root-layout>
