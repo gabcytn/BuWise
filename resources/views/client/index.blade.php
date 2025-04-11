@@ -54,6 +54,7 @@
                 </tbody>
             </table>
         </div>
+        {{ $clients->links() }}
     @else
         <h2 style="text-align: center;">No clients</h2>
     @endif

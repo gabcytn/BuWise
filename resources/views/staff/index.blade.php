@@ -46,6 +46,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $staffs->links() }}
         </div>
     @else
         <h2 style="text-align: center;">No staff</h2>

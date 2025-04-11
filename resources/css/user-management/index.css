@@ -148,6 +148,12 @@ tr td {
     justify-content: center;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
 @media (min-width: 514px) {
     .headers {
         gap: 0rem;
