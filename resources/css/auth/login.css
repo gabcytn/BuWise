@@ -1,27 +1,17 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Hanken Grotesk", sans-serif;
-}
-
-
-h2 {
+#title {
     font-size: 2rem;
     margin-bottom: 10px;
     font-weight: bold;
 }
 
-p {
+#subtitle {
     font-size: 1.1rem;
     margin-bottom: 30px;
+    color: var(--subtitle);
 }
 
 
-.login-container {
+body {
     display: flex;
     flex-direction: row;
 }
@@ -39,8 +29,8 @@ p {
 }
 
 .right-section {
-    background-color: #1c2a56;
-    color: white;
+    background-color: var(--dark-blue);
+    color: var(--off-white);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,8 +38,8 @@ p {
     width: 100%;
 }
 
-#sub-title {
-    color: #bec6d0;
+#subtitle {
+    color: var(--subtitle);
 }
 
 .right-section form {
@@ -73,7 +63,7 @@ p {
     padding: 12px 0 12px 40px;
     font-size: 1rem;
     outline: none;
-    background-color: #d9dfe6;
+    background-color: var(--off-white);
 }
 
 .input-wrapper input:focus {
@@ -85,7 +75,7 @@ p {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
+    color: var(--grey);
 }
 
 .error-message {
@@ -100,17 +90,17 @@ p {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: gray;
+    color: var(--grey);
 }
 
 .forgot-password-container {
     margin: 5px 0 15px 0;
-    color: white;
+    color: var(--clear-white);
     text-align: right;
 }
 
 .forgot-password-container a {
-    color: white;
+    color: var(--clear-white);
     text-decoration: none;
     font-size: 0.9rem;
 }
@@ -122,7 +112,7 @@ p {
 button[type="submit"] {
     width: 100%;
     padding: 12px 0;
-    background-color: hsl(107, 31%, 46%);
+    background-color: var(--green);
     border: none;
     border-radius: 5px;
     color: white;
@@ -132,12 +122,12 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: hsl(107, 31%, 40%)
+    opacity: 0.85;
 }
 
 @media (max-width: 1024px) {
-    .login-container {
-        flex-direction: column;
+    .left-section {
+        display: none;
     }
 
     h2 {
@@ -151,23 +141,45 @@ button[type="submit"]:hover {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 450px) {
     .right-section {
         width: 100%;
-        height: 60%;
-        padding: 20px;
+        padding: 0 1rem;
     }
 
-    h2 {
+    #title {
         font-size: 1.5rem;
     }
 
-    p {
-        font-size: 1rem;
+    #subtitle {
+        font-size: 0.9rem;
     }
 
-    button {
+    .input-wrapper input {
+        padding: 9px 0 9px 30px;
+        font-size: 0.85rem;
+    }
+
+    .input-wrapper label {
         font-size: 0.9rem;
+    }
+
+    .input-wrapper i:first-child {
+        left: 10px;
+        font-size: 0.75rem;
+    }
+
+    #toggle-password {
+        right: 10px;
+        font-size: 0.75rem;
+    }
+
+    .forgot-password-container a {
+        font-size: 0.75rem;
+    }
+
+    button[type="submit"] {
+        font-size: 0.8rem;
     }
 
 }

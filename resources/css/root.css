@@ -1,0 +1,21 @@
+:root {
+    --main-blue: #1B80C3;
+    --dark-blue: #112D40;
+    --dark-blue-secondary: #133e5a;
+    --off-white: #EEE;
+    --clear-white: #FEFEFE;
+    --other-font: "Poppins";
+    --main-font: "Hanken Grotesk";
+    --grey: #7F7F7F;
+    --green: #609950;
+    --soft-black: #020202;
+    --subtitle: #BEC6D0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--main-font);
+    text-wrap: balance;
+}

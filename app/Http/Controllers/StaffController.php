@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
@@ -20,12 +19,19 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize("viewAnyStaff", User::class);
+        Gate::authorize('viewAnyStaff', User::class);
+
+        $search = $request->query('search');
 
         $user = $request->user();
-        $staff = $user->staff;
+        $staff = $user->staff();
 
-        return view("staff.index", ["staffs" => $staff]);
+        if ($search != null)
+            $staff = $staff->where('name', 'like', "%$search%");
+
+        $staff = $staff->paginate(2);
+
+        return view('staff.index', ['staffs' => $staff]);
     }
 
     /**
@@ -33,34 +39,34 @@ class StaffController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        Gate::authorize("createStaff", User::class);
+        Gate::authorize('createStaff', User::class);
         $validated = $request->validate([
-            "first_name" => "required|string|max:100",
-            "last_name" => "required|string|max:100",
-            "email" => "required|string|lowercase|max:255|email|unique:" . User::class,
-            "staff_type" => "required",
-            "password" => ["required", Password::min(8)],
-            "profile_img" => ["required", File::image()->max(5000)]
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|string|lowercase|max:255|email|unique:' . User::class,
+            'staff_type' => 'required',
+            'password' => ['required', Password::min(8)],
+            'profile_img' => ['required', File::image()->max(5000)]
         ]);
 
-        $name = $validated["first_name"] . " " . $validated["last_name"];
+        $name = $validated['first_name'] . ' ' . $validated['last_name'];
 
-        $file = $request->file("profile_img");
-        $filename = $name . '_' . uniqid() . "." . $file->getClientOriginalExtension();
-        Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
+        $file = $request->file('profile_img');
+        $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
 
         User::create([
-            "name" => $name,
-            "email" => $validated["email"],
-            "accountant_id" => $request->user()->id,
-            "role_id" => (int) $validated["staff_type"],
-            "password" => Hash::make($validated["password"]),
-            "profile_img" => $filename,
+            'name' => $name,
+            'email' => $validated['email'],
+            'accountant_id' => $request->user()->id,
+            'role_id' => (int) $validated['staff_type'],
+            'password' => Hash::make($validated['password']),
+            'profile_img' => $filename,
         ]);
 
         // $request->user()->staff()->attach($staff->id);
 
-        return to_route("staff.index");
+        return to_route('staff.index');
     }
 
     /**
@@ -68,8 +74,8 @@ class StaffController extends Controller
      */
     public function edit(User $staff)
     {
-        Gate::authorize("updateStaff", $staff);
-        return view("staff.edit", ["staff" => $staff]);
+        Gate::authorize('updateStaff', $staff);
+        return view('staff.edit', ['staff' => $staff]);
     }
 
     /**
@@ -77,35 +83,35 @@ class StaffController extends Controller
      */
     public function update(Request $request, User $staff): RedirectResponse
     {
-        Gate::authorize("updateStaff", $staff);
+        Gate::authorize('updateStaff', $staff);
         $validated = $request->validate([
-            "first_name" => "required|string|max:100",
-            "last_name" => "required|string|max:100",
-            "email" => ["required", "string", "lowercase", "max:255", "email", Rule::unique("users")->ignore($staff->id)],
-            "staff_type" => "required",
-            "password" => [Password::min(8)],
-            "profile_img" => [File::image()->max(5000)]
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => ['required', 'string', 'lowercase', 'max:255', 'email', Rule::unique('users')->ignore($staff->id)],
+            'staff_type' => 'required',
+            'password' => [Password::min(8)],
+            'profile_img' => [File::image()->max(5000)]
         ]);
 
-        $name = $validated["first_name"] . " " . $validated["last_name"];
+        $name = $validated['first_name'] . ' ' . $validated['last_name'];
 
         $data = [
-            "name" => $name,
-            "email" => $validated["email"],
-            "role_id" => (int) $validated["staff_type"],
-            "password" => Hash::make($validated["password"])
+            'name' => $name,
+            'email' => $validated['email'],
+            'role_id' => (int) $validated['staff_type'],
+            'password' => Hash::make($validated['password'])
         ];
 
-        $file = $request->file("profile_img");
+        $file = $request->file('profile_img');
         if ($file !== null) {
             $this->deleteOldImage($staff);
-            $filename = $name . '_' . uniqid() . "." . $file->getClientOriginalExtension();
-            Storage::disk("public")->put("profiles/{$filename}", file_get_contents($file));
-            $data["profile_img"] = $filename;
+            $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
+            $data['profile_img'] = $filename;
         }
 
         $staff->update($data);
-        return to_route("staff.index");
+        return to_route('staff.index');
     }
 
     /**
@@ -113,17 +119,17 @@ class StaffController extends Controller
      */
     public function destroy(User $staff): RedirectResponse
     {
-        Gate::authorize("deleteStaff", $staff);
+        Gate::authorize('deleteStaff', $staff);
 
         $this->deleteOldImage($staff);
         User::destroy($staff->id);
 
-        return to_route("staff.index");
+        return to_route('staff.index');
     }
 
     private function deleteOldImage(User $user): void
     {
         $path = $user->profile_img;
-        Storage::disk("public")->delete("profiles/" . $path);
+        Storage::disk('public')->delete('profiles/' . $path);
     }
 }

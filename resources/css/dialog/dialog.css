@@ -1,6 +1,7 @@
 dialog {
     border: none;
     border-radius: 10px;
+    margin: auto;
 }
 
 dialog::backdrop {
@@ -61,4 +62,21 @@ dialog button[type="submit"] {
 
 dialog button[type="button"] {
     background-color: var(--grey);
+}
+
+@media (max-width: 696px) {
+    dialog form {
+        display: block;
+    }
+}
+
+@media (max-width: 470px) {
+
+    dialog h2 {
+        font-size: 1rem;
+    }
+
+    .d-flex {
+        flex-direction: column;
+    }
 }
