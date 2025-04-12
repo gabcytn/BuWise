@@ -13,11 +13,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasUuids, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, HasUuids, TwoFactorAuthenticatable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -66,20 +67,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function clients(): HasMany
     {
-        return $this->hasMany(User::class, "accountant_id")->where("role_id", Role::CLIENT);
+        return $this->hasMany(User::class, 'accountant_id')->where('role_id', Role::CLIENT);
     }
 
     public function staff(): HasMany
     {
-        return $this->hasMany(User::class, "accountant_id")
+        return $this
+            ->hasMany(User::class, 'accountant_id')
             ->where(function ($query) {
-                $query->where("role_id", Role::LIAISON)
-                    ->orWhere("role_id", Role::CLERK);
+                $query
+                    ->where('role_id', Role::LIAISON)
+                    ->orWhere('role_id', Role::CLERK);
             });
     }
 
     public function accountant(): BelongsTo
     {
-        return $this->belongsTo(User::class, "accountant_id");
+        return $this->belongsTo(User::class, 'accountant_id');
     }
 }
