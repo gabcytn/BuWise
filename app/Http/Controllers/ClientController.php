@@ -26,6 +26,7 @@ class ClientController extends Controller
         $roleId = $user->role_id;
 
         $search = $request->query('search');
+        $filter = $request->query('filter');
 
         if ($roleId === Role::ACCOUNTANT)
             $clients = $user->clients();
@@ -35,7 +36,20 @@ class ClientController extends Controller
         if ($search != null)
             $clients = $clients->where('name', 'like', "%$search%");
 
-        $clients = $clients->paginate(2);
+        if ($filter != null) {
+            switch ($filter) {
+                case 'name':
+                    $clients = $clients->orderBy('name');
+                    break;
+                case 'date':
+                    $clients = $clients->orderByRaw('created_at DESC');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        $clients = $clients->paginate(10);
         return view('client.index', ['clients' => $clients]);
     }
 

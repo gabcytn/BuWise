@@ -22,12 +22,26 @@ class StaffController extends Controller
         Gate::authorize('viewAnyStaff', User::class);
 
         $search = $request->query('search');
+        $filter = $request->query('filter');
 
         $user = $request->user();
         $staff = $user->staff();
 
         if ($search != null)
             $staff = $staff->where('name', 'like', "%$search%");
+
+        if ($filter != null) {
+            switch ($filter) {
+                case 'name':
+                    $clients = $staff->orderBy('name');
+                    break;
+                case 'date':
+                    $clients = $staff->orderByRaw('created_at DESC');
+                    break;
+                default:
+                    break;
+            }
+        }
 
         $staff = $staff->paginate(2);
 
