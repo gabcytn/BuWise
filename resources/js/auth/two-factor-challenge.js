@@ -37,3 +37,12 @@ form.addEventListener("submit", (e) => {
     code.value = value;
     form.submit();
 });
+
+// Recovery Code
+
+const openRecoveryCode = document.querySelector(".recovery-code-wrapper a");
+const recoveryCodeInput = document.querySelector(".recovery-code-wrapper form");
+
+openRecoveryCode.addEventListener("click", () => {
+    recoveryCodeInput.classList.toggle("d-none");
+});

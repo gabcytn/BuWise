@@ -31,8 +31,12 @@
             <button type="submit" class="btn-cancel">Cancel</button>
         </form>
 
-        <div style="margin-top: 1rem;">
-            <a href="#" style="color: var(--off-white); text-decoration: none;">Login with a recovery code</a>
+        <div class="recovery-code-wrapper">
+            <a href="#">Login with a recovery code</a>
+            <form method="POST" action="/two-factor-challenge" class="d-none">
+                @csrf
+                <input type="text" name="recovery_code" />
+            </form>
         </div>
 
     </div>

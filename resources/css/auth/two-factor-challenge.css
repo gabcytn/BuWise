@@ -89,6 +89,26 @@ form#form-cancel button {
     margin-top: 10px;
 }
 
+.recovery-code-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.recovery-code-wrapper a {
+    color: var(--off-white);
+    text-decoration: none;
+}
+
+.recovery-code-wrapper input {
+    margin-top: 1rem;
+    padding: 0.5rem;
+}
+
+.d-none {
+    display: none;
+}
+
 @media screen and (max-width: 500px) {
     .otp-box {
         width: 95%;
