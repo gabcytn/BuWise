@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreated;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -82,7 +83,7 @@ class ClientController extends Controller
         else
             $accountantId = $currentUser->accountant->id;
 
-        User::create([
+        $client = User::create([
             'accountant_id' => $accountantId,
             'role_id' => Role::CLIENT,
             'email' => $validated['email'],
@@ -93,6 +94,8 @@ class ClientController extends Controller
             'profile_img' => $filename,
             'password' => Hash::make($validated['password']),
         ]);
+
+        UserCreated::dispatch($client);
 
         // return Storage::disk("s3")->response("images/" . basename($path));
         return redirect()->back();

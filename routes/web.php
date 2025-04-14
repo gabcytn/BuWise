@@ -3,6 +3,10 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnableMFA;
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
@@ -35,5 +39,18 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         return view('auth.enable-mfa');
     })->name('mfa.enable')->withoutMiddleware(EnableMFA::class);
 });
+
+Route::get('/email/verify/{id}/{hash}', function (Request $request) {
+    $user = User::find($request->route('id'));
+
+    if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+        throw new AuthorizationException;
+    }
+
+    if ($user->markEmailAsVerified())
+        event(new Verified($user));
+
+    return to_route('dashboard');
+})->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
 
 // require __DIR__ . '/auth.php';

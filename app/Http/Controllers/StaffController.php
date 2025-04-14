@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreated;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -69,7 +70,7 @@ class StaffController extends Controller
         $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
 
-        User::create([
+        $staff = User::create([
             'name' => $name,
             'email' => $validated['email'],
             'accountant_id' => $request->user()->id,
@@ -77,6 +78,7 @@ class StaffController extends Controller
             'password' => Hash::make($validated['password']),
             'profile_img' => $filename,
         ]);
+        UserCreated::dispatch($staff);
 
         // $request->user()->staff()->attach($staff->id);
 
