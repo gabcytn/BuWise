@@ -20,10 +20,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
 
 Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
     // client related routes
     Route::resource('/clients', ClientController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
