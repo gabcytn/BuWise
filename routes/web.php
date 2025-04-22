@@ -1,12 +1,10 @@
 <?php
 
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
