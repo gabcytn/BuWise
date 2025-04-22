@@ -16,6 +16,8 @@ use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
+    private static int $itemsPerPage = 2;
+
     /**
      * Display a listing of the resource.
      */
@@ -26,31 +28,45 @@ class ClientController extends Controller
         $user = $request->user();
         $roleId = $user->role_id;
 
-        $search = $request->query('search');
-        $filter = $request->query('filter');
-
         if ($roleId === Role::ACCOUNTANT)
             $clients = $user->clients();
         else
             $clients = $user->accountant->clients();
 
-        if ($search != null)
-            $clients = $clients->where('name', 'like', "%$search%");
+        $search = $request->query('search');
+        $filter = $request->query('filter');
 
-        if ($filter != null) {
+        if ($search != null)
+            $clients = $clients
+                ->where('name', 'like', "$search%")
+                ->paginate(ClientController::$itemsPerPage)
+                ->appends([
+                    'search' => $search
+                ]);
+        else if ($filter != null) {
             switch ($filter) {
                 case 'name':
-                    $clients = $clients->orderBy('name');
+                    $clients = $clients
+                        ->orderBy('name')
+                        ->paginate(ClientController::$itemsPerPage)
+                        ->appends([
+                            'filter' => 'name'
+                        ]);
                     break;
                 case 'date':
-                    $clients = $clients->orderByRaw('created_at DESC');
+                    $clients = $clients
+                        ->orderByRaw('created_at DESC')
+                        ->paginate(ClientController::$itemsPerPage)
+                        ->appends([
+                            'filter' => 'date'
+                        ]);
                     break;
                 default:
                     break;
             }
-        }
+        } else
+            $clients = $clients->paginate(ClientController::$itemsPerPage);
 
-        $clients = $clients->paginate(10);
         return view('client.index', ['clients' => $clients]);
     }
 

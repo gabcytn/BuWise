@@ -15,6 +15,8 @@ use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
+    private static int $itemsPerPage = 2;
+
     /**
      * Display a listing of the resource.
      */
@@ -22,29 +24,42 @@ class StaffController extends Controller
     {
         Gate::authorize('viewAnyStaff', User::class);
 
-        $search = $request->query('search');
-        $filter = $request->query('filter');
-
         $user = $request->user();
         $staff = $user->staff();
 
-        if ($search != null)
-            $staff = $staff->where('name', 'like', "%$search%");
+        $search = $request->query('search');
+        $filter = $request->query('filter');
 
-        if ($filter != null) {
+        if ($search != null)
+            $staff = $staff
+                ->where('name', 'like', "$search%")
+                ->paginate(StaffController::$itemsPerPage)
+                ->appends([
+                    'search' => $search
+                ]);
+        else if ($filter != null) {
             switch ($filter) {
                 case 'name':
-                    $clients = $staff->orderBy('name');
+                    $staff = $staff
+                        ->orderBy('name')
+                        ->paginate(StaffController::$itemsPerPage)
+                        ->appends([
+                            'filter' => 'name'
+                        ]);
                     break;
                 case 'date':
-                    $clients = $staff->orderByRaw('created_at DESC');
+                    $staff = $staff
+                        ->orderByRaw('created_at DESC')
+                        ->paginate(StaffController::$itemsPerPage)
+                        ->appends([
+                            'filter' => 'date'
+                        ]);
                     break;
                 default:
                     break;
             }
-        }
-
-        $staff = $staff->paginate(2);
+        } else
+            $staff = $staff->paginate(2);
 
         return view('staff.index', ['staffs' => $staff]);
     }
