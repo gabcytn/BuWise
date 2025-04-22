@@ -1,15 +1,15 @@
 <nav class="nav-sm hidden">
     <div>
         <div class="nav-brand">
-            <img src="{{ asset("images/nav-logo.png") }}" alt="Company Logo" id="nav-logo" />
-            <h3 id="app-name">{{ config("app.name") }}</h3>
+            <img src="{{ asset('images/nav-logo.png') }}" alt="Company Logo" id="nav-logo" />
+            <h3 id="app-name">{{ config('app.name') }}</h3>
         </div>
         <ul>
             <div class="nav-section">
                 <div class="nav-section__item">
-                    <li class="{{ request()->routeIs("dashboard") ? "active-tab" : "" }}">
+                    <li class="{{ request()->routeIs('dashboard') ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-gauge"></i>
-                        <a href="{{ route("dashboard") }}">Dashboard</a>
+                        <a href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
                     <li>
                         <i class="fa-solid fa-calendar-days"></i>
@@ -54,23 +54,16 @@
             <div class="nav-section">
                 <p>Manage</p>
                 <div class="nav-section__item">
-                    <li class="{{ request()->routeIs("clients.index") ? "active-tab" : "" }}">
+                    <li class="{{ request()->routeIs('clients.index') ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-briefcase"></i>
-                        <a href="{{ route("clients.index") }}">Clients</a>
+                        <a href="{{ route('clients.index') }}">Clients</a>
                     </li>
-                    <li class="{{ request()->routeIs("staff.index") ? "active-tab" : "" }}">
+                    <li class="{{ request()->routeIs('staff.index') ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-users"></i>
-                        <a href="{{ route("staff.index") }}">Staff</a>
+                        <a href="{{ route('staff.index') }}">Staff</a>
                     </li>
                 </div>
             </div>
         </ul>
-    </div>
-    <div id="client-info">
-        <img src="https://placehold.co/50" alt="Client Image" />
-        <div>
-            <h4>Cosmo Hotel</h4>
-            <p>Hotel</p>
-        </div>
     </div>
 </nav>

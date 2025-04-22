@@ -120,17 +120,6 @@ nav ul {
     font-size: 0.85rem;
 }
 
-#client-info {
-    display: flex;
-    gap: 0.75rem;
-    padding: 1rem;
-    font-size: 0.8rem;
-}
-
-#client-info img {
-    border-radius: 100%;
-}
-
 section {
     z-index: 1;
 }

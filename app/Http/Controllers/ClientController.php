@@ -16,7 +16,7 @@ use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
-    private static int $itemsPerPage = 2;
+    private static int $itemsPerPage = 4;
 
     /**
      * Display a listing of the resource.
