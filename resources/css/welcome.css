@@ -42,6 +42,7 @@ body {
     gap: 1rem;
     align-items: flex-start;
     justify-content: center;
+    position: relative;
 }
 
 .header-side img {
@@ -122,6 +123,30 @@ nav ul {
 
 section {
     z-index: 1;
+}
+
+.d-none {
+    display: none;
+}
+
+.popover {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background-color: var(--dark-blue);
+    color: var(--off-white);
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.popover ul li {
+    list-style-type: none;
+    color: var(--off-white);
+}
+
+.popover ul li:hover {
+    text-decoration: underline;
 }
 
 @media screen and (min-width: 800px) {

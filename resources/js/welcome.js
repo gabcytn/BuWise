@@ -5,8 +5,26 @@ hamburger.addEventListener("click", (e) => {
     nav.classList.toggle("hidden");
 });
 
+const popover = document.querySelector(".popover");
+
 document
     .querySelector(".header-side__account")
     .addEventListener("click", (e) => {
-        window.alert("TODO: logout");
+        popover.classList.toggle("d-none");
     });
+
+document.getElementById("profile").addEventListener("click", () => {
+    window.location.href = "/profile";
+});
+
+const confirmLogoutDialog = document.querySelector(".confirm-logout-dialog");
+document.getElementById("logout").addEventListener("click", () => {
+    confirmLogoutDialog.showModal();
+});
+
+const cancelLogoutDialogButton = document.querySelector(
+    ".confirm-logout-dialog button[type='button']",
+);
+cancelLogoutDialogButton.addEventListener("click", () => {
+    confirmLogoutDialog.close();
+});
