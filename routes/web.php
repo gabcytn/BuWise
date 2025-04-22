@@ -18,6 +18,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
 
 Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
+    Route::get('/profile', function (Request $request) {
+        return view('profile.edit', [
+            'user' => $request->user()
+        ]);
+    })->name('profile.edit');
+
     // client related routes
     Route::resource('/clients', ClientController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
