@@ -1,0 +1,59 @@
+.container {
+    max-width: 1250px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.profile-section h2 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.profile-section p {
+    font-size: 0.75rem;
+}
+
+.profile-section form div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+.profile-section form label {
+    font-size: 0.75rem;
+}
+
+.profile-section form button {
+    background-color: var(--soft-black);
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    outline: none;
+    color: var(--off-white);
+    font-size: 0.75rem;
+}
+
+#warning {
+    color: red;
+}
+
+@media (min-width: 800px) {
+    .profile-section form button {
+        width: max-content;
+    }
+
+    .profile-section form input {
+        padding: 0.5rem;
+    }
+
+    .profile-section h2 {
+        font-size: 1.25rem;
+    }
+
+    .profile-section p,
+    .profile-section form label,
+    .profile-section form button {
+        font-size: 0.9rem;
+    }
+}
