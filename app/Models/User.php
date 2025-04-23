@@ -8,7 +8,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,16 +61,25 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    /*
+     * @return BelongsTo
+     */
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
+    /*
+     * @return HasMany
+     */
     public function clients(): HasMany
     {
         return $this->hasMany(User::class, 'accountant_id')->where('role_id', Role::CLIENT);
     }
 
+    /*
+     * @return BelongsTo
+     */
     public function staff(): HasMany
     {
         return $this
@@ -83,8 +91,43 @@ class User extends Authenticatable implements MustVerifyEmail
             });
     }
 
+    /*
+     * @return BelongsTo
+     */
     public function accountant(): BelongsTo
     {
         return $this->belongsTo(User::class, 'accountant_id');
+    }
+
+    /*
+     * @return HasMany
+     */
+    public function journalEntries(): HasMany
+    {
+        return $this->hasMany(JournalEntry::class);
+    }
+
+    /*
+     * @return HasMany
+     */
+    public function vendors(): HasMany
+    {
+        return $this->hasMany(Vendor::class);
+    }
+
+    /*
+     * @return HasMany
+     */
+    public function customers(): HasMany
+    {
+        return $this->hasMany(Customer::class);
+    }
+
+    /*
+     * @return HasMany
+     */
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
     }
 }
