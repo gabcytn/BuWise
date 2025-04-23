@@ -36,6 +36,11 @@
                 @enderror
             </div>
 
+            <div class="remember-container">
+                <input name="remember" type="checkbox" id="remember-me" />
+                <label for="remember-me">Remember me</label>
+            </div>
+
             <div class="forgot-password-container">
                 <a class="#" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}

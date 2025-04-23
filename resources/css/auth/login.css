@@ -109,6 +109,10 @@ body {
     text-decoration: underline;
 }
 
+.remember-container {
+    margin-top: 0.5rem;
+}
+
 button[type="submit"] {
     width: 100%;
     padding: 12px 0;
