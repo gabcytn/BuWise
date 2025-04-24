@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class JournalEntry extends Model
@@ -37,5 +38,13 @@ class JournalEntry extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /*
+     * @return Illuminate\Database\Eloquent\Relations\HasMany;
+     */
+    public function ledgerEntries(): HasMany
+    {
+        return $this->hasMany(LedgerEntry::class);
     }
 }
