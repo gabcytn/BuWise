@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class LedgerAccount extends Model
 {
     protected $fillable = [
+        'id',
         'account_group_id',
         'client_id',
         'name',

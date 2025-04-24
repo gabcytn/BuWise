@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('ledger_accounts', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement()->primary();
+            $table->integer('id')->primary();
             $table->smallInteger('account_group_id');
             $table->foreignUuid('client_id')->nullable()->references('id')->on('users')->cascadeOnDelete();
             $table->string('name');

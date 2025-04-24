@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             TransactionTypeSeeder::class,
             EntryTypeSeeder::class,
             AccountGroupSeeder::class,
+            LedgerAccountSeeder::class,
         ]);
     }
 }
