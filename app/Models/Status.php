@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
+    public const PENDING = 1;
+    public const VERIFIED = 2;
+    public const REJECTED = 3;
+
     protected $fillable = [
         'description'
     ];
