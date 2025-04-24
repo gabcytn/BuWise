@@ -24,9 +24,9 @@
                         <i class="fa-solid fa-file-invoice"></i>
                         <a href="#">Invoice</a>
                     </li>
-                    <li>
+                    <li class="{{ request()->routeIs('journal-entries.index') ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-book"></i>
-                        <a href="#">Journals</a>
+                        <a href="{{ route('journal-entries.index') }}">Journals</a>
                     </li>
                     <li>
                         <i class="fa-solid fa-book-open"></i>

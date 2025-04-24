@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\JournalEntryController;
 use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -32,6 +33,10 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::resource('/staff', StaffController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
 
+    // journal entries
+    Route::resource('/journal-entries', JournalEntryController::class)
+        ->only(['index']);
+
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
             return to_route('dashboard');
@@ -40,6 +45,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     })->name('mfa.enable')->withoutMiddleware(EnableMFA::class);
 });
 
+// allow email verification without signing in
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $user = User::find($request->route('id'));
 
