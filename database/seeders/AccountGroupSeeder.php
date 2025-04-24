@@ -24,10 +24,10 @@ class AccountGroupSeeder extends Seeder
                 'name' => 'equity',
             ],
             [
-                'name' => 'expenses',
+                'name' => 'revenue',
             ],
             [
-                'name' => 'revenue',
+                'name' => 'expenses',
             ],
         ]);
     }
