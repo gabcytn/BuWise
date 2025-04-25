@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->bigInteger('journal_entry_id');
             $table->integer('account_id');
             $table->smallInteger('entry_type_id');
+            $table->smallInteger('transaction_type_id');
             $table->float('amount');
             $table->timestamps();
 
@@ -22,6 +23,7 @@ return new class extends Migration {
             $table->foreign('journal_entry_id')->references('id')->on('journal_entries')->cascadeOnDelete();
             $table->foreign('account_id')->references('id')->on('ledger_accounts')->cascadeOnDelete();
             $table->foreign('entry_type_id')->references('id')->on('entry_types')->cascadeOnDelete();
+            $table->foreign('transaction_type_id')->references('id')->on('transaction_types')->cascadeOnDelete();
         });
     }
 

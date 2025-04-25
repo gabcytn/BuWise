@@ -10,6 +10,7 @@ class LedgerEntry extends Model
     protected $fillable = [
         'journal_entry_id',
         'account_id',
+        'transaction_type_id',
         'entry_type_id',
         'amount',
     ];

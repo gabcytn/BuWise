@@ -14,10 +14,10 @@ class TransactionTypeSeeder extends Seeder
     {
         DB::table('transaction_types')->insert([
             [
-                'name' => 'sales'
+                'name' => 'Sales'
             ],
             [
-                'name' => 'purchase'
+                'name' => 'Purchases'
             ]
         ]);
     }
