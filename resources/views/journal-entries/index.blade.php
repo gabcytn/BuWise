@@ -4,7 +4,16 @@
     @endif
     @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
     <h2>Journal Entry</h2>
-
+    <datalist id="accounts-list">
+        @foreach ($accounts as $account)
+            <option value="{{ $account->id . ' ' . $account->name }}" />
+        @endforeach
+    </datalist>
+    <datalist id="transaction-types">
+        @foreach ($transactionTypes as $transactionType)
+            <option value="{{ $transactionType->name }}" />
+        @endforeach
+    </datalist>
     <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
         @csrf
         <table id="journalTable">

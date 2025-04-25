@@ -1,21 +1,3 @@
-const accounts = [
-    "Cash",
-    "Accounts Receivable",
-    "Inventory",
-    "Office Supplies",
-    "Equipment",
-    "Accounts Payable",
-    "Notes Payable",
-    "Capital",
-    "Revenue",
-    "Expenses",
-    "Rent Expense",
-    "Utilities Expense",
-    "Salary Expense",
-];
-
-const transactionTypes = ["Sales", "Purchase"];
-
 document.querySelector(".add-row-btn").addEventListener("click", () => {
     addRow();
 });
@@ -44,47 +26,21 @@ function addRow() {
 
     // Account dropdown
     const accountCell = document.createElement("td");
-    const accountSelect = document.createElement("select");
-    accountSelect.required = true;
-    accountSelect.name = `account_${rowCounter}`;
+    const accountInput = document.createElement("input");
+    accountInput.setAttribute("list", "accounts-list");
+    accountInput.required = true;
+    accountInput.name = `account_${rowCounter}`;
 
-    // Add empty option
-    const emptyOption = document.createElement("option");
-    emptyOption.value = "";
-    emptyOption.textContent = "Select an account";
-    accountSelect.appendChild(emptyOption);
-
-    // Add account options
-    accounts.forEach((account) => {
-        const option = document.createElement("option");
-        option.value = account;
-        option.textContent = account;
-        accountSelect.appendChild(option);
-    });
-
-    accountCell.appendChild(accountSelect);
+    accountCell.appendChild(accountInput);
 
     // Transaction Type dropdown
     const typeCell = document.createElement("td");
-    const typeSelect = document.createElement("select");
-    typeSelect.required = true;
-    typeSelect.name = `type_${rowCounter}`;
+    const typeInput = document.createElement("input");
+    typeInput.setAttribute("list", "transaction-types");
+    typeInput.required = true;
+    typeInput.name = `type_${rowCounter}`;
 
-    // Add empty option
-    const emptyTypeOption = document.createElement("option");
-    emptyTypeOption.value = "";
-    emptyTypeOption.textContent = "Select a Type";
-    typeSelect.appendChild(emptyTypeOption);
-
-    // Add transaction type options
-    transactionTypes.forEach((type) => {
-        const option = document.createElement("option");
-        option.value = type;
-        option.textContent = type;
-        typeSelect.appendChild(option);
-    });
-
-    typeCell.appendChild(typeSelect);
+    typeCell.appendChild(typeInput);
 
     // Debits field
     const debitCell = document.createElement("td");
@@ -94,11 +50,11 @@ function addRow() {
     debitInput.step = "0.01";
     debitInput.placeholder = "0.00";
     debitInput.name = `debit_${rowCounter}`;
-    debitInput.addEventListener("input", () => {
+    debitInput.addEventListener("input", (e) => {
         // If debit has value, disable credit field
         const creditInput =
-            this.parentNode.nextElementSibling.querySelector("input");
-        if (this.value && this.value > 0) {
+            e.target.parentNode.nextElementSibling.querySelector("input");
+        if (e.target.value && e.target.value > 0) {
             creditInput.disabled = true;
             creditInput.value = "";
         } else {
@@ -116,11 +72,11 @@ function addRow() {
     creditInput.step = "0.01";
     creditInput.placeholder = "0.00";
     creditInput.name = `credit_${rowCounter}`;
-    creditInput.addEventListener("input", () => {
+    creditInput.addEventListener("input", (e) => {
         // If credit has value, disable debit field
         const debitInput =
-            this.parentNode.previousElementSibling.querySelector("input");
-        if (this.value && this.value > 0) {
+            e.target.parentNode.previousElementSibling.querySelector("input");
+        if (e.target.value && e.target.value > 0) {
             debitInput.disabled = true;
             debitInput.value = "";
         } else {
