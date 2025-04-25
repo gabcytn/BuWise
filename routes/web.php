@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     // journal entries
     Route::resource('/journal-entries', JournalEntryController::class)
-        ->only(['index']);
+        ->only(['index', 'create', 'store']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
