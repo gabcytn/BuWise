@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EntryType;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
+use App\Models\LedgerEntry;
 use App\Models\Role;
 use App\Models\TransactionType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JournalEntryController extends Controller
 {
@@ -53,26 +56,80 @@ class JournalEntryController extends Controller
             'date' => ['required', 'date'],
         ]);
 
-        // var_dump($request->all());
-
-        $creditsSum = 0;
-        $debitsSum = 0;
-
-        foreach ($request->credit as $credit) {
-            $creditsSum += $credit;
-        }
-        foreach ($request->debit as $debit) {
-            $debitsSum += $debit;
+        $rowNumbers = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'row_id_') === 0) {
+                $rowNumbers[] = $value;
+            }
         }
 
-        if ($creditsSum != $debitsSum) {
-            $request->session()->flash('status', 'Make sure debits and credits balance.');
-            return to_route('journal-entries.create');
-        } else {
-            return 'NO ERROR';
+        $journalEntries = [];
+        foreach ($rowNumbers as $rowId) {
+            $entry = [
+                'account' => $request->input("account_$rowId"),
+                'transaction_type' => $request->input("type_$rowId"),
+                'debit' => (float) $request->input("debit_$rowId", 0),
+                'credit' => (float) $request->input("credit_$rowId", 0),
+            ];
+
+            // Only include rows with actual data
+            if ($entry['account'] && ($entry['debit'] > 0 || $entry['credit'] > 0)) {
+                $journalEntries[] = $entry;
+            }
         }
 
-        // return to_route('journal-entries.create');
+        $totalDebits = array_sum(array_column($journalEntries, 'debit'));
+        $totalCredits = array_sum(array_column($journalEntries, 'credit'));
+
+        if ($totalDebits != $totalCredits) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['balance' => 'Journal entries must have equal debits and credits']);
+        }
+
+        if (count($journalEntries) < 2) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['entries' => 'At least two entries are required']);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // Create a master journal entry record
+            $journalEntry = JournalEntry::create([
+                'client_id' => $validated['client_id'],
+                'description' => $request->description ?? null,
+                'date' => $validated['date']
+            ]);
+
+            // Create individual journal lines
+            foreach ($journalEntries as $entry) {
+                $accountId = substr($entry['account'], 0, 4);
+                LedgerEntry::create([
+                    'journal_entry_id' => $journalEntry->id,
+                    'account_id' => $accountId,
+                    'transaction_type_id' => TransactionType::LOOKUP[$entry['transaction_type']],
+                    'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
+                    'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('journal-entries.index')
+                ->with('success', 'Journal entry created successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['database' => 'Failed to save journal entry: ' . $e->getMessage()]);
+        }
     }
 
     /**

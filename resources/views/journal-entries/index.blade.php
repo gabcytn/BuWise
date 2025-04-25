@@ -16,6 +16,13 @@
     </datalist>
     <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
         @csrf
+        <input type="date" name="date" id="date" />
+        <select name="client_id" required="">
+            <option value="" disabled selected>Select a client</option>
+            @foreach ($clients as $client)
+                <option value="{{ $client->id }}">{{ $client->name }}</option>
+            @endforeach
+        </select>
         <table id="journalTable">
             <thead>
                 <tr>
@@ -38,6 +45,10 @@
                 </tr>
             </tfoot>
         </table>
+
+        @foreach ($errors->all() as $message)
+            <p style="color: red;">{{ $message }}</p>
+        @endforeach
 
         <button type="button" class="add-row-btn">
             Add New Row
