@@ -1,53 +1,41 @@
 @vite(['resources/js/staff/index.js'])
 <x-user-management title="Staff Management" subtitle="Manage your bookkeeping staff" buttonText="Add Staff">
+    @php
+        $headers = ['Profile', 'First Name', 'Last Name', 'Type', 'Email', 'Action'];
+    @endphp
     @if (count($staffs) > 0)
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Profile</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Type</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($staffs as $staff)
-                        @php
-                            $firstName = $staff->name;
-                            [$firstName, $lastName] = explode(' ', $staff->name, 2);
-                        @endphp
-                        <tr>
-                            <td id="td-item-img">
-                                <img class="item-img" src="{{ asset('storage/profiles/' . $staff->profile_img) }}"
-                                    alt="Staff Profile Picture" />
-                            </td>
-                            <td>{{ $firstName }}</td>
-                            <td>{{ $lastName }}</td>
-                            <td>{{ $staff->role->name }}</td>
-                            <td>{{ $staff->email }}</td>
-                            <td class="action-column">
-                                <div>
-                                    <a href="{{ route('staff.edit', $staff) }}">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </a>
-                                    <form action="{{ route('staff.destroy', $staff) }}">
-                                        <button type="submit"
-                                            style="background-color: transparent; border: none; outline: none;">
-                                            <i class="fa-regular fa-trash-can"
-                                                style="color: #ff0000; cursor: pointer"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            {{ $staffs->links() }}
-        </div>
+        <x-table-management :headers=$headers>
+            @foreach ($staffs as $staff)
+                @php
+                    $firstName = $staff->name;
+                    [$firstName, $lastName] = explode(' ', $staff->name, 2);
+                @endphp
+                <tr>
+                    <td id="td-item-img">
+                        <img class="item-img" src="{{ asset('storage/profiles/' . $staff->profile_img) }}"
+                            alt="Staff Profile Picture" />
+                    </td>
+                    <td>{{ $firstName }}</td>
+                    <td>{{ $lastName }}</td>
+                    <td>{{ $staff->role->name }}</td>
+                    <td>{{ $staff->email }}</td>
+                    <td class="action-column">
+                        <div>
+                            <a href="{{ route('staff.edit', $staff) }}">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <form action="{{ route('staff.destroy', $staff) }}">
+                                <button type="submit"
+                                    style="background-color: transparent; border: none; outline: none;">
+                                    <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </x-table-management>
+        {{ $staffs->links() }}
     @else
         <h2 style="text-align: center;">No staff</h2>
     @endif

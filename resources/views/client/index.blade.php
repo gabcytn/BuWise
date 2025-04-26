@@ -1,59 +1,46 @@
 @vite(['resources/js/client/index.js', 'resources/js/user-management/index.js'])
+@php
+    $headers = ['Logo', 'Company Name', 'TIN', 'Business Type', 'Email', 'Phone', 'Action'];
+@endphp
 <x-user-management title="Client Management" subtitle="Manage and access client records" buttonText="Add Company">
     @if (count($clients) > 0)
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Logo</th>
-                        <th>Company Name</th>
-                        <th>TIN</th>
-                        <th>Business Type</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($clients as $client)
-                        <tr>
-                            <td id="td-item-img"><img class="item-img"
-                                    src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" />
-                            </td>
-                            <td>
-                                <p>{{ $client->name }}</p>
-                            </td>
-                            <td>
-                                <p>{{ $client->tin }}</p>
-                            </td>
-                            <td>
-                                <p>{{ $client->client_type }}</p>
-                            </td>
-                            <td>
-                                <p>{{ $client->email }}</p>
-                            </td>
-                            <td>
-                                <p>{{ $client->phone_number }}</p>
-                            </td>
-                            <td class="action-column">
-                                <div>
-                                    <a href="{{ route('clients.edit', $client) }}">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </a>
-                                    <form action="{{ route('clients.destroy', $client) }}">
-                                        <button type="submit"
-                                            style="background-color: transparent; border: none; outline: none;">
-                                            <i class="fa-regular fa-trash-can"
-                                                style="color: #ff0000; cursor: pointer"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-table-management :headers=$headers>
+            @foreach ($clients as $client)
+                <tr>
+                    <td id="td-item-img"><img class="item-img"
+                            src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" />
+                    </td>
+                    <td>
+                        <p>{{ $client->name }}</p>
+                    </td>
+                    <td>
+                        <p>{{ $client->tin }}</p>
+                    </td>
+                    <td>
+                        <p>{{ $client->client_type }}</p>
+                    </td>
+                    <td>
+                        <p>{{ $client->email }}</p>
+                    </td>
+                    <td>
+                        <p>{{ $client->phone_number }}</p>
+                    </td>
+                    <td class="action-column">
+                        <div>
+                            <a href="{{ route('clients.edit', $client) }}">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <form action="{{ route('clients.destroy', $client) }}">
+                                <button type="submit"
+                                    style="background-color: transparent; border: none; outline: none;">
+                                    <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </x-table-management>
         {{ $clients->links() }}
     @else
         <h2 style="text-align: center;">No clients</h2>
