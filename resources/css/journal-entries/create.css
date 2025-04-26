@@ -37,6 +37,7 @@ input {
     border-radius: 0.25rem;
     font-size: 0.785rem;
     border: 1px solid var(--off-white);
+    background-color: var(--clear-white);
 }
 
 .add-row-btn {

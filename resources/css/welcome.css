@@ -97,7 +97,7 @@ nav ul {
 }
 
 .nav-section:has(+ .nav-section) {
-    border-bottom: 1px solid var(--grey);
+    border-bottom: 3px solid var(--off-white);
 }
 
 .nav-section__item {
