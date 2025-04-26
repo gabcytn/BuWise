@@ -37,7 +37,7 @@ class JournalEntry extends Model
      */
     public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'client_id');
     }
 
     /*

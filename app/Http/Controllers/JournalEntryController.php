@@ -18,7 +18,17 @@ class JournalEntryController extends Controller
      */
     public function index(Request $request)
     {
-        return view('journal-entries.index');
+        // TODO: authorize using Gate
+        $user = $request->user();
+
+        if ($user->role_id === Role::ACCOUNTANT) {
+            $entries = $user->clientsJournalEntries()->get();
+        } else {
+            $entries = $user->accountant->clientsJournalEntries()->get();
+        }
+        return view('journal-entries.index', [
+            'entries' => $entries
+        ]);
     }
 
     /**
