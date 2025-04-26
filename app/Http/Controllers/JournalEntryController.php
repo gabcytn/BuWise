@@ -18,7 +18,7 @@ class JournalEntryController extends Controller
      */
     public function index(Request $request)
     {
-        return 'index';
+        return view('journal-entries.index');
     }
 
     /**
@@ -37,7 +37,7 @@ class JournalEntryController extends Controller
         $accounts = LedgerAccount::all();
         $transactionTypes = TransactionType::all();
 
-        return view('journal-entries.index', [
+        return view('journal-entries.create', [
             'clients' => $clients,
             'accounts' => $accounts,
             'transactionTypes' => $transactionTypes,

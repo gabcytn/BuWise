@@ -24,7 +24,8 @@
                         <i class="fa-solid fa-file-invoice"></i>
                         <a href="#">Invoice</a>
                     </li>
-                    <li class="{{ request()->routeIs('journal-entries.index') ? 'active-tab' : '' }}">
+                    <li
+                        class="{{ in_array(request()->route()->getName(), ['journal-entries.index', 'journal-entries.create']) ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-book"></i>
                         <a href="{{ route('journal-entries.index') }}">Journals</a>
                     </li>
@@ -54,11 +55,13 @@
             <div class="nav-section">
                 <p>Manage</p>
                 <div class="nav-section__item">
-                    <li class="{{ request()->routeIs('clients.index') ? 'active-tab' : '' }}">
+                    <li
+                        class="{{ in_array(request()->route()->getName(), ['clients.index', 'clients.edit']) ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-briefcase"></i>
                         <a href="{{ route('clients.index') }}">Clients</a>
                     </li>
-                    <li class="{{ request()->routeIs('staff.index') ? 'active-tab' : '' }}">
+                    <li
+                        class="{{ in_array(request()->route()->getName(), ['staff.index', 'staff.edit']) ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-users"></i>
                         <a href="{{ route('staff.index') }}">Staff</a>
                     </li>
