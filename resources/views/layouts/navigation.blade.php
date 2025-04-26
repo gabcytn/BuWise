@@ -1,3 +1,9 @@
+@php
+    use App\Models\Role;
+
+    $roleId = request()->user()->role_id;
+    $routeName = request()->route()->getName();
+@endphp
 <nav class="nav-sm hidden">
     <div>
         <div class="nav-brand">
@@ -24,9 +30,10 @@
                         <i class="fa-solid fa-file-invoice"></i>
                         <a href="#">Invoice</a>
                     </li>
-                    <li>
+                    <li
+                        class="{{ in_array($routeName, ['journal-entries.index', 'journal-entries.create']) ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-book"></i>
-                        <a href="#">Journals</a>
+                        <a href="{{ route('journal-entries.index') }}">Journals</a>
                     </li>
                     <li>
                         <i class="fa-solid fa-book-open"></i>
@@ -51,19 +58,23 @@
                     </li>
                 </div>
             </div>
-            <div class="nav-section">
-                <p>Manage</p>
-                <div class="nav-section__item">
-                    <li class="{{ request()->routeIs('clients.index') ? 'active-tab' : '' }}">
-                        <i class="fa-solid fa-briefcase"></i>
-                        <a href="{{ route('clients.index') }}">Clients</a>
-                    </li>
-                    <li class="{{ request()->routeIs('staff.index') ? 'active-tab' : '' }}">
-                        <i class="fa-solid fa-users"></i>
-                        <a href="{{ route('staff.index') }}">Staff</a>
-                    </li>
+            @if ($roleId !== Role::CLERK)
+                <div class="nav-section">
+                    <p>Manage</p>
+                    <div class="nav-section__item">
+                        <li class="{{ in_array($routeName, ['clients.index', 'clients.edit']) ? 'active-tab' : '' }}">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <a href="{{ route('clients.index') }}">Clients</a>
+                        </li>
+                        @if ($roleId === Role::ACCOUNTANT)
+                            <li class="{{ in_array($routeName, ['staff.index', 'staff.edit']) ? 'active-tab' : '' }}">
+                                <i class="fa-solid fa-users"></i>
+                                <a href="{{ route('staff.index') }}">Staff</a>
+                            </li>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
         </ul>
     </div>
 </nav>

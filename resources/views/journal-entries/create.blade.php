@@ -1,0 +1,72 @@
+<x-app-layout>
+    @if (session('status'))
+        <p style="color: red;">{{ session('status') }}</p>
+    @endif
+    @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
+    <div class="container">
+        <h2 id="page-title">Journal Entry</h2>
+        <datalist id="accounts-list">
+            @foreach ($accounts as $account)
+                <option value="{{ $account->id . ' ' . $account->name }}" />
+            @endforeach
+        </datalist>
+        <datalist id="transaction-types">
+            @foreach ($transactionTypes as $transactionType)
+                <option value="{{ $transactionType->name }}" />
+            @endforeach
+        </datalist>
+        <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
+            @csrf
+            <input type="date" name="date" id="date" style="margin-bottom: 0.5rem;" />
+            <select name="client_id" required="" style="margin-bottom: 0.5rem;">
+                <option value="" disabled selected>Select a client</option>
+                @foreach ($clients as $client)
+                    <option value="{{ $client->id }}">{{ $client->name }}</option>
+                @endforeach
+            </select>
+            <div class="table-wrapper">
+                <table id="journalTable">
+                    <thead>
+                        <tr>
+                            <th>ACCOUNT</th>
+                            <th>TRANSACTION TYPE</th>
+                            <th>DEBITS</th>
+                            <th>CREDITS</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="journalBody">
+                        <!-- Rows will be added here -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="totals-row">
+                            <td colspan="2" style="text-align: right;">Totals:</td>
+                            <td id="totalDebits">0.00</td>
+                            <td id="totalCredits">0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            @foreach ($errors->all() as $message)
+                <p style="color: red;">{{ $message }}</p>
+            @endforeach
+
+            <div class="button-container">
+                <button type="button" class="add-row-btn">
+                    Add New Row
+                </button>
+
+                <button type="submit" class="submit-btn" id="submitButton" disabled>Submit Journal Entry</button>
+                <p id="balanceWarning" style="color: red; display: none;">
+                    Debits and credits must be equal before submitting.
+                </p>
+            </div>
+        </form>
+    </div>
+</x-app-layout>
+
+<script>
+    document.getElementById('date').valueAsDate = new Date();
+</script>

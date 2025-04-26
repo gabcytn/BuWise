@@ -1,0 +1,106 @@
+.container {
+    max-width: 1250px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#page-title {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.table-wrapper {
+    overflow: scroll;
+    border-radius: 0.65rem;
+}
+
+#journalTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: var(--off-white);
+    padding: 0 0.65rem;
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+td {
+    padding: 0.75rem 0.15rem;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 0.15rem;
+    border-radius: 0.25rem;
+    font-size: 0.785rem;
+    border: 1px solid var(--off-white);
+}
+
+.add-row-btn {
+    background-color: var(--green);
+    color: var(--off-white);
+    margin-top: 1rem;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    color: red;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.totals-row {
+    font-weight: bold;
+    background-color: #f9f9f9;
+}
+
+.submit-btn {
+    background-color: var(--main-blue);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (min-width: 800px) {
+    .button-container button {
+        width: 12rem;
+        font-size: 0.85rem;
+    }
+
+    th {
+        padding: 0.5rem 0;
+        font-size: 1rem;
+    }
+
+    td {
+        padding: 0.75rem 0.15rem;
+    }
+
+    select,
+    input {
+        padding: 0.65rem;
+        font-size: 0.785rem;
+    }
+}
