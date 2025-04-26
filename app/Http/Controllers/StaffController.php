@@ -59,7 +59,7 @@ class StaffController extends Controller
                     break;
             }
         } else
-            $staff = $staff->paginate(2);
+            $staff = $staff->paginate(StaffController::$itemsPerPage);
 
         return view('staff.index', ['staffs' => $staff]);
     }
