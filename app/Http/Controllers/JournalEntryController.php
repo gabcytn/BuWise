@@ -22,9 +22,16 @@ class JournalEntryController extends Controller
         $user = $request->user();
 
         if ($user->role_id === Role::ACCOUNTANT) {
-            $entries = $user->clientsJournalEntries()->get();
+            $entries = $user
+                ->clientsJournalEntries()
+                ->withMax('ledgerEntries', 'amount', 'amount')
+                ->get();
         } else {
-            $entries = $user->accountant->clientsJournalEntries()->get();
+            $entries = $user
+                ->accountant
+                ->clientsJournalEntries()
+                ->withMax('ledgerEntries', 'amount')
+                ->get();
         }
         return view('journal-entries.index', [
             'entries' => $entries

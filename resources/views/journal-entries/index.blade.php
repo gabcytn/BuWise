@@ -21,7 +21,7 @@
                             <p>{{ $entry->client->name }}</p>
                         </td>
                         <td>
-                            <p>P100.00</p>
+                            <p>&#8369;{{ $entry->ledger_entries_max_amount }}
                         </td>
                         <td>
                             <p>{{ $entry->date }}</p>
