@@ -203,11 +203,11 @@ section {
     .nav-section__item a {
         display: block;
         width: 100%;
-        padding: 0.65rem 0rem 0.65rem 0.85rem;
+        padding: 0.55rem 0rem 0.55rem 0.6rem;
     }
 
     .nav-section__item li+li {
-        margin-top: 0.5rem !important;
+        margin-top: 0.25rem !important;
     }
 
     .nav-section li:hover,
