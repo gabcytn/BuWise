@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class JournalEntryController extends Controller
 {
+    private const ITEMS_PER_PAGE = 6;
+
     /**
      * Display a listing of the resource.
      */
@@ -25,13 +27,13 @@ class JournalEntryController extends Controller
             $entries = $user
                 ->clientsJournalEntries()
                 ->withMax('ledgerEntries', 'amount', 'amount')
-                ->get();
+                ->paginate(JournalEntryController::ITEMS_PER_PAGE);
         } else {
             $entries = $user
                 ->accountant
                 ->clientsJournalEntries()
                 ->withMax('ledgerEntries', 'amount')
-                ->get();
+                ->paginate(JournalEntryController::ITEMS_PER_PAGE);
         }
         return view('journal-entries.index', [
             'entries' => $entries

@@ -44,6 +44,7 @@
                     </tr>
                 @endforeach
             </x-table-management>
+            {{ $entries->links() }}
         @else
             <p>No entry yet.</p>
         @endif
