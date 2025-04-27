@@ -14,12 +14,16 @@
             <div class="nav-section">
                 <div class="nav-section__item">
                     <li class="{{ request()->routeIs('dashboard') ? 'active-tab' : '' }}">
-                        <i class="fa-solid fa-gauge"></i>
-                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                        <a href="{{ route('dashboard') }}">
+                            <i class="fa-solid fa-gauge"></i>
+                            Dashboard
+                        </a>
                     </li>
                     <li>
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <a href="#">Calendar</a>
+                        <a href="#">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            Calendar
+                        </a>
                     </li>
                 </div>
             </div>
@@ -27,17 +31,23 @@
                 <p>Transactions</p>
                 <div class="nav-section__item">
                     <li>
-                        <i class="fa-solid fa-file-invoice"></i>
-                        <a href="#">Invoice</a>
+                        <a href="#">
+                            <i class="fa-solid fa-file-invoice"></i>
+                            Invoice
+                        </a>
                     </li>
                     <li
                         class="{{ in_array($routeName, ['journal-entries.index', 'journal-entries.create', 'journal-entries.show']) ? 'active-tab' : '' }}">
-                        <i class="fa-solid fa-book"></i>
-                        <a href="{{ route('journal-entries.index') }}">Journals</a>
+                        <a href="{{ route('journal-entries.index') }}">
+                            <i class="fa-solid fa-book"></i>
+                            Journals
+                        </a>
                     </li>
                     <li>
-                        <i class="fa-solid fa-book-open"></i>
-                        <a href="#">Ledger</a>
+                        <a href="#">
+                            <i class="fa-solid fa-book-open"></i>
+                            Ledger
+                        </a>
                     </li>
                 </div>
             </div>
@@ -45,16 +55,22 @@
                 <p>Reports</p>
                 <div class="nav-section__item">
                     <li>
-                        <i class="fa-solid fa-chart-line"></i>
-                        <a href="#">Insights</a>
+                        <a href="#">
+                            <i class="fa-solid fa-chart-line"></i>
+                            Insights
+                        </a>
                     </li>
                     <li>
-                        <i class="fa-solid fa-newspaper"></i>
-                        <a href="#">Statements</a>
+                        <a href="#">
+                            <i class="fa-solid fa-newspaper"></i>
+                            Statements
+                        </a>
                     </li>
                     <li>
-                        <i class="fa-solid fa-hospital-user"></i>
-                        <a href="#">Audit</a>
+                        <a href="#">
+                            <i class="fa-solid fa-hospital-user"></i>
+                            Audit
+                        </a>
                     </li>
                 </div>
             </div>
@@ -63,13 +79,17 @@
                     <p>Manage</p>
                     <div class="nav-section__item">
                         <li class="{{ in_array($routeName, ['clients.index', 'clients.edit']) ? 'active-tab' : '' }}">
-                            <i class="fa-solid fa-briefcase"></i>
-                            <a href="{{ route('clients.index') }}">Clients</a>
+                            <a href="{{ route('clients.index') }}">
+                                <i class="fa-solid fa-briefcase"></i>
+                                Clients
+                            </a>
                         </li>
                         @if ($roleId === Role::ACCOUNTANT)
                             <li class="{{ in_array($routeName, ['staff.index', 'staff.edit']) ? 'active-tab' : '' }}">
-                                <i class="fa-solid fa-users"></i>
-                                <a href="{{ route('staff.index') }}">Staff</a>
+                                <a href="{{ route('staff.index') }}">
+                                    <i class="fa-solid fa-users"></i>
+                                    Staff
+                                </a>
                             </li>
                         @endif
                     </div>

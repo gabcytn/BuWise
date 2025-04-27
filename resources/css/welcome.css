@@ -148,8 +148,7 @@ section {
     background-color: var(--off-white);
 }
 
-@media screen and (min-width: 800px) {
-
+@media (min-width: 800px) {
     .header-side__account {
         display: flex;
     }
@@ -197,8 +196,18 @@ section {
     }
 
     .nav-section li {
-        padding: 0.5rem 0 0.5rem 1rem;
         border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .nav-section__item a {
+        display: block;
+        width: 100%;
+        padding: 0.65rem 0rem 0.65rem 0.85rem;
+    }
+
+    .nav-section__item li+li {
+        margin-top: 0.5rem !important;
     }
 
     .nav-section li:hover,
