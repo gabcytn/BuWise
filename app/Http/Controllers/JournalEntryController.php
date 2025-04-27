@@ -23,11 +23,21 @@ class JournalEntryController extends Controller
         // TODO: authorize using Gate
         $user = $request->user();
 
-        if ($user->role_id === Role::ACCOUNTANT) {
+        $filter = $request->query('filter');
+        if ($user->role_id === Role::ACCOUNTANT && !$filter) {
             $entries = $user
                 ->clientsJournalEntries()
-                ->withMax('ledgerEntries', 'amount', 'amount')
+                ->withMax('ledgerEntries', 'amount')
                 ->paginate(JournalEntryController::ITEMS_PER_PAGE);
+        } else if ($user->role_id === Role::ACCOUNTANT && $filter) {
+            $entries = $user
+                ->clientsJournalEntries()
+                ->where('journal_entries.client_id', $filter)
+                ->withMax('ledgerEntries', 'amount')
+                ->paginate(JournalEntryController::ITEMS_PER_PAGE)
+                ->appends([
+                    'filter' => $filter
+                ]);
         } else {
             $entries = $user
                 ->accountant

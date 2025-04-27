@@ -28,3 +28,17 @@ tr.forEach((row) => {
         }
     });
 });
+
+const selectClients = document.querySelector(".select-clients");
+
+selectClients.addEventListener("change", () => {
+    const selectedClient =
+        selectClients.options[selectClients.selectedIndex].value;
+
+    if (selectedClient === "all") {
+        location.href = location.origin + location.pathname;
+        return;
+    }
+    location.href =
+        location.origin + location.pathname + `?filter=${selectedClient}`;
+});

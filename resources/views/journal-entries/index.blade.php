@@ -4,6 +4,15 @@
     @endphp
     <div class="container" style="max-width: 1250px; width: 90%; margin: 0 auto;">
         <h2 id="page-title" style="margin-top: 1.25rem;">Journal Entry</h2>
+        <select class="select-clients"
+            style="width: 100%; background-color: var(--clear-white); padding: 0.65rem; margin-top: 1rem; border: none; border-radius: 5px;">
+            <option value="all">All Clients</option>
+            @foreach (request()->user()->clients as $client)
+                <option {{ request()->query('filter') === $client->id ? 'selected' : '' }} value="{{ $client->id }}">
+                    {{ $client->name }}
+                </option>
+            @endforeach
+        </select>
         <form action="{{ route('journal-entries.create') }}" method="GET">
             <button type="submit"
                 style="padding: 0.75rem 1.25rem; margin: 1rem 0; background-color: var(--green); border: none; border-radius: 0.25rem; color: var(--off-white); outline: none; cursor: pointer;">
