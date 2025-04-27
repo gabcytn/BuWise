@@ -36,6 +36,9 @@
             @endforeach
         </x-table-management>
         {{ $staffs->links() }}
+        @if ($errors->any())
+            <p style="color: red;">{{ $errors->first() }}</p>
+        @endif
     @else
         <h2 style="text-align: center;">No staff</h2>
     @endif
@@ -70,8 +73,8 @@
         </div>
         <div class="input-box">
             <label for="staff-type>">Staff Type</label>
-            <select id="staff-type" name="staff_type">
-                <option selected disabled>Choose Role</option>
+            <select id="staff-type" name="staff_type" required>
+                <option value="" selected disabled>Choose Role</option>
                 <option value="2">Liaison Officer</option>
                 <option value="3">Clerk</option>
             </select>
@@ -84,14 +87,5 @@
             <button type="submit">Add</button>
             <button id="close-dialog-btn" type="button">Cancel</button>
         </div>
-        @if ($errors->any())
-            <div>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
     </div>
 </x-dialog>

@@ -42,6 +42,9 @@
             @endforeach
         </x-table-management>
         {{ $clients->links() }}
+        @if ($errors->any())
+            <p style="color: red;">{{ $errors->first() }}</p>
+        @endif
     @else
         <h2 style="text-align: center;">No clients</h2>
     @endif
@@ -99,8 +102,5 @@
             <button type="submit">Add</button>
             <button id="close-dialog-btn" type="button">Cancel</button>
         </div>
-        @if ($errors->any())
-            <p>{{ $errors->first() }}</p>
-        @endif
     </div>
 </x-dialog>
