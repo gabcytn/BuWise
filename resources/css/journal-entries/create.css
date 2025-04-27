@@ -15,6 +15,7 @@
 }
 
 #journalTable {
+    margin-top: 1rem;
     width: 100%;
     border-collapse: collapse;
 }
@@ -31,6 +32,7 @@ td {
 }
 
 select,
+textarea,
 input {
     width: 100%;
     padding: 0.15rem;
@@ -38,6 +40,11 @@ input {
     font-size: 0.785rem;
     border: 1px solid var(--off-white);
     background-color: var(--clear-white);
+}
+
+textarea {
+    padding: 0.65rem;
+    resize: vertical;
 }
 
 .add-row-btn {

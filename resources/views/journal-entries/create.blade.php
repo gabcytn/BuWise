@@ -24,6 +24,7 @@
                     <option value="{{ $client->id }}">{{ $client->name }}</option>
                 @endforeach
             </select>
+            <textarea name="description" rows="3" placeholder="Description" required></textarea>
             <div class="table-wrapper">
                 <table id="journalTable">
                     <thead>

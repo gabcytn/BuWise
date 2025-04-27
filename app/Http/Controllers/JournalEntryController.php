@@ -13,12 +13,31 @@ use Illuminate\Support\Facades\DB;
 
 class JournalEntryController extends Controller
 {
+    private const ITEMS_PER_PAGE = 6;
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return view('journal-entries.index');
+        // TODO: authorize using Gate
+        $user = $request->user();
+
+        if ($user->role_id === Role::ACCOUNTANT) {
+            $entries = $user
+                ->clientsJournalEntries()
+                ->withMax('ledgerEntries', 'amount', 'amount')
+                ->paginate(JournalEntryController::ITEMS_PER_PAGE);
+        } else {
+            $entries = $user
+                ->accountant
+                ->clientsJournalEntries()
+                ->withMax('ledgerEntries', 'amount')
+                ->paginate(JournalEntryController::ITEMS_PER_PAGE);
+        }
+        return view('journal-entries.index', [
+            'entries' => $entries
+        ]);
     }
 
     /**
@@ -52,7 +71,7 @@ class JournalEntryController extends Controller
         $validated = $request->validate([
             'client_id' => ['required', 'uuid:4'],
             'invoice_id' => ['string'],
-            'description' => ['max:255'],
+            'description' => ['required', 'string', 'max:255'],
             'date' => ['required', 'date'],
         ]);
 
@@ -102,7 +121,7 @@ class JournalEntryController extends Controller
             $journalEntry = JournalEntry::create([
                 'client_id' => $validated['client_id'],
                 'description' => $request->description ?? null,
-                'date' => $validated['date']
+                'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
             // Create individual journal lines
@@ -137,7 +156,26 @@ class JournalEntryController extends Controller
      */
     public function show(JournalEntry $journalEntry)
     {
-        //
+        // TODO: authorize using Gate
+        $results = DB::table('ledger_entries')
+            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
+            ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
+            ->join('transaction_types', 'transaction_types.id', '=', 'ledger_entries.transaction_type_id')
+            ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
+            ->select(
+                'ledger_entries.id as id',
+                'ledger_accounts.name as account_name',
+                'account_groups.name as account_group_name',
+                'transaction_types.name as transaction_name',
+                DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
+                DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
+            )
+            ->where('journal_entry_id', $journalEntry->id)
+            ->get();
+        return view('journal-entries.show', [
+            'description' => $journalEntry->description,
+            'ledgerEntries' => $results,
+        ]);
     }
 
     /**

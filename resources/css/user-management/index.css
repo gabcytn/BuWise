@@ -97,12 +97,6 @@
     opacity: 0.85;
 }
 
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
 @media (min-width: 514px) {
     .headers {
         gap: 0rem;
