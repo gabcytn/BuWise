@@ -33,8 +33,11 @@
                         </td>
                         <td class="action-column">
                             <div>
-                                <form action="#">
-                                    <button type="submit"
+                                <form action="{{ route('journal-entries.destroy', $entry) }}" method="POST"
+                                    id="{{ 'form-' . $entry->id }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button"
                                         style="background-color: transparent; border: none; outline: none;">
                                         <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
                                     </button>
@@ -49,4 +52,6 @@
             <p>No entry yet.</p>
         @endif
     </div>
+
+    <x-confirmable-dialog title="Confirm Delete" affirmText="Delete" denyText="Back"></x-confirmable-dialog>
 </x-app-layout>

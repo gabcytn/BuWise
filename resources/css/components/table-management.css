@@ -31,6 +31,10 @@ tr td {
     font-size: 0.7rem;
 }
 
+.table-row:hover {
+    background-color: var(--off-white);
+}
+
 #td-item-img {
     padding: 1rem 0;
     display: flex;

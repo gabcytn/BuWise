@@ -1,0 +1,41 @@
+.confirmable-dialog {
+    border: none;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.confirmable-dialog__title {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.confirmable-dialog .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;
+    border-top: 1px solid var(--grey);
+    padding: 1.75rem;
+}
+
+
+.confirmable-dialog .buttons button {
+    min-width: 5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.25s opacity;
+}
+
+.confirmable-dialog .buttons button:hover {
+    opacity: 0.85;
+}
+
+.affirm-button {
+    background-color: var(--main-blue);
+}
+
+.deny-button {
+    background-color: var(--grey);
+}
