@@ -12,14 +12,14 @@ return new class extends Migration {
     {
         Schema::create('journal_entries', function (Blueprint $table) {
             $table->bigInteger('id')->autoIncrement()->primary();
-            $table->foreignUuid('client_id')->references('id')->on('users');
+            $table->foreignUuid('client_id')->references('id')->on('users')->cascadeOnDelete();
             $table->bigInteger('invoice_id')->nullable();
             $table->string('description')->nullable();
             $table->dateTime('date');
             $table->timestamps();
 
             // foreign keys
-            $table->foreign('invoice_id')->references('id')->on('invoices');
+            $table->foreign('invoice_id')->references('id')->on('invoices')->cascadeOnDelete();
         });
     }
 

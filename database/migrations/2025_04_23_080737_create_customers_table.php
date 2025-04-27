@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->integer('id')->autoIncrement()->primary();
-            $table->foreignUuid('client_id')->references('id')->on('users');
+            $table->foreignUuid('client_id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();
         });

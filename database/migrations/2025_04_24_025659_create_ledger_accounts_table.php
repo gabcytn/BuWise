@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->timestamps();
 
             // foreign keys
-            $table->foreign('account_group_id')->references('id')->on('account_groups');
+            $table->foreign('account_group_id')->references('id')->on('account_groups')->cascadeOnDelete();
         });
     }
 

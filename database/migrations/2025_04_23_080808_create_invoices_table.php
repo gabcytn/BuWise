@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigInteger('id')->autoIncrement()->primary();
-            $table->foreignUuid('client_id')->references('id')->on('users');
+            $table->foreignUuid('client_id')->references('id')->on('users')->cascadeOnDelete();
             $table->integer('vendor_id');
             $table->integer('customer_id');
             $table->smallInteger('status');
@@ -23,9 +23,9 @@ return new class extends Migration {
             $table->timestamps();
 
             // foreign keys
-            $table->foreign('vendor_id')->references('id')->on('vendors');
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->foreign('status')->references('id')->on('status');
+            $table->foreign('vendor_id')->references('id')->on('vendors')->cascadeOnDelete();
+            $table->foreign('customer_id')->references('id')->on('customers')->cascadeOnDelete();
+            $table->foreign('status')->references('id')->on('status')->cascadeOnDelete();
         });
     }
 
