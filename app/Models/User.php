@@ -115,7 +115,8 @@ class User extends Authenticatable implements MustVerifyEmail
                 'id'
             )
             ->select('journal_entries.*')
-            ->with(['client', 'ledgerEntries']);
+            ->with(['client', 'ledgerEntries'])
+            ->orderByDesc('journal_entries.id');
     }
 
     /*

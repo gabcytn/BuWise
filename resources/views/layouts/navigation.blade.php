@@ -31,7 +31,7 @@
                         <a href="#">Invoice</a>
                     </li>
                     <li
-                        class="{{ in_array($routeName, ['journal-entries.index', 'journal-entries.create']) ? 'active-tab' : '' }}">
+                        class="{{ in_array($routeName, ['journal-entries.index', 'journal-entries.create', 'journal-entries.show']) ? 'active-tab' : '' }}">
                         <i class="fa-solid fa-book"></i>
                         <a href="{{ route('journal-entries.index') }}">Journals</a>
                     </li>
