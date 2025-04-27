@@ -42,11 +42,11 @@
             @endforeach
         </x-table-management>
         {{ $clients->links() }}
-        @if ($errors->any())
-            <p style="color: red;">{{ $errors->first() }}</p>
-        @endif
     @else
         <h2 style="text-align: center;">No clients</h2>
+    @endif
+    @if ($errors->any())
+        <p style="color: red;">{{ $errors->first() }}</p>
     @endif
 </x-user-management>
 
