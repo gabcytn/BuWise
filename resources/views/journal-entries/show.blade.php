@@ -11,7 +11,7 @@
                     <tr>
                         <td>{{ $entry->id }}</td>
                         <td>{{ $entry->account_name }}</td>
-                        <td>{{ $entry->account_group_name }}</td>
+                        <td>{{ ucfirst($entry->account_group_name) }}</td>
                         <td>{{ $entry->debit }}</td>
                         <td>{{ $entry->credit }}</td>
                     </tr>
