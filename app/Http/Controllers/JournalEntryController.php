@@ -199,6 +199,8 @@ class JournalEntryController extends Controller
      */
     public function destroy(JournalEntry $journalEntry)
     {
-        //
+        // TODO: authorize using Gate
+        JournalEntry::destroy($journalEntry->id);
+        return to_route('journal-entries.index');
     }
 }
