@@ -119,7 +119,7 @@ class JournalEntryController extends Controller
             $journalEntry = JournalEntry::create([
                 'client_id' => $validated['client_id'],
                 'description' => $request->description ?? null,
-                'date' => $validated['date']
+                'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
             // Create individual journal lines

@@ -10,10 +10,11 @@
                 Create
             </button>
         </form>
+        @vite('resources/js/journal-entries/index.js')
         @if (count($entries) > 0)
             <x-table-management :headers=$headers>
                 @foreach ($entries as $entry)
-                    <tr>
+                    <tr class="table-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
                         <td>
                             <p>{{ $entry->id }}</p>
                         </td>
@@ -24,13 +25,14 @@
                             <p>&#8369;{{ $entry->ledger_entries_max_amount }}
                         </td>
                         <td>
-                            <p>{{ $entry->date }}</p>
+                            @php
+                                $date = \Carbon\Carbon::parse($entry->date);
+                                $formattedDateTime = $date->format('F d, Y h:i A');
+                            @endphp
+                            <p>{{ $formattedDateTime }}</p>
                         </td>
                         <td class="action-column">
                             <div>
-                                <a href="#">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </a>
                                 <form action="#">
                                     <button type="submit"
                                         style="background-color: transparent; border: none; outline: none;">
