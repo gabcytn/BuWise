@@ -7,7 +7,15 @@
         <select class="select-clients"
             style="width: 100%; background-color: var(--clear-white); padding: 0.65rem; margin-top: 1rem; border: none; border-radius: 5px;">
             <option value="all">All Clients</option>
-            @foreach (request()->user()->clients as $client)
+            @php
+                $roleId = request()->user()->role_id;
+                if ($roleId === \App\Models\Role::ACCOUNTANT) {
+                    $clients = request()->user()->clients;
+                } elseif ($roleId !== \App\Models\Role::CLIENT) {
+                    $clients = request()->user()->accountant->clients;
+                }
+            @endphp
+            @foreach ($clients as $client)
                 <option {{ request()->query('filter') === $client->id ? 'selected' : '' }} value="{{ $client->id }}">
                     {{ $client->name }}
                 </option>
