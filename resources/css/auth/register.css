@@ -47,6 +47,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin-bottom: 15px;
 }
 
 .input-group label {
@@ -58,7 +59,6 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
-    margin-bottom: 15px;
 }
 
 .input-wrapper .icon {
@@ -98,6 +98,22 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     opacity: 0.85;
+}
+
+.feedback {
+    margin-top: 0.5rem;
+}
+
+.weak {
+    color: red;
+}
+
+.medium {
+    color: yellow;
+}
+
+.strong {
+    color: #32CD32;
 }
 
 @media (max-width: 1000px) {

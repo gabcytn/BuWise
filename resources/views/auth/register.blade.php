@@ -1,10 +1,10 @@
 <x-root-layout>
-    @vite('resources/css/auth/register.css')
+    @vite(['resources/css/auth/register.css', 'resources/js/auth/register.js'])
     <div class="left-section">
         <img src="{{ asset('images/imgbg.jpg') }}" alt="BuWise" class="register-image">
     </div>
     <div class="right-section">
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" id="register-form">
             @csrf
             <h2 id="title">Welcome</h2>
             <p id="subtitle">Simplifying and Automating Your Workflow</p>
@@ -28,6 +28,7 @@
                     <span class="icon"><i class="fas fa-lock"></i></span>
                     <input id="password" type="password" name="password" required>
                 </div>
+                <p id="password-feedback" class="feedback"></p>
             </div>
             <div class="input-group">
                 <label for="password_confirmation">Confirm Password</label>
@@ -35,8 +36,10 @@
                     <span class="icon"><i class="fas fa-lock"></i></span>
                     <input id="password_confirmation" type="password" name="password_confirmation" required>
                 </div>
+                <p id="confirm-feedback" class="weak feedback"></p>
             </div>
             <button type="submit">{{ 'Sign Up' }}</button>
         </form>
     </div>
+    <script src="bower_components/zxcvbn/dist/zxcvbn.js"></script>
 </x-root-layout>
