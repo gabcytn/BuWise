@@ -44,7 +44,7 @@
                         <td>
                             @php
                                 $date = \Carbon\Carbon::parse($entry->date);
-                                $formattedDateTime = $date->format('F d, Y h:i A');
+                                $formattedDateTime = $date->format('F d, Y');
                             @endphp
                             <p>{{ $formattedDateTime }}</p>
                         </td>
