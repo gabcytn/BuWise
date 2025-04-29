@@ -33,7 +33,8 @@
                 </div>
                 <div class="headers-child search-box">
                     <form action="#" method="GET" id="search-form">
-                        <input id="search" name="search" type="text" placeholder="Search" required />
+                        <input value="{{ request()->query('search') }}" id="search" name="search" type="text"
+                            placeholder="Search" required />
                     </form>
                 </div>
             </div>

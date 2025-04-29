@@ -17,5 +17,6 @@
                     </tr>
                 @endforeach
             </x-table-management>
+            <a href="{{ url()->previous() }}" style="text-decoration: none;">Back</a>
     </div>
 </x-app-layout>
