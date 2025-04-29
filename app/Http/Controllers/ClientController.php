@@ -90,7 +90,7 @@ class ClientController extends Controller
         // $filename = $this->storeImageToAws($request);
 
         // Upload to Local:
-        $filename = $this->storeImageToLocal($request, $validated['profile_img']);
+        $filename = $this->storeImageToLocal($request, $validated['name']);
 
         $currentUser = $request->user();
         if ($currentUser->role_id === Role::ACCOUNTANT)
