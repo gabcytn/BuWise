@@ -87,11 +87,10 @@ class ClientController extends Controller
         ]);
 
         // Upload to AWS:
-        // $path = $request->file("profile_img")->store("images", "s3");
+        // $filename = $this->storeImageToAws($request);
 
-        $file = $request->file('profile_img');
-        $filename = $validated['name'] . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
+        // Upload to Local:
+        $filename = $this->storeImageToLocal($request, $validated['profile_img']);
 
         $currentUser = $request->user();
         if ($currentUser->role_id === Role::ACCOUNTANT)
@@ -182,5 +181,21 @@ class ClientController extends Controller
     {
         $path = $user->profile_img;
         Storage::disk('public')->delete('profiles/' . $path);
+        // Storage::delete('profile-images/' . $user->profile_img);
+    }
+
+    private function storeImageToAws(Request $request)
+    {
+        $path = $request->file('profile_img')->store('profile-images', 's3');
+        return basename($path);
+    }
+
+    private function storeImageToLocal(Request $request, $name): string
+    {
+        $file = $request->file('profile_img');
+        $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
+
+        return $filename;
     }
 }

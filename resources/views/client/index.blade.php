@@ -10,6 +10,13 @@
                     <td id="td-item-img"><img class="item-img"
                             src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" />
                     </td>
+                    @php
+                        // $imageUrl = \Illuminate\Support\Facades\Storage::temporaryUrl(
+                        // 'profile-images/' . $client->profile_img,
+                        // now()->addMinutes(5),
+                        // );
+                    @endphp
+                    <!-- <td id="td-item-img"><img class="item-img" src="imageUrl" alt="Profile Image"></td> -->
                     <td>
                         <p>{{ $client->name }}</p>
                     </td>
