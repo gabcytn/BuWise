@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\ProfileInformationController;
 use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -24,6 +25,9 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
             'user' => $request->user()
         ]);
     })->name('profile.edit');
+
+    Route::put('/user/profile-information', [ProfileInformationController::class, 'update'])
+        ->name('profile.update');
 
     // client related routes
     Route::resource('/clients', ClientController::class)

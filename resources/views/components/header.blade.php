@@ -5,7 +5,15 @@
         <div class="header-side">
             <i class="fa-solid fa-bell"></i>
             <div class="header-side__account" style="cursor: pointer;">
-                <img src="https://placehold.co/50" alt="Profile Image" />
+                @php
+                    $profileImg = request()->user()->profile_img;
+                    if ($profileImg) {
+                        $url = asset('storage/profiles/' . $profileImg);
+                    } else {
+                        $url = 'https://placehold.co/40';
+                    }
+                @endphp
+                <img src="{{ $url }}" alt="Profile Image" width="40" height="40" />
                 <div class="header-side__account--details">
                     <p id="account-name">{{ request()->user()->name }}</p>
                     <p id="account-role">{{ request()->user()->role->name }}</p>
