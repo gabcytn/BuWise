@@ -6,3 +6,4 @@ document.querySelector("#open-dialog-btn").addEventListener("click", () => {
 document.querySelector("#close-dialog-btn").addEventListener("click", () => {
     addCompanyDialog.close();
 });
+

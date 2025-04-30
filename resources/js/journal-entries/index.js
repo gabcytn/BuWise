@@ -1,4 +1,4 @@
-const tr = document.querySelectorAll(".table-row");
+const tr = document.querySelectorAll(".journal-row");
 const deleteEntryButtons = document.querySelectorAll(".action-column button");
 
 const confirmableDialog = document.querySelector(".confirmable-dialog");

@@ -2,6 +2,7 @@
     overflow: scroll;
     border-radius: 10px;
     margin: 1rem 0;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.15);
 }
 
 table {
@@ -21,17 +22,13 @@ th {
     color: var(--off-white);
 }
 
-tr:not(:last-child) td {
-    border-bottom: 3px solid var(--off-white);
-}
-
 tr td {
     padding: 1.5rem 0.5rem;
     text-align: center;
     font-size: 0.7rem;
 }
 
-.table-row:hover {
+.journal-row:hover {
     background-color: var(--off-white);
 }
 
@@ -55,7 +52,7 @@ tr td {
 
 @media (min-width: 768px) {
     th {
-        padding: 0.75rem;
+        padding: 1.15rem;
     }
 
     th,
@@ -64,7 +61,7 @@ tr td {
     }
 
     #td-item-img {
-        padding: 1rem 0;
+        padding: 0.75rem 0;
         display: flex;
         justify-content: center;
     }

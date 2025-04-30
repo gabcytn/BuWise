@@ -1,18 +1,19 @@
 @if ($paginator->hasPages())
+    @vite('resources/css/components/pagination.css')
     <nav>
         <ul class="pagination">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
-                <li class="disabled" aria-disabled="true"><span>@lang('pagination.previous')</span></li>
+                <li class="nav-btn disabled" aria-disabled="true"><a href="#">Previous</a></li>
             @else
-                <li><a href="{{ $paginator->previousPageUrl() }}" rel="prev">@lang('pagination.previous')</a></li>
+                <li class="nav-btn"><a href="{{ $paginator->previousPageUrl() }}" rel="prev">Previous</a></li>
             @endif
 
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
-                <li><a href="{{ $paginator->nextPageUrl() }}" rel="next">@lang('pagination.next')</a></li>
+                <li class="nav-btn"><a href="{{ $paginator->nextPageUrl() }}" rel="next">Next</a></li>
             @else
-                <li class="disabled" aria-disabled="true"><span>@lang('pagination.next')</span></li>
+                <li class="nav-btn disabled" aria-disabled="true"><a href="#">Next</a></li>
             @endif
         </ul>
     </nav>

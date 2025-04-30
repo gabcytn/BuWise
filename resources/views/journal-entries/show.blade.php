@@ -7,7 +7,7 @@
         <p>Description: {{ $description }}
         <p>
             <x-table-management :headers=$headers>
-                @foreach ($ledgerEntries as $entry)
+                @foreach ($ledgerEntries as $key => $entry)
                     <tr>
                         <td>{{ $entry->id }}</td>
                         <td>{{ $entry->account_name }}</td>

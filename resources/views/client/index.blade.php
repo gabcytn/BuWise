@@ -1,12 +1,12 @@
 @vite(['resources/js/client/index.js', 'resources/js/user-management/index.js'])
 @php
-    $headers = ['Logo', 'Company Name', 'TIN', 'Business Type', 'Email', 'Phone', 'Action'];
+    $headers = ['Logo', 'Company Name', 'Business Type', 'TIN', 'Email', 'Phone', 'Action'];
 @endphp
 <x-user-management title="Client Management" subtitle="Manage and access client records" buttonText="Add Company">
     @if (count($clients) > 0)
         <x-table-management :headers=$headers>
-            @foreach ($clients as $client)
-                <tr>
+            @foreach ($clients as $key => $client)
+                <tr data-row-number="{{ $key }}" class="striped">
                     <td id="td-item-img"><img class="item-img"
                             src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" />
                     </td>
@@ -21,10 +21,10 @@
                         <p>{{ $client->name }}</p>
                     </td>
                     <td>
-                        <p>{{ $client->tin }}</p>
+                        <p>{{ $client->client_type }}</p>
                     </td>
                     <td>
-                        <p>{{ $client->client_type }}</p>
+                        <p>{{ $client->tin }}</p>
                     </td>
                     <td>
                         <p>{{ $client->email }}</p>

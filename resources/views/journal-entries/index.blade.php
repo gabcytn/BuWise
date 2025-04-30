@@ -30,8 +30,8 @@
         @vite('resources/js/journal-entries/index.js')
         @if (count($entries) > 0)
             <x-table-management :headers=$headers>
-                @foreach ($entries as $entry)
-                    <tr class="table-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
+                @foreach ($entries as $key => $entry)
+                    <tr class="journal-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
                         <td>
                             <p>{{ $entry->id }}</p>
                         </td>

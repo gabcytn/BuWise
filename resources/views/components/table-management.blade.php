@@ -1,5 +1,5 @@
 @props(['headers'])
-@vite('resources/css/components/table-management.css')
+@vite(['resources/css/components/table-management.css', 'resources/js/components/table-management.js'])
 <div class="table-wrapper">
     <table class="table-management">
         <thead>
