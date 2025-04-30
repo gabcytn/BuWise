@@ -41,9 +41,13 @@
                     </tbody>
                     <tfoot>
                         <tr class="totals-row">
-                            <td colspan="2" style="text-align: right;">Totals:</td>
-                            <td id="totalDebits">0.00</td>
-                            <td id="totalCredits">0.00</td>
+                            <td colspan="2" style="text-align: right;"></td>
+                            <td id="totalDebits">
+                                <div style="margin-left: 0.5rem;">0.00</div>
+                            </td>
+                            <td id="totalCredits">
+                                <div style="margin-left: 0.5rem;">0.00</div>
+                            </td>
                             <td></td>
                         </tr>
                     </tfoot>

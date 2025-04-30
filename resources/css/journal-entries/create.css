@@ -38,7 +38,7 @@ input {
     padding: 0.15rem;
     border-radius: 0.25rem;
     font-size: 0.785rem;
-    border: 1px solid var(--off-white);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     background-color: var(--clear-white);
 }
 
@@ -67,7 +67,6 @@ textarea {
 
 .totals-row {
     font-weight: bold;
-    background-color: #f9f9f9;
 }
 
 .submit-btn {
