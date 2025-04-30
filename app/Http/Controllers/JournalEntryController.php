@@ -174,21 +174,28 @@ class JournalEntryController extends Controller
     public function show(JournalEntry $journalEntry)
     {
         Gate::authorize('view', $journalEntry);
-        $results = DB::table('ledger_entries')
-            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
-            ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
-            ->join('transaction_types', 'transaction_types.id', '=', 'ledger_entries.transaction_type_id')
-            ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
-            ->select(
-                'ledger_entries.id as id',
-                'ledger_accounts.name as account_name',
-                'account_groups.name as account_group_name',
-                'transaction_types.name as transaction_name',
-                DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
-                DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
-            )
-            ->where('journal_entry_id', $journalEntry->id)
-            ->get();
+
+        $cache = Cache::get('journal-' . $journalEntry->id, null);
+        if ($cache) {
+            $results = $cache;
+        } else {
+            $results = DB::table('ledger_entries')
+                ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
+                ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
+                ->join('transaction_types', 'transaction_types.id', '=', 'ledger_entries.transaction_type_id')
+                ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
+                ->select(
+                    'ledger_entries.id as id',
+                    'ledger_accounts.name as account_name',
+                    'account_groups.name as account_group_name',
+                    'transaction_types.name as transaction_name',
+                    DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
+                    DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
+                )
+                ->where('journal_entry_id', $journalEntry->id)
+                ->get();
+            Cache::set('journal-' . $journalEntry->id, $results);
+        }
         return view('journal-entries.show', [
             'description' => $journalEntry->description,
             'ledgerEntries' => $results,
