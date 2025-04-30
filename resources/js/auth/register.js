@@ -57,7 +57,7 @@ function clearFeedbackClassName() {
 }
 
 form.addEventListener("submit", (e) => {
-    if (zxcvbn(password.value).score <= 2) {
+    if (zxcvbn(password.value).score <= 2 || password.value !== confirmPassword.value) {
         e.preventDefault();
     }
 })
