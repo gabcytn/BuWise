@@ -9,7 +9,9 @@ use App\Models\LedgerEntry;
 use App\Models\Role;
 use App\Models\TransactionType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class JournalEntryController extends Controller
 {
@@ -20,8 +22,9 @@ class JournalEntryController extends Controller
      */
     public function index(Request $request)
     {
-        // TODO: authorize using Gate
         $user = $request->user();
+
+        Gate::authorize('viewAny', JournalEntry::class);
 
         $filter = $request->query('filter');
         if ($user->role_id === Role::ACCOUNTANT && !$filter) {
@@ -52,10 +55,11 @@ class JournalEntryController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     * @return \Illuminate\Contracts\View\View
      */
     public function create(Request $request)
     {
-        // TODO: authorize using Gate
+        Gate::authorize('create', JournalEntry::class);
         $user = $request->user();
         if ($user->role_id === Role::ACCOUNTANT) {
             $clients = $user->clients;
@@ -75,9 +79,11 @@ class JournalEntryController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', JournalEntry::class);
         $validated = $request->validate([
             'client_id' => ['required', 'uuid:4'],
             'invoice_id' => ['string'],
@@ -163,10 +169,11 @@ class JournalEntryController extends Controller
 
     /**
      * Display the specified resource.
+     * @return \Illuminate\Contracts\View\View
      */
     public function show(JournalEntry $journalEntry)
     {
-        // TODO: authorize using Gate
+        Gate::authorize('view', $journalEntry);
         $results = DB::table('ledger_entries')
             ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
             ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
@@ -209,7 +216,7 @@ class JournalEntryController extends Controller
      */
     public function destroy(JournalEntry $journalEntry)
     {
-        // TODO: authorize using Gate
+        Gate::authorize('delete', $journalEntry);
         JournalEntry::destroy($journalEntry->id);
         return to_route('journal-entries.index');
     }

@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\JournalEntry;
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
+
+class JournalEntryPolicy
+{
+    /**
+     * Determine whether the user can view any models.
+     * @return \Illuminate\Auth\Access\Response;
+     */
+    public function viewAny(User $user)
+    {
+        return $user->role_id !== Role::CLIENT
+            ? Response::allow()
+            : Response::denyAsNotFound();
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     * @return \Illuminate\Auth\Access\Response;
+     */
+    public function view(User $user, JournalEntry $journalEntry)
+    {
+        $roleId = $user->role_id;
+        if ($roleId === Role::ACCOUNTANT) {
+            return $journalEntry->client->accountant_id === $user->id
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        } else if ($roleId !== Role::CLIENT) {
+            $accId = $user->accountant->id;
+            return $journalEntry->client->accountant_id === $accId
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        }
+
+        return Response::denyAsNotFound();
+    }
+
+    /**
+     * Determine whether the user can create models.
+     * @return \Illuminate\Auth\Access\Response;
+     */
+    public function create(User $user)
+    {
+        return $user->role_id !== Role::CLIENT
+            ? Response::allow()
+            : Response::denyAsNotFound();
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, JournalEntry $journalEntry): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     * @return \Illuminate\Auth\Access\Response;
+     */
+    public function delete(User $user, JournalEntry $journalEntry)
+    {
+        return $this->view($user, $journalEntry);
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, JournalEntry $journalEntry): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, JournalEntry $journalEntry): bool
+    {
+        return false;
+    }
+}
