@@ -1,6 +1,6 @@
 <x-app-layout>
     @php
-        $headers = ['Journal ID', 'Client Name', 'Amount', 'Date', 'Action'];
+        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Amount', 'Date', 'Action'];
     @endphp
     <div class="container" style="max-width: 1250px; width: 90%; margin: 0 auto;">
         <h2 id="page-title" style="margin-top: 1.25rem;">Journal Entry</h2>
@@ -37,6 +37,9 @@
                         </td>
                         <td>
                             <p>{{ $entry->client->name }}</p>
+                        </td>
+                        <td>
+                            <p>{{ $entry->transactionType->name }}</p>
                         </td>
                         <td>
                             <p>&#8369;{{ $entry->ledger_entries_max_amount }}

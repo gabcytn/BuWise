@@ -31,6 +31,7 @@ class JournalEntryController extends Controller
             $entries = $user
                 ->clientsJournalEntries()
                 ->withMax('ledgerEntries', 'amount')
+                ->with('transactionType')
                 ->paginate(JournalEntryController::ITEMS_PER_PAGE);
         } else if ($user->role_id === Role::ACCOUNTANT && $filter) {
             $entries = $user
@@ -88,6 +89,7 @@ class JournalEntryController extends Controller
             'client_id' => ['required', 'uuid:4'],
             'invoice_id' => ['string'],
             'description' => ['required', 'string', 'max:255'],
+            'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
             'date' => ['required', 'date'],
         ]);
 
@@ -102,7 +104,6 @@ class JournalEntryController extends Controller
         foreach ($rowNumbers as $rowId) {
             $entry = [
                 'account' => $request->input("account_$rowId"),
-                'transaction_type' => $request->input("type_$rowId"),
                 'debit' => (float) $request->input("debit_$rowId", 0),
                 'credit' => (float) $request->input("credit_$rowId", 0),
             ];
@@ -137,6 +138,7 @@ class JournalEntryController extends Controller
             $journalEntry = JournalEntry::create([
                 'client_id' => $validated['client_id'],
                 'description' => $request->description ?? null,
+                'transaction_type_id' => $validated['transaction_type_id'],
                 'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
@@ -146,7 +148,6 @@ class JournalEntryController extends Controller
                 LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
                     'account_id' => $accountId,
-                    'transaction_type_id' => TransactionType::LOOKUP[$entry['transaction_type']],
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
                 ]);
@@ -182,13 +183,11 @@ class JournalEntryController extends Controller
             $results = DB::table('ledger_entries')
                 ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
                 ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
-                ->join('transaction_types', 'transaction_types.id', '=', 'ledger_entries.transaction_type_id')
                 ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
                 ->select(
                     'ledger_entries.id as id',
                     'ledger_accounts.name as account_name',
                     'account_groups.name as account_group_name',
-                    'transaction_types.name as transaction_name',
                     DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
                     DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
                 )
