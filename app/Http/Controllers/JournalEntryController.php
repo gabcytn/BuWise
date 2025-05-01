@@ -192,6 +192,7 @@ class JournalEntryController extends Controller
                     DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
                 )
                 ->where('journal_entry_id', $journalEntry->id)
+                ->orderByRaw('ledger_entries.id ASC')
                 ->get();
             Cache::set('journal-' . $journalEntry->id, $results);
         }
@@ -223,6 +224,7 @@ class JournalEntryController extends Controller
     public function destroy(JournalEntry $journalEntry)
     {
         Gate::authorize('delete', $journalEntry);
+        Cache::delete('journal-' . $journalEntry->id);
         JournalEntry::destroy($journalEntry->id);
         return to_route('journal-entries.index');
     }
