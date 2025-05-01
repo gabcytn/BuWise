@@ -51,6 +51,10 @@ tr td {
 }
 
 @media (min-width: 768px) {
+    .table-wrapper {
+        overflow: auto;
+    }
+
     th {
         padding: 1.15rem;
     }
