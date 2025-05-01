@@ -6,6 +6,14 @@
     text-wrap: balance;
 }
 
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
 img {
     max-width: 100%;
 }
@@ -149,6 +157,12 @@ section {
 }
 
 @media (min-width: 800px) {
+    main {
+        height: calc(100dvh - 5rem);
+        overflow-y: scroll;
+        padding-bottom: 1.5rem;
+    }
+
     .header-side__account {
         display: flex;
         align-items: center;
@@ -178,8 +192,10 @@ section {
     .nav-sm {
         position: static;
         border-right: 3px solid var(--off-white);
-        min-height: 100dvh;
-        min-width: 13rem;
+        /* min-height: 100dvh; */
+        height: 100dvh;
+        overflow: scroll;
+        min-width: 12rem;
         background-color: var(--clear-white);
         color: var(--soft-black);
         padding-top: 1rem;
