@@ -4,13 +4,14 @@
     $roleId = request()->user()->role_id;
     $routeName = request()->route()->getName();
 @endphp
+@vite('resources/js/components/nav.js')
 <nav class="nav-sm hidden">
     <div>
         <div class="nav-brand">
             <img src="{{ asset('images/nav-logo.png') }}" alt="Company Logo" id="nav-logo" />
             <h3 id="app-name">{{ config('app.name') }}</h3>
         </div>
-        <ul>
+        <ul class="nav-list">
             <div class="nav-section">
                 <div class="nav-section__item">
                     <li class="{{ request()->routeIs('dashboard') ? 'active-tab' : '' }}">
@@ -44,10 +45,30 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" class="nav-dropdown">
                             <i class="fa-solid fa-book-open"></i>
                             Ledger
                         </a>
+                        <ul class="dropdown-list">
+                            <li class="d-none">
+                                <a href="#">
+                                    <i class="fa-solid fa-receipt"></i>
+                                    COA
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="#">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                    Vendors
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="#">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                    Customers
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </div>
             </div>
