@@ -1,5 +1,5 @@
 .container {
-    max-width: 1250px;
+    max-width: 1000px;
     width: 90%;
     margin: 0 auto;
 }
@@ -83,7 +83,7 @@
 }
 
 #open-dialog-btn {
-    background-color: var(--green);
+    background-color: var(--main-blue);
     color: var(--off-white);
     padding: 0.5rem 1rem;
     border-radius: 5px;
@@ -123,5 +123,9 @@
     .filter-group {
         /* background-color: var(--clear-white); */
         flex: 1;
+    }
+
+    .delete-item-dialog button:hover {
+        opacity: 0.85;
     }
 }

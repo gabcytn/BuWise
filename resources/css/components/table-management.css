@@ -23,17 +23,20 @@ th {
 }
 
 tr td {
-    padding: 1.5rem 0.5rem;
+    padding: 0.75rem 0;
     text-align: center;
     font-size: 0.7rem;
 }
 
-.journal-row:hover {
+tbody tr+tr td {
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+tbody tr:hover {
     background-color: var(--off-white);
 }
 
 #td-item-img {
-    padding: 1rem 0;
     display: flex;
     justify-content: center;
 }
@@ -48,6 +51,10 @@ tr td {
     display: flex;
     gap: 0.5rem;
     justify-content: center;
+}
+
+.journal-row td {
+    padding: 1.25rem 0;
 }
 
 @media (min-width: 768px) {
@@ -65,7 +72,6 @@ tr td {
     }
 
     #td-item-img {
-        padding: 0.75rem 0;
         display: flex;
         justify-content: center;
     }
