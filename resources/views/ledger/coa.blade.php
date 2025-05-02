@@ -1,17 +1,18 @@
 @php
-    $headers = ['ACCOUNT NAME', 'ACCOUNT CODE', 'ACCOUNT TYPE'];
+    $headers = ['ACCOUNT CODE', 'ACCOUNT NAME', 'ACCOUNT TYPE'];
 @endphp
+@vite('resources/js/ledger/coa.js')
 <x-app-layout>
     <div class="container" style="max-width: 1000px; width: 90%; margin: 0 auto;">
-        <div style="display: flex; justify-content: space-between;">
-            <h2 id="page-title">All Accounts</h2>
-            <button>New account</button>
+        <div style="">
+            <h2 id="page-title" style="margin-top: 1.5rem;">All Accounts</h2>
+            <p style="font-size: 0.85rem;">View and manage all ledger accounts</p>
         </div>
         <x-table-management :headers=$headers>
             @foreach ($accounts as $account)
-                <tr>
-                    <td>{{ $account->name }}</td>
+                <tr data-account-code="{{ $account->id }}" class="ledger-account" style="cursor: pointer;">
                     <td>{{ $account->id }}</td>
+                    <td>{{ $account->name }}</td>
                     <td>{{ ucfirst($account->accountGroup->name) }}</td>
                 </tr>
             @endforeach
