@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JournalEntryCreated;
 use App\Models\EntryType;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
@@ -142,18 +143,23 @@ class JournalEntryController extends Controller
                 'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
+            $ledgerEntries = [];
             // Create individual journal lines
             foreach ($journalEntries as $entry) {
                 $accountId = substr($entry['account'], 0, 4);
-                LedgerEntry::create([
+                $ledgerEntry = LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
                     'account_id' => $accountId,
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
                 ]);
+                $ledgerEntries[] = $ledgerEntry;
             }
 
             DB::commit();
+
+            // update cache
+            JournalEntryCreated::dispatch($journalEntry, $ledgerEntries);
 
             return redirect()
                 ->route('journal-entries.index')
