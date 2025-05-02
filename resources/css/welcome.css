@@ -242,6 +242,7 @@ main {
 
 
     .active-tab {
+        color: var(--clear-white) !important;
         background-color: var(--main-blue);
     }
 

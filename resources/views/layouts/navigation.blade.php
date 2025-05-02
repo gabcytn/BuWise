@@ -44,8 +44,9 @@
                             Journals
                         </a>
                     </li>
-                    <li>
-                        <a href="#" class="nav-dropdown">
+                    <li class="">
+                        <a href="#"
+                            class="nav-dropdown {{ in_array($routeName, ['ledger.coa', 'ledger.coa.show']) ? 'active-tab' : '' }}">
                             <i class="fa-solid fa-book-open"></i>
                             Ledger
                         </a>

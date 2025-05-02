@@ -8,6 +8,17 @@
             <h2 id="page-title" style="margin-top: 1.5rem;">All Accounts</h2>
             <p style="font-size: 0.85rem;">View and manage all ledger accounts</p>
         </div>
+        <div class="" style="margin-top: 1rem;">
+            <form action="" method="GET" id="ledger-form">
+                <select id="client-select" required>
+                    <option value="" selected disabled>Select a client</option>
+                    <!-- TODO: fix clients for non-accountants -->
+                    @foreach (request()->user()->clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
         <x-table-management :headers=$headers>
             @foreach ($accounts as $account)
                 <tr data-account-code="{{ $account->id }}" class="ledger-account" style="cursor: pointer;">
@@ -17,6 +28,5 @@
                 </tr>
             @endforeach
         </x-table-management>
-        {{ $accounts->links() }}
     </div>
 </x-app-layout>
