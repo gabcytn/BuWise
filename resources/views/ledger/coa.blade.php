@@ -1,5 +1,11 @@
 @php
     $headers = ['ACCOUNT CODE', 'ACCOUNT NAME', 'ACCOUNT TYPE'];
+    $user = request()->user();
+    if ($user->role_id === \App\Models\Role::ACCOUNTANT) {
+        $clients = $user->clients;
+    } else {
+        $clients = $user->accountant->clients;
+    }
 @endphp
 @vite('resources/js/ledger/coa.js')
 <x-app-layout>
@@ -12,8 +18,7 @@
             <form action="" method="GET" id="ledger-form">
                 <select id="client-select" required>
                     <option value="" selected disabled>Select a client</option>
-                    <!-- TODO: fix clients for non-accountants -->
-                    @foreach (request()->user()->clients as $client)
+                    @foreach ($clients as $client)
                         <option value="{{ $client->id }}">{{ $client->name }}</option>
                     @endforeach
                 </select>
