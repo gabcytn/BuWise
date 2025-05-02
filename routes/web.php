@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\ProfileInformationController;
 use App\Http\Middleware\EnableMFA;
 use App\Models\User;
@@ -40,6 +41,9 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     // journal entries
     Route::resource('/journal-entries', JournalEntryController::class)
         ->only(['index', 'create', 'store', 'show', 'destroy']);
+
+    Route::get('/ledger/chart-of-accounts', [LedgerAccountController::class, 'chartOfAccounts'])
+        ->name('ledger.coa');
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {

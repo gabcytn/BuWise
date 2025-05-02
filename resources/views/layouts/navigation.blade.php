@@ -51,7 +51,7 @@
                         </a>
                         <ul class="dropdown-list">
                             <li class="d-none">
-                                <a href="#">
+                                <a href="{{ route('ledger.coa') }}">
                                     <i class="fa-solid fa-receipt"></i>
                                     COA
                                 </a>
