@@ -187,6 +187,7 @@ class JournalEntryController extends Controller
                 ->select(
                     'ledger_entries.id as id',
                     'ledger_accounts.name as account_name',
+                    'ledger_accounts.id as account_code',
                     'account_groups.name as account_group_name',
                     DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
                     DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
