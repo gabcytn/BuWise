@@ -13,20 +13,32 @@
         </select>
         <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
             @csrf
-            <input type="date" name="date" id="date" style="margin-bottom: 0.5rem;" />
-            <select name="client_id" required="" style="margin-bottom: 0.5rem;">
-                <option value="" disabled selected>Select a client</option>
-                @foreach ($clients as $client)
-                    <option value="{{ $client->id }}">{{ $client->name }}</option>
-                @endforeach
-            </select>
-            <textarea name="description" rows="3" placeholder="Description" required></textarea>
-            <select required name="transaction_type_id" style="margin-top: 0.5rem;">
-                <option value="" selected disabled>Select a transaction type</option>
-                @foreach ($transactionTypes as $transactionType)
-                    <option value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
-                @endforeach
-            </select>
+            <div class="input-wrapper">
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" />
+            </div>
+            <div class="input-wrapper">
+                <label for="client-select">Client</label>
+                <select name="client_id" id="client-select" required="">
+                    <option value="" disabled selected>Select a client</option>
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="input-wrapper">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="input-wrapper">
+                <label for="transaction-type">Transaction Type</label>
+                <select required id="transaction-type" name="transaction_type_id">
+                    <option value="" selected disabled>Select a transaction type</option>
+                    @foreach ($transactionTypes as $transactionType)
+                        <option value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="table-wrapper">
                 <table id="journalTable">
                     <thead>

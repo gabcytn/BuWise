@@ -164,12 +164,13 @@ section {
     margin-top: 0.5rem;
 }
 
+main {
+    height: calc(100dvh - 5rem);
+    overflow-y: scroll;
+    padding-bottom: 1.5rem;
+}
+
 @media (min-width: 800px) {
-    main {
-        height: calc(100dvh - 5rem);
-        overflow-y: scroll;
-        padding-bottom: 1.5rem;
-    }
 
     .header-side__account {
         display: flex;

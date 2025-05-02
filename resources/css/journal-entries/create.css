@@ -20,6 +20,14 @@
     border-collapse: collapse;
 }
 
+.input-wrapper label {
+    font-size: 0.85rem;
+}
+
+.input-wrapper+.input-wrapper {
+    margin-top: 0.5rem;
+}
+
 th {
     background-color: var(--off-white);
     padding: 0 0.65rem;
