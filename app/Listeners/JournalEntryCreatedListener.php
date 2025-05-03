@@ -29,7 +29,6 @@ class JournalEntryCreatedListener implements ShouldQueue
                     ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
                     ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
                     ->join('journal_entries', 'journal_entries.id', '=', 'ledger_entries.journal_entry_id')
-                    ->leftJoin('accounts_opening_balance', 'accounts_opening_balance.ledger_account_id', '=', 'ledger_accounts.id')
                     ->join('users', 'journal_entries.client_id', '=', 'users.id')
                     ->select(
                         'journal_entries.id as journal_id',
@@ -39,7 +38,6 @@ class JournalEntryCreatedListener implements ShouldQueue
                         'users.email as client_email',
                         'ledger_accounts.name as acc_name',
                         'account_groups.name as acc_group',
-                        DB::raw('CASE WHEN accounts_opening_balance.initial_balance IS NULL THEN 0 ELSE initial_balance END'),
                         DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
                         DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
                     )
