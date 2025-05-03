@@ -1,6 +1,10 @@
 <x-app-layout>
     @php
-        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Amount', 'Date', 'Action'];
+        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Description', 'Amount', 'Date', 'Action'];
+        function truncate($text, $max = 50)
+        {
+            return strlen($text) > 50 ? substr($text, 0, $max) . '...' : $text;
+        }
     @endphp
 
     @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js'])
@@ -41,6 +45,9 @@
                         </td>
                         <td>
                             <p>{{ $entry->transactionType->name }}</p>
+                        </td>
+                        <td>
+                            <p>{{ truncate($entry->description) }}</p>
                         </td>
                         <td>
                             <p>&#8369;{{ $entry->ledger_entries_max_amount }}
