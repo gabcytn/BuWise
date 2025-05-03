@@ -55,37 +55,14 @@ class LedgerAccountController extends Controller
                 ->get();
         });
 
-        $initialBalance = DB::table('accounts_opening_balance')
-            ->join('users', 'users.id', '=', 'accounts_opening_balance.client_id')
-            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'accounts_opening_balance.ledger_account_id')
-            ->join('entry_types', 'entry_types.id', '=', 'accounts_opening_balance.entry_type_id')
-            ->select(
-                'accounts_opening_balance.initial_balance',
-                'entry_types.name as entry_type_name',
-            )
-            ->where('users.id', $user->id)
-            ->where('ledger_accounts.id', $ledgerAccount->id)
-            ->first();
+        $initialBalance = $this->getInitialBalance($user->id, $ledgerAccount->id);
+        $arr = $this->calculateTotalDebitsAndCredits($data, $initialBalance);
 
-        $totalDebits = 0;
-        $totalCredits = 0;
-        foreach ($data as $datum) {
-            $credit = $datum->credit ?? 0;
-            $debit = $datum->debit ?? 0;
-            $totalCredits += $credit;
-            $totalDebits += $debit;
-        }
-
-        $initial = is_null($initialBalance) ? 0 : $initialBalance->initial_balance;
-        $entry = is_null($initialBalance) ? 'credit' : $initialBalance->entry_type_name;
-        if ($entry === 'credit') {
-            $totalCredits += $initial;
-        } else {
-            $totalDebits += $initial;
-        }
+        $totalDebits = $arr[0];
+        $totalCredits = $arr[1];
+        $initial = $arr[2];
 
         $overall = abs($totalCredits - $totalDebits);
-        $unit = $totalDebits > $totalCredits ? 'Dr' : 'Cr';
 
         return view('ledger.show_acc', [
             'account' => $ledgerAccount,
@@ -129,5 +106,50 @@ class LedgerAccountController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    /*
+     * @* @param string $userId a valid uuid of a user
+     * @* @param int $ledgerAccountId an id of a valid ledger account
+     * @return ?Illuminate\Database\Concerns\TValue;
+     */
+    private function getInitialBalance(string $userId, int $ledgerAccountId)
+    {
+        return DB::table('accounts_opening_balance')
+            ->join('users', 'users.id', '=', 'accounts_opening_balance.client_id')
+            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'accounts_opening_balance.ledger_account_id')
+            ->join('entry_types', 'entry_types.id', '=', 'accounts_opening_balance.entry_type_id')
+            ->select(
+                'accounts_opening_balance.initial_balance',
+                'entry_types.name as entry_type_name',
+            )
+            ->where('users.id', $userId)
+            ->where('ledger_accounts.id', $ledgerAccountId)
+            ->first();
+    }
+
+    /*
+     * @return array<int>
+     */
+    private function calculateTotalDebitsAndCredits($data, $initialBalance)
+    {
+        $totalDebits = 0;
+        $totalCredits = 0;
+        foreach ($data as $datum) {
+            $credit = $datum->credit ?? 0;
+            $debit = $datum->debit ?? 0;
+            $totalCredits += $credit;
+            $totalDebits += $debit;
+        }
+
+        $initial = is_null($initialBalance) ? 0 : $initialBalance->initial_balance;
+        $entry = is_null($initialBalance) ? 'credit' : $initialBalance->entry_type_name;
+        if ($entry === 'credit') {
+            $totalCredits += $initial;
+        } else {
+            $totalDebits += $initial;
+        }
+
+        return [$totalDebits, $totalCredits, $initial];
     }
 }
