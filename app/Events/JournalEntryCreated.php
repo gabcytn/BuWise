@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\JournalEntry;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -21,7 +22,7 @@ class JournalEntryCreated
      * @* @param array $ledgerEntries
      */
     public function __construct(
-        public JournalEntry $journalEntry,
+        public string $clientId,
         public array $ledgerEntries,
     ) {
         //

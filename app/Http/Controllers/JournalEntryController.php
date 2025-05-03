@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class JournalEntryController extends Controller
 {
@@ -159,7 +160,7 @@ class JournalEntryController extends Controller
             DB::commit();
 
             // update cache
-            JournalEntryCreated::dispatch($journalEntry, $ledgerEntries);
+            JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
 
             return redirect()
                 ->route('journal-entries.index')
@@ -226,13 +227,28 @@ class JournalEntryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(JournalEntry $journalEntry)
     {
         Gate::authorize('delete', $journalEntry);
-        Cache::delete('journal-' . $journalEntry->id);
-        JournalEntry::destroy($journalEntry->id);
+        try {
+            Cache::delete('journal-' . $journalEntry->id);
+
+            $arr = [];
+            foreach ($journalEntry->ledgerEntries as $data) {
+                $arr[] = $data;
+            }
+
+            // update coa cache
+            JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
+
+            JournalEntry::destroy($journalEntry->id);
+        } catch (\Exception $e) {
+            Log::emergency('Exception while destroying a journal entry');
+            Log::emergency($e->getMessage());
+            Log::emergency($e->getTraceAsString());
+        }
         return to_route('journal-entries.index');
     }
 }
