@@ -20,12 +20,17 @@
     border-collapse: collapse;
 }
 
-.input-wrapper label {
-    font-size: 0.85rem;
+.row {
+    display: flex;
+    gap: 1rem;
 }
 
-.input-wrapper+.input-wrapper {
-    margin-top: 0.5rem;
+.row>* {
+    width: 100%;
+}
+
+.input-wrapper label {
+    font-size: 0.85rem;
 }
 
 th {

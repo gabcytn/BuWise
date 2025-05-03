@@ -1,9 +1,10 @@
 @php
     $headers = ['Date', 'Description', 'Transaction Type', 'Account Name', 'Account Group', 'Debit', 'Credit'];
 @endphp
+@vite(['resources/css/ledger/showAcc.css', 'resources/js/ledger/showAcc.js'])
 <x-app-layout>
-    <div class="container" style="max-width: 1000px; width: 90%; margin: 0 auto;">
-        <div style="display: flex; justify-content: space-between;">
+    <div class="container">
+        <div class="title-row">
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
             <button id="set-initial-balance-btn">Set Initial Balance</button>
         </div>
@@ -37,7 +38,7 @@
                 <td><strong>{{ number_format($total_debits, 2) }}</strong></td>
                 <td><strong>{{ number_format($total_credits, 2) }}</strong></td>
             </tr>
-            <tr style="background-color: var(--off-white);">
+            <tr class="bg-off-white">
                 <td></td>
                 <td><strong>Closing balance</strong></td>
                 <td></td>
@@ -52,29 +53,16 @@
         </form>
     </div>
     <dialog id="set-initial-balance-dialog">
-        <form action="" method="POST" style="flex-direction: column; gap: 1rem;">
+        <form action="" method="POST">
             @csrf
             <div class="input-box">
-                <label style="font-size: 0.85rem;" for="initial-balance">Current initial balance</label>
+                <label for="initial-balance">Current initial balance</label>
                 <input value="{{ $initial_balance }}" name="initial_balance" id="initial-balance" />
             </div>
-            <p style="color: red; font-size: 0.85rem;">NOTE: this will set the VERY initial balance of this account and
-                will affect the reports.</p>
+            <p id="note-message">NOTE: this will set the VERY initial balance of this account and will affect the
+                reports.</p>
             <button type="submit">Submit anyway</button>
             <button type="button">Cancel</button>
         </form>
     </dialog>
-    <script>
-        const btn = document.querySelector("#set-initial-balance-btn");
-        const cancelBtn = document.querySelector("#set-initial-balance-dialog button[type='button']");
-        const dialog = document.querySelector("#set-initial-balance-dialog");
-
-        btn.addEventListener("click", () => {
-            dialog.showModal();
-        })
-
-        cancelBtn.addEventListener("click", () => {
-            dialog.close();
-        })
-    </script>
 </x-app-layout>

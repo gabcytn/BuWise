@@ -1,0 +1,33 @@
+.container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bg-off-white {
+    background-color: var(--off-white);
+}
+
+#set-initial-balance-dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#set-initial-balance-dialog form button:hover {
+    opacity: 0.85;
+}
+
+#set-initial-balance-dialog .input-box label {
+    font-size: 0.85rem;
+}
+
+#note-message {
+    color: red;
+    font-size: 0.85rem;
+}
