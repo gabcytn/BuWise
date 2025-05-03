@@ -29,11 +29,13 @@ class JournalEntryCreatedListener implements ShouldQueue
                     ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
                     ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
                     ->join('journal_entries', 'journal_entries.id', '=', 'ledger_entries.journal_entry_id')
+                    ->join('transaction_types', 'transaction_types.id', '=', 'journal_entries.transaction_type_id')
                     ->join('users', 'journal_entries.client_id', '=', 'users.id')
                     ->select(
                         'journal_entries.id as journal_id',
                         'journal_entries.description as journal_description',
                         'journal_entries.date as journal_date',
+                        'transaction_types.name as transaction_type',
                         'users.name as client_name',
                         'users.email as client_email',
                         'ledger_accounts.name as acc_name',
