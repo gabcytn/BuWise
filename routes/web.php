@@ -44,7 +44,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     Route::get('/ledger/chart-of-accounts', [LedgerAccountController::class, 'chartOfAccounts'])
         ->name('ledger.coa');
-    Route::get('/ledger/chart-of-accounts/{user}/{ledgerAccount}', [LedgerAccountController::class, 'showAccount'])
+    Route::get('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'showAccount'])
         ->name('ledger.coa.show');
 
     Route::get('/enable-2fa', function (Request $request) {

@@ -9,7 +9,7 @@ ledgerAccounts.forEach((account) => {
         if (clientSelect.value === "") {
             mainForm.reportValidity();
         } else {
-            mainForm.action = `${location.pathname}/${clientSelect.value}/${accountCode}`
+            mainForm.action = `${location.pathname}/${accountCode}/${clientSelect.value}`
             mainForm.submit();
         }
     })

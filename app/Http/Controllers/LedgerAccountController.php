@@ -25,7 +25,7 @@ class LedgerAccountController extends Controller
     /**
      * @return \Illuminate\Contracts\View\View
      */
-    public function showAccount(User $user, LedgerAccount $ledgerAccount)
+    public function showAccount(LedgerAccount $ledgerAccount, User $user)
     {
         $data = Cache::remember('coa-' . $user->id . '-' . $ledgerAccount->id, 5, function () use ($user, $ledgerAccount) {
             return DB::table('ledger_entries')
