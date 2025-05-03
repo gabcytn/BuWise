@@ -45,19 +45,29 @@
                 <td></td>
                 <td></td>
                 <td><strong>{{ $total_debits > $total_credits ? $overall : '' }}</strong></td>
-                <td><strong>{{ $total_credits > $total_debits ? $overall : '' }}</strong></td>
+                <td><strong>{{ $total_credits >= $total_debits ? $overall : '' }}</strong></td>
             </tr>
         </x-table-management>
-        <form action="{{ url()->previous() }}">
+        @if ($errors->any())
+            <p style="color: red; font-size: 0.85rem;">{{ $errors->first() }}</p>
+        @endif
+        <form action="{{ route('ledger.coa') }}">
             <button type="submit">Back</button>
         </form>
     </div>
     <dialog id="set-initial-balance-dialog">
-        <form action="" method="POST">
+        <form action="{{ route('ledger.coa.update_initial', [$account, $user]) }}" method="POST">
             @csrf
-            <div class="input-box">
-                <label for="initial-balance">Current initial balance</label>
+            <label for="initial-balance">Current initial balance</label>
+            <div class="input-wrapper">
                 <input value="{{ $initial_balance }}" name="initial_balance" id="initial-balance" />
+                <div class="select-wrapper">
+                    <select required id="entry-type-select" name="entry_type_id">
+                        <option value="" selected disabled>Select an entry type</option>
+                        <option value="{{ \App\Models\EntryType::DEBIT }}">Debit</option>
+                        <option value="{{ \App\Models\EntryType::CREDIT }}">Credit</option>
+                    </select>
+                </div>
             </div>
             <p id="note-message">NOTE: this will set the VERY initial balance of this account and will affect the
                 reports.</p>

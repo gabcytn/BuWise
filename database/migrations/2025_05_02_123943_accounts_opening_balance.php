@@ -19,6 +19,8 @@ return new class extends Migration {
 
             $table->foreign('ledger_account_id')->references('id')->on('ledger_accounts')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('entry_type_id')->references('id')->on('entry_types')->cascadeOnUpdate()->cascadeOnDelete();
+
+            $table->unique(['ledger_account_id', 'client_id']);
         });
     }
 

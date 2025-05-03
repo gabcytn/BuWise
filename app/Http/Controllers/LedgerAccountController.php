@@ -99,43 +99,35 @@ class LedgerAccountController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
+    /*
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function setInitialBalance(Request $request, LedgerAccount $ledgerAccount, User $user)
     {
-        //
-    }
+        $request->validate([
+            'initial_balance' => ['required', 'numeric', 'min:0'],
+            'entry_type_id' => ['required', 'numeric', 'min:1', 'max:2'],
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(LedgerAccount $ledgerAccount)
-    {
-        //
-    }
+        try {
+            DB::table('accounts_opening_balance')
+                ->upsert(
+                    [
+                        'client_id' => $user->id,
+                        'ledger_account_id' => $ledgerAccount->id,
+                        'initial_balance' => $request->initial_balance,
+                        'entry_type_id' => $request->entry_type_id,
+                    ],
+                    ['client_id', 'ledger_account_id'],
+                    ['initial_balance', 'entry_type_id']
+                );
+        } catch (\Exception $e) {
+            Log::warning('Error occured while updating initial balance of an account');
+            return redirect()->back()->withInput()->withErrors([
+                'database' => 'Failed to validate request: ' . $e->getMessage(),
+            ]);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(LedgerAccount $ledgerAccount)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, LedgerAccount $ledgerAccount)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LedgerAccount $ledgerAccount)
-    {
-        //
+        return redirect()->back();
     }
 }

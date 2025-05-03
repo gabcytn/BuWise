@@ -19,11 +19,34 @@
     gap: 1rem;
 }
 
+#set-initial-balance-dialog .input-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#initial-balance {
+    width: 70%;
+    margin-right: 0.5rem;
+}
+
+.select-wrapper {
+    width: 30%;
+}
+
+.input-wrapper select {
+    height: 100%;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: var(--clear-white);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
 #set-initial-balance-dialog form button:hover {
     opacity: 0.85;
 }
 
-#set-initial-balance-dialog .input-box label {
+#set-initial-balance-dialog .input-wrapper label {
     font-size: 0.85rem;
 }
 

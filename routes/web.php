@@ -42,10 +42,13 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::resource('/journal-entries', JournalEntryController::class)
         ->only(['index', 'create', 'store', 'show', 'destroy']);
 
+    // ledger routes
     Route::get('/ledger/chart-of-accounts', [LedgerAccountController::class, 'chartOfAccounts'])
         ->name('ledger.coa');
     Route::get('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'showAccount'])
         ->name('ledger.coa.show');
+    Route::post('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'setInitialBalance'])
+        ->name('ledger.coa.update_initial');
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
