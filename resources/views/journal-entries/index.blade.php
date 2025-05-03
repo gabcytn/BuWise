@@ -1,10 +1,6 @@
 <x-app-layout>
     @php
         $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Description', 'Amount', 'Date', 'Action'];
-        function truncate($text, $max = 50)
-        {
-            return strlen($text) > 50 ? substr($text, 0, $max) . '...' : $text;
-        }
     @endphp
 
     @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js'])
@@ -53,11 +49,7 @@
                             <p>&#8369;{{ $entry->ledger_entries_max_amount }}
                         </td>
                         <td>
-                            @php
-                                $date = \Carbon\Carbon::parse($entry->date);
-                                $formattedDateTime = $date->format('F d, Y');
-                            @endphp
-                            <p>{{ $formattedDateTime }}</p>
+                            <p>{{ formatDate($entry->date) }}</p>
                         </td>
                         <td class="action-column">
                             <div>
