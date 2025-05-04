@@ -29,7 +29,8 @@ class LedgerAccountController extends Controller
      */
     public function showAccount(LedgerAccount $ledgerAccount, User $user)
     {
-        $data = Cache::remember('coa-' . $user->id . '-' . $ledgerAccount->id, 5, function () use ($user, $ledgerAccount) {
+        $data = Cache::remember('coa-' . $user->id . '-' . $ledgerAccount->id, 60, function () use ($user, $ledgerAccount) {
+            Log::info('Recalculating COA cache...');
             return DB::table('ledger_entries')
                 ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
                 ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')

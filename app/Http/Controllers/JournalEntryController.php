@@ -183,11 +183,9 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('view', $journalEntry);
 
-        $cache = Cache::get('journal-' . $journalEntry->id, null);
-        if ($cache) {
-            $results = $cache;
-        } else {
-            $results = DB::table('ledger_entries')
+        $results = Cache::rememberForever('journal-' . $journalEntry->id, function () use ($journalEntry) {
+            Log::info('Calculating journal entry cache...');
+            return DB::table('ledger_entries')
                 ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
                 ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
                 ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
@@ -202,8 +200,8 @@ class JournalEntryController extends Controller
                 ->where('journal_entry_id', $journalEntry->id)
                 ->orderByRaw('ledger_entries.id ASC')
                 ->get();
-            Cache::set('journal-' . $journalEntry->id, $results);
-        }
+        });
+
         return view('journal-entries.show', [
             'description' => $journalEntry->description,
             'ledgerEntries' => $results,

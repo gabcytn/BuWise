@@ -47,7 +47,7 @@ class JournalEntryCreatedListener implements ShouldQueue
                     ->where('journal_entries.client_id', $userId)
                     ->orderByRaw('journal_entries.date DESC')
                     ->get();
-                Cache::set('coa-' . $userId . '-' . $ledgerEntry->account_id, $result);
+                Cache::put('coa-' . $userId . '-' . $ledgerEntry->account_id, $result, $seconds = 60);
             } catch (\Exception $e) {
                 Log::emergency('Exception while updating COA cache');
                 Log::emergency($e->getMessage());
