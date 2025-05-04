@@ -94,9 +94,11 @@ class LedgerAccountController extends Controller
                         'ledger_account_id' => $ledgerAccount->id,
                         'initial_balance' => $request->initial_balance,
                         'entry_type_id' => $request->entry_type_id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ],
                     ['client_id', 'ledger_account_id'],
-                    ['initial_balance', 'entry_type_id']
+                    ['initial_balance', 'entry_type_id', 'updated_at']
                 );
         } catch (\Exception $e) {
             Log::warning('Error occured while updating initial balance of an account');
