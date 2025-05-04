@@ -8,6 +8,19 @@
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
             <button id="set-initial-balance-btn">Set Initial Balance</button>
         </div>
+        <form action="" method="GET">
+            <select required name="date_range" id="date-range-select">
+                <option value="all_time">All time</option>
+                <option value="this_year">This year</option>
+                <option value="this_month">This month</option>
+                <option value="this_week">This week</option>
+                <option value="previous_year">Previous year</option>
+                <option value="previous_month">Previous month</option>
+                <option value="previous_week">Previous week</option>
+                <option value="custom" id="custom-option">Custom</option>
+            </select>
+            <button type="submit">Run</button>
+        </form>
         <x-table-management :headers=$headers>
             <tr>
                 <td></td>
@@ -75,4 +88,16 @@
             <button type="button">Cancel</button>
         </form>
     </dialog>
+    <dialog id="set-custom-date-range-dialog">
+        <h2>Choose starting and ending date</h2>
+        <form id="date-range-form">
+            <div class="date-input-wrapper">
+                <input type="date" name="start" id="start" required />
+                <input type="date" name="end" id="end" required />
+            </div>
+            <div class="submit-btn-wrapper">
+                <button type="submit">Run</button>
+                <button type="button">Cancel</button>
+            </div>
+        </form>
 </x-app-layout>
