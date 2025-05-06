@@ -26,9 +26,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ $opening_entry_type === \App\Models\EntryType::DEBIT ? number_format($initial_balance, 2) : '' }}
+                <td>{{ $opening_entry_type === \App\Models\EntryType::DEBIT ? number_format($opening_balance, 2) : '' }}
                 </td>
-                <td>{{ $opening_entry_type === \App\Models\EntryType::CREDIT ? number_format($initial_balance, 2) : '' }}
+                <td>{{ $opening_entry_type === \App\Models\EntryType::CREDIT ? number_format($opening_balance, 2) : '' }}
                 </td>
             </tr>
             @foreach ($data as $datum)
