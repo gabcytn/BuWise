@@ -12,6 +12,22 @@ class AccountGroup extends Model
     public const REVENUE = 4;
     public const EXPENSES = 5;
 
+    public const IS_TEMPORARY = [
+        AccountGroup::ASSETS => false,
+        AccountGroup::LIABILITIES => false,
+        AccountGroup::EQUITY => false,
+        AccountGroup::REVENUE => true,
+        AccountGroup::EXPENSES => true,
+    ];
+
+    public const IS_PERMANENT = [
+        AccountGroup::ASSETS => true,
+        AccountGroup::LIABILITIES => true,
+        AccountGroup::EQUITY => true,
+        AccountGroup::REVENUE => false,
+        AccountGroup::EXPENSES => false,
+    ];
+
     protected $fillable = [
         'name',
     ];
