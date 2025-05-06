@@ -232,6 +232,9 @@ class JournalEntryController extends Controller
         Gate::authorize('delete', $journalEntry);
         try {
             Cache::delete('journal-' . $journalEntry->id);
+            DB::table('cache')
+                ->where('key', 'like', 'coa-' . $journalEntry->client_id)
+                ->delete();
 
             $arr = [];
             foreach ($journalEntry->ledgerEntries as $data) {
