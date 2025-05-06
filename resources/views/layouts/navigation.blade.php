@@ -52,20 +52,20 @@
                         </a>
                         <ul class="dropdown-list">
                             <li class="d-none">
-                                <a href="{{ route('ledger.coa') }}">
-                                    <i class="fa-solid fa-receipt"></i>
-                                    COA
+                                <a href="{{ route('ledger.coa') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    Ledger Summary
                                 </a>
                             </li>
                             <li class="d-none">
-                                <a href="#">
-                                    <i class="fa-solid fa-user-tie"></i>
+                                <a href="#" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-user-tie" style="width: auto;"></i>
                                     Vendors
                                 </a>
                             </li>
                             <li class="d-none">
-                                <a href="#">
-                                    <i class="fa-solid fa-user-tie"></i>
+                                <a href="#" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-user-tie" style="width: auto;"></i>
                                     Customers
                                 </a>
                             </li>
