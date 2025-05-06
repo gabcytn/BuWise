@@ -6,21 +6,19 @@
     <div class="container">
         <div class="title-row">
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
-            <button id="set-initial-balance-btn">Set Initial Balance</button>
+            @if (\App\Models\AccountGroup::IS_PERMANENT[$account->account_group_id])
+                <button id="set-initial-balance-btn">Set Initial Balance</button>
+            @endif
         </div>
-        <form action="" method="GET">
-            <select required name="date_range" id="date-range-select">
-                <option value="all_time">All time</option>
-                <option value="this_year">This year</option>
-                <option value="this_month">This month</option>
-                <option value="this_week">This week</option>
-                <option value="previous_year">Previous year</option>
-                <option value="previous_month">Previous month</option>
-                <option value="previous_week">Previous week</option>
-                <option value="custom" id="custom-option">Custom</option>
-            </select>
-            <button type="submit">Run</button>
-        </form>
+        <select required name="date_range" id="date-range-select">
+            @if (request()->query('start') && request()->query('end'))
+                <option selected value="custom" id="custom-option">Custom</option>
+                <option value="all_time" id="alltime-option">All time</option>
+            @else
+                <option selected value="all_time" id="alltime-option">All time</option>
+                <option id="custom-option" value="custom">Custom</option>
+            @endif
+        </select>
         <x-table-management :headers=$headers>
             <tr>
                 <td></td>
@@ -28,19 +26,23 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ $entry_type === 'debit' ? number_format($initial_balance, 2) : '' }}</td>
-                <td>{{ $entry_type === 'credit' ? number_format($initial_balance, 2) : '' }}</td>
+                <td>{{ $opening_entry_type === \App\Models\EntryType::DEBIT ? number_format($initial_balance, 2) : '' }}
+                </td>
+                <td>{{ $opening_entry_type === \App\Models\EntryType::CREDIT ? number_format($initial_balance, 2) : '' }}
+                </td>
             </tr>
             @foreach ($data as $datum)
-                <tr>
-                    <td>{{ formatDate($datum->journal_date) }}</td>
-                    <td>{{ truncate($datum->journal_description) }}</td>
-                    <td>{{ $datum->transaction_type }}</td>
-                    <td>{{ $datum->acc_name }}</td>
-                    <td>{{ ucfirst($datum->acc_group) }}</td>
-                    <td>{{ $datum->debit ? number_format($datum->debit, 2) : '' }}</td>
-                    <td>{{ $datum->credit ? number_format($datum->credit, 2) : '' }}</td>
-                </tr>
+                @if ($datum->journal_date >= $start && $datum->journal_date <= $end)
+                    <tr>
+                        <td>{{ formatDate($datum->journal_date) }}</td>
+                        <td>{{ truncate($datum->journal_description) }}</td>
+                        <td>{{ $datum->transaction_type }}</td>
+                        <td>{{ $datum->acc_name }}</td>
+                        <td>{{ ucfirst($datum->acc_group) }}</td>
+                        <td>{{ $datum->debit ? number_format($datum->debit, 2) : '' }}</td>
+                        <td>{{ $datum->credit ? number_format($datum->credit, 2) : '' }}</td>
+                    </tr>
+                @endif
             @endforeach
             <tr>
                 <td></td>
@@ -68,26 +70,28 @@
             <button type="submit">Back</button>
         </form>
     </div>
-    <dialog id="set-initial-balance-dialog">
-        <form action="{{ route('ledger.coa.update_initial', [$account, $user]) }}" method="POST">
-            @csrf
-            <label for="initial-balance">Current initial balance</label>
-            <div class="input-wrapper">
-                <input value="{{ $initial_balance }}" name="initial_balance" id="initial-balance" />
-                <div class="select-wrapper">
-                    <select required id="entry-type-select" name="entry_type_id">
-                        <option value="" selected disabled>Select an entry type</option>
-                        <option value="{{ \App\Models\EntryType::DEBIT }}">Debit</option>
-                        <option value="{{ \App\Models\EntryType::CREDIT }}">Credit</option>
-                    </select>
+    @if (\App\Models\AccountGroup::IS_PERMANENT[$account->account_group_id])
+        <dialog id="set-initial-balance-dialog">
+            <form action="{{ route('ledger.coa.update_initial', [$account, $user]) }}" method="POST">
+                @csrf
+                <label for="initial-balance">Current initial balance</label>
+                <div class="input-wrapper">
+                    <input value="{{ $initial_balance }}" name="initial_balance" id="initial-balance" />
+                    <div class="select-wrapper">
+                        <select required id="entry-type-select" name="entry_type_id">
+                            <option value="" selected disabled>Select an entry type</option>
+                            <option value="{{ \App\Models\EntryType::DEBIT }}">Debit</option>
+                            <option value="{{ \App\Models\EntryType::CREDIT }}">Credit</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <p id="note-message">NOTE: this will set the VERY initial balance of this account and will affect the
-                reports.</p>
-            <button type="submit">Submit anyway</button>
-            <button type="button">Cancel</button>
-        </form>
-    </dialog>
+                <p id="note-message">NOTE: this will set the VERY initial balance of this account and will affect the
+                    reports.</p>
+                <button type="submit">Submit anyway</button>
+                <button type="button">Cancel</button>
+            </form>
+        </dialog>
+    @endif
     <dialog id="set-custom-date-range-dialog">
         <h2>Choose starting and ending date</h2>
         <form id="date-range-form">
