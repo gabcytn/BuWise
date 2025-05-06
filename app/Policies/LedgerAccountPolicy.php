@@ -16,7 +16,8 @@ class LedgerAccountPolicy
     public function setInitialBalance(User $user, LedgerAccount $ledgerAccount)
     {
         $accGroupId = $ledgerAccount->account_group_id;
-        return !in_array($accGroupId, AccountGroup::TEMPORARY_ACCOUNTS) && in_array($accGroupId, AccountGroup::PERMANENT_ACCOUNTS);
+
+        return AccountGroup::IS_PERMANENT[$accGroupId];
     }
 
     /*
