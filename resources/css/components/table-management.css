@@ -17,15 +17,17 @@ thead {
 }
 
 th {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
     font-size: 0.7rem;
     color: var(--off-white);
+    text-align: left;
 }
 
 tr td {
-    padding: 0.75rem 0;
+    padding: 0.75rem 0rem;
     text-align: center;
     font-size: 0.7rem;
+    text-align: left;
 }
 
 tbody tr+tr td {
@@ -36,9 +38,9 @@ tbody tr:hover {
     background-color: var(--off-white);
 }
 
-#td-item-img {
-    display: flex;
-    justify-content: center;
+tr td:first-child,
+tr th:first-child {
+    padding-left: 0.75rem;
 }
 
 .item-img {
@@ -50,7 +52,7 @@ tbody tr:hover {
 .action-column div {
     display: flex;
     gap: 0.5rem;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .journal-row td {
@@ -63,17 +65,12 @@ tbody tr:hover {
     }
 
     th {
-        padding: 1.15rem;
+        padding: 1.15rem 0;
     }
 
     th,
     tr td {
         font-size: 0.9rem;
-    }
-
-    #td-item-img {
-        display: flex;
-        justify-content: center;
     }
 
     .item-img {

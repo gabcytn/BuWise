@@ -20,6 +20,19 @@
     border-collapse: collapse;
 }
 
+.row {
+    display: flex;
+    gap: 1rem;
+}
+
+.row>* {
+    width: 100%;
+}
+
+.input-wrapper label {
+    font-size: 0.85rem;
+}
+
 th {
     background-color: var(--off-white);
     padding: 0 0.65rem;

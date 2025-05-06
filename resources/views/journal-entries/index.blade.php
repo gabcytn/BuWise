@@ -1,6 +1,6 @@
 <x-app-layout>
     @php
-        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Amount', 'Date', 'Action'];
+        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Description', 'Amount', 'Date', 'Action'];
     @endphp
 
     @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js'])
@@ -43,14 +43,13 @@
                             <p>{{ $entry->transactionType->name }}</p>
                         </td>
                         <td>
+                            <p>{{ truncate($entry->description) }}</p>
+                        </td>
+                        <td>
                             <p>&#8369;{{ $entry->ledger_entries_max_amount }}
                         </td>
                         <td>
-                            @php
-                                $date = \Carbon\Carbon::parse($entry->date);
-                                $formattedDateTime = $date->format('F d, Y');
-                            @endphp
-                            <p>{{ $formattedDateTime }}</p>
+                            <p>{{ formatDate($entry->date) }}</p>
                         </td>
                         <td class="action-column">
                             <div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JournalEntryCreated;
 use App\Models\EntryType;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class JournalEntryController extends Controller
 {
@@ -142,18 +144,23 @@ class JournalEntryController extends Controller
                 'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
+            $ledgerEntries = [];
             // Create individual journal lines
             foreach ($journalEntries as $entry) {
                 $accountId = substr($entry['account'], 0, 4);
-                LedgerEntry::create([
+                $ledgerEntry = LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
                     'account_id' => $accountId,
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
                 ]);
+                $ledgerEntries[] = $ledgerEntry;
             }
 
             DB::commit();
+
+            // update cache
+            JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
 
             return redirect()
                 ->route('journal-entries.index')
@@ -176,17 +183,16 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('view', $journalEntry);
 
-        $cache = Cache::get('journal-' . $journalEntry->id, null);
-        if ($cache) {
-            $results = $cache;
-        } else {
-            $results = DB::table('ledger_entries')
+        $results = Cache::rememberForever('journal-' . $journalEntry->id, function () use ($journalEntry) {
+            Log::info('Calculating journal entry cache...');
+            return DB::table('ledger_entries')
                 ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
                 ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
                 ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
                 ->select(
                     'ledger_entries.id as id',
                     'ledger_accounts.name as account_name',
+                    'ledger_accounts.id as account_code',
                     'account_groups.name as account_group_name',
                     DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
                     DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
@@ -194,8 +200,8 @@ class JournalEntryController extends Controller
                 ->where('journal_entry_id', $journalEntry->id)
                 ->orderByRaw('ledger_entries.id ASC')
                 ->get();
-            Cache::set('journal-' . $journalEntry->id, $results);
-        }
+        });
+
         return view('journal-entries.show', [
             'description' => $journalEntry->description,
             'ledgerEntries' => $results,
@@ -219,13 +225,31 @@ class JournalEntryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(JournalEntry $journalEntry)
     {
         Gate::authorize('delete', $journalEntry);
-        Cache::delete('journal-' . $journalEntry->id);
-        JournalEntry::destroy($journalEntry->id);
+        try {
+            Cache::delete('journal-' . $journalEntry->id);
+            DB::table('cache')
+                ->where('key', 'like', 'coa-' . $journalEntry->client_id)
+                ->delete();
+
+            $arr = [];
+            foreach ($journalEntry->ledgerEntries as $data) {
+                $arr[] = $data;
+            }
+
+            // update coa cache
+            JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
+
+            JournalEntry::destroy($journalEntry->id);
+        } catch (\Exception $e) {
+            Log::emergency('Exception while destroying a journal entry');
+            Log::emergency($e->getMessage());
+            Log::emergency($e->getTraceAsString());
+        }
         return to_route('journal-entries.index');
     }
 }

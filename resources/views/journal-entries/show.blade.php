@@ -1,6 +1,6 @@
 <x-app-layout>
     @php
-        $headers = ['ID', 'Account Name', 'Account Group Name', 'Debit', 'Credit'];
+        $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Debit', 'Credit'];
     @endphp
     @vite('resources/css/journal-entries/show.css')
     <div class="container">
@@ -8,9 +8,9 @@
         <p>Description: {{ $description }}
         <p>
             <x-table-management :headers=$headers>
-                @foreach ($ledgerEntries as $key => $entry)
+                @foreach ($ledgerEntries as $entry)
                     <tr class="journal-row">
-                        <td>{{ $entry->id }}</td>
+                        <td>{{ $entry->account_code }}</td>
                         <td>{{ $entry->account_name }}</td>
                         <td>{{ ucfirst($entry->account_group_name) }}</td>
                         <td>{{ $entry->debit }}</td>
