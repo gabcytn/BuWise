@@ -31,21 +31,25 @@
     <li><a href="{{ route('services') }}">Services</a></li>
 
     @auth
-      <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-    @else
-      <li><a href="/register">Register</a></li>
-      <li><a class="login-btn" href="/login">Log In</a></li>
-    @endauth
+  <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
+@else
+  <li class="nav-auth-buttons">
+    <a href="/register" class="register-btn">Register</a>
+    <a href="/login" class="login-btn">Log In</a>
+  </li>
+@endauth
   </ul>
 </nav>
   </header>
 
   <!-- Hero -->
-  <section class="hero" style="background: url('{{ asset('images/hero.jpg') }}') center/cover no-repeat;">
+  <section class="hero" style="background: url('{{ asset('images/hero2.jpg') }}') center/cover no-repeat;">
     <div class="overlay">
       <h1>
         <span class="highlight"><strong>OUTSOURCED</strong></span> BOOKKEEPING AND 
         <span class="highlight"><strong>STREAMLINED</strong></span> ACCOUNTING SERVICES
+      </h1>
+      <h1>
       </h1>
       <p>Reliable & efficient <strong>outsourced</strong> bookkeeping and <strong>streamlined</strong> accounting services, 
       saving you time, reducing costs, and ensuring financial accuracy.</p>

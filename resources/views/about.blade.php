@@ -32,17 +32,19 @@
     <li><a href="{{ route('services') }}">Services</a></li>
 
     @auth
-      <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-    @else
-      <li><a href="/register">Register</a></li>
-      <li><a class="login-btn" href="/login">Log In</a></li>
-    @endauth
+  <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
+@else
+  <li class="nav-auth-buttons">
+    <a href="/register" class="register-btn">Register</a>
+    <a href="/login" class="login-btn">Log In</a>
+  </li>
+@endauth
   </ul>
 </nav>
   </header>
 
 <!-- Hero -->
-<section class="hero" style="background: url('{{ asset('images/hero.jpg') }}') center/cover no-repeat;">
+<section class="hero" style="background: url('{{ asset('images/hero33.jpg') }}') center/cover no-repeat;">
   <div class="overlay">
     <p>COMPANY PROFILE</p>
     <h1>
@@ -142,15 +144,6 @@
       </div>
     </section>
     
-
-  <!-- Trusted Section -->
-  <section class="trusted">
-    <h3>TRUSTED BY <span class="highlight">MICRO-SMALL-MEDIUM ENTREPRENEURS (MSMEs)</span> EVERYWHERE</h3>
-    <div class="trusted-logos">
-      <img src="{{ asset('images/pspi.png') }}" alt="PSPI Logo">
-      <img src="{{ asset('images/hotel.png') }}" alt="A Hotel Logo">
-    </div>
-  </section>
   <script>
     document.getElementById('burger').addEventListener('click', function () {
       document.getElementById('navLinks').classList.toggle('show');

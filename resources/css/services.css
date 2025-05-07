@@ -3,257 +3,550 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&display=swap');
 
 body {
-  font-family: 'Inter';
-  margin: 0;
-  color: #333;
+    font-family: 'Inter';
+    margin: 0;
+    color: #133e5a;
 }
 
+/* --- Existing Styles --- */
+
 .top-bar {
-  background: #1b80c3;
-  color: white;
-  padding: 6px 20px;
-  font-size: 12px;
+    background: #1b80c3;
+    color: white;
+    padding: 6px 20px;
+    font-size: 12px;
 }
 
 nav {
-  background: #133e5a;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
+    background: #133e5a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
 }
 
 nav ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 30px; /* increased for better spacing */
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    font-size: 15px; /* adjust as needed */
 }
 
 nav a {
-  color: white;
-  text-decoration: none;
+    color: white;
+    text-decoration: none;
+    padding: 8px 1px;
+    display: inline-block;
+    font-weight: 500;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+}
+
+nav a:hover {
+    color: #5cb85c;
+    transform: scale(1.05);
 }
 
 section.logo {
-  text-align: center;
-  padding: 20px 0;
+    text-align: center;
+    padding: 40px 0px;
 }
 
 section.logo img {
-  height: 100px;
+    height: 100px;
 }
 
 .icon-above {
-  display: block;
-  margin: 0 auto 10px auto;
-  height: 40px;
-  width: 40px;
+    display: block;
+    margin: 0 auto 10px auto;
+    height: 40px;
+    width: 40px;
 }
 
 .feature h3 {
-  text-align: center;
+    text-align: center;
 }
 
 .login-btn {
-  background:#609950;
-  padding: 6px 12px;
-  border-radius: 4px;
-  color: white;
+    background: #609950;
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: white;
 }
 
 .hero {
-  text-align: center;
-  color: white;
-  position: relative;
+    background: url('hero.jpg') center/cover no-repeat;
+    text-align: center;
+    color: white;
+    position: relative;
 }
 
 .overlay {
-  background-color: rgba(0, 38, 73, 0.7);
-  padding: 120px 20px;
+    background-color: rgba(0, 38, 73, 0.7);
+    padding: 100px 20px;
 }
 
 .hero h1 {
-  font-size: 36px;
-  line-height: 1.3;
-  margin-bottom: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+    font-size: 28px;
+    margin: 10px 0;
 }
 
 .hero p {
-  font-size: 18px;
-  max-width: 800px;
-  margin: 0 auto 20px;
-  line-height: 1.6;
+    font-size: 18px;
+    max-width: 800px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
 }
 
 .highlight {
-  font-weight: 800;
-  color: #5cb85c;
-  text-shadow: 2px 2px 5px grey;
+    font-weight: 1500;
+    color: #5cb85c;
 }
 
 .hero-buttons .btn {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  color: white;
-  background: #5cb85c;
-  display: inline-block;
-  font-weight: 600;
-  transition: 0.3s;
-  border: 2px solid transparent;
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    background: #5cb85c;
+    font-family: 'Poppins';
+    font-weight: 600;
+    display: inline-block;
+    border: 2px solid #5cb85c;
+    transition: all 0.3s;
 }
 
 .hero-buttons .btn:hover {
-  background: transparent;
-  color: #5cb85c;
-  border: 2px solid #5cb85c;
+    background: transparent;
+    color: #5cb85c;
+    border: 2px solid #5cb85c;
 }
 
 .btn-secondary {
-  background: transparent;
-  border: 2px solid #5cb85c;
-  color: #5cb85c;
+    background: #5cb85c;
 }
 
 .btn-secondary:hover {
-  background: #5cb85c;
-  color: white;
+    background: #5cb85c;
+    color: white;
 }
 
 .who-we-are {
-  padding: 0px 20px;
-  text-align: center;
+    padding: 0px 20px;
+    text-align: center;
 }
 
 .our-services,
 .trusted {
-  padding: 60px 20px;
-  text-align: center;
+    padding: 60px 20px;
+    text-align: center;
 }
 
 .features,
 .services {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 60px;
 }
 
 .feature,
 .service-box {
-  max-width: 300px;
-  padding: 20px;
-  border-radius: 8px;
-  color: white;
-  text-align: center;
+    max-width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
 }
 
 .blue-text {
-  color: #1b80c3;
+    color: #1b80c3;
 }
 
-.blue { background-color: #1b80c3; }
-.green { background-color: #609950; }
-.gray  { background-color: #e0e0e0; color: #333; }
+.blue {
+    background-color: #1b80c3;
+}
+
+.green {
+    background-color: #609950;
+}
+
+.gray {
+    background-color: #e0e0e0;
+    color: #133e5a;
+}
 
 .service-box h3 {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .trusted h3 {
-  font-weight: normal;
+    font-weight: normal;
 }
 
 .trusted .highlight {
-  color: #609950;
-  font-weight: bold;
+    color: #609950;
+    font-weight: bold;
 }
 
 .trusted-logos img {
-  height: 60px;
-  margin: 20px;
+    height: 60px;
+    margin: 20px;
 }
 
 nav a,
 .login-btn,
 .hero-buttons .btn {
-  font-family: 'Poppins';
+    font-family: 'Poppins';
+}
+/* LOGIN & REGISTER BUTTON STYLE BASED ON IMAGE */
+.nav-auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Ensures buttons are vertically aligned */
+    justify-content: center; 
+    display: inline-flex; /* Ensures the button is an inline block-level element */
+    /* Aligns buttons horizontally within the container */
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Hanken Grotesk';
+.nav-auth-buttons a {
+    font-family: 'Poppins';
+    font-size: 15px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 150px;
+    top: 1px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;/* Ensures text is horizontally centered */
 }
+
+/* Register Button Styles */
+.nav-auth-buttons .register-btn {
+    background-color: rgba(128, 128, 128, 0.2); /* gray with 60% opacity */
+    color: white; /* text remains solid white */
+  }
+  
+
+.nav-auth-buttons .register-btn:hover {
+    background-color: white;
+    color: #133e5a;
+}
+
+/* Login Button Styles */
+.nav-auth-buttons .login-btn {
+    background-color: #5cb85c;
+    color: #fff; /* Fixed typo, "fff" should be "#fff" for white */
+    border: 2px solid #5cb85c;
+}
+
+.nav-auth-buttons .login-btn:hover {
+    background-color: transparent;
+    color: white;
+    border-color: white;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Hanken Grotesk';
+}
+
 .burger {
-  display: none;
-  font-size: 28px;
+    display: none;
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .burger {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        font-size: 15px;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: #133e5a;
+        padding: 20px;
+        z-index: 1000;
+        transform: translateY(1px);
+          }
+    .nav-links.show {
+        display: flex;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    nav ul {
+        width: 100%;
+        text-align: center;
+        gap: 10px;
+    }
+
+    nav ul li {
+        padding: 10px 0;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .hero-buttons .btn {
+        display: block;
+        margin: 10px auto;
+    }
+}
+
+footer {
+    background: #1b80c3;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+}
+
+/* --- New Styles for Services Page --- */
+
+.hero-services {
+    background: url('../images/hero-bg.jpg') no-repeat center center/cover;
+    padding: 120px 20px;
+    color: #fff;
+    position: relative;
+    text-align: center;
+}
+
+.hero-services .overlay {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 60px;
+}
+
+.btn-learn {
+    background-color: #1a73e8;
+    padding: 12px 30px;
+    color: white;
+    font-weight: bold;
+    border: none;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.services-section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.services-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.service-card {
+    background: #fff;
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 20px;
+}
+
+.service-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.centered-rpa {
+  background-color: #eef3fb;
+  padding: 0px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+  gap: 40px;
+  text-align: right; /* Center all text */
+}
+.rpa-text {
+    padding: 0px;
+    text-align: left;
+    border-radius: 12px;
+    margin: 0 auto;
+    position: relative;
+    left: 150px; /* Moves the block 30px to the right */
+  }
+  
+  
+
+.centered-rpa .rpa-content {
+  max-width: 600px;
+  flex: 1;
+  min-width: 300px;
+  padding: 0px 0px; /* Add padding on all sides */
+  border-radius: 12px;
+  text-align: left; /* Center text inside the content */
+}
+
+.centered-rpa .rpa-image {
+  flex: 1px;
+  min-width: 0px;
+  padding-left: 0px; /* Add spacing around image block */
+}
+
+.centered-rpa .rpa-image img {
+  width: 70%;
+  border-radius: 0px;
+}
+
+.rpa-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0px;
+}
+
+
+
+
+/* Container for spacing on both sides */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.contact-section {
+  padding: 60px 0;
+  font-family: Arial, sans-serif;
+}
+
+.contact-section .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.contact-form,
+.contact-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  border: 1px solid #2b3e50;
+  box-sizing: border-box;
+}
+
+.contact-form textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.btn-submit {
+  background-color: #4c8755;
   color: white;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .burger {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background-color: #133e5a;
-    padding: 20px;
-    z-index: 1000;
-  }
-
-  .nav-links.show {
-    display: flex;
-  }
-
-  nav {
-    flex-wrap: wrap;
-    position: relative;
-  }
-
-  nav ul {
-    width: 100%;
-    text-align: center;
-    gap: 10px;
-  }
-
-  nav ul li {
-    padding: 10px 0;
-  }
+.btn-submit:hover {
+  background-color: #3c6d44;
 }
 
+.contact-info h3 {
+  font-size: 24px;
+  color: #1d3a60;
+  margin-bottom: 10px;
+}
+
+.contact-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contact-info li {
+  margin-bottom: 12px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-info i {
+  color: #0073b1;
+  margin-right: 10px;
+  font-size: 18px;
+}
 
 footer {
-  background: #1b80c3;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  font-size: 13px;
+    background: #1b80c3;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+  }
+
+/* --- Hover Animations --- */
+
+.feature:hover,
+.service-box:hover,
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 24px;
-  }
+/* Smooth transition for default state */
+.feature,
+.service-box,
+.service-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-  .hero p {
-    font-size: 16px;
-  }
+/* Enhance nav and auth buttons */
+nav a:hover,
+.nav-auth-buttons a:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
 
-  .hero-buttons .btn {
-    display: block;
-    margin: 10px auto;
-  }
+/* Add scaling to hero buttons */
+.hero-buttons .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Ensure all transform animations are smooth */
+.hero-buttons .btn,
+.nav-auth-buttons a {
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
