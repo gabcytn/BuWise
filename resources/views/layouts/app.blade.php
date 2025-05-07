@@ -1,5 +1,5 @@
 <x-root-layout>
-    @vite(['resources/css/welcome.css', 'resources/js/welcome.js'])
+    @vite(['resources/css/layout.css', 'resources/js/welcome.js'])
     <!-- Navbar -->
     @include('layouts.navigation')
 

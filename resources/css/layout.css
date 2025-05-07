@@ -1,0 +1,272 @@
+*:not(dialog) {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: var(--main-font);
+    text-wrap: balance;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+img {
+    max-width: 100%;
+}
+
+body {
+    background-color: var(--off-white);
+}
+
+.header-container {
+    background-color: var(--clear-white);
+}
+
+.header-sm {
+    background-color: var(--clear-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    min-height: 5rem;
+    max-width: 1250px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.header-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.header-side__account {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+}
+
+.header-side img {
+    border-radius: 100%;
+}
+
+.header-side__account--details,
+.fa-circle-chevron-down {
+    display: none !important;
+}
+
+.nav-sm {
+    position: absolute;
+    min-height: calc(100dvh - 5rem);
+    z-index: 10;
+    left: 0;
+    top: 5rem;
+    background-color: var(--dark-blue);
+    transition: left 0.5s;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nav-sm.hidden {
+    left: -100%;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3rem;
+}
+
+#nav-logo {
+    width: 50px;
+    height: 50px;
+}
+
+.nav-list {
+    list-style-type: none;
+}
+
+.nav-section {
+    padding: 1rem;
+}
+
+.nav-section li+li {
+    margin-top: 0.5rem;
+}
+
+.nav-section:has(+ .nav-section) {
+    border-bottom: 3px solid var(--off-white);
+}
+
+.nav-section__item {
+    margin-left: 1rem;
+}
+
+.nav-section p {
+    color: var(--grey);
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.nav-sm .fa-solid {
+    font-size: 16px;
+    width: 25px;
+}
+
+.nav-sm li a {
+    color: var(--clear-white);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+section {
+    z-index: 1;
+}
+
+.d-none {
+    display: none;
+}
+
+.popover {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background-color: var(--clear-white);
+    border-radius: 5px;
+}
+
+.popover ul li {
+    list-style-type: none;
+    padding: 0.5rem;
+    color: var(--soft-black);
+}
+
+.popover ul li:hover {
+    background-color: var(--off-white);
+}
+
+.dropdown-list li {
+    margin-left: 1.5rem;
+}
+
+.dropdown-list li:first-child {
+    margin-top: 0.5rem;
+}
+
+main {
+    height: calc(100dvh - 5rem);
+    overflow-y: scroll;
+    padding-bottom: 1.5rem;
+}
+
+@media (min-width: 800px) {
+
+    .header-side__account {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-side__account--details {
+        display: block !important;
+    }
+
+    .fa-circle-chevron-down {
+        margin-top: 4px;
+    }
+
+    #account-name {
+        font-size: 0.9rem;
+    }
+
+    #account-role {
+        font-size: 0.8rem;
+        color: var(--grey);
+    }
+
+    body {
+        display: flex;
+    }
+
+    .nav-sm {
+        position: static;
+        border-right: 3px solid var(--off-white);
+        /* min-height: 100dvh; */
+        height: 100dvh;
+        overflow: scroll;
+        min-width: 12rem;
+        background-color: var(--clear-white);
+        color: var(--soft-black);
+        padding-top: 1rem;
+    }
+
+    .nav-section {
+        padding: 1.215rem 1rem;
+    }
+
+    .nav-section p {
+        margin-bottom: 0.75rem;
+        color: var(--grey);
+    }
+
+    .nav-section li {
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .nav-section__item a {
+        display: block;
+        width: 100%;
+        padding: 0.55rem 0rem 0.55rem 0.6rem;
+    }
+
+    .nav-section__item li+li {
+        margin-top: 0.25rem !important;
+    }
+
+    .nav-section a:hover,
+    .nav-section li:hover>a {
+        background-color: var(--main-blue);
+        color: var(--clear-white) !important;
+    }
+
+
+    .active-tab {
+        color: var(--clear-white) !important;
+        background-color: var(--main-blue);
+    }
+
+    .active-tab a,
+    .active-tab i {
+        color: var(--clear-white) !important;
+    }
+
+    .nav-section li+li {
+        margin-top: 0;
+    }
+
+
+    .nav-sm li a {
+        color: var(--soft-black);
+        font-size: 0.85rem;
+    }
+
+    .main-section {
+        width: 100%;
+    }
+
+    .fa-bars {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
