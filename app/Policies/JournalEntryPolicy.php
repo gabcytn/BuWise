@@ -32,7 +32,7 @@ class JournalEntryPolicy
                 ? Response::allow()
                 : Response::denyAsNotFound();
         } else if ($roleId !== Role::CLIENT) {
-            $accId = $user->accountant->id;
+            $accId = $user->accountant_id;
             return $journalEntry->client->accountant_id === $accId
                 ? Response::allow()
                 : Response::denyAsNotFound();
@@ -54,10 +54,11 @@ class JournalEntryPolicy
 
     /**
      * Determine whether the user can update the model.
+     * @return \Illuminate\Auth\Access\Response;
      */
-    public function update(User $user, JournalEntry $journalEntry): bool
+    public function update(User $user, JournalEntry $journalEntry)
     {
-        return false;
+        return $this->view($user, $journalEntry);
     }
 
     /**

@@ -53,6 +53,9 @@
                         </td>
                         <td class="action-column">
                             <div>
+                                <a href="{{ route('journal-entries.edit', $entry) }}">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
                                 <form action="{{ route('journal-entries.destroy', $entry) }}" method="POST"
                                     id="{{ 'form-' . $entry->id }}">
                                     @csrf

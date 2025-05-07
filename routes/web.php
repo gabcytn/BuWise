@@ -46,8 +46,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
 
     // journal entries
-    Route::resource('/journal-entries', JournalEntryController::class)
-        ->only(['index', 'create', 'store', 'show', 'destroy']);
+    Route::resource('/journal-entries', JournalEntryController::class);
 
     // ledger routes
     Route::get('/ledger/chart-of-accounts', [LedgerAccountController::class, 'chartOfAccounts'])

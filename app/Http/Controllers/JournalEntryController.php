@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use DateTime;
 
 class JournalEntryController extends Controller
 {
@@ -210,10 +212,25 @@ class JournalEntryController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * @return \Illuminate\Contracts\View\View
      */
-    public function edit(JournalEntry $journalEntry)
+    public function edit(Request $request, JournalEntry $journalEntry)
     {
-        //
+        Gate::authorize('update', $journalEntry);
+        $accounts = LedgerAccount::all();
+        $transactionTypes = TransactionType::all();
+
+        $ledgerEntries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
+
+        $date = new DateTime($journalEntry->date);
+
+        return view('journal-entries.edit', [
+            'accounts' => $accounts,
+            'transactionTypes' => $transactionTypes,
+            'journal_entry' => $journalEntry,
+            'ledger_entries' => $ledgerEntries,
+            'date' => $date->format('Y-m-d'),
+        ]);
     }
 
     /**
@@ -221,7 +238,83 @@ class JournalEntryController extends Controller
      */
     public function update(Request $request, JournalEntry $journalEntry)
     {
-        //
+        Gate::authorize('update', $journalEntry);
+        $request->validate([
+            'client_id' => ['required', 'uuid:4'],
+            'invoice_id' => ['string'],
+            'description' => ['required', 'string', 'max:255'],
+            'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
+            'date' => ['required', 'date', Rule::date()->format('Y-m-d')],
+        ]);
+
+        $rowNumbers = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'row_id_') === 0) {
+                $rowNumbers[] = $value;
+            }
+        }
+
+        $journalEntries = [];
+        foreach ($rowNumbers as $key) {
+            $entry = [
+                'account' => $request->input("account_$key"),
+                'debit' => (float) $request->input("debit_$key", 0),
+                'credit' => (float) $request->input("credit_$key", 0),
+            ];
+
+            $journalEntries[] = $entry;
+        }
+
+        $totalDebits = array_sum(array_column($journalEntries, 'debit'));
+        $totalCredits = array_sum(array_column($journalEntries, 'credit'));
+
+        if ($totalDebits != $totalCredits) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['balance' => 'Journal entries must have equal debits and credits']);
+        }
+
+        if (count($journalEntries) < 2) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['entries' => 'At least two entries are required']);
+        }
+        try {
+            DB::beginTransaction();
+
+            $journal = JournalEntry::find($journalEntry->id);
+            $journal->date = $request->date;
+            $journal->description = $request->description;
+            $journal->transaction_type_id = $request->transaction_type_id;
+            $journal->save();
+
+            $ledger_entries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
+            foreach ($journalEntries as $key => $entry) {
+                $ledger_entry = $ledger_entries[$key];
+                $ledger_entry->account_id = $entry['account'];
+                $ledger_entry->amount = $entry['debit'];
+                $ledger_entry->entry_type_id = $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'];
+                $ledger_entry->amount = $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'];
+                $ledger_entry->save();
+            }
+
+            DB::commit();
+
+            Cache::delete('journal-' . $journalEntry->id);
+
+            return redirect()
+                ->route('journal-entries.index')
+                ->with('success', 'Journal entry created successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::warning('Error updating journal entry' . $e->getMessage());
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['database' => 'Failed to update journal entry']);
+        }
     }
 
     /**
