@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JournalEntryCreated;
 use App\Models\EntryType;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class JournalEntryController extends Controller
 {
@@ -31,6 +33,7 @@ class JournalEntryController extends Controller
             $entries = $user
                 ->clientsJournalEntries()
                 ->withMax('ledgerEntries', 'amount')
+                ->with('transactionType')
                 ->paginate(JournalEntryController::ITEMS_PER_PAGE);
         } else if ($user->role_id === Role::ACCOUNTANT && $filter) {
             $entries = $user
@@ -88,6 +91,7 @@ class JournalEntryController extends Controller
             'client_id' => ['required', 'uuid:4'],
             'invoice_id' => ['string'],
             'description' => ['required', 'string', 'max:255'],
+            'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
             'date' => ['required', 'date'],
         ]);
 
@@ -102,7 +106,6 @@ class JournalEntryController extends Controller
         foreach ($rowNumbers as $rowId) {
             $entry = [
                 'account' => $request->input("account_$rowId"),
-                'transaction_type' => $request->input("type_$rowId"),
                 'debit' => (float) $request->input("debit_$rowId", 0),
                 'credit' => (float) $request->input("credit_$rowId", 0),
             ];
@@ -137,22 +140,27 @@ class JournalEntryController extends Controller
             $journalEntry = JournalEntry::create([
                 'client_id' => $validated['client_id'],
                 'description' => $request->description ?? null,
+                'transaction_type_id' => $validated['transaction_type_id'],
                 'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
+            $ledgerEntries = [];
             // Create individual journal lines
             foreach ($journalEntries as $entry) {
                 $accountId = substr($entry['account'], 0, 4);
-                LedgerEntry::create([
+                $ledgerEntry = LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
                     'account_id' => $accountId,
-                    'transaction_type_id' => TransactionType::LOOKUP[$entry['transaction_type']],
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
                 ]);
+                $ledgerEntries[] = $ledgerEntry;
             }
 
             DB::commit();
+
+            // update cache
+            JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
 
             return redirect()
                 ->route('journal-entries.index')
@@ -175,27 +183,25 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('view', $journalEntry);
 
-        $cache = Cache::get('journal-' . $journalEntry->id, null);
-        if ($cache) {
-            $results = $cache;
-        } else {
-            $results = DB::table('ledger_entries')
+        $results = Cache::rememberForever('journal-' . $journalEntry->id, function () use ($journalEntry) {
+            Log::info('Calculating journal entry cache...');
+            return DB::table('ledger_entries')
                 ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
                 ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
-                ->join('transaction_types', 'transaction_types.id', '=', 'ledger_entries.transaction_type_id')
                 ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
                 ->select(
                     'ledger_entries.id as id',
                     'ledger_accounts.name as account_name',
+                    'ledger_accounts.id as account_code',
                     'account_groups.name as account_group_name',
-                    'transaction_types.name as transaction_name',
                     DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
                     DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
                 )
                 ->where('journal_entry_id', $journalEntry->id)
+                ->orderByRaw('ledger_entries.id ASC')
                 ->get();
-            Cache::set('journal-' . $journalEntry->id, $results);
-        }
+        });
+
         return view('journal-entries.show', [
             'description' => $journalEntry->description,
             'ledgerEntries' => $results,
@@ -219,12 +225,31 @@ class JournalEntryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(JournalEntry $journalEntry)
     {
         Gate::authorize('delete', $journalEntry);
-        JournalEntry::destroy($journalEntry->id);
+        try {
+            Cache::delete('journal-' . $journalEntry->id);
+            DB::table('cache')
+                ->where('key', 'like', 'coa-' . $journalEntry->client_id)
+                ->delete();
+
+            $arr = [];
+            foreach ($journalEntry->ledgerEntries as $data) {
+                $arr[] = $data;
+            }
+
+            // update coa cache
+            JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
+
+            JournalEntry::destroy($journalEntry->id);
+        } catch (\Exception $e) {
+            Log::emergency('Exception while destroying a journal entry');
+            Log::emergency($e->getMessage());
+            Log::emergency($e->getTraceAsString());
+        }
         return to_route('journal-entries.index');
     }
 }

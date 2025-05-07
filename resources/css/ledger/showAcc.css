@@ -1,0 +1,80 @@
+.container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.title-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bg-off-white {
+    background-color: var(--off-white);
+}
+
+#set-initial-balance-dialog form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#set-initial-balance-dialog .input-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#initial-balance {
+    width: 70%;
+    margin-right: 0.5rem;
+}
+
+.select-wrapper {
+    width: 30%;
+}
+
+.input-wrapper select {
+    height: 100%;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: var(--clear-white);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+#set-initial-balance-dialog form button:hover {
+    opacity: 0.85;
+}
+
+#set-initial-balance-dialog .input-wrapper label {
+    font-size: 0.85rem;
+}
+
+#note-message {
+    color: red;
+    font-size: 0.85rem;
+}
+
+#set-custom-date-range-dialog h2 {
+    padding: 1.25rem;
+    font-size: 1.25rem;
+}
+
+#date-range-form {
+    display: block;
+    padding: 1.5rem;
+}
+
+.date-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.submit-btn-wrapper button {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.submit-btn-wrapper button:hover {
+    opacity: 0.9;
+}

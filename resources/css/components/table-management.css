@@ -17,25 +17,30 @@ thead {
 }
 
 th {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
     font-size: 0.7rem;
     color: var(--off-white);
+    text-align: left;
 }
 
 tr td {
-    padding: 1.5rem 0.5rem;
+    padding: 0.75rem 0rem;
     text-align: center;
     font-size: 0.7rem;
+    text-align: left;
 }
 
-.journal-row:hover {
+tbody tr+tr td {
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+tbody tr:hover {
     background-color: var(--off-white);
 }
 
-#td-item-img {
-    padding: 1rem 0;
-    display: flex;
-    justify-content: center;
+tr td:first-child,
+tr th:first-child {
+    padding-left: 0.75rem;
 }
 
 .item-img {
@@ -47,23 +52,25 @@ tr td {
 .action-column div {
     display: flex;
     gap: 0.5rem;
-    justify-content: center;
+    justify-content: flex-start;
+}
+
+.journal-row td {
+    padding: 1.25rem 0;
 }
 
 @media (min-width: 768px) {
+    .table-wrapper {
+        overflow: auto;
+    }
+
     th {
-        padding: 1.15rem;
+        padding: 1.15rem 0;
     }
 
     th,
     tr td {
         font-size: 0.9rem;
-    }
-
-    #td-item-img {
-        padding: 0.75rem 0;
-        display: flex;
-        justify-content: center;
     }
 
     .item-img {

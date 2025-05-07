@@ -5,32 +5,47 @@
     @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
     <div class="container">
         <h2 id="page-title">Journal Entry</h2>
-        <datalist id="accounts-list">
+        <select style="display: none;" id="select-account" required>
+            <option value="" selected disabled>Select an account</option>
             @foreach ($accounts as $account)
-                <option value="{{ $account->id . ' ' . $account->name }}" />
+                <option value="{{ $account->id }}">{{ $account->id . ' ' . $account->name }}</option>
             @endforeach
-        </datalist>
-        <datalist id="transaction-types">
-            @foreach ($transactionTypes as $transactionType)
-                <option value="{{ $transactionType->name }}" />
-            @endforeach
-        </datalist>
+        </select>
         <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
             @csrf
-            <input type="date" name="date" id="date" style="margin-bottom: 0.5rem;" />
-            <select name="client_id" required="" style="margin-bottom: 0.5rem;">
-                <option value="" disabled selected>Select a client</option>
-                @foreach ($clients as $client)
-                    <option value="{{ $client->id }}">{{ $client->name }}</option>
-                @endforeach
-            </select>
-            <textarea name="description" rows="3" placeholder="Description" required></textarea>
+            <div class="row">
+                <div class="input-wrapper">
+                    <label for="date">Date</label>
+                    <input type="date" name="date" id="date" />
+                </div>
+                <div class="input-wrapper">
+                    <label for="transaction-type">Transaction Type</label>
+                    <select required id="transaction-type" name="transaction_type_id">
+                        <option value="" selected disabled>Select a transaction type</option>
+                        @foreach ($transactionTypes as $transactionType)
+                            <option value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="input-wrapper">
+                    <label for="client-select">Client</label>
+                    <select name="client_id" id="client-select" required="">
+                        <option value="" disabled selected>Select a client</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="input-wrapper">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="3" required></textarea>
+            </div>
             <div class="table-wrapper">
                 <table id="journalTable">
                     <thead>
                         <tr>
                             <th>ACCOUNT</th>
-                            <th>TRANSACTION TYPE</th>
                             <th>DEBITS</th>
                             <th>CREDITS</th>
                             <th></th>
@@ -41,7 +56,7 @@
                     </tbody>
                     <tfoot>
                         <tr class="totals-row">
-                            <td colspan="2" style="text-align: right;"></td>
+                            <td></td>
                             <td id="totalDebits">
                                 <div style="margin-left: 0.5rem;">0.00</div>
                             </td>

@@ -26,21 +26,12 @@ function addRow() {
 
     // Account dropdown
     const accountCell = document.createElement("td");
-    const accountInput = document.createElement("input");
-    accountInput.setAttribute("list", "accounts-list");
-    accountInput.required = true;
-    accountInput.name = `account_${rowCounter}`;
+    const accountSelect = document.querySelector("#select-account");
+    const accountSelectClone = accountSelect.cloneNode(true);
+    accountSelectClone.style.display = "block";
+    accountSelectClone.name = `account_${rowCounter}`;
 
-    accountCell.appendChild(accountInput);
-
-    // Transaction Type dropdown
-    const typeCell = document.createElement("td");
-    const typeInput = document.createElement("input");
-    typeInput.setAttribute("list", "transaction-types");
-    typeInput.required = true;
-    typeInput.name = `type_${rowCounter}`;
-
-    typeCell.appendChild(typeInput);
+    accountCell.appendChild(accountSelectClone);
 
     // Debits field
     const debitCell = document.createElement("td");
@@ -116,7 +107,6 @@ function addRow() {
 
     // Append all cells to the row
     newRow.appendChild(accountCell);
-    newRow.appendChild(typeCell);
     newRow.appendChild(debitCell);
     newRow.appendChild(creditCell);
     newRow.appendChild(deleteCell);
