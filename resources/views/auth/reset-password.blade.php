@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ config('app.name') }}</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-</head>
-<body>
+<x-root-layout>
     @vite(['resources/css/auth/reset-password.css'])
-    <form method="POST" action="/reset-password">
+    <form method="POST" action="/reset-password" id="reset-password-form">
         @csrf
+
+        <h2 id="page-title">Reset Password</h2>
 
         <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
@@ -45,5 +38,4 @@
             <button type="submit">Reset Password</button>
         </div>
     </form>
-</body>
-</html>
+</x-root-layout>
