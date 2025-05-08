@@ -38,8 +38,8 @@ amountInputs.forEach((input) => {
     });
 });
 
-totalDebits.textContent = debitAmount;
-totalCredits.textContent = creditAmount;
+totalDebits.textContent = debitAmount.toFixed(2);
+totalCredits.textContent = creditAmount.toFixed(2);
 
 if (debitAmount !== creditAmount) {
     submitBtn.disabled = true;
@@ -66,8 +66,8 @@ function updateTotals() {
             creditTotal += parseFloat(input.value || 0);
         }
     });
-    totalDebits.textContent = debitTotal;
-    totalCredits.textContent = creditTotal;
+    totalDebits.textContent = debitTotal.toFixed(2);
+    totalCredits.textContent = creditTotal.toFixed(2);
 
     if (debitTotal !== creditTotal) {
         submitBtn.disabled = true;
