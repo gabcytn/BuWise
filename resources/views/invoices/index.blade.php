@@ -6,6 +6,12 @@
         @if (count($invoices) > 0)
             <h2>Invoice Management</h2>
             <p>Manage your clients' invoices</p>
+            <select>
+                <option value="All">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Verified">Verified</option>
+            </select>
             <x-table-management :headers=$headers>
                 @foreach ($invoices as $invoice)
                     <tr>

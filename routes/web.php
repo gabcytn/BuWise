@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\ProfileInformationController;
@@ -55,6 +56,10 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         ->name('ledger.coa.show');
     Route::post('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'setInitialBalance'])
         ->name('ledger.coa.update_initial');
+
+    // invoice routes
+    Route::resource('/invoices', InvoiceController::class)
+        ->only(['index']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {

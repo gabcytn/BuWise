@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\InvoiceCreated;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ class Invoice extends Model
         'client_id',
         'vendor_id',
         'customer_id',
-        'status_id',
+        'status',
         'invoice_number',
         'amount',
         'image',
@@ -48,7 +49,7 @@ class Invoice extends Model
      */
     public function client(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'client_id');
     }
 
     /*
