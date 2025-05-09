@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\MobileInvoiceController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,5 +29,5 @@ Route::post('/login', function (Request $request) {
     return $user->createToken($request->device_name)->plainTextToken;
 });
 
-Route::post('/invoices', [InvoiceController::class, 'store'])
+Route::post('/invoices', [MobileInvoiceController::class, 'store'])
     ->middleware('auth:sanctum');

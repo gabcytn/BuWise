@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
@@ -24,6 +25,7 @@ class InvoiceController extends Controller
                 ->select(
                     'invoices.id as invoice_id',
                     'invoices.invoice_number',
+                    'invoices.image as image',
                     'invoices.amount',
                     'status.description'
                 )
@@ -48,14 +50,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file('file');
-        $filename = $file->getClientOriginalName();
-        Storage::disk('public')->put("invoices/$filename", file_get_contents($file));
-        Log::info($request->all());
-        return json_encode([
-            'messsage' => 'success',
-            'status' => '200'
-        ]);
+        //
     }
 
     /**

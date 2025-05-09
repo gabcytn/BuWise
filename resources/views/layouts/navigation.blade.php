@@ -31,8 +31,8 @@
             <div class="nav-section">
                 <p>Transactions</p>
                 <div class="nav-section__item">
-                    <li>
-                        <a href="#">
+                    <li class="{{ in_array($routeName, ['invoices.index']) ? 'active-tab' : '' }}">
+                        <a href="{{ route('invoices.index') }}">
                             <i class="fa-solid fa-file-invoice"></i>
                             Invoice
                         </a>
