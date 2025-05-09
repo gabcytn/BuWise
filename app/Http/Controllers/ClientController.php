@@ -110,7 +110,7 @@ class ClientController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        UserCreated::dispatch($client);
+        UserCreated::dispatch($request->user(), $client);
 
         // return Storage::disk("s3")->response("images/" . basename($path));
         return redirect()->back();

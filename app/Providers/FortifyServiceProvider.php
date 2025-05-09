@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -35,10 +36,10 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::verifyEmailView("auth.verify-email");
+        Fortify::verifyEmailView('auth.verify-email');
 
-        Fortify::requestPasswordResetLinkView("auth.forgot-password");
-        Fortify::resetPasswordView("auth.reset-password");
+        Fortify::requestPasswordResetLinkView('auth.forgot-password');
+        Fortify::resetPasswordView('auth.reset-password');
 
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
@@ -50,6 +51,8 @@ class FortifyServiceProvider extends ServiceProvider
                 $user &&
                 Hash::check($request->password, $user->password)
             ) {
+                $clients = getClients($user);
+                Cache::set($user->id . '-clients', $clients, 3600);
                 return $user;
             }
         });
@@ -64,9 +67,9 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
-        Fortify::loginView("auth.login");
+        Fortify::loginView('auth.login');
 
-        Fortify::registerView("auth.register");
+        Fortify::registerView('auth.register');
 
         Fortify::confirmPasswordView(function () {
             return view('auth.confirm-password');

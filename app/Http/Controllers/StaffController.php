@@ -93,7 +93,7 @@ class StaffController extends Controller
             'password' => Hash::make($validated['password']),
             'profile_img' => $filename,
         ]);
-        UserCreated::dispatch($staff);
+        UserCreated::dispatch($request->user(), $staff);
 
         // $request->user()->staff()->attach($staff->id);
 
