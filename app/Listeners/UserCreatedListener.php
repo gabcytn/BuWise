@@ -7,6 +7,7 @@ use App\Models\Role;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class UserCreatedListener implements ShouldQueue
 {
@@ -23,11 +24,16 @@ class UserCreatedListener implements ShouldQueue
      */
     public function handle(UserCreated $event): void
     {
-        if ($event->user->role_id === Role::CLIENT) {
-            Cache::delete($event->creator->id . '-clients');
-            $clients = getClients($event->creator);
-            Cache::set($event->creator->id . '-clients', $clients, 3600);
+        try {
+            if ($event->user->role_id === Role::CLIENT) {
+                Cache::delete($event->creator->id . '-clients');
+                $clients = getClients($event->creator);
+                Cache::set($event->creator->id . '-clients', $clients, 3600);
+                Log::info('Successfully updated clients cache');
+            }
+            $event->user->sendEmailVerificationNotification();
+        } catch (\Exception $e) {
+            Log::warning('Error handling event listener: ' . $e->getMessage());
         }
-        $event->user->sendEmailVerificationNotification();
     }
 }
