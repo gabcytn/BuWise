@@ -8,10 +8,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 Route::post('/login', function (Request $request) {
     $request->validate([
         'email' => 'required|email',
@@ -30,8 +26,13 @@ Route::post('/login', function (Request $request) {
     return $user->createToken($request->device_name)->plainTextToken;
 });
 
-Route::post('/invoices', [MobileInvoiceController::class, 'store'])
-    ->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/invoices', [MobileInvoiceController::class, 'store']);
 
-Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
-    ->middleware('auth:sanctum');
+    Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
+        ->middleware('throttle:6,1');
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
