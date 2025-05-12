@@ -39,6 +39,9 @@
                 <p id="confirm-feedback" class="weak feedback"></p>
             </div>
             <button type="submit">{{ 'Sign Up' }}</button>
+            @if ($errors->any())
+                <p style="color: red; font-size: 0.8rem; margin: 0.25rem 0;">{{ $errors->first() }}</p>
+            @endif
         </form>
     </div>
     <script src="bower_components/zxcvbn/dist/zxcvbn.js"></script>
