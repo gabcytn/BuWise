@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -30,4 +31,7 @@ Route::post('/login', function (Request $request) {
 });
 
 Route::post('/invoices', [MobileInvoiceController::class, 'store'])
+    ->middleware('auth:sanctum');
+
+Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
     ->middleware('auth:sanctum');
