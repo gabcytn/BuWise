@@ -46,7 +46,7 @@
                     </li>
                     <li class="">
                         <a href="#"
-                            class="nav-dropdown {{ in_array($routeName, ['ledger.coa', 'ledger.coa.show']) ? 'active-tab' : '' }}">
+                            class="nav-dropdown {{ in_array($routeName, ['ledger.coa', 'ledger.coa.show', 'ledger.trial-balance']) ? 'active-tab' : '' }}">
                             <i class="fa-solid fa-book-open"></i>
                             Ledger
                         </a>
@@ -55,6 +55,12 @@
                                 <a href="{{ route('ledger.coa') }}" style="font-size: 0.75rem;">
                                     <i class="fa-solid fa-receipt" style="width: auto;"></i>
                                     Ledger Summary
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="{{ route('ledger.trial-balance') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    Trial Balance
                                 </a>
                             </li>
                             <li class="d-none">

@@ -5,6 +5,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\ProfileInformationController;
+use App\Http\Controllers\TrialBalanceController;
 use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -54,6 +55,8 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         ->name('ledger.coa');
     Route::get('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'showAccount'])
         ->name('ledger.coa.show');
+    Route::get('/ledger/trial-balance', [TrialBalanceController::class, 'index'])
+        ->name('ledger.trial-balance');
     Route::post('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'setInitialBalance'])
         ->name('ledger.coa.update_initial');
 
