@@ -35,4 +35,9 @@ class LedgerAccountPolicy
     {
         return $this->chartOfAccounts($user);
     }
+
+    public function trialBalance(User $user)
+    {
+        return $this->chartOfAccounts($user);
+    }
 }

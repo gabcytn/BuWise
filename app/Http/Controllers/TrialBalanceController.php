@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\EntryType;
+use App\Models\LedgerAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class TrialBalanceController extends Controller
 {
     public function index(Request $request)
     {
-        // TODO: authorization via Gate
+        Gate::authorize('trialBalance', LedgerAccount::class);
         $user = $request->user();
         $clients = Cache::remember($user->id . '-clients', $ttl = 3600, function () use ($user) {
             return getClients($user);
