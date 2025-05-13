@@ -1,5 +1,5 @@
 @php
-    $headers = ['Account ID', 'Account Name', 'Balance', 'Entry Type'];
+    $headers = ['Account ID', 'Account Name', 'Debit', 'Credit'];
 @endphp
 <x-app-layout>
     <div class="container" style="max-width: 1000px; width: 90%; margin: 0 auto;">
@@ -17,11 +17,14 @@
         @if (request()->query('client') && count($data) > 0)
             <x-table-management :headers=$headers>
                 @foreach ($data as $datum)
+                    @php
+                        $balance = $datum->debit - $datum->credit;
+                    @endphp
                     <tr>
                         <td>{{ $datum->acc_id }}</td>
                         <td>{{ $datum->acc_name }}</td>
-                        <td>&#8369;{{ number_format(abs($datum->balance), 2) }}</td>
-                        <td>{{ $datum->balance < 0 ? 'Credit' : 'Debit' }}</td>
+                        <td>{{ $balance > 0 ? number_format($balance, 2) : '' }}</td>
+                        <td>{{ $balance <= 0 ? number_format(abs($balance), 2) : '' }}</td>
                     </tr>
                 @endforeach
             </x-table-management>

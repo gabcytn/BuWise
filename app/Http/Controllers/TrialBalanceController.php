@@ -27,7 +27,8 @@ class TrialBalanceController extends Controller
                     'users.name',
                     'acc.id AS acc_id',
                     'acc.name AS acc_name',
-                    DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN -amount ELSE amount END) AS balance')
+                    DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN amount ELSE 0 END) AS debit'),
+                    DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN amount ELSE 0 END) AS credit')
                 )
                 ->join('journal_entries as je', 'je.id', '=', 'le.journal_entry_id')
                 ->join('users', 'users.id', '=', 'je.client_id')
@@ -35,7 +36,7 @@ class TrialBalanceController extends Controller
                 ->where('je.client_id', $request->query('client'))
                 ->groupBy('le.account_id', 'je.client_id', 'users.name', 'acc.id', 'acc.name')
                 ->orderBy('acc.id')
-                ->setBindings([EntryType::CREDIT], 'select')
+                ->setBindings([EntryType::DEBIT, EntryType::CREDIT], 'select')
                 ->get();
         }
         return view('ledger.trial-balance', [
