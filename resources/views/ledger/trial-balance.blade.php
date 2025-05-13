@@ -8,7 +8,8 @@
             <select name="client" required>
                 <option value="" selected disabled>Choose a client</option>
                 @foreach ($clients as $client)
-                    <option value="{{ $client->id }}">{{ $client->name }}</option>
+                    <option value="{{ $client->id }}"
+                        {{ request()->query('client') == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
                 @endforeach
             </select>
             <button type="submit">Run report</button>
