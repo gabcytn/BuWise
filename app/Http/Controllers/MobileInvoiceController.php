@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -24,9 +25,10 @@ class MobileInvoiceController extends Controller
             $file = $request->file('file');
             $filename = $file->getClientOriginalName();
 
+            // dummy values
             $invoice = Invoice::create([
                 'client_id' => $request->user()->id,
-                'status' => 1,
+                'status' => Status::PENDING,
                 'invoice_number' => 'INV' . now(),
                 'amount' => rand(100, 500),
                 'image' => $filename,
