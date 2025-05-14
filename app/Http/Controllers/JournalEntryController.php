@@ -94,7 +94,7 @@ class JournalEntryController extends Controller
             'invoice_id' => ['string'],
             'description' => ['required', 'string', 'max:255'],
             'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
-            'date' => ['required', 'date'],
+            'date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
         ]);
 
         $rowNumbers = [];
