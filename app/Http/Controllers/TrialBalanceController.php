@@ -30,18 +30,26 @@ class TrialBalanceController extends Controller
                     'start_date' => ['date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
                     'end_date' => ['date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
                 ]);
-                $data = $this->getQuery($request->query('start_date'), $request->query('end_date'));
+                $data = $this->getQuery($request->query('client'), $request->query('start_date'), $request->query('end_date'));
             } else {
-                $data = $this->getQuery();
+                $data = $this->getQuery($request->query('client'));
+            }
+
+            foreach ($data as $datum) {
+                $openingBalance = LedgerAccountController::getInitialBalance($request->query('client'), $datum->acc_id, $datum->acc_group_id);
+                if ($openingBalance) {
+                    $openingBalance->entry_type_id == EntryType::DEBIT ? $datum->debit += $openingBalance->initial_balance : $datum->credit += $openingBalance->initial_balance;
+                }
             }
         }
+
         return view('ledger.trial-balance', [
             'clients' => $clients,
             'data' => $data ?? null,
         ]);
     }
 
-    private function getQuery($startDate = '1970-01-01', $endDate = '9999-12-31')
+    private function getQuery($clientId, $startDate = '1970-01-01', $endDate = '9999-12-31')
     {
         $startDate .= ' 00:00:00';
         $endDate .= ' 23:59:59';
@@ -49,7 +57,7 @@ class TrialBalanceController extends Controller
             ->join('journal_entries AS je', 'je.id', '=', 'le.journal_entry_id')
             ->join('users', 'users.id', '=', 'je.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
-            ->where('je.client_id', '9eddf2ac-e598-4e44-aaab-cb4162b7e9c2')
+            ->where('je.client_id', $clientId)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->where(function ($q) use ($startDate, $endDate) {
                     $q
@@ -61,13 +69,12 @@ class TrialBalanceController extends Controller
                         ->whereBetween('je.date', [$startDate, $endDate]);
                 });
             })
-            ->groupBy('le.account_id', 'je.client_id', 'users.name', 'acc.id', 'acc.name')
+            ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
             ->orderBy('acc.id')
             ->select(
-                'je.client_id',
-                'users.name',
                 'acc.id AS acc_id',
                 'acc.name AS acc_name',
+                'acc.account_group_id AS acc_group_id',
                 DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN amount ELSE 0 END) AS debit'),
                 DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN amount ELSE 0 END) AS credit')
             )
