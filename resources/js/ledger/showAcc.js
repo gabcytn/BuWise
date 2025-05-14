@@ -47,3 +47,7 @@ document
     .addEventListener("click", () => {
         dateRangeDialog.close();
     });
+
+document.querySelector("#back-button").addEventListener("click", () => {
+    window.history.back();
+});

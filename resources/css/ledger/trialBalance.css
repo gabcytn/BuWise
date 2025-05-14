@@ -1,0 +1,29 @@
+.container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#set-custom-date-range-dialog h2 {
+    padding: 1.25rem;
+    font-size: 1.25rem;
+}
+
+#date-range-form {
+    display: block;
+    padding: 1.5rem;
+}
+
+.date-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.submit-btn-wrapper button {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.submit-btn-wrapper button:hover {
+    opacity: 0.9;
+}

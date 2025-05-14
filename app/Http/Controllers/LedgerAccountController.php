@@ -55,7 +55,7 @@ class LedgerAccountController extends Controller
             });
         }
 
-        $initialBalance = $this->getInitialBalance($user->id, $ledgerAccount->id, $ledgerAccount->account_group_id);
+        $initialBalance = LedgerAccountController::getInitialBalance($user->id, $ledgerAccount->id, $ledgerAccount->account_group_id);
         $arr = $this->calculateTotalDebitsAndCredits($data, $initialBalance, $start, $end);
 
         $totalDebits = $arr[0];
@@ -118,7 +118,7 @@ class LedgerAccountController extends Controller
     /*
      * @return ?Illuminate\Database\Concerns\TValue;
      */
-    private function getInitialBalance(string $userId, int $ledgerAccountId, int $accountGroupId)
+    public static function getInitialBalance(string $userId, int $ledgerAccountId, int $accountGroupId)
     {
         if (AccountGroup::IS_TEMPORARY[$accountGroupId]) {
             return null;
