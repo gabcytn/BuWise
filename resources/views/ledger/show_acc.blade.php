@@ -102,4 +102,5 @@
                 <button type="button">Cancel</button>
             </div>
         </form>
+    </dialog>
 </x-app-layout>
