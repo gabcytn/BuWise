@@ -66,9 +66,7 @@
         @if ($errors->any())
             <p style="color: red; font-size: 0.85rem;">{{ $errors->first() }}</p>
         @endif
-        <form action="{{ route('ledger.coa') }}">
-            <button type="submit">Back</button>
-        </form>
+        <button type="button" id="back-button">Back</button>
     </div>
     @if (\App\Models\AccountGroup::IS_PERMANENT[$account->account_group_id])
         <dialog id="set-initial-balance-dialog">

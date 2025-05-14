@@ -18,8 +18,11 @@
                     </tr>
                 @endforeach
             </x-table-management>
-        <form class="back-form" action="{{ route('journal-entries.index') }}" method="GET">
-            <button type="submit">Back</button>
-        </form>
+            <button type="button" id="back-button">Back</button>
     </div>
+    <script>
+        document.querySelector("#back-button").addEventListener("click", () => {
+            window.history.back();
+        });
+    </script>
 </x-app-layout>
