@@ -319,14 +319,12 @@ nav a:hover {
 .hero-buttons .btn {
     font-family: 'Poppins';
 }
-/* LOGIN & REGISTER BUTTON STYLE BASED ON IMAGE */
 .nav-auth-buttons {
     display: flex;
     gap: 10px;
-    align-items: center; /* Ensures buttons are vertically aligned */
+    align-items: center; 
     justify-content: center; 
-    display: inline-flex; /* Ensures the button is an inline block-level element */
-    /* Aligns buttons horizontally within the container */
+    display: inline-flex; 
 }
 
 .nav-auth-buttons a {
@@ -337,7 +335,7 @@ nav a:hover {
     border-radius: 150px;
     top: 1px;
     text-decoration: none;
-    transition: all 0.3s ease-in-out;/* Ensures text is horizontally centered */
+    transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out, transform 0.2s;
 }
 
@@ -346,10 +344,9 @@ nav a:hover {
   
 }
 
-/* Register Button Styles */
 .nav-auth-buttons .register-btn {
-  background-color: rgba(128, 128, 128, 0.2); /* gray with 60% opacity */
-  color: white; /* text remains solid white */
+  background-color: rgba(128, 128, 128, 0.2); 
+  color: white; 
 }
 
 .nav-auth-buttons .register-btn:hover {
@@ -357,10 +354,9 @@ nav a:hover {
     color: #133e5a;
 }
 
-/* Login Button Styles */
 .nav-auth-buttons .login-btn {
     background-color: #5cb85c;
-    color: #fff; /* Fixed typo, "fff" should be "#fff" for white */
+    color: #fff; 
     border: 2px solid #5cb85c;
 }
 
