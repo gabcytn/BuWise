@@ -66,11 +66,9 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('create', JournalEntry::class);
         $user = $request->user();
-        if ($user->role_id === Role::ACCOUNTANT) {
-            $clients = $user->clients;
-        } else {
-            $clients = $user->accountant->clients;
-        }
+        $clients = Cache::remember($user->id . '-clients', 3600, function () use ($user) {
+            return getClients($user);
+        });
 
         $accounts = LedgerAccount::all();
         $transactionTypes = TransactionType::all();

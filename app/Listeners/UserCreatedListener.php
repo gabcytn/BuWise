@@ -26,9 +26,8 @@ class UserCreatedListener implements ShouldQueue
     {
         try {
             if ($event->user->role_id === Role::CLIENT) {
-                Cache::delete($event->creator->id . '-clients');
                 $clients = getClients($event->creator);
-                Cache::set($event->creator->id . '-clients', $clients, 3600);
+                Cache::put($event->creator->id . '-clients', $clients, 3600);
                 Log::info('Successfully updated clients cache');
             }
             $event->user->sendEmailVerificationNotification();
