@@ -12,6 +12,7 @@ class JournalEntry extends Model
         'client_id',
         'invoice_id',
         'transaction_type_id',
+        'status_id',
         'description',
         'date'
     ];

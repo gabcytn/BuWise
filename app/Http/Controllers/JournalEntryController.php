@@ -8,6 +8,7 @@ use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Role;
+use App\Models\Status;
 use App\Models\TransactionType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -141,6 +142,7 @@ class JournalEntryController extends Controller
                 'client_id' => $validated['client_id'],
                 'description' => $request->description ?? null,
                 'transaction_type_id' => $validated['transaction_type_id'],
+                'status_id' => Status::APPROVED,
                 'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
@@ -289,6 +291,7 @@ class JournalEntryController extends Controller
             $journal->save();
 
             $ledger_entries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
+            $ledger_entries_for_cache = [];
             foreach ($journalEntries as $key => $entry) {
                 $ledger_entry = $ledger_entries[$key];
                 $ledger_entry->account_id = $entry['account'];
@@ -296,10 +299,12 @@ class JournalEntryController extends Controller
                 $ledger_entry->entry_type_id = $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'];
                 $ledger_entry->amount = $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'];
                 $ledger_entry->save();
+                $ledger_entries_for_cache[] = $ledger_entry;
             }
 
             DB::commit();
 
+            JournalEntryCreated::dispatch($journalEntry->client_id, $ledger_entries_for_cache);
             Cache::delete('journal-' . $journalEntry->id);
 
             return redirect()
