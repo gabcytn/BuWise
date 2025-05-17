@@ -14,10 +14,10 @@ class StatusSeeder extends Seeder
     {
         DB::table('status')->insert([
             [
-                'description' => 'pending'
+                'description' => 'approved'
             ],
             [
-                'description' => 'verified'
+                'description' => 'pending'
             ],
             [
                 'description' => 'rejected'

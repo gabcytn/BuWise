@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('journal_entries', function (Blueprint $table) {
-            $table->smallInteger('transaction_type_id');
+            $table->smallInteger('transaction_type_id')->after('invoice_id');
 
             $table->foreign('transaction_type_id')->references('id')->on('transaction_types')->cascadeOnDelete();
         });
