@@ -32,7 +32,8 @@
             <div class="row">
                 <div class="input-wrapper">
                     <label for="date">Date</label>
-                    <input type="date" name="date" id="date" value="{{ old('date') }}" />
+                    <input type="date" name="date" id="date"
+                        value="{{ old('date') ?? now()->format('Y-m-d') }}" />
                 </div>
                 <div class="input-wrapper">
                     <label for="transaction-type">Transaction Type</label>
@@ -102,7 +103,3 @@
         </form>
     </div>
 </x-app-layout>
-
-<script>
-    document.getElementById('date').valueAsDate = new Date();
-</script>
