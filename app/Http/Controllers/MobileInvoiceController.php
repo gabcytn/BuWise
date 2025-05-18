@@ -28,11 +28,7 @@ class MobileInvoiceController extends Controller
             // dummy values
             $invoice = Invoice::create([
                 'client_id' => $request->user()->id,
-                'status' => Status::PENDING,
-                'invoice_number' => 'INV' . now(),
-                'amount' => rand(100, 500),
                 'image' => $filename,
-                'description' => fake()->sentence(),
             ]);
 
             Storage::disk('public')->put('invoices/' . $filename, file_get_contents($file));

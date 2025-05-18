@@ -18,20 +18,12 @@ class InvoiceController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $invoices = Cache::remember($user->id . '-clients-invoices', 3600, function () use ($user) {
-            return DB::table('invoices')
-                ->join('status', 'status.id', '=', 'invoices.status')
-                ->join('users', 'users.id', '=', 'invoices.client_id')
-                ->select(
-                    'invoices.id as invoice_id',
-                    'invoices.invoice_number',
-                    'invoices.image as image',
-                    'invoices.amount',
-                    'status.description'
-                )
-                ->where('users.accountant_id', $user->id)
-                ->get();
-        });
+        $invoices = Invoice::with('client')
+            ->whereHas('client', function ($query) use ($user) {
+                $query->where('accountant_id', $user->id);
+            })
+            ->get();
+
         return view('invoices.index', [
             'invoices' => $invoices,
         ]);
