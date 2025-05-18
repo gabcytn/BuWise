@@ -89,9 +89,9 @@ class JournalEntryController extends Controller
     public function store(Request $request)
     {
         Gate::authorize('create', JournalEntry::class);
-        $validated = $request->validate([
-            'client_id' => ['required', 'uuid:4'],
-            'invoice_id' => ['string'],
+        $request->validate([
+            'client_id' => 'uuid:4',
+            'invoice_id' => ['string', 'nullable'],
             'description' => ['required', 'string', 'max:255'],
             'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
             'date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
@@ -148,12 +148,12 @@ class JournalEntryController extends Controller
 
             // Create a master journal entry record
             $journalEntry = JournalEntry::create([
-                'client_id' => $validated['client_id'],
+                'client_id' => $request->invoice_id ? $inv->client_id : $request->client_id,
                 'description' => $request->description ?? null,
-                'transaction_type_id' => $validated['transaction_type_id'],
+                'transaction_type_id' => $request->transaction_type_id,
                 'invoice_id' => $request->invoice_id ?? null,
                 'status_id' => $request->invoice_id ? Status::PENDING : Status::APPROVED,
-                'date' => $validated['date'] . ' ' . now()->format('H:i:s')
+                'date' => $request->date . ' ' . now()->format('H:i:s')
             ]);
 
             $ledgerEntries = [];
@@ -183,7 +183,7 @@ class JournalEntryController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->withErrors(['database' => 'Failed to save journal entry: ' . $e->getMessage()]);
+                ->withErrors(['database' => 'Failed to save journal entry']);
         }
     }
 
