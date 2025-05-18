@@ -48,10 +48,12 @@ class JournalEntryController extends Controller
             ->join('users', 'users.id', '=', 'je.client_id')
             ->join('transaction_types as tt', 'tt.id', '=', 'je.transaction_type_id')
             ->join('ledger_entries as le', 'le.journal_entry_id', '=', 'je.id')
+            ->join('status', 'status.id', '=', 'je.status_id')
             ->select(
                 'je.id',
                 'users.name as client_name',
                 'tt.name as transaction_type',
+                'status.description AS status',
                 'je.description',
                 DB::raw('MAX(le.amount) as amount'),
                 'je.date'
