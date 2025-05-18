@@ -12,23 +12,37 @@
             </div>
             <button type="submit">Create</button>
         </form>
-        <select class="select-clients"
-            style="width: 100%; background-color: var(--clear-white); padding: 0.65rem; margin-top: 1rem; border: none; border-radius: 5px;">
-            <option value="all">All Clients</option>
-            @php
-                $roleId = request()->user()->role_id;
-                if ($roleId === \App\Models\Role::ACCOUNTANT) {
-                    $clients = request()->user()->clients;
-                } elseif ($roleId !== \App\Models\Role::CLIENT) {
-                    $clients = request()->user()->accountant->clients;
-                }
-            @endphp
-            @foreach ($clients as $client)
-                <option {{ request()->query('filter') === $client->id ? 'selected' : '' }} value="{{ $client->id }}">
-                    {{ $client->name }}
+        <form class="select-container">
+            <select class="select select-type" name="type">
+                <option value="all" {{ request()->query('type') === 'all' ? 'selected' : '' }}>Journals & Invoices
                 </option>
-            @endforeach
-        </select>
+                <option value="journals" {{ request()->query('type') === 'journals' ? 'selected' : '' }}>
+                    From Journals Only
+                </option>
+                <option value="invoices" {{ request()->query('type') === 'invoices' ? 'selected' : '' }}>
+                    From Invoices Only
+                </option>
+            </select>
+            <select class="select select-invoice d-none" name="invoice">
+                <option value="all" {{ request()->query('invoice') === 'all' ? 'selected' : '' }}>All</option>
+                <option value="approved" {{ request()->query('invoice') === 'approved' ? 'selected' : '' }}>Approved
+                </option>
+                <option value="pending" {{ request()->query('invoice') === 'pending' ? 'selected' : '' }}>Pending
+                </option>
+                <option value="rejected" {{ request()->query('invoice') === 'rejected' ? 'selected' : '' }}>Rejected
+                </option>
+            </select>
+            <select class="select select-clients" name="client">
+                <option value="all" {{ request()->query('client') === 'all' ? 'selected' : '' }}>All Clients</option>
+                @foreach ($clients as $client)
+                    <option {{ request()->query('client') === $client->id ? 'selected' : '' }}
+                        value="{{ $client->id }}">
+                        {{ $client->name }}
+                    </option>
+                @endforeach
+            </select>
+            <button id="submit-filters">Run</button>
+        </form>
         @if (count($entries) > 0)
             <x-table-management :headers=$headers>
                 @foreach ($entries as $key => $entry)
@@ -37,26 +51,26 @@
                             <p>{{ $entry->id }}</p>
                         </td>
                         <td>
-                            <p>{{ $entry->client->name }}</p>
+                            <p>{{ $entry->client_name }}</p>
                         </td>
                         <td>
-                            <p>{{ $entry->transactionType->name }}</p>
+                            <p>{{ $entry->transaction_type }}</p>
                         </td>
                         <td>
                             <p>{{ truncate($entry->description) }}</p>
                         </td>
                         <td>
-                            <p>&#8369;{{ $entry->ledger_entries_max_amount }}
+                            <p>&#8369;{{ $entry->amount }}
                         </td>
                         <td>
                             <p>{{ formatDate($entry->date) }}</p>
                         </td>
                         <td class="action-column">
                             <div>
-                                <a href="{{ route('journal-entries.edit', $entry) }}">
+                                <a href="{{ route('journal-entries.edit', $entry->id) }}">
                                     <i class="fa-regular fa-pen-to-square"></i>
                                 </a>
-                                <form action="{{ route('journal-entries.destroy', $entry) }}" method="POST"
+                                <form action="{{ route('journal-entries.destroy', $entry->id) }}" method="POST"
                                     id="{{ 'form-' . $entry->id }}">
                                     @csrf
                                     @method('DELETE')
@@ -70,9 +84,10 @@
                     </tr>
                 @endforeach
             </x-table-management>
+            @if ($errors->any())
+                <p style="color: red; font-size: 0.85rem;">{{ $errors->first() }}</p>
+            @endif
             {{ $entries->links() }}
-        @else
-            <p>No entry yet.</p>
         @endif
     </div>
 

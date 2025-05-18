@@ -11,6 +11,12 @@ class Status extends Model
     public const PENDING = 2;
     public const REJECTED = 3;
 
+    public const LOOKUP = [
+        'approved' => 1,
+        'pending' => 2,
+        'rejected' => 3,
+    ];
+
     protected $fillable = [
         'description'
     ];
