@@ -1,6 +1,15 @@
 <x-app-layout>
     @php
-        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Description', 'Amount', 'Date', 'Action'];
+        $headers = [
+            'Journal ID',
+            'Client Name',
+            'Transaction Type',
+            'Description',
+            'Amount',
+            'Date',
+            'Status',
+            'Action',
+        ];
     @endphp
 
     @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js'])
@@ -64,6 +73,9 @@
                         </td>
                         <td>
                             <p>{{ formatDate($entry->date) }}</p>
+                        </td>
+                        <td>
+                            <strong class="{{ $entry->status }}">{{ ucfirst($entry->status) }}</strong>
                         </td>
                         <td class="action-column">
                             <div>
