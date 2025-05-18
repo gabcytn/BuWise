@@ -2,8 +2,18 @@
     @if (session('status'))
         <p style="color: red;">{{ session('status') }}</p>
     @endif
-    @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
+    @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js', 'resources/js/journal-entries/create-radio-buttons.js'])
     <div class="container">
+        <div class="radio-buttons">
+            <div class="radio-group">
+                <label for="journal">Journal</label>
+                <input type="radio" name="invoice-journal" id="journal" value="journal" />
+            </div>
+            <div class="radio-group">
+                <label for="invoice">Invoice</label>
+                <input type="radio" name="invoice-journal" id="invoice" value="invoice" />
+            </div>
+        </div>
         <h2 id="page-title">Journal Entry</h2>
         <select style="display: none;" id="select-account" required>
             <option value="" selected disabled>Select an account</option>
@@ -13,10 +23,16 @@
         </select>
         <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
             @csrf
+            <div class="invoice-components">
+                <div class="input-wrapper">
+                    <label for="invoice-id">Invoice ID</label>
+                    <input type="text" name="invoice_id" id="invoice-id" />
+                </div>
+            </div>
             <div class="row">
                 <div class="input-wrapper">
                     <label for="date">Date</label>
-                    <input type="date" name="date" id="date" />
+                    <input type="date" name="date" id="date" value="{{ old('date') }}" />
                 </div>
                 <div class="input-wrapper">
                     <label for="transaction-type">Transaction Type</label>
@@ -39,7 +55,7 @@
             </div>
             <div class="input-wrapper">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" rows="3" required></textarea>
+                <textarea id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
             </div>
             <div class="table-wrapper">
                 <table id="journalTable">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\JournalEntryCreated;
 use App\Models\EntryType;
+use App\Models\Invoice;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
@@ -95,6 +96,14 @@ class JournalEntryController extends Controller
             'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
             'date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
         ]);
+        if ($request->invoice_id) {
+            $inv = Invoice::find($request->invoice_id);
+            if (!$inv)
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors(['invoice' => 'The provided invoice ID does not exist.']);
+        }
 
         $rowNumbers = [];
         foreach ($request->all() as $key => $value) {
@@ -142,7 +151,8 @@ class JournalEntryController extends Controller
                 'client_id' => $validated['client_id'],
                 'description' => $request->description ?? null,
                 'transaction_type_id' => $validated['transaction_type_id'],
-                'status_id' => Status::APPROVED,
+                'invoice_id' => $request->invoice_id ?? null,
+                'status_id' => $request->invoice_id ? Status::PENDING : Status::APPROVED,
                 'date' => $validated['date'] . ' ' . now()->format('H:i:s')
             ]);
 
