@@ -23,13 +23,13 @@
         </select>
         <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
             @csrf
-            <div class="invoice-components">
-                <div class="input-wrapper">
-                    <label for="invoice-id">Invoice ID</label>
-                    <input type="text" name="invoice_id" id="invoice-id" />
-                </div>
-            </div>
             <div class="row">
+                <div class="invoice-components">
+                    <div class="input-wrapper">
+                        <label for="invoice-id">Invoice ID</label>
+                        <input type="text" name="invoice_id" id="invoice-id" value="{{ old('invoice_id') }}" />
+                    </div>
+                </div>
                 <div class="input-wrapper">
                     <label for="date">Date</label>
                     <input type="date" name="date" id="date"
@@ -44,7 +44,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="input-wrapper">
+                <div class="input-wrapper client-select-wrapper">
                     <label for="client-select">Client</label>
                     <select name="client_id" id="client-select" required="">
                         <option value="" disabled selected>Select a client</option>
