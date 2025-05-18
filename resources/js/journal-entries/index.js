@@ -4,6 +4,10 @@ const deleteEntryButtons = document.querySelectorAll(".action-column button");
 const confirmableDialog = document.querySelector(".confirmable-dialog");
 const confirmableDialogAffirmButton = document.querySelector(".affirm-button");
 const confirmableDialogDenyButton = document.querySelector(".deny-button");
+const selectType = document.querySelector(".select.select-type");
+const selectInvoice = document.querySelector(".select.select-invoice");
+
+displaySelect();
 
 confirmableDialogDenyButton.addEventListener("click", () => {
     confirmableDialog.close();
@@ -29,6 +33,23 @@ tr.forEach((row) => {
     });
 });
 
+selectType.addEventListener("change", () => {
+    displaySelect();
+});
+
+function displaySelect() {
+    const selectedType = selectType.options[selectType.selectedIndex].value;
+    if (selectedType === "invoices") {
+        selectInvoice.disabled = false;
+        selectInvoice.required = true;
+        selectInvoice.classList.remove("d-none");
+    } else {
+        selectInvoice.disabled = true;
+        selectInvoice.required = false;
+        selectInvoice.classList.add("d-none");
+    }
+}
+
 const selectClients = document.querySelector(".select-clients");
 
 selectClients.addEventListener("change", () => {
@@ -36,9 +57,9 @@ selectClients.addEventListener("change", () => {
         selectClients.options[selectClients.selectedIndex].value;
 
     if (selectedClient === "all") {
-        location.href = location.origin + location.pathname;
+        // location.href = location.origin + location.pathname;
         return;
     }
-    location.href =
-        location.origin + location.pathname + `?filter=${selectedClient}`;
+    // location.href =
+    // location.origin + location.pathname + `?filter=${selectedClient}`;
 });

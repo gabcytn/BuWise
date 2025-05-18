@@ -8,7 +8,6 @@ use App\Models\Invoice;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
-use App\Models\Role;
 use App\Models\Status;
 use App\Models\TransactionType;
 use Illuminate\Http\Request;
@@ -25,37 +24,72 @@ class JournalEntryController extends Controller
 
     /**
      * Display a listing of the resource.
+     * @return \Illuminate\Contracts\View\View
      */
     public function index(Request $request)
     {
-        $user = $request->user();
-
         Gate::authorize('viewAny', JournalEntry::class);
 
-        $filter = $request->query('filter');
-        if ($user->role_id === Role::ACCOUNTANT && !$filter) {
-            $entries = $user
-                ->clientsJournalEntries()
-                ->withMax('ledgerEntries', 'amount')
-                ->with('transactionType')
-                ->paginate(JournalEntryController::ITEMS_PER_PAGE);
-        } else if ($user->role_id === Role::ACCOUNTANT && $filter) {
-            $entries = $user
-                ->clientsJournalEntries()
-                ->where('journal_entries.client_id', $filter)
-                ->withMax('ledgerEntries', 'amount')
-                ->paginate(JournalEntryController::ITEMS_PER_PAGE)
-                ->appends([
-                    'filter' => $filter
-                ]);
-        } else {
-            $entries = $user
-                ->accountant
-                ->clientsJournalEntries()
-                ->withMax('ledgerEntries', 'amount')
-                ->paginate(JournalEntryController::ITEMS_PER_PAGE);
+        $user = $request->user();
+        $clients = Cache::remember($user->id . '-clients', 3600, function () use ($user) {
+            return getClients($user);
+        });
+
+        $filter = $request->only(['type', 'invoice', 'client']);
+        if (!$filter) {
+            return view('journal-entries.index', [
+                'clients' => $clients,
+                'entries' => [],
+            ]);
         }
+        $invoiceSet = isset($filter['invoice']);
+
+        $query = DB::table('journal_entries as je')
+            ->join('users', 'users.id', '=', 'je.client_id')
+            ->join('transaction_types as tt', 'tt.id', '=', 'je.transaction_type_id')
+            ->join('ledger_entries as le', 'le.journal_entry_id', '=', 'je.id')
+            ->select(
+                'je.id',
+                'users.name as client_name',
+                'tt.name as transaction_type',
+                'je.description',
+                DB::raw('MAX(le.amount) as amount'),
+                'je.date'
+            )
+            ->where('users.accountant_id', '=', $user->id);
+        if ($filter['type'] === 'all' && $filter['client'] === 'all' && !$invoiceSet) {
+            $query = $query;
+        } else if ($filter['type'] === 'all' && $filter['client'] !== 'all' && !$invoiceSet) {
+            $query = $query->where('je.client_id', '=', $filter['client']);
+        } else if ($filter['type'] === 'journals' && $filter['client'] === 'all' && !$invoiceSet) {
+            $query = $query->where('je.invoice_id', '=', null);
+        } else if ($filter['type'] === 'journals' && $filter['client'] !== 'all' && !$invoiceSet) {
+            $query = $query
+                ->where('je.invoice_id', '=', null)
+                ->where('je.client_id', '=', $filter['client']);
+        } else if ($filter['type'] === 'invoices' && $filter['invoice'] === 'all' && $filter['client'] === 'all') {
+            $query = $query->where('je.invoice_id', '!=', null);
+        } else if ($filter['type'] === 'invoices' && $filter['invoice'] !== 'all' && $filter['client'] === 'all') {
+            $query = $query
+                ->where('je.invoice_id', '!=', null)
+                ->where('je.status_id', '=', Status::LOOKUP[$filter['invoice']]);
+        } else if ($filter['type'] === 'invoices' && $filter['invoice'] !== 'all' && $filter['client'] !== 'all') {
+            $query = $query
+                ->where('je.invoice_id', '!=', null)
+                ->where('je.status_id', '=', Status::LOOKUP[$filter['invoice']])
+                ->where('je.client_id', '=', $filter['client']);
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Invalid combinations of filter']);
+        }
+
+        $entries = $query
+            ->groupBy('je.id', 'users.name', 'tt.name', 'je.description', 'je.date')
+            ->orderByDesc('je.id')
+            ->paginate(JournalEntryController::ITEMS_PER_PAGE)
+            ->appends($filter);
+
         return view('journal-entries.index', [
+            'clients' => $clients,
             'entries' => $entries
         ]);
     }

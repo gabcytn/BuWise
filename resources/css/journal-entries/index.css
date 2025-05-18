@@ -13,7 +13,7 @@
 
 .create-journal-form button {
     padding: 0.75rem 1.25rem;
-    background-color: var(--main-blue);
+    background-color: var(--green);
     border: none;
     border-radius: 0.25rem;
     color: var(--off-white);
@@ -29,4 +29,28 @@
 .first-texts p {
     font-size: 0.85rem;
     margin-top: 0.25rem;
+}
+
+.select-container {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+
+.select-container #submit-filters {
+    background-color: var(--main-blue);
+    padding: 0rem 3rem;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: var(--off-white);
+}
+
+.select {
+    width: 100%;
+    background-color: var(--clear-white);
+    padding: 0.65rem;
+    border: none;
+    border-radius: 5px;
 }
