@@ -48,4 +48,12 @@ class JournalEntry extends Model
     {
         return $this->hasMany(LedgerEntry::class);
     }
+
+    /*
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo;
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
 }

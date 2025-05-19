@@ -94,7 +94,7 @@ class JournalEntryController extends Controller
         });
 
         return view('journal-entries.show', [
-            'description' => $journalEntry->description,
+            'journalEntry' => $journalEntry,
             'ledgerEntries' => $results,
         ]);
     }
@@ -233,5 +233,17 @@ class JournalEntryController extends Controller
             Log::emergency($e->getTraceAsString());
         }
         return to_route('journal-entries.index', ['type' => 'all', 'client' => 'all']);
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function approve(JournalEntry $journalEntry)
+    {
+        // TODO: authorize via Gate
+        $journalEntry->status_id = Status::APPROVED;
+        $journalEntry->save();
+
+        return redirect()->back()->with(['status' => 'Journal approved!']);
     }
 }
