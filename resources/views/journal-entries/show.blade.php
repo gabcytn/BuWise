@@ -25,6 +25,10 @@
                 @csrf
                 <button type="submit">Approve</button>
             </form>
+            <form action="{{ route('journal-entries.reject', $journalEntry) }}" method="POST">
+                @csrf
+                <button type="submit">Reject</button>
+            </form>
         @endif
         <button type="button" id="back-button">Back</button>
     </div>
