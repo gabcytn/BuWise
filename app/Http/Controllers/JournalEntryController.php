@@ -246,4 +246,16 @@ class JournalEntryController extends Controller
 
         return redirect()->back()->with(['status' => 'Journal approved!']);
     }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function reject(JournalEntry $journalEntry)
+    {
+        // TODO: authorize via Gate
+        $journalEntry->status_id = Status::REJECTED;
+        $journalEntry->save();
+
+        return redirect()->back()->with(['status' => 'Journal rejected!']);
+    }
 }
