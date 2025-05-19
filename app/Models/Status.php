@@ -11,6 +11,8 @@ class Status extends Model
     public const PENDING = 2;
     public const REJECTED = 3;
 
+    protected $table = 'status';
+
     public const LOOKUP = [
         'approved' => 1,
         'pending' => 2,
