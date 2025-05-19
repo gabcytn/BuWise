@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountGroup;
 use App\Models\EntryType;
 use App\Models\LedgerAccount;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -189,6 +190,7 @@ class LedgerAccountController extends Controller
             ->join('journal_entries', 'journal_entries.id', '=', 'ledger_entries.journal_entry_id')
             ->join('transaction_types', 'transaction_types.id', '=', 'journal_entries.transaction_type_id')
             ->join('users', 'journal_entries.client_id', '=', 'users.id')
+            ->join('status', 'status.id', '=', 'journal_entries.status_id')
             ->select(
                 'journal_entries.id as journal_id',
                 'journal_entries.description as journal_description',
@@ -203,6 +205,7 @@ class LedgerAccountController extends Controller
                 DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
             )
             ->where('ledger_accounts.id', $ledgerAccountId)
+            ->where('journal_entries.status_id', '=', Status::APPROVED)
             ->where('journal_entries.client_id', $userId);
 
         if ($endDate !== null) {

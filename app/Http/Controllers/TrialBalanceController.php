@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountGroup;
 use App\Models\EntryType;
 use App\Models\LedgerAccount;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +58,9 @@ class TrialBalanceController extends Controller
             ->join('journal_entries AS je', 'je.id', '=', 'le.journal_entry_id')
             ->join('users', 'users.id', '=', 'je.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
+            ->join('status', 'status.id', '=', 'je.status_id')
             ->where('je.client_id', $clientId)
+            ->where('je.status_id', '=', Status::APPROVED)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->where(function ($q) use ($startDate, $endDate) {
                     $q
