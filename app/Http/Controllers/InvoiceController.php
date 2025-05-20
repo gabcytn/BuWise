@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
@@ -17,12 +15,27 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
+        // TODO: Gate::authorization();
         $user = $request->user();
         $invoices = Invoice::with('client')
             ->whereHas('client', function ($query) use ($user) {
                 $query->where('accountant_id', $user->id);
             })
             ->get();
+
+        // TODO: set cache value realistically; initially set to 1 week: must be around 30-60 mins;
+        $links = Cache::remember($user->id . '-invoices', 604800, function () use ($invoices) {
+            $urls = [];
+            foreach ($invoices as $invoice) {
+                $urls[] = Storage::temporaryUrl('invoices/' . $invoice->image, now()->addMinutes(10080));
+            }
+            Log::info('Invoice images fetched from AWS successfully!');
+            return $urls;
+        });
+
+        foreach ($links as $idx => $link) {
+            $invoices[$idx]->image = $link;
+        }
 
         return view('invoices.index', [
             'invoices' => $invoices,
