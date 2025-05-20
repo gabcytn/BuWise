@@ -16,8 +16,6 @@ class JournalShow
 
     public function show()
     {
-        Gate::authorize('view', $this->journalEntry);
-
         $je = $this->journalEntry;
         $results = Cache::rememberForever('journal-' . $je->id, function () use ($je) {
             Log::info('Calculating journal entry cache...');

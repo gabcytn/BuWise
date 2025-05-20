@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\JournalEntryCreated;
-use App\Models\EntryType;
-use App\Models\Invoice;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
@@ -16,10 +14,8 @@ use App\Services\JournalStore;
 use App\Services\JournalUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
 use DateTime;
 
 class JournalEntryController extends Controller
@@ -32,6 +28,7 @@ class JournalEntryController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', JournalEntry::class);
         $index = new JournalIndex();
         return $index->index($request);
     }
@@ -64,6 +61,7 @@ class JournalEntryController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', JournalEntry::class);
         $store = new JournalStore();
         return $store->store($request);
     }
@@ -74,6 +72,7 @@ class JournalEntryController extends Controller
      */
     public function show(JournalEntry $journalEntry)
     {
+        Gate::authorize('view', $journalEntry);
         $show = new JournalShow($journalEntry);
         return $show->show($journalEntry);
     }
@@ -106,6 +105,7 @@ class JournalEntryController extends Controller
      */
     public function update(Request $request, JournalEntry $journalEntry)
     {
+        Gate::authorize('update', $journalEntry);
         $update = new JournalUpdate($request, $journalEntry);
         return $update->update();
     }
