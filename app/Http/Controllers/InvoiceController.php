@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -17,14 +18,15 @@ class InvoiceController extends Controller
     {
         // TODO: Gate::authorization();
         $user = $request->user();
+        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
         $invoices = Invoice::with('client')
-            ->whereHas('client', function ($query) use ($user) {
-                $query->where('accountant_id', $user->id);
+            ->whereHas('client', function ($query) use ($accId) {
+                $query->where('accountant_id', $accId);
             })
             ->get();
 
         // TODO: set cache value realistically; initially set to 1 week: must be around 30-60 mins;
-        $links = Cache::remember($user->id . '-invoices', 604800, function () use ($invoices) {
+        $links = Cache::remember($accId . '-invoices', 604800, function () use ($invoices) {
             $urls = [];
             foreach ($invoices as $invoice) {
                 $urls[] = Storage::temporaryUrl('invoices/' . $invoice->image, now()->addMinutes(10080));
