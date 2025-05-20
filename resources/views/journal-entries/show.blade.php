@@ -31,6 +31,9 @@
             </form>
         @endif
         <button type="button" id="back-button">Back</button>
+        <form action="{{ route('journal-entries.edit', $journalEntry) }}" method="GET">
+            <button type="submit">Edit</button>
+        </form>
     </div>
     <script>
         document.querySelector("#back-button").addEventListener("click", () => {

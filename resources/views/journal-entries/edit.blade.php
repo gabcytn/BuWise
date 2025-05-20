@@ -1,8 +1,17 @@
 <x-app-layout>
     @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/edit.js'])
+    <select id="select-clone" required class="d-none">
+        <option value="" selected disabled>Select an account</option>
+        @foreach ($accounts as $account)
+            <option value="{{ $account->id }}">
+                {{ $account->id . ' ' . $account->name }}
+            </option>
+        @endforeach
+    </select>
     <div class="container">
         <h2 id="page-title">Journal Entry</h2>
-        <form id="journalForm" method="POST" action="{{ route('journal-entries.update', $journal_entry) }}">
+        <form id="journalForm" method="POST" action="{{ route('journal-entries.update', $journal_entry) }}"
+            data-row-count="{{ count($ledger_entries) }}">
             @csrf
             @method('PUT')
             <div class="row">
@@ -96,6 +105,9 @@
             </div>
 
             <div class="button-container">
+                <button type="button" class="add-row-btn">
+                    Add New Row
+                </button>
                 <button type="submit" class="submit-btn" id="submitButton">Submit Journal Entry</button>
                 <p id="balanceWarning" style="color: red; display: none;">
                     Debits and credits must be equal before submitting.
