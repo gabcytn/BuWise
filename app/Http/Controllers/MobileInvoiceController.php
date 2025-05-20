@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\InvoiceCreated;
 use App\Models\Invoice;
-use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
@@ -37,7 +35,7 @@ class MobileInvoiceController extends Controller
 
             // NOTE: temporary solution while rpa not set:
             $oldLinks = Cache::get($request->user()->id . '-invoices');
-            $oldLinks[] = Storage::temporaryUrl('invoices/' . $filename, now()->addMinutes(10080));
+            $oldLinks[] = $url;
             Cache::put($request->user()->id . '-invoices', $oldLinks, $seconds = 604800);
             // NOTE: end
 
@@ -51,7 +49,7 @@ class MobileInvoiceController extends Controller
         }
     }
 
-    private function storeImageToAws(Request $request)
+    private function storeImageToAws(Request $request): string
     {
         $path = $request->file('file')->store('invoices/', 's3');
         return basename($path);
