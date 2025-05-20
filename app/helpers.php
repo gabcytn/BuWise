@@ -14,7 +14,7 @@ if (!function_exists('formatDate')) {
     function formatDate($date)
     {
         $res = \Carbon\Carbon::parse($date);
-        return $res->format('F d, Y');
+        return $res->format('Y-m-d');
     }
 }
 

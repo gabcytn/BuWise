@@ -14,6 +14,7 @@ class JournalEntry extends Model
         'transaction_type_id',
         'status_id',
         'description',
+        'created_by',
         'date'
     ];
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\JournalEntry;
+use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ class JournalIndex
         $query = $this->applyFilters($query, $filter);
 
         return $query
-            ->groupBy('je.id', 'users.name', 'tt.name', 'status.description', 'je.description', 'je.date')
+            ->groupBy('je.id', 'client.name', 'tt.name', 'status.description', 'je.description', 'je.date', 'creator.name')
             ->orderByDesc('je.id')
             ->paginate(self::ITEMS_PER_PAGE)
             ->appends($filter);
@@ -69,21 +70,24 @@ class JournalIndex
      */
     private function buildBaseQuery(User $user)
     {
+        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
         return DB::table('journal_entries as je')
-            ->join('users', 'users.id', '=', 'je.client_id')
+            ->join('users as client', 'client.id', '=', 'je.client_id')
+            ->join('users as creator', 'creator.id', '=', 'je.created_by')
             ->join('transaction_types as tt', 'tt.id', '=', 'je.transaction_type_id')
             ->join('ledger_entries as le', 'le.journal_entry_id', '=', 'je.id')
             ->join('status', 'status.id', '=', 'je.status_id')
             ->select(
                 'je.id',
-                'users.name as client_name',
+                'client.name as client_name',
+                'creator.name as creator',
                 'tt.name as transaction_type',
                 'status.description AS status',
                 'je.description',
                 DB::raw('MAX(le.amount) as amount'),
                 'je.date'
             )
-            ->where('users.accountant_id', '=', $user->id);
+            ->where('client.accountant_id', '=', $accId);
     }
 
     /**

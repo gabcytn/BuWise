@@ -7,6 +7,7 @@
             'Description',
             'Amount',
             'Date',
+            'Created By',
             'Status',
             'Action',
         ];
@@ -73,6 +74,9 @@
                         </td>
                         <td>
                             <p>{{ formatDate($entry->date) }}</p>
+                        </td>
+                        <td>
+                            <p>{{ $entry->creator }}</p>
                         </td>
                         <td>
                             <strong class="{{ $entry->status }}">{{ ucfirst($entry->status) }}</strong>

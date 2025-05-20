@@ -79,6 +79,7 @@ class JournalStore
                 'description' => $request->description ?? null,
                 'transaction_type_id' => $request->transaction_type_id,
                 'invoice_id' => $request->invoice_id ?? null,
+                'created_by' => $request->user()->id,
                 'status_id' => $request->invoice_id ? Status::PENDING : Status::APPROVED,
                 'date' => $request->date . ' ' . now()->format('H:i:s')
             ]);
