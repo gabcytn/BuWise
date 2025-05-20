@@ -11,7 +11,9 @@ use App\Models\LedgerEntry;
 use App\Models\Status;
 use App\Models\TransactionType;
 use App\Services\JournalIndex;
+use App\Services\JournalShow;
 use App\Services\JournalStore;
+use App\Services\JournalUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -72,31 +74,8 @@ class JournalEntryController extends Controller
      */
     public function show(JournalEntry $journalEntry)
     {
-        Gate::authorize('view', $journalEntry);
-
-        $results = Cache::rememberForever('journal-' . $journalEntry->id, function () use ($journalEntry) {
-            Log::info('Calculating journal entry cache...');
-            return DB::table('ledger_entries')
-                ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
-                ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
-                ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
-                ->select(
-                    'ledger_entries.id as id',
-                    'ledger_accounts.name as account_name',
-                    'ledger_accounts.id as account_code',
-                    'account_groups.name as account_group_name',
-                    DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
-                    DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
-                )
-                ->where('journal_entry_id', $journalEntry->id)
-                ->orderByRaw('ledger_entries.id ASC')
-                ->get();
-        });
-
-        return view('journal-entries.show', [
-            'journalEntry' => $journalEntry,
-            'ledgerEntries' => $results,
-        ]);
+        $show = new JournalShow($journalEntry);
+        return $show->show($journalEntry);
     }
 
     /**
@@ -127,86 +106,8 @@ class JournalEntryController extends Controller
      */
     public function update(Request $request, JournalEntry $journalEntry)
     {
-        Gate::authorize('update', $journalEntry);
-        $request->validate([
-            'client_id' => ['required', 'uuid:4'],
-            'invoice_id' => ['string'],
-            'description' => ['required', 'string', 'max:255'],
-            'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
-            'date' => ['required', 'date', Rule::date()->format('Y-m-d')],
-        ]);
-
-        $rowNumbers = [];
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'row_id_') === 0) {
-                $rowNumbers[] = $value;
-            }
-        }
-
-        $journalEntries = [];
-        foreach ($rowNumbers as $key) {
-            $entry = [
-                'account' => $request->input("account_$key"),
-                'debit' => (float) $request->input("debit_$key", 0),
-                'credit' => (float) $request->input("credit_$key", 0),
-            ];
-
-            $journalEntries[] = $entry;
-        }
-
-        $totalDebits = array_sum(array_column($journalEntries, 'debit'));
-        $totalCredits = array_sum(array_column($journalEntries, 'credit'));
-
-        if ($totalDebits != $totalCredits) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(['balance' => 'Journal entries must have equal debits and credits']);
-        }
-
-        if (count($journalEntries) < 2) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(['entries' => 'At least two entries are required']);
-        }
-        try {
-            DB::beginTransaction();
-
-            $journal = JournalEntry::find($journalEntry->id);
-            $journal->date = $request->date;
-            $journal->description = $request->description;
-            $journal->transaction_type_id = $request->transaction_type_id;
-            $journal->save();
-
-            $ledger_entries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
-            $ledger_entries_for_cache = [];
-            foreach ($journalEntries as $key => $entry) {
-                $ledger_entry = $ledger_entries[$key];
-                $ledger_entry->account_id = $entry['account'];
-                $ledger_entry->amount = $entry['debit'];
-                $ledger_entry->entry_type_id = $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'];
-                $ledger_entry->amount = $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'];
-                $ledger_entry->save();
-                $ledger_entries_for_cache[] = $ledger_entry;
-            }
-
-            DB::commit();
-
-            JournalEntryCreated::dispatch($journalEntry->client_id, $ledger_entries_for_cache);
-            Cache::delete('journal-' . $journalEntry->id);
-
-            return redirect()
-                ->route('journal-entries.index')
-                ->with('success', 'Journal entry created successfully');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::warning('Error updating journal entry' . $e->getMessage());
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors(['database' => 'Failed to update journal entry']);
-        }
+        $update = new JournalUpdate($request, $journalEntry);
+        return $update->update();
     }
 
     /**
