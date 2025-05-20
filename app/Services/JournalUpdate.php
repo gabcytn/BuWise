@@ -23,7 +23,6 @@ class JournalUpdate
 
     public function update()
     {
-        Gate::authorize('update', $this->journalEntry);
         $this->request->validate([
             'client_id' => ['required', 'uuid:4'],
             'invoice_id' => ['string'],

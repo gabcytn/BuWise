@@ -16,8 +16,6 @@ class JournalIndex
 
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', JournalEntry::class);
-
         $user = $request->user();
         $filter = $request->only(['type', 'invoice', 'client']);
         $clients = $this->getCachedClients($user);

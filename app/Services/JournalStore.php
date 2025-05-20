@@ -16,7 +16,6 @@ class JournalStore
 {
     public function store(Request $request)
     {
-        Gate::authorize('create', JournalEntry::class);
         $request->validate([
             'client_id' => 'uuid:4',
             'invoice_id' => ['string', 'nullable'],
