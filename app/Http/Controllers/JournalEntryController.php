@@ -141,7 +141,7 @@ class JournalEntryController extends Controller
      */
     public function approve(JournalEntry $journalEntry)
     {
-        // TODO: authorize via Gate
+        Gate::authorize('changeStatus', $journalEntry);
         $journalEntry->status_id = Status::APPROVED;
         $journalEntry->save();
 
@@ -153,7 +153,7 @@ class JournalEntryController extends Controller
      */
     public function reject(JournalEntry $journalEntry)
     {
-        // TODO: authorize via Gate
+        Gate::authorize('changeStatus', $journalEntry);
         $journalEntry->status_id = Status::REJECTED;
         $journalEntry->save();
 
