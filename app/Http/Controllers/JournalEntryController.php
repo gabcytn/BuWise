@@ -145,6 +145,13 @@ class JournalEntryController extends Controller
         $journalEntry->status_id = Status::APPROVED;
         $journalEntry->save();
 
+        $arr = [];
+        foreach ($journalEntry->ledgerEntries as $data) {
+            $arr[] = $data;
+        }
+
+        // update coa cache
+        JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
         return redirect()->back()->with(['status' => 'Journal approved!']);
     }
 
