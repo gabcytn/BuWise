@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\InvoiceCreated;
+use App\Events\ParseInvoice;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
@@ -32,9 +31,9 @@ class MobileInvoiceController extends Controller
                 'image' => $filename,
             ]);
 
-            // TODO: send actual file image to Document AI for parsing,
-            // then to openAI api for structured JSON,
-            // then to robocorp for journal entrying.
+            // temporarily store image locally for invoice parser access.
+            Storage::disk('public')->put("invoices/$filename", file_get_contents($file));
+            ParseInvoice::dispatch($filename, $file->getMimeType());
 
             return Response::json([
                 'message' => 'Successfully created invoice'
