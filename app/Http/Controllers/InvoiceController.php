@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        // TODO: Gate::authorization();
+        Gate::authorize('viewAny', Invoice::class);
         $user = $request->user();
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
         $invoices = Invoice::with('client')
