@@ -15,6 +15,12 @@
             @csrf
             @method('PUT')
             <div class="row">
+                @if ($journal_entry->invoice_id !== null)
+                    <div class="input-wrapper">
+                        <label>Invoice ID</label>
+                        <input type="text" disabled value="{{ $journal_entry->invoice_id }}" />
+                    </div>
+                @endif
                 <div class="input-wrapper">
                     <label for="date">Date</label>
                     <input value="{{ $date }}" type="date" name="date" id="date" />
