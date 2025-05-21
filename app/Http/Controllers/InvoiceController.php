@@ -23,20 +23,16 @@ class InvoiceController extends Controller
             ->whereHas('client', function ($query) use ($accId) {
                 $query->where('accountant_id', $accId);
             })
+            ->orderBy('id', 'DESC')
             ->get();
 
         // TODO: set cache value realistically; initially set to 1 week: must be around 30-60 mins;
-        $links = Cache::remember($accId . '-invoices', 604800, function () use ($invoices) {
-            $urls = [];
-            foreach ($invoices as $invoice) {
-                $urls[] = Storage::temporaryUrl('invoices/' . $invoice->image, now()->addMinutes(10080));
-            }
-            Log::info('Invoice images fetched from AWS successfully!');
-            return $urls;
-        });
-
-        foreach ($links as $idx => $link) {
-            $invoices[$idx]->image = $link;
+        foreach ($invoices as $invoice) {
+            $link = Cache::remember($invoice->id . '-invurl', 604800, function () use ($invoice) {
+                Log::info('Fetching image from AWS...');
+                return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addMinutes(10080));
+            });
+            $invoice->image = $link;
         }
 
         return view('invoices.index', [

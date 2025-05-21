@@ -6,6 +6,7 @@ use App\Events\InvoiceCreated;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
@@ -21,23 +22,17 @@ class MobileInvoiceController extends Controller
             'file' => ['required', File::image()->max(10000)]
         ]);
         try {
-            // Storage::disk('public')->put('invoices/' . $filename, file_get_contents($file));
-            $filename = $this->storeImageToAws($request);
-            $url = Storage::temporaryUrl('invoices/' . $filename, now()->addMinutes(10));
+            $file = $request->file('file');
+            $filename = $this->storeImageToAws($file);
 
             $invoice = Invoice::create([
                 'client_id' => $request->user()->id,
                 'image' => $filename,
             ]);
 
-            // NOTE: temporarily disable rpa bot trigger.
-            // InvoiceCreated::dispatch($invoice->id, $url, $request->user());
-
-            // NOTE: temporary solution while rpa not set:
-            $oldLinks = Cache::get($request->user()->id . '-invoices');
-            $oldLinks[] = $url;
-            Cache::put($request->user()->id . '-invoices', $oldLinks, $seconds = 604800);
-            // NOTE: end
+            // TODO: send actual file image to Document AI for parsing,
+            // then to openAI api for structured JSON,
+            // then to robocorp for journal entrying.
 
             return Response::json([
                 'message' => 'Successfully created invoice'
@@ -49,9 +44,10 @@ class MobileInvoiceController extends Controller
         }
     }
 
-    private function storeImageToAws(Request $request): string
+    private function storeImageToAws($file): string
     {
-        $path = $request->file('file')->store('invoices/', 's3');
+        $path = $file->store('invoices/', 's3');
+        Log::info("Filename without basename: $path");
         return basename($path);
     }
 }
