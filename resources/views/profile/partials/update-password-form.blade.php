@@ -32,7 +32,7 @@
         </div>
 
         <div>
-            <button type="submit">Save</button>
+            <button type="submit" style="background-color: var(--green);">Save</button>
             @if (session('status') === 'password-updated')
                 <p>Saved.</p>
             @endif

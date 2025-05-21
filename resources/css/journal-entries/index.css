@@ -45,6 +45,12 @@
     border-radius: 5px;
     outline: none;
     color: var(--off-white);
+    transition: opacity 0.25s;
+    cursor: pointer;
+}
+
+#submit-filters:hover {
+    opacity: 0.85;
 }
 
 .select {

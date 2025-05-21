@@ -8,7 +8,7 @@
             @csrf
             @method('DELETE')
             <div>
-                <button type="submit">Disable</button>
+                <button type="submit" style="background-color: var(--green);">Save</button>
             </div>
         </form>
     </header>
