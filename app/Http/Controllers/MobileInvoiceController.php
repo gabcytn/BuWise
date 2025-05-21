@@ -6,6 +6,7 @@ use App\Events\InvoiceCreated;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +19,7 @@ class MobileInvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Invoice::class);
         $request->validate([
             'file' => ['required', File::image()->max(10000)]
         ]);
