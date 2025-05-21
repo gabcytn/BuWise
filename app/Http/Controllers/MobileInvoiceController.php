@@ -48,7 +48,6 @@ class MobileInvoiceController extends Controller
     private function storeImageToAws($file): string
     {
         $path = $file->store('invoices/', 's3');
-        Log::info("Filename without basename: $path");
         return basename($path);
     }
 }
