@@ -3,7 +3,7 @@
         @if (count($invoices) > 0)
             <h2>Invoice Management</h2>
             <p>Manage your clients' invoices</p>
-            <div style="display: flex; gap: 0.5rem;">
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                 @foreach ($invoices as $invoice)
                     <div>
                         <p>{{ $invoice->id }}</p>

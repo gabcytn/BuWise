@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\ParseInvoice;
 use App\Services\DocumentAi;
+use App\Services\OpenAi;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -31,8 +32,12 @@ class ParseInvoiceListener implements ShouldQueue
                 throw new \Exception('Document AI API error');
             }
 
-            // TODO: prompt an LLM to structure response to JSON;
-            // then to robocorp for journal entrying.
+            $openAi = new OpenAi($text);
+            $response = $openAi->prompt();
+            $payload = json_decode($response);
+            Log::info('Payload: ' . json_encode($payload));
+
+            // TODO: submit request to robocorp for journal entrying.
         } catch (\Exception $e) {
             Log::error('Error in parsing invoice: ' . $e->getMessage());
         }
