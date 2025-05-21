@@ -35,6 +35,8 @@ class ParseInvoiceListener implements ShouldQueue
             $openAi = new OpenAi($text);
             $response = $openAi->prompt();
             $payload = json_decode($response);
+            $payload->invoiceId = $event->invoiceId;
+            $payload->transactionType = $event->transactionType;
             Log::info('Payload: ' . json_encode($payload));
 
             // TODO: submit request to robocorp for journal entrying.

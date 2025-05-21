@@ -20,7 +20,9 @@ class ParseInvoice
      */
     public function __construct(
         public string $filename,
-        public string $mimeType
+        public string $mimeType,
+        public string $invoiceId,
+        public string $transactionType
     ) {}
 
     /**
