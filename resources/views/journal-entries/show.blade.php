@@ -1,11 +1,31 @@
 <x-app-layout>
     @php
         $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Debit', 'Credit'];
+        $journalStatus = $journalEntry->status->id;
+        $approved = \App\Models\Status::APPROVED;
+        $pending = \App\Models\Status::PENDING;
+        $rejected = \App\Models\Status::REJECTED;
     @endphp
     @vite('resources/css/journal-entries/show.css')
     <div class="container">
         <h2 id="page-title" style="margin-top: 1.25rem; margin-bottom: 0.5rem;">Ledger Entries</h2>
         <p>Description: {{ $journalEntry->description }}</p>
+        @switch($journalStatus)
+            @case($approved)
+                <p>Approved</p>
+            @break
+
+            @case($pending)
+                <p>Approved</p>
+            @break
+
+            @case($rejected)
+                <p>Rejected</p>
+            @break
+
+            @default
+            @break
+        @endswitch
         <x-table-management :headers=$headers>
             @foreach ($ledgerEntries as $entry)
                 <tr class="journal-row">
@@ -20,11 +40,14 @@
         @if (session('status'))
             <p style="color: var(--green);">{{ session('status') }}</p>
         @endif
-        @if ($journalEntry->status->id === \App\Models\Status::PENDING)
+        @if ($journalStatus === $pending || $journalStatus === $rejected)
             <form action="{{ route('journal-entries.approve', $journalEntry) }}" method="POST">
                 @csrf
                 <button type="submit">Approve</button>
             </form>
+        @endif
+
+        @if ($journalStatus === $pending || $journalStatus === $approved)
             <form action="{{ route('journal-entries.reject', $journalEntry) }}" method="POST">
                 @csrf
                 <button type="submit">Reject</button>

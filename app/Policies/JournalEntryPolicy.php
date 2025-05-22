@@ -73,22 +73,11 @@ class JournalEntryPolicy
 
     /**
      * Determine whether the user can restore the model.
+     * @return \Illuminate\Auth\Access\Response;
      */
-    public function changeStatus(User $user, JournalEntry $journalEntry): Response
+    public function changeStatus(User $user, JournalEntry $journalEntry)
     {
-        $roleId = $user->role_id;
-        if ($roleId === Role::ACCOUNTANT) {
-            return $journalEntry->client->accountant_id === $user->id && $journalEntry->status_id === Status::PENDING
-                ? Response::allow()
-                : Response::denyAsNotFound();
-        } else if ($roleId === Role::LIAISON || $roleId === Role::CLERK) {
-            $accId = $user->accountant_id;
-            return $journalEntry->client->accountant_id === $accId && $journalEntry->status_id === Status::PENDING
-                ? Response::allow()
-                : Response::denyAsNotFound();
-        }
-
-        return Response::denyAsNotFound();
+        return $this->view($user, $journalEntry);
     }
 
     /**

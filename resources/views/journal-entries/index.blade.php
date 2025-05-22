@@ -70,7 +70,7 @@
                             <p>{{ truncate($entry->description) }}</p>
                         </td>
                         <td>
-                            <p>&#8369;{{ $entry->amount }}
+                            <p>&#8369;{{ number_format($entry->amount, 2) }}
                         </td>
                         <td>
                             <p>{{ formatDate($entry->date) }}</p>
