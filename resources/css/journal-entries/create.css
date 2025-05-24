@@ -1,23 +1,22 @@
 .container {
-    max-width: 1250px;
-    width: 90%;
-    margin: 0 auto;
+    max-width: 1500px;
+    width: 95%;
+    margin: 2rem auto;
+    background-color: var(--clear-white);
 }
 
-.radio-buttons {
-    margin-top: 1.5rem;
-    display: flex;
-    gap: 0.75rem;
-}
-
-.radio-group {
-    display: flex;
-    gap: 0.5rem;
+.pad {
+    padding: 2rem;
 }
 
 #page-title {
-    margin-top: 1rem;
     margin-bottom: 0.5rem;
+    padding: 2rem 0 0.5rem 2rem;
+    font-size: 1.85rem;
+}
+
+hr {
+    color: var(--off-white);
 }
 
 .table-wrapper {
@@ -28,6 +27,12 @@
 #journalTable {
     margin-top: 1rem;
     width: 100%;
+}
+
+table,
+th,
+td {
+    border: 1px solid var(--off-white);
     border-collapse: collapse;
 }
 
@@ -44,15 +49,29 @@
     font-size: 0.85rem;
 }
 
+.notes-wrapper {
+    margin-top: 1rem;
+}
+
 th {
-    background-color: var(--off-white);
+    background-color: var(--main-blue);
+    color: var(--off-white);
     padding: 0 0.65rem;
     text-align: center;
     font-size: 0.75rem;
 }
 
-td {
-    padding: 0.75rem 0.15rem;
+#journalTable select,
+#journalTable input {
+    border: none;
+    outline: none;
+    border-radius: 0rem;
+}
+
+#journalTable select:focus,
+#journalTable input:focus {
+    border: 1px solid var(--main-blue);
+    outline: none;
 }
 
 select,
@@ -66,9 +85,18 @@ input {
     background-color: var(--clear-white);
 }
 
-textarea {
+#description {
     padding: 0.65rem;
     resize: vertical;
+}
+
+.row-description {
+    resize: none;
+    width: 35rem;
+}
+
+.tax-input {
+    background-color: var(--off-white);
 }
 
 .add-row-btn {
@@ -89,10 +117,6 @@ textarea {
     font-size: 18px;
 }
 
-.totals-row {
-    font-weight: bold;
-}
-
 .submit-btn {
     background-color: var(--main-blue);
     color: white;
@@ -109,6 +133,26 @@ textarea {
     gap: 0.5rem;
 }
 
+.button-container.outside {
+    flex-direction: row;
+    padding: 2rem;
+}
+
+#cancel-button {
+    background-color: var(--grey);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: opacity 0.25s;
+}
+
+#cancel-button:hover {
+    opacity: 0.85
+}
+
 .submit-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -123,10 +167,6 @@ textarea {
     th {
         padding: 0.5rem 0;
         font-size: 1rem;
-    }
-
-    td {
-        padding: 0.75rem 0.15rem;
     }
 
     select,

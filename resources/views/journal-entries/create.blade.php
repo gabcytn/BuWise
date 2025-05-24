@@ -2,104 +2,119 @@
     @if (session('status'))
         <p style="color: red;">{{ session('status') }}</p>
     @endif
-    @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js', 'resources/js/journal-entries/create-radio-buttons.js'])
+    @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
     <div class="container">
-        <div class="radio-buttons">
-            <div class="radio-group">
-                <label for="journal">Journal</label>
-                <input type="radio" name="invoice-journal" id="journal" value="journal" />
-            </div>
-            <div class="radio-group">
-                <label for="invoice">Invoice</label>
-                <input type="radio" name="invoice-journal" id="invoice" value="invoice" />
-            </div>
-        </div>
-        <h2 id="page-title">Journal Entry</h2>
-        <select style="display: none;" id="select-account" required>
-            <option value="" selected disabled>Select an account</option>
-            @foreach ($accounts as $account)
-                <option value="{{ $account->id }}">{{ $account->id . ' ' . $account->name }}</option>
-            @endforeach
-        </select>
-        <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
-            @csrf
-            <div class="row">
-                <div class="invoice-components">
+        <h2 id="page-title">Add Entry</h2>
+        <hr />
+        <div class="pad">
+            <select style="display: none;" id="select-account" required>
+                <option value="" selected disabled>Select an account</option>
+                @foreach ($accounts as $account)
+                    <option value="{{ $account->id }}">{{ $account->id . ' ' . $account->name }}</option>
+                @endforeach
+            </select>
+            <select style="display: none;" class="tax-select">
+                <option value="" disabled selected>Select a tax</option>
+                <option value="no_tax">No Tax</option>
+                <option value="vat">VAT (12%)</option>
+            </select>
+            <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
+                @csrf
+                <div class="row">
                     <div class="input-wrapper">
-                        <label for="invoice-id">Invoice ID</label>
-                        <input type="text" name="invoice_id" id="invoice-id" value="{{ old('invoice_id') }}" />
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date"
+                            value="{{ old('date') ?? now()->format('Y-m-d') }}" />
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="transaction-type">Transaction Type</label>
+                        <select required id="transaction-type" name="transaction_type_id">
+                            <option value="" selected disabled>Select a transaction type</option>
+                            @foreach ($transactionTypes as $transactionType)
+                                <option value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-wrapper client-select-wrapper">
+                        <label for="client-select">Client</label>
+                        <select name="client_id" id="client-select" required="">
+                            <option value="" disabled selected>Select a client</option>
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->id }}">{{ $client->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
-                <div class="input-wrapper">
-                    <label for="date">Date</label>
-                    <input type="date" name="date" id="date"
-                        value="{{ old('date') ?? now()->format('Y-m-d') }}" />
+                <div class="input-wrapper notes-wrapper">
+                    <label for="description">Notes (optional)</label>
+                    <textarea id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
                 </div>
-                <div class="input-wrapper">
-                    <label for="transaction-type">Transaction Type</label>
-                    <select required id="transaction-type" name="transaction_type_id">
-                        <option value="" selected disabled>Select a transaction type</option>
-                        @foreach ($transactionTypes as $transactionType)
-                            <option value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
-                        @endforeach
-                    </select>
+                <div class="table-wrapper">
+                    <table id="journalTable">
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th>Description</th>
+                                <th>Tax</th>
+                                <th>Debits</th>
+                                <th>Credits</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="journalBody">
+                            <!-- Rows will be added here -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="subtotals-row">
+                                <td colspan="2">
+                                    <div style="text-align: right; margin-right: 0.5rem;">Subtotal</div>
+                                </td>
+                                <td><input class="tax-input" placeholder="0.00" disabled /></td>
+                                <td id="totalDebits">
+                                    <div style="margin-left: 0.5rem;">0.00</div>
+                                </td>
+                                <td id="totalCredits">
+                                    <div style="margin-left: 0.5rem;">0.00</div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr class="totals-row">
+                                <td colspan="2">
+                                    <div style="text-align: right; margin-right: 0.5rem;">Total (PHP) with tax</div>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <div style="margin-left: 0.5rem;" id="actual-total-debits">0.00</div>
+                                </td>
+                                <td>
+                                    <div style="margin-left: 0.5rem;" id="actual-total-credits">0.00</div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-                <div class="input-wrapper client-select-wrapper">
-                    <label for="client-select">Client</label>
-                    <select name="client_id" id="client-select" required="">
-                        <option value="" disabled selected>Select a client</option>
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}">{{ $client->name }}</option>
-                        @endforeach
-                    </select>
+
+                @foreach ($errors->all() as $message)
+                    <p style="color: red;">{{ $message }}</p>
+                @endforeach
+
+                <div class="button-container">
+                    <button type="button" class="add-row-btn">
+                        Add New Row
+                    </button>
                 </div>
-            </div>
-            <div class="input-wrapper">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
-            </div>
-            <div class="table-wrapper">
-                <table id="journalTable">
-                    <thead>
-                        <tr>
-                            <th>ACCOUNT</th>
-                            <th>DEBITS</th>
-                            <th>CREDITS</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="journalBody">
-                        <!-- Rows will be added here -->
-                    </tbody>
-                    <tfoot>
-                        <tr class="totals-row">
-                            <td></td>
-                            <td id="totalDebits">
-                                <div style="margin-left: 0.5rem;">0.00</div>
-                            </td>
-                            <td id="totalCredits">
-                                <div style="margin-left: 0.5rem;">0.00</div>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            </form>
+        </div>
+        <hr />
 
-            @foreach ($errors->all() as $message)
-                <p style="color: red;">{{ $message }}</p>
-            @endforeach
-
-            <div class="button-container">
-                <button type="button" class="add-row-btn">
-                    Add New Row
-                </button>
-
-                <button type="submit" class="submit-btn" id="submitButton" disabled>Submit Journal Entry</button>
-                <p id="balanceWarning" style="color: red; display: none;">
-                    Debits and credits must be equal before submitting.
-                </p>
-            </div>
-        </form>
+        <div class="button-container outside">
+            <button form="journalForm" type="submit" class="submit-btn" id="submitButton" disabled>Submit Journal
+                Entry</button>
+            <button type="button" id="cancel-button">Cancel</button>
+            <p id="balanceWarning" style="color: red; display: none;">
+                Debits and credits must be equal before submitting.
+            </p>
+        </div>
     </div>
 </x-app-layout>
