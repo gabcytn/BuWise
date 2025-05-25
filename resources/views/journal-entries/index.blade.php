@@ -30,9 +30,12 @@
             <form class="select-container" action="" method="GET">
                 <div class="select-container__left">
                     <select class="select" name="period">
-                        <option value="all_time">All time</option>
-                        <option value="this_year">This year</option>
-                        <option value="last_year">Last year</option>
+                        <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>All
+                            time</option>
+                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
+                            This Year</option>
+                        <option value="last_year" {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>
+                            Last Year</option>
                     </select>
                     <select class="select select-clients" name="client">
                         <option value="all" {{ request()->query('client') === 'all' ? 'selected' : '' }}>All Clients
@@ -47,7 +50,8 @@
                 </div>
                 <div class="select-container__right">
                     <div class="search-container">
-                        <input type="search" placeholder="Search ID" name="search" />
+                        <input type="search" placeholder="Search ID" name="search"
+                            value="{{ request()->query('search') }}" />
                     </div>
                     <div class="run-filter-container">
                         <button id="submit-filters">Run</button>
