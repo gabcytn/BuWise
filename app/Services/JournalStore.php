@@ -55,7 +55,7 @@ class JournalStore
                 if ($debitTax > 0 || $creditTax > 0) {
                     LedgerEntry::create([
                         'journal_entry_id' => $journalEntry->id,
-                        'account_id' => 215,  // TODO: set to Taxes Payable
+                        'account_id' => 19,  // TODO: set to Taxes Payable
                         'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                         'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
                     ]);
@@ -119,7 +119,11 @@ class JournalStore
 
     private function getTaxedValue(string $tax, float $originalValue)
     {
-        return $tax === 'vat' ? $originalValue + $originalValue * 0.12 : $originalValue;
+        if ($tax !== 'no_tax') {
+            $percentage = ((int) $tax) / 100;
+            return $originalValue + $originalValue * $percentage;
+        }
+        return $originalValue;
     }
 
     private function redirectWithErrors($key, $value): RedirectResponse
