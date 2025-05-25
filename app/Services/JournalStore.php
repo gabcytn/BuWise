@@ -49,7 +49,6 @@ class JournalStore
             $ledgerEntries = [];
             // Create individual journal lines
             foreach ($journalEntries as $entry) {
-                $accountId = substr($entry['account'], 0, 4);
                 $debitTax = $entry['taxed_debit'] - $entry['debit'];
                 $creditTax = $entry['taxed_credit'] - $entry['credit'];
                 if ($debitTax > 0 || $creditTax > 0) {
@@ -62,7 +61,7 @@ class JournalStore
                 }
                 $ledgerEntry = LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
-                    'account_id' => $accountId,
+                    'account_id' => $entry['account'],
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
                 ]);
