@@ -46,6 +46,17 @@ function addRow() {
 
     descriptionCell.appendChild(descriptionInput);
 
+    // Tax field
+    const taxCell = document.createElement("td");
+    const taxSelect = document.querySelector("select.tax-select");
+    const taxSelectClone = taxSelect.cloneNode(true);
+    taxSelectClone.style.display = "block";
+    taxSelectClone.name = `tax_${rowCounter}`;
+
+    taxSelectClone.addEventListener("change", updateTotals);
+
+    taxCell.appendChild(taxSelectClone);
+
     // Debits field
     const debitCell = document.createElement("td");
     const debitInput = document.createElement("input");
@@ -92,23 +103,6 @@ function addRow() {
     });
     creditCell.appendChild(creditInput);
 
-    // Tax field
-    const taxCell = document.createElement("td");
-    const taxSelect = document.querySelector("select.tax-select");
-    const taxSelectClone = taxSelect.cloneNode(true);
-    taxSelectClone.style.display = "block";
-    taxSelectClone.name = `tax_${rowCounter}`;
-
-    taxSelectClone.addEventListener("change", function (e) {
-        updateTotals();
-        if (debitInput.value && debitInput.value > 0) {
-            // updateTax(debitInput.name, debitInput.value);
-        } else if (creditInput.value && creditInput.value > 0) {
-            // updateTax(creditInput.name, creditInput.value);
-        }
-    });
-
-    taxCell.appendChild(taxSelectClone);
     // Hidden row ID field (helpful for server-side processing)
     const rowIdInput = document.createElement("input");
     rowIdInput.type = "hidden";
@@ -238,10 +232,10 @@ function validateForm() {
 
     // Check if debits and credits are balanced
     const totalDebits = parseFloat(
-        document.getElementById("totalDebits").textContent,
+        document.getElementById("actual-total-debits").textContent,
     );
     const totalCredits = parseFloat(
-        document.getElementById("totalCredits").textContent,
+        document.getElementById("actual-total-credits").textContent,
     );
 
     if (totalDebits !== totalCredits) {
