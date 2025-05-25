@@ -2,14 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\JournalEntry;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 
 class JournalIndex
 {
@@ -18,14 +16,15 @@ class JournalIndex
     public function index(Request $request)
     {
         $user = $request->user();
-        $filter = $request->only(['type', 'invoice', 'client']);
+        $filter = $request->only(['client', 'period', 'search', 'sort']);
         $clients = $this->getCachedClients($user);
 
         if (empty($filter)) {
-            return view('journal-entries.index', [
-                'clients' => $clients,
-                'entries' => [],
-            ]);
+            $filter = [
+                'client' => 'all',
+                'period' => 'all_time',
+                'search' => '',
+            ];
         }
 
         try {
@@ -58,9 +57,12 @@ class JournalIndex
         $query = $this->buildBaseQuery($user);
         $query = $this->applyFilters($query, $filter);
 
+        $query = $query
+            ->groupBy('je.id', 'client.name', 'tt.name', 'status.description', 'je.description', 'je.date', 'creator.name');
+
+        $query = $this->getOrderBy($query, $filter);
+
         return $query
-            ->groupBy('je.id', 'client.name', 'tt.name', 'status.description', 'je.description', 'je.date', 'creator.name')
-            ->orderByDesc('je.id')
             ->paginate(self::ITEMS_PER_PAGE)
             ->appends($filter);
     }
@@ -95,30 +97,71 @@ class JournalIndex
      */
     private function applyFilters($query, array $filter)
     {
-        $type = $filter['type'] ?? 'all';
         $client = $filter['client'] ?? 'all';
-        $invoiceFilter = $filter['invoice'] ?? null;
-        $hasInvoiceFilter = isset($filter['invoice']);
+        $period = $filter['period'] ?? 'all_time';
+        $search = $filter['search'] ?? null;
 
         // Filter by client if not "all"
         if ($client !== 'all') {
             $query->where('je.client_id', '=', $client);
         }
 
-        // Type-specific filtering
-        if ($type === 'journals') {
-            $query->where('je.invoice_id', '=', null);
-        } elseif ($type === 'invoices') {
-            $query->where('je.invoice_id', '!=', null);
-
-            // Apply invoice status filter if specified
-            if ($invoiceFilter !== 'all' && $hasInvoiceFilter) {
-                $query->where('je.status_id', '=', Status::LOOKUP[$invoiceFilter]);
-            }
+        switch ($period) {
+            case 'all_time':
+                break;
+            case 'this_year':
+                $query->whereBetween('je.date', ['2025-01-01', '2025-12-31']);
+                break;
+            case 'last_year':
+                $query->whereBetween('je.date', ['2024-01-01', '2024-12-31']);
+                break;
+            default:
+                break;
         }
 
-        // Validate filter combinations
-        $this->validateFilterCombination($type, $client, $invoiceFilter, $hasInvoiceFilter);
+        if ($search) {
+            $query->where('je.id', '=', $search);
+        }
+
+        return $query;
+    }
+
+    private function getOrderBy($query, array $filter)
+    {
+        $sort = $filter['sort'] ?? null;
+
+        if (!$sort)
+            return $query->orderByDesc('je.id');
+
+        switch ($sort) {
+            case 'journal_id':
+                $query->orderBy('je.id');
+                break;
+            case 'client_name':
+                $query->orderBy('client.name');
+                break;
+            case 'transaction_type':
+                $query->orderBy('tt.name');
+                break;
+            case 'description':
+                $query->orderBy('je.description');
+                break;
+            case 'amount':
+                $query->orderBy('amount');
+                break;
+            case 'date':
+                $query->orderBy('je.date');
+                break;
+            case 'created_by':
+                $query->orderBy('creator');
+                break;
+            case 'status':
+                $query->orderBy('status.description');
+                break;
+            default:
+                $query->orderByDesc('je.id');
+                break;
+        }
 
         return $query;
     }

@@ -13,7 +13,7 @@
         ];
     @endphp
 
-    @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js'])
+    @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js', 'resources/css/journal-entries/index-table.css', 'resources/js/journal-entries/index-table.js'])
     <div class="container">
         <form class="create-journal-form" action="{{ route('journal-entries.create') }}" method="GET">
             <div class="first-texts">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="select-container__right">
                     <div class="search-container">
-                        <input type="search" placeholder="Search" name="search" />
+                        <input type="search" placeholder="Search ID" name="search" />
                     </div>
                     <div class="run-filter-container">
                         <button id="submit-filters">Run</button>
