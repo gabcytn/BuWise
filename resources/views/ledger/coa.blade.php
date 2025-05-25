@@ -1,11 +1,5 @@
 @php
     $headers = ['ACCOUNT CODE', 'ACCOUNT NAME', 'ACCOUNT TYPE'];
-    $user = request()->user();
-    if ($user->role_id === \App\Models\Role::ACCOUNTANT) {
-        $clients = $user->clients;
-    } else {
-        $clients = $user->accountant->clients;
-    }
 @endphp
 @vite('resources/js/ledger/coa.js')
 <x-app-layout>
@@ -27,7 +21,7 @@
         <x-table-management :headers=$headers>
             @foreach ($accounts as $account)
                 <tr data-account-code="{{ $account->id }}" class="ledger-account" style="cursor: pointer;">
-                    <td>{{ $account->id }}</td>
+                    <td>{{ $account->code }}</td>
                     <td>{{ $account->name }}</td>
                     <td>{{ ucfirst($account->accountGroup->name) }}</td>
                 </tr>

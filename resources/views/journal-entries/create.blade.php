@@ -10,7 +10,7 @@
             <select style="display: none;" id="select-account" required>
                 <option value="" selected disabled>Select an account</option>
                 @foreach ($accounts as $account)
-                    <option value="{{ $account->id }}">{{ $account->id . ' ' . $account->name }}</option>
+                    <option value="{{ $account->id }}">{{ $account->code . ' ' . $account->name }}</option>
                 @endforeach
             </select>
             <select style="display: none;" class="tax-select" required>

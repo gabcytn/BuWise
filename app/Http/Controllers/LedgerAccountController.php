@@ -19,12 +19,22 @@ class LedgerAccountController extends Controller
     /**
      * @return \Illuminate\Contracts\View\View;
      */
-    public function chartOfAccounts()
+    public function chartOfAccounts(Request $request)
     {
         Gate::authorize('chartOfAccounts', LedgerAccount::class);
-        $accounts = LedgerAccount::with('accountGroup')->get();
+
+        $user = $request->user();
+        $accId = getAccountantId($user);
+        $clients = Cache::remember($accId . '-clients', 3600, function () use ($user) {
+            return getClients($user);
+        });
+        $accounts = LedgerAccount::with('accountGroup')
+            ->where('accountant_id', $accId)
+            ->orWhere('accountant_id', null)
+            ->get();
 
         return view('ledger.coa', [
+            'clients' => $clients,
             'accounts' => $accounts
         ]);
     }

@@ -29,3 +29,10 @@ if (!function_exists('getClients')) {
         return null;
     }
 }
+
+if (!function_exists('getAccountantId')) {
+    function getAccountantId(User $user)
+    {
+        return $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+    }
+}
