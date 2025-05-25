@@ -4,9 +4,9 @@ use App\Models\Role;
 use App\Models\User;
 
 if (!function_exists('truncate')) {
-    function truncate($text, $max = 50)
+    function truncate($text, $max = 25)
     {
-        return strlen($text) > 50 ? substr($text, 0, $max) . '...' : $text;
+        return strlen($text) > $max ? substr($text, 0, $max) . '...' : $text;
     }
 }
 
