@@ -6,7 +6,9 @@ use App\Events\JournalEntryCreated;
 use App\Models\JournalEntry;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
+use App\Models\Role;
 use App\Models\Status;
+use App\Models\Tax;
 use App\Models\TransactionType;
 use App\Services\JournalIndex;
 use App\Services\JournalShow;
@@ -45,10 +47,16 @@ class JournalEntryController extends Controller
             return getClients($user);
         });
 
+        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+        $taxes = Cache::remember($accId . '-taxes', 3600, function () use ($accId) {
+            return Tax::where('accountant_id', $accId)->orWhere('accountant_id', null)->get();
+        });
+
         $accounts = LedgerAccount::all();
         $transactionTypes = TransactionType::all();
 
         return view('journal-entries.create', [
+            'taxes' => $taxes,
             'clients' => $clients,
             'accounts' => $accounts,
             'transactionTypes' => $transactionTypes,

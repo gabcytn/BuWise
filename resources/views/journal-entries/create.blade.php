@@ -13,10 +13,12 @@
                     <option value="{{ $account->id }}">{{ $account->id . ' ' . $account->name }}</option>
                 @endforeach
             </select>
-            <select style="display: none;" class="tax-select">
-                <option value="" disabled selected>Select a tax</option>
+            <select style="display: none;" class="tax-select" required>
                 <option value="no_tax">No Tax</option>
-                <option value="vat">VAT (12%)</option>
+                @foreach ($taxes as $tax)
+                    <option value="{{ $tax->value }}">{{ strtoupper($tax->name) . ' (' . $tax->value . '%)' }}
+                    </option>
+                @endforeach
             </select>
             <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
                 @csrf
