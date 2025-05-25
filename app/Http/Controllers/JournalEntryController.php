@@ -92,11 +92,16 @@ class JournalEntryController extends Controller
     public function edit(Request $request, JournalEntry $journalEntry)
     {
         Gate::authorize('update', $journalEntry);
+        $user = $request->user();
         $accounts = LedgerAccount::all();
         $transactionTypes = TransactionType::all();
 
         $ledgerEntries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
 
+        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+        $taxes = Cache::remember($accId . '-taxes', 3600, function () use ($accId) {
+            return Tax::where('accountant_id', $accId)->orWhere('accountant_id', null)->get();
+        });
         $date = new DateTime($journalEntry->date);
 
         return view('journal-entries.edit', [
@@ -105,6 +110,7 @@ class JournalEntryController extends Controller
             'journal_entry' => $journalEntry,
             'ledger_entries' => $ledgerEntries,
             'date' => $date->format('Y-m-d'),
+            'taxes' => $taxes,
         ]);
     }
 

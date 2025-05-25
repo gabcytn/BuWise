@@ -146,11 +146,6 @@ function updateTotals() {
     let actualD = 0;
     let actualC = 0;
 
-    // Get all debit and credit inputs
-    const debitInputs = document.querySelectorAll(
-        '#journalBody input[type="number"]',
-    );
-
     const journalRows = document.querySelectorAll(".journal-row");
     journalRows.forEach((row, idx) => {
         const taxSelect = row.querySelector(`select[name='tax_${idx + 1}']`);
