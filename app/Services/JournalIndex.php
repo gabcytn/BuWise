@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -110,10 +111,14 @@ class JournalIndex
             case 'all_time':
                 break;
             case 'this_year':
-                $query->whereBetween('je.date', ['2025-01-01', '2025-12-31']);
+                $start = Carbon::now()->startOfYear()->toDateString();
+                $end = Carbon::now()->endOfYear()->toDateString();
+                $query->whereBetween('je.date', [$start, $end]);
                 break;
             case 'last_year':
-                $query->whereBetween('je.date', ['2024-01-01', '2024-12-31']);
+                $start = Carbon::now()->subYear()->startOfYear()->toDateString();
+                $end = Carbon::now()->subYear()->endOfYear()->toDateString();
+                $query->whereBetween('je.date', [$start, $end]);
                 break;
             default:
                 break;
