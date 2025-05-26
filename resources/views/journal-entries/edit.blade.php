@@ -84,9 +84,11 @@
                                     </td>
                                     <td>
                                         <select class="tax-select" required name={{ 'tax_' . $key + 1 }}>
-                                            <option value="no_tax">No Tax</option>
+                                            <option value="0" data-tax-value="0">No Tax</option>
                                             @foreach ($taxes as $tax)
-                                                <option value="{{ $tax->value }}">
+                                                <option value="{{ $tax->id }}"
+                                                    data-tax-value="{{ $tax->value }}"
+                                                    {{ $ledger_entry->tax_id === $tax->id ? 'selected' : '' }}>
                                                     {{ strtoupper($tax->name) . ' (' . $tax->value . '%)' }}
                                                 </option>
                                             @endforeach
