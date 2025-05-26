@@ -34,6 +34,14 @@
                             time</option>
                         <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
                             This Year</option>
+                        <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
+                            This Month</option>
+                        <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>
+                            This Week</option>
+                        <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>
+                            Last Week</option>
+                        <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
+                            Last Month</option>
                         <option value="last_year" {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>
                             Last Year</option>
                     </select>

@@ -107,26 +107,44 @@ class JournalIndex
             $query->where('je.client_id', '=', $client);
         }
 
+        $start = null;
+        $end = null;
+
         switch ($period) {
             case 'all_time':
                 break;
             case 'this_year':
                 $start = Carbon::now()->startOfYear()->toDateString();
                 $end = Carbon::now()->endOfYear()->toDateString();
-                $query->whereBetween('je.date', [$start, $end]);
+                break;
+            case 'this_month':
+                $start = Carbon::now()->startOfMonth()->toDateString();
+                $end = Carbon::now()->endOfMonth()->toDateString();
+                break;
+            case 'this_week':
+                $start = Carbon::now()->startOfWeek(Carbon::SUNDAY)->toDateString();
+                $end = Carbon::now()->endOfWeek(Carbon::SATURDAY)->toDateString();
+                break;
+            case 'last_week':
+                $start = Carbon::now()->subWeek()->startOfWeek(Carbon::SUNDAY)->toDateString();
+                $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY)->toDateString();
+                break;
+            case 'last_month':
+                $start = Carbon::now()->subMonth()->startOfMonth()->toDateString();
+                $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();
                 break;
             case 'last_year':
                 $start = Carbon::now()->subYear()->startOfYear()->toDateString();
                 $end = Carbon::now()->subYear()->endOfYear()->toDateString();
-                $query->whereBetween('je.date', [$start, $end]);
                 break;
             default:
                 break;
         }
 
-        if ($search) {
+        if ($start && $end)
+            $query->whereBetween('je.date', [$start, $end]);
+        if ($search)
             $query->where('je.id', '=', $search);
-        }
 
         return $query;
     }
