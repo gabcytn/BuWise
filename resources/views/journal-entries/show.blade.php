@@ -1,6 +1,6 @@
 <x-app-layout>
     @php
-        $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Debit', 'Credit'];
+        $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Tax', 'Debit', 'Credit'];
         $journalStatus = $journalEntry->status->id;
         $approved = \App\Models\Status::APPROVED;
         $pending = \App\Models\Status::PENDING;
@@ -32,6 +32,7 @@
                     <td>{{ $entry->account_code }}</td>
                     <td>{{ $entry->account_name }}</td>
                     <td>{{ ucfirst($entry->account_group_name) }}</td>
+                    <td>{{ $entry->tax_value }}</td>
                     <td>{{ $entry->debit }}</td>
                     <td>{{ $entry->credit }}</td>
                 </tr>

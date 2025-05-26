@@ -3,6 +3,7 @@
     justify-content: flex-end;
     gap: 1rem;
     list-style-type: none;
+    margin-top: 1rem;
 }
 
 .nav-btn {

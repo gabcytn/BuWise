@@ -12,6 +12,7 @@ class LedgerEntry extends Model
         'account_id',
         'transaction_type_id',
         'entry_type_id',
+        'tax_id',
         'amount',
     ];
 
