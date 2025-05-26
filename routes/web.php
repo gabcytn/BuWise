@@ -49,6 +49,10 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     // journal entries
     Route::resource('/journal-entries', JournalEntryController::class);
+    Route::post('/journal-entries/{journalEntry}/approve', [JournalEntryController::class, 'approve'])
+        ->name('journal-entries.approve');
+    Route::post('/journal-entries/{journalEntry}/reject', [JournalEntryController::class, 'reject'])
+        ->name('journal-entries.reject');
 
     // ledger routes
     Route::get('/ledger/chart-of-accounts', [LedgerAccountController::class, 'chartOfAccounts'])

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             EntryTypeSeeder::class,
             AccountGroupSeeder::class,
             LedgerAccountSeeder::class,
+            TaxesSeeder::class,
         ]);
     }
 }

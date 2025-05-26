@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ParseInvoice;
 use App\Models\Invoice;
-use App\Models\Status;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
@@ -17,27 +17,25 @@ class MobileInvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info('Start time: ' . now());
+        Gate::authorize('create', Invoice::class);
         $request->validate([
-            'file' => ['required', File::image()->max(10000)]
+            'file' => ['required', File::image()->max(10000)],
+            'transaction_type' => ['required', 'string', 'in:Sales,Purchases']
         ]);
         try {
             $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
+            $transactionType = $request->transaction_type;
+            $filename = $this->storeImageToAws($file);
 
-            // dummy values
             $invoice = Invoice::create([
                 'client_id' => $request->user()->id,
-                'status' => Status::PENDING,
-                'invoice_number' => 'INV' . now(),
-                'amount' => rand(100, 500),
                 'image' => $filename,
-                'description' => fake()->sentence(),
             ]);
 
-            Storage::disk('public')->put('invoices/' . $filename, file_get_contents($file));
-            Log::info('Successfully saved an invoice');
-            Log::info('End time: ' . now());
+            // temporarily store image locally for invoice parser access.
+            Storage::disk('public')->put("invoices/$filename", file_get_contents($file));
+            ParseInvoice::dispatch($filename, $file->getMimeType(), $invoice->id, $transactionType);
+
             return Response::json([
                 'message' => 'Successfully created invoice'
             ], 201);
@@ -46,5 +44,11 @@ class MobileInvoiceController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    private function storeImageToAws($file): string
+    {
+        $path = $file->store('invoices/', 's3');
+        return basename($path);
     }
 }

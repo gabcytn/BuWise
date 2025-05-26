@@ -12,7 +12,9 @@ class JournalEntry extends Model
         'client_id',
         'invoice_id',
         'transaction_type_id',
+        'status_id',
         'description',
+        'created_by',
         'date'
     ];
 
@@ -46,5 +48,13 @@ class JournalEntry extends Model
     public function ledgerEntries(): HasMany
     {
         return $this->hasMany(LedgerEntry::class);
+    }
+
+    /*
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo;
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
     }
 }

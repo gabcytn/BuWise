@@ -11,14 +11,15 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('ledger_accounts', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id')->primary()->autoIncrement();
+            $table->integer('code');
             $table->smallInteger('account_group_id');
-            $table->foreignUuid('client_id')->nullable()->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignUuid('client_id')->nullable()->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name');
             $table->timestamps();
 
             // foreign keys
-            $table->foreign('account_group_id')->references('id')->on('account_groups')->cascadeOnDelete();
+            $table->foreign('account_group_id')->references('id')->on('account_groups')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

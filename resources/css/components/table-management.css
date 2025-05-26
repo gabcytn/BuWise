@@ -1,8 +1,8 @@
 .table-wrapper {
     overflow: scroll;
-    border-radius: 10px;
+    border-radius: 4px;
     margin: 1rem 0;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--off-white);
 }
 
 table {
@@ -10,6 +10,10 @@ table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+}
+
+td {
+    border: 1px solid var(--off-white);
 }
 
 thead {
@@ -52,7 +56,7 @@ tr th:first-child {
 .action-column div {
     display: flex;
     gap: 0.5rem;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .journal-row td {
@@ -71,6 +75,7 @@ tr th:first-child {
     th,
     tr td {
         font-size: 0.9rem;
+        text-align: center;
     }
 
     .item-img {

@@ -63,18 +63,6 @@
                                     Trial Balance
                                 </a>
                             </li>
-                            <li class="d-none">
-                                <a href="#" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-user-tie" style="width: auto;"></i>
-                                    Vendors
-                                </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="#" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-user-tie" style="width: auto;"></i>
-                                    Customers
-                                </a>
-                            </li>
                         </ul>
                     </li>
                 </div>

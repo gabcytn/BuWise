@@ -16,7 +16,7 @@
                 <img src="{{ $url }}" alt="Profile Image" width="40" height="40" />
                 <div class="header-side__account--details">
                     <p id="account-name">{{ request()->user()->name }}</p>
-                    <p id="account-role">{{ request()->user()->role->name }}</p>
+                    <p id="account-role">{{ ucfirst(request()->user()->role->name) }}</p>
                 </div>
                 <i class="fa-solid fa-circle-chevron-down"></i>
                 <div class="popover d-none">

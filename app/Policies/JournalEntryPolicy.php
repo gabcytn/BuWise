@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\JournalEntry;
 use App\Models\Role;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -31,7 +32,7 @@ class JournalEntryPolicy
             return $journalEntry->client->accountant_id === $user->id
                 ? Response::allow()
                 : Response::denyAsNotFound();
-        } else if ($roleId !== Role::CLIENT) {
+        } else if ($roleId === Role::LIAISON || Role::CLERK) {
             $accId = $user->accountant_id;
             return $journalEntry->client->accountant_id === $accId
                 ? Response::allow()
@@ -72,10 +73,11 @@ class JournalEntryPolicy
 
     /**
      * Determine whether the user can restore the model.
+     * @return \Illuminate\Auth\Access\Response;
      */
-    public function restore(User $user, JournalEntry $journalEntry): bool
+    public function changeStatus(User $user, JournalEntry $journalEntry)
     {
-        return false;
+        return $this->view($user, $journalEntry);
     }
 
     /**

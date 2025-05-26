@@ -1,79 +1,125 @@
 <x-app-layout>
     @php
-        $headers = ['Journal ID', 'Client Name', 'Transaction Type', 'Description', 'Amount', 'Date', 'Action'];
+        $headers = [
+            'Journal ID',
+            'Client Name',
+            'Transaction Type',
+            'Description',
+            'Amount',
+            'Date',
+            'Created By',
+            'Status',
+            'Action',
+        ];
     @endphp
 
-    @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js'])
+    @vite(['resources/css/journal-entries/index.css', 'resources/js/journal-entries/index.js', 'resources/css/journal-entries/index-table.css', 'resources/js/journal-entries/index-table.js'])
     <div class="container">
         <form class="create-journal-form" action="{{ route('journal-entries.create') }}" method="GET">
             <div class="first-texts">
-                <h2 id="page-title">Journal Entry</h2>
-                <p>Manage and access your clients' transactions</p>
+                <h2 id="page-title">General Journal</h2>
+                <p>Create journal entries and organize financial records.</p>
             </div>
-            <button type="submit">Create</button>
+            <div class="button-container">
+                <button type="submit">Create</button>
+                <button type="button" id="dropdown-button">&#11206;</button>
+                <button type="button" id="vertical-ellipsis">&#8942;</button>
+            </div>
         </form>
-        <select class="select-clients"
-            style="width: 100%; background-color: var(--clear-white); padding: 0.65rem; margin-top: 1rem; border: none; border-radius: 5px;">
-            <option value="all">All Clients</option>
-            @php
-                $roleId = request()->user()->role_id;
-                if ($roleId === \App\Models\Role::ACCOUNTANT) {
-                    $clients = request()->user()->clients;
-                } elseif ($roleId !== \App\Models\Role::CLIENT) {
-                    $clients = request()->user()->accountant->clients;
-                }
-            @endphp
-            @foreach ($clients as $client)
-                <option {{ request()->query('filter') === $client->id ? 'selected' : '' }} value="{{ $client->id }}">
-                    {{ $client->name }}
-                </option>
-            @endforeach
-        </select>
-        @if (count($entries) > 0)
-            <x-table-management :headers=$headers>
-                @foreach ($entries as $key => $entry)
-                    <tr class="journal-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
-                        <td>
-                            <p>{{ $entry->id }}</p>
-                        </td>
-                        <td>
-                            <p>{{ $entry->client->name }}</p>
-                        </td>
-                        <td>
-                            <p>{{ $entry->transactionType->name }}</p>
-                        </td>
-                        <td>
-                            <p>{{ truncate($entry->description) }}</p>
-                        </td>
-                        <td>
-                            <p>&#8369;{{ $entry->ledger_entries_max_amount }}
-                        </td>
-                        <td>
-                            <p>{{ formatDate($entry->date) }}</p>
-                        </td>
-                        <td class="action-column">
-                            <div>
-                                <a href="{{ route('journal-entries.edit', $entry) }}">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </a>
-                                <form action="{{ route('journal-entries.destroy', $entry) }}" method="POST"
-                                    id="{{ 'form-' . $entry->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button"
-                                        style="display: flex; background-color: transparent; border: none; outline: none;">
-                                        <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </x-table-management>
-            {{ $entries->links() }}
-        @else
-            <p>No entry yet.</p>
-        @endif
+        <div class="journal-container">
+            <form class="select-container" action="" method="GET">
+                <div class="select-container__left">
+                    <select class="select" name="period">
+                        <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>All
+                            time</option>
+                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
+                            This Year</option>
+                        <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
+                            This Month</option>
+                        <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>
+                            This Week</option>
+                        <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>
+                            Last Week</option>
+                        <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
+                            Last Month</option>
+                        <option value="last_year" {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>
+                            Last Year</option>
+                    </select>
+                    <select class="select select-clients" name="client">
+                        <option value="all" {{ request()->query('client') === 'all' ? 'selected' : '' }}>All Clients
+                        </option>
+                        @foreach ($clients as $client)
+                            <option {{ request()->query('client') === $client->id ? 'selected' : '' }}
+                                value="{{ $client->id }}">
+                                {{ $client->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="select-container__right">
+                    <div class="search-container">
+                        <input type="search" placeholder="Search ID" name="search"
+                            value="{{ request()->query('search') }}" />
+                    </div>
+                    <div class="run-filter-container">
+                        <button id="submit-filters">Run</button>
+                    </div>
+                </div>
+            </form>
+            @if (count($entries) > 0)
+                <x-table-management :headers=$headers>
+                    @foreach ($entries as $key => $entry)
+                        <tr class="journal-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
+                            <td>
+                                <p>{{ $entry->id }}</p>
+                            </td>
+                            <td>
+                                <p>{{ $entry->client_name }}</p>
+                            </td>
+                            <td>
+                                <p>{{ $entry->transaction_type }}</p>
+                            </td>
+                            <td>
+                                <p>{{ truncate($entry->description) }}</p>
+                            </td>
+                            <td>
+                                <p>&#8369;{{ number_format($entry->amount, 2) }}
+                            </td>
+                            <td>
+                                <p>{{ formatDate($entry->date) }}</p>
+                            </td>
+                            <td>
+                                <p>{{ $entry->creator }}</p>
+                            </td>
+                            <td>
+                                <strong class="{{ $entry->status }}">{{ ucfirst($entry->status) }}</strong>
+                            </td>
+                            <td class="action-column">
+                                <div>
+                                    <a href="{{ route('journal-entries.edit', $entry->id) }}">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                    <form action="{{ route('journal-entries.destroy', $entry->id) }}" method="POST"
+                                        id="{{ 'form-' . $entry->id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button"
+                                            style="display: flex; background-color: transparent; border: none; outline: none;">
+                                            <i class="fa-regular fa-trash-can"
+                                                style="color: #ff0000; cursor: pointer"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </x-table-management>
+                @if ($errors->any())
+                    <p style="color: red; font-size: 0.85rem;">{{ $errors->first() }}</p>
+                @endif
+                {{ $entries->links() }}
+            @endif
+        </div>
     </div>
 
     <x-confirmable-dialog title="Confirm Delete" affirmText="Delete" denyText="Back"></x-confirmable-dialog>

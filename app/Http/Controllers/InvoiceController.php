@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
@@ -17,21 +17,25 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', Invoice::class);
         $user = $request->user();
-        $invoices = Cache::remember($user->id . '-clients-invoices', 3600, function () use ($user) {
-            return DB::table('invoices')
-                ->join('status', 'status.id', '=', 'invoices.status')
-                ->join('users', 'users.id', '=', 'invoices.client_id')
-                ->select(
-                    'invoices.id as invoice_id',
-                    'invoices.invoice_number',
-                    'invoices.image as image',
-                    'invoices.amount',
-                    'status.description'
-                )
-                ->where('users.accountant_id', $user->id)
-                ->get();
-        });
+        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+        $invoices = Invoice::with('client')
+            ->whereHas('client', function ($query) use ($accId) {
+                $query->where('accountant_id', $accId);
+            })
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        // TODO: set cache value realistically; initially set to 1 week: must be around 30-60 mins;
+        foreach ($invoices as $invoice) {
+            $link = Cache::remember($invoice->id . '-invurl', 604800, function () use ($invoice) {
+                Log::info('Fetching image from AWS...');
+                return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addMinutes(10080));
+            });
+            $invoice->image = $link;
+        }
+
         return view('invoices.index', [
             'invoices' => $invoices,
         ]);
