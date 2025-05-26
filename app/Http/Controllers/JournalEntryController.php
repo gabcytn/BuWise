@@ -97,7 +97,7 @@ class JournalEntryController extends Controller
         $transactionTypes = TransactionType::all();
 
         $ledgerEntries = LedgerEntry::where('journal_entry_id', $journalEntry->id)
-            ->where('account_id', '!=', 19)
+            ->where('account_id', '!=', 19)  // Exclude taxes payable
             ->get();
 
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;

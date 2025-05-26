@@ -9,9 +9,9 @@
         @endforeach
     </select>
     <select id="tax-select-clone" required class="d-none">
-        <option value="no_tax">No Tax</option>
+        <option value="0" data-tax-value="0">No Tax</option>
         @foreach ($taxes as $tax)
-            <option value="{{ $tax->value }}">
+            <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
                 {{ strtoupper($tax->name) . ' (' . $tax->value . '%)' }}
             </option>
         @endforeach
@@ -79,8 +79,8 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input class="row-description" value="{{ $ledger_entry->description }}"
-                                            placeholder="Description" />
+                                        <input name="{{ 'description_' . $key + 1 }}" class="row-description"
+                                            value="{{ $ledger_entry->description }}" placeholder="Description" />
                                     </td>
                                     <td>
                                         <select class="tax-select" required name={{ 'tax_' . $key + 1 }}>

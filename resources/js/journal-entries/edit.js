@@ -7,6 +7,42 @@ document.querySelectorAll(".tax-select").forEach((select) => {
     select.addEventListener("change", updateTotals);
 });
 
+let debitAmount = 0;
+let creditAmount = 0;
+
+amountInputs.forEach((input) => {
+    if (input.value !== "" && input.name.startsWith("debit")) {
+        debitAmount += parseFloat(input.value);
+    } else if (input.value !== "" && input.name.startsWith("credit")) {
+        creditAmount += parseFloat(input.value);
+    }
+
+    input.addEventListener("input", (e) => {
+        if (e.target.name.startsWith("debit_")) {
+            const creditInput =
+                e.target.parentNode.nextElementSibling.querySelector("input");
+
+            if (!e.target.value) {
+                creditInput.disabled = false;
+            } else {
+                creditInput.disabled = true;
+            }
+        } else if (e.target.name.startsWith("credit_")) {
+            const debitInput =
+                e.target.parentNode.previousElementSibling.querySelector(
+                    "input",
+                );
+
+            if (!e.target.value) {
+                debitInput.disabled = false;
+            } else {
+                debitInput.disabled = true;
+            }
+        }
+
+        updateTotals();
+    });
+});
 updateTotals();
 function updateTotals() {
     let totalDebits = 0;
@@ -114,6 +150,7 @@ function addRow() {
     const taxSelect = document.querySelector("select#tax-select-clone");
     const taxSelectClone = taxSelect.cloneNode(true);
     taxSelectClone.style.display = "block";
+    taxSelectClone.classList.remove("d-none");
     taxSelectClone.name = `tax_${rowCounter}`;
 
     taxSelectClone.addEventListener("change", updateTotals);

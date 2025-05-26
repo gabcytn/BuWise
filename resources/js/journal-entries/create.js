@@ -41,6 +41,7 @@ function addRow() {
     // Description field
     const descriptionCell = document.createElement("td");
     const descriptionInput = document.createElement("input");
+    descriptionInput.name = `description_${rowCounter}`;
     descriptionInput.placeholder = "Description";
     descriptionInput.classList.add("row-description");
 

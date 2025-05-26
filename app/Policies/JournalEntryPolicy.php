@@ -32,7 +32,7 @@ class JournalEntryPolicy
             return $journalEntry->client->accountant_id === $user->id
                 ? Response::allow()
                 : Response::denyAsNotFound();
-        } else if ($roleId === Role::LIAISON || Role::CLERK) {
+        } else if ($roleId === Role::LIAISON || $roleId == Role::CLERK) {
             $accId = $user->accountant_id;
             return $journalEntry->client->accountant_id === $accId
                 ? Response::allow()

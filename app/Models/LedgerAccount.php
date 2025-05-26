@@ -14,6 +14,8 @@ class LedgerAccount extends Model
         'name',
     ];
 
+    public const TAX_PAYABLE = 19;
+
     /*
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
