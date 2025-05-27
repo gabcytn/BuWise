@@ -90,4 +90,6 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     return to_route('dashboard');
 })->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
 
-// require __DIR__ . '/auth.php';
+Route::resource('invoices', InvoiceController::class);
+
+Route::get('/invoices/add', [InvoiceController::class, 'create'])->name('invoices.add');

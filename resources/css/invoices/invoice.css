@@ -1,0 +1,150 @@
+.invoice-container {
+    max-width: 1000px;
+    width: 90%;
+    margin: 20px auto;
+    font-family: 'Segoe UI', sans-serif;
+    color: #2c3e50;
+}
+
+.invoice-header h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.invoice-header p {
+    font-size: 14px;
+    color: #666;
+}
+
+.invoice-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.invoice-toolbar select,
+.invoice-toolbar input {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 180px;
+}
+
+.search-input {
+    flex-grow: 1;
+}
+
+.btn-new-invoice {
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.btn-new-invoice:hover {
+    background-color: #0056b3;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 160px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.invoice-table th,
+.invoice-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.invoice-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    min-width: 60px;
+}
+
+.status.unpaid {
+    background-color: #fce4e4;
+    color: #c0392b;
+}
+
+.status.paid {
+    background-color: #e6f4ea;
+    color: #27ae60;
+}
+
+.action-view,
+.action-edit,
+.action-delete {
+    margin-right: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #333;
+    transition: transform 0.2s;
+}
+
+.action-view:hover,
+.action-edit:hover,
+.action-delete:hover {
+    transform: scale(1.1);
+    color: #000;
+}
+
+.action-delete button {
+    background: none;
+    border: none;
+}
