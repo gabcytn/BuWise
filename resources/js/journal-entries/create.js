@@ -162,7 +162,9 @@ function updateTotals() {
                 taxSelect[taxSelect.selectedIndex].dataset.taxValue;
             if (taxSelectedValue !== "0") {
                 const percentage = parseFloat(taxSelectedValue) / 100;
-                actualD += parseFloat(debitInput.value * percentage);
+                actualD += parseFloat(
+                    (debitInput.value * percentage).toFixed(2),
+                );
             }
         } else if (!creditInput.disabled && creditInput.value) {
             totalCredits += parseFloat(creditInput.value || 0);
@@ -171,7 +173,9 @@ function updateTotals() {
                 taxSelect[taxSelect.selectedIndex].dataset.taxValue;
             if (taxSelectedValue !== "0") {
                 const percentage = parseFloat(taxSelectedValue) / 100;
-                actualC += parseFloat(creditInput.value * percentage);
+                actualC += parseFloat(
+                    (creditInput.value * percentage).toFixed(2),
+                );
             }
         }
     });
@@ -191,18 +195,13 @@ function updateTotals() {
     const submitButton = document.getElementById("submitButton");
     const balanceWarning = document.getElementById("balanceWarning");
 
-    const actualTotalDebits = parseFloat(
-        document.querySelector("#actual-total-debits").textContent,
-    );
-    const actualTotalCredits = parseFloat(
-        document.querySelector("#actual-total-credits").textContent,
-    );
-
     if (actualD === actualC && actualD > 0) {
         submitButton.disabled = false;
         balanceWarning.style.display = "none";
         document.querySelector(".totals-row").style.color = "black";
     } else {
+        console.log(actualD);
+        console.log(actualC);
         submitButton.disabled = true;
         if (actualD > 0 || actualC > 0) {
             balanceWarning.style.display = "inline";

@@ -26,6 +26,11 @@
                 @method('PUT')
                 <div class="row">
                     <div class="input-wrapper">
+                        <label for="reference_no">Reference no.</label>
+                        <input value="{{ $journal_entry->reference_no }}" type="number" name="reference_no"
+                            id="reference_no" />
+                    </div>
+                    <div class="input-wrapper">
                         <label for="date">Date</label>
                         <input value="{{ $date }}" type="date" name="date" id="date" />
                     </div>

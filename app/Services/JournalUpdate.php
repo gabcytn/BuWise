@@ -29,6 +29,7 @@ class JournalUpdate
             'client_id' => ['required', 'uuid:4'],
             'invoice_id' => ['string'],
             'description' => ['required', 'string', 'max:255'],
+            'reference_no' => ['nullable', 'numeric'],
             'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
             'date' => ['required', 'date', Rule::date()->format('Y-m-d')],
         ]);
@@ -131,6 +132,7 @@ class JournalUpdate
         $journalEntry = $this->journalEntry;
         $journalEntry->date = $request->date;
         $journalEntry->description = $request->description;
+        $journalEntry->reference_no = $request->reference_no ?? null;
         $journalEntry->transaction_type_id = $request->transaction_type_id;
         $journalEntry->save();
 

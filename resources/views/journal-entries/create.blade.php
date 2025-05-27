@@ -1,7 +1,4 @@
 <x-app-layout>
-    @if (session('status'))
-        <p style="color: red;">{{ session('status') }}</p>
-    @endif
     @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
     <div class="container">
         <h2 id="page-title">Add Entry</h2>
@@ -24,6 +21,10 @@
             <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
                 @csrf
                 <div class="row">
+                    <div>
+                        <label for="reference_no">Reference No.</label>
+                        <input type="number" name="reference_no" id="reference_no" />
+                    </div>
                     <div class="input-wrapper">
                         <label for="date">Date</label>
                         <input type="date" name="date" id="date"
@@ -72,7 +73,7 @@
                                 <td colspan="2">
                                     <div style="text-align: right; margin-right: 0.5rem;">Subtotal</div>
                                 </td>
-                                <td><input class="tax-input" placeholder="0.00" disabled /></td>
+                                <td></td>
                                 <td id="totalDebits">
                                     <div style="margin-left: 0.5rem;">0.00</div>
                                 </td>
@@ -108,6 +109,9 @@
                     </button>
                 </div>
             </form>
+            @if (session('status'))
+                <p style="color: var(--green);">{{ session('status') }}</p>
+            @endif
         </div>
         <hr />
 

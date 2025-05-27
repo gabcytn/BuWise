@@ -22,6 +22,7 @@ class JournalStore
             'description' => ['required', 'string', 'max:255'],
             'transaction_type_id' => ['required', 'numeric', 'between:1,2'],
             'date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
+            'reference_no' => ['nullable', 'numeric']
         ]);
 
         $rowNumbers = $this->getRowNumbers($request);
@@ -45,7 +46,8 @@ class JournalStore
                 'transaction_type_id' => $request->transaction_type_id,
                 'created_by' => $request->user()->id,
                 'status_id' => Status::APPROVED,
-                'date' => $request->date . ' ' . now()->format('H:i:s')
+                'date' => $request->date . ' ' . now()->format('H:i:s'),
+                'reference_no' => $request->reference_no ?? null
             ]);
 
             $ledgerEntries = [];
@@ -81,8 +83,8 @@ class JournalStore
             JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
 
             return redirect()
-                ->route('journal-entries.show', $journalEntry->id)
-                ->with('success', 'Journal entry created successfully');
+                ->route('journal-entries.create', $journalEntry->id)
+                ->with('status', 'Journal entry created successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::info('Error saving journal entry: ' . $e->getMessage());
@@ -132,7 +134,8 @@ class JournalStore
         if ($tax !== '0') {
             $tax = Tax::find($tax);
             $percentage = ((int) $tax->value) / 100;
-            return $originalValue + $originalValue * $percentage;
+            $withTax = (float) round($originalValue * $percentage, 2);
+            return $originalValue + $withTax;
         }
         return $originalValue;
     }
