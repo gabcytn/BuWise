@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Events\JournalEntryCreated;
 use App\Models\EntryType;
 use App\Models\JournalEntry;
+use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
+use App\Models\Tax;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -82,13 +84,15 @@ class JournalUpdate
         $request = $this->request;
         $journalLines = [];
         foreach ($rowNumbers as $key) {
+            $tax = $request->input("tax_$key");
             $entry = [
                 'account' => $request->input("account_$key"),
+                'tax_id' => $tax,
+                'description' => $request->input("description_$key"),
                 'debit' => (float) $request->input("debit_$key", 0),
                 'credit' => (float) $request->input("credit_$key", 0),
             ];
 
-            $tax = $request->input("tax_$key", '');
             $entry['taxed_debit'] = $this->getTaxedValue($tax, $entry['debit']);
             $entry['taxed_credit'] = $this->getTaxedValue($tax, $entry['credit']);
 
@@ -100,11 +104,17 @@ class JournalUpdate
 
     private function getTaxedValue(string $tax, float $originalValue)
     {
-        if ($tax !== 'no_tax') {
-            $percentage = ((int) $tax) / 100;
-            return $originalValue + $originalValue * $percentage;
+        try {
+            if ($tax !== '0') {
+                $tax = Tax::find((int) $tax);
+                $percentage = ((float) $tax->value) / 100;
+                return $originalValue + $originalValue * $percentage;
+            }
+            return $originalValue;
+        } catch (\Exception $e) {
+            Log::info('Error calculating tax value: ' . $e->getMessage());
+            return $originalValue;
         }
-        return $originalValue;
     }
 
     private function invalidRequest(string $message): RedirectResponse
@@ -124,33 +134,70 @@ class JournalUpdate
         $journalEntry->transaction_type_id = $request->transaction_type_id;
         $journalEntry->save();
 
-        $ledger_entries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
+        $ledger_entries = LedgerEntry::where('journal_entry_id', $journalEntry->id)
+            ->where('account_id', '!=', LedgerAccount::TAX_PAYABLE)
+            ->get();
         $ledger_entries_for_cache = [];
         foreach ($journalLines as $idx => $entry) {
             try {
                 $ledger_entry = $ledger_entries[$idx];
-                $ledger_entry->account_id = $entry['account'];
-                $ledger_entry->entry_type_id = $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'];
-                $ledger_entry->amount = $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'];
-                $ledger_entry->save();
-
-                $debitTax = $entry['taxed_debit'] - $entry['debit'];
-                $creditTax = $entry['taxed_credit'] - $entry['credit'];
-                if ($debitTax > 0 || $creditTax > 0) {
+                $ogTaxId = $ledger_entry->tax_id ?? 0;
+                $newTaxId = (int) $entry['tax_id'];
+                $hasNewTax = false;
+                if (!$ogTaxId && $newTaxId) {
+                    $debitTax = $entry['taxed_debit'] - $entry['debit'];
+                    $creditTax = $entry['taxed_credit'] - $entry['credit'];
                     $newTax = LedgerEntry::create([
                         'journal_entry_id' => $journalEntry->id,
-                        'account_id' => 19,  // TODO: set to Taxes Payable
+                        'account_id' => LedgerAccount::TAX_PAYABLE,
                         'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                         'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
                     ]);
                     $ledger_entries_for_cache[] = $newTax;
+                    $hasNewTax = true;
+                } else if ($ogTaxId && !$newTaxId) {
+                    LedgerEntry::destroy($ledger_entry->tax_ledger_entry_id);
+                } else if ($ogTaxId !== $newTaxId && $ogTaxId && $newTaxId) {
+                    // TODO: fix this
+                    $ledger_entries_for_cache[] = LedgerEntry::destroy($ledger_entry->id);
+                    $debitTax = $entry['taxed_debit'] - $entry['debit'];
+                    $creditTax = $entry['taxed_credit'] - $entry['credit'];
+                    $newTax = LedgerEntry::create([
+                        'journal_entry_id' => $journalEntry->id,
+                        'account_id' => LedgerAccount::TAX_PAYABLE,
+                        'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
+                        'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
+                    ]);
                 }
+                $ledger_entry->account_id = $entry['account'];
+                $ledger_entry->entry_type_id = $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'];
+                $ledger_entry->tax_id = (int) $entry['tax_id'] ?: null;
+                $ledger_entry->tax_ledger_entry_id = $hasNewTax ? $newTax->id : null;
+                $ledger_entry->description = $entry['description'];
+                $ledger_entry->amount = $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'];
+                $ledger_entry->save();
             } catch (\Exception $e) {
+                Log::info('Error: ' . truncate($e->getMessage(), 150));
+                $debitTax = $entry['taxed_debit'] - $entry['debit'];
+                $creditTax = $entry['taxed_credit'] - $entry['credit'];
+                $isTaxed = false;
+                if ($debitTax > 0 || $creditTax > 0) {
+                    $isTaxed = true;
+                    $newTax = LedgerEntry::create([
+                        'journal_entry_id' => $journalEntry->id,
+                        'account_id' => LedgerAccount::TAX_PAYABLE,
+                        'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
+                        'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
+                    ]);
+                }
                 $ledger_entry = LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
+                    'tax_id' => $isTaxed ? (int) $entry['tax_id'] : null,
+                    'tax_ledger_entry_id' => $isTaxed ? $newTax->id : null,
                     'account_id' => $entry['account'],
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
+                    'description' => $entry['description'],
                 ]);
             } finally {
                 $ledger_entries_for_cache[] = $ledger_entry;

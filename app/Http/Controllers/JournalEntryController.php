@@ -96,7 +96,9 @@ class JournalEntryController extends Controller
         $accounts = LedgerAccount::all();
         $transactionTypes = TransactionType::all();
 
-        $ledgerEntries = LedgerEntry::where('journal_entry_id', $journalEntry->id)->get();
+        $ledgerEntries = LedgerEntry::where('journal_entry_id', $journalEntry->id)
+            ->where('account_id', '!=', 19)  // Exclude taxes payable
+            ->get();
 
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
         $taxes = Cache::remember($accId . '-taxes', 3600, function () use ($accId) {

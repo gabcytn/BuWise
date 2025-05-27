@@ -41,6 +41,7 @@ function addRow() {
     // Description field
     const descriptionCell = document.createElement("td");
     const descriptionInput = document.createElement("input");
+    descriptionInput.name = `description_${rowCounter}`;
     descriptionInput.placeholder = "Description";
     descriptionInput.classList.add("row-description");
 
@@ -157,16 +158,18 @@ function updateTotals() {
         if (!debitInput.disabled && debitInput.value) {
             totalDebits += parseFloat(debitInput.value || 0);
             actualD += parseFloat(debitInput.value || 0);
-            const taxSelectedValue = taxSelect[taxSelect.selectedIndex].value;
-            if (taxSelectedValue !== "no_tax") {
+            const taxSelectedValue =
+                taxSelect[taxSelect.selectedIndex].dataset.taxValue;
+            if (taxSelectedValue !== "0") {
                 const percentage = parseFloat(taxSelectedValue) / 100;
                 actualD += parseFloat(debitInput.value * percentage);
             }
         } else if (!creditInput.disabled && creditInput.value) {
             totalCredits += parseFloat(creditInput.value || 0);
             actualC += parseFloat(creditInput.value || 0);
-            const taxSelectedValue = taxSelect[taxSelect.selectedIndex].value;
-            if (taxSelectedValue !== "no_tax") {
+            const taxSelectedValue =
+                taxSelect[taxSelect.selectedIndex].dataset.taxValue;
+            if (taxSelectedValue !== "0") {
                 const percentage = parseFloat(taxSelectedValue) / 100;
                 actualC += parseFloat(creditInput.value * percentage);
             }

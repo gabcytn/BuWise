@@ -7,9 +7,11 @@ use App\Models\EntryType;
 use App\Models\JournalEntry;
 use App\Models\LedgerEntry;
 use App\Models\Status;
+use App\Models\Tax;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class JournalStore
 {
@@ -51,19 +53,24 @@ class JournalStore
             foreach ($journalEntries as $entry) {
                 $debitTax = $entry['taxed_debit'] - $entry['debit'];
                 $creditTax = $entry['taxed_credit'] - $entry['credit'];
+                $isTaxed = false;
                 if ($debitTax > 0 || $creditTax > 0) {
-                    LedgerEntry::create([
+                    $isTaxed = true;
+                    $taxEntry = LedgerEntry::create([
                         'journal_entry_id' => $journalEntry->id,
-                        'account_id' => 19,  // TODO: set to Taxes Payable
+                        'account_id' => 19,  // Taxes Payable
                         'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                         'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
                     ]);
                 }
                 $ledgerEntry = LedgerEntry::create([
                     'journal_entry_id' => $journalEntry->id,
+                    'tax_id' => $isTaxed ? (int) $entry['tax_id'] : null,
+                    'tax_ledger_entry_id' => $isTaxed ? $taxEntry->id : null,
                     'account_id' => $entry['account'],
                     'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
+                    'description' => $entry['description'],
                 ]);
                 $ledgerEntries[] = $ledgerEntry;
             }
@@ -76,8 +83,10 @@ class JournalStore
             return redirect()
                 ->route('journal-entries.show', $journalEntry->id)
                 ->with('success', 'Journal entry created successfully');
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             DB::rollBack();
+            Log::info('Error saving journal entry: ' . $e->getMessage());
+            Log::info(truncate($e->getTraceAsString(), 500));
             return $this->redirectWithErrors('database', 'Failed to save journal entry');
         }
     }
@@ -102,11 +111,13 @@ class JournalStore
                 'account' => $request->input("account_$rowId"),
                 'debit' => (float) $request->input("debit_$rowId", 0),
                 'credit' => (float) $request->input("credit_$rowId", 0),
+                'description' => $request->input("description_$rowId"),
             ];
 
-            $tax = $request->input("tax_$rowId", '');
-            $entry['taxed_debit'] = $this->getTaxedValue($tax, $entry['debit']);
-            $entry['taxed_credit'] = $this->getTaxedValue($tax, $entry['credit']);
+            $taxId = $request->input("tax_$rowId", '');
+            $entry['taxed_debit'] = $this->getTaxedValue($taxId, $entry['debit']);
+            $entry['taxed_credit'] = $this->getTaxedValue($taxId, $entry['credit']);
+            $entry['tax_id'] = $taxId;
 
             // Only include rows with actual data
             if ($entry['account'] && ($entry['debit'] > 0 || $entry['credit'] > 0)) {
@@ -118,8 +129,9 @@ class JournalStore
 
     private function getTaxedValue(string $tax, float $originalValue)
     {
-        if ($tax !== 'no_tax') {
-            $percentage = ((int) $tax) / 100;
+        if ($tax !== '0') {
+            $tax = Tax::find($tax);
+            $percentage = ((int) $tax->value) / 100;
             return $originalValue + $originalValue * $percentage;
         }
         return $originalValue;
