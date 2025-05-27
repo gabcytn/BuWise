@@ -29,13 +29,14 @@ class JournalShow
                     'ledger_accounts.name as account_name',
                     'ledger_accounts.code as account_code',
                     'account_groups.name as account_group_name',
+                    'ledger_entries.description',
                     'taxes.value AS tax_value',
                     DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
                     DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
                 )
                 ->where('journal_entry_id', $this->journalEntry->id)
                 ->where('ledger_accounts.id', '!=', 19)
-                ->orderByRaw('ledger_entries.id ASC')
+                ->orderByRaw('ledger_accounts.code ASC')
                 ->get();
         });
 
