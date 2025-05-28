@@ -55,6 +55,16 @@
                             </option>
                         @endforeach
                     </select>
+                    <select class="select" name="transaction_type">
+                        <option value="all" {{ request()->query('transaction_type') === 'all' ? 'selected' : '' }}>
+                            All Transactions</option>
+                        <option value="{{ \App\Models\TransactionType::SALES }}"
+                            {{ request()->query('transaction_type') == \App\Models\TransactionType::SALES ? 'selected' : '' }}>
+                            Sales</option>
+                        <option value="{{ \App\Models\TransactionType::PURCHASE }}"
+                            {{ request()->query('transaction_type') == \App\Models\TransactionType::PURCHASE ? 'selected' : '' }}>
+                            Purchases</option>
+                    </select>
                 </div>
                 <div class="select-container__right">
                     <div class="search-container">

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Role;
 use App\Models\Status;
+use App\Models\TransactionType;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,13 +18,14 @@ class JournalIndex
     public function index(Request $request)
     {
         $user = $request->user();
-        $filter = $request->only(['client', 'period', 'search', 'sort']);
+        $filter = $request->only(['client', 'period', 'search', 'sort', 'transaction_type']);
         $clients = $this->getCachedClients($user);
 
         if (empty($filter)) {
             $filter = [
                 'client' => 'all',
                 'period' => 'all_time',
+                'transaction_type' => 'all',
                 'search' => '',
             ];
         }
@@ -101,10 +103,23 @@ class JournalIndex
         $client = $filter['client'] ?? 'all';
         $period = $filter['period'] ?? 'all_time';
         $search = $filter['search'] ?? null;
+        $transaction_type = $filter['transaction_type'] ?? 'all';
 
         // Filter by client if not "all"
         if ($client !== 'all') {
             $query->where('je.client_id', '=', $client);
+        }
+        switch ($transaction_type) {
+            case 'all':
+                break;
+            case strval(TransactionType::SALES):
+                $query->where('je.transaction_type_id', '=', TransactionType::SALES);
+                break;
+            case strval(TransactionType::PURCHASE):
+                $query->where('je.transaction_type_id', '=', TransactionType::PURCHASE);
+                break;
+            default:
+                break;
         }
 
         $start = null;
