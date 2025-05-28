@@ -31,15 +31,6 @@ class InvoiceController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
 
-        // TODO: set cache value realistically; initially set to 1 week: must be around 30-60 mins;
-        foreach ($invoices as $invoice) {
-            $link = Cache::remember($invoice->id . '-invurl', 604800, function () use ($invoice) {
-                Log::info('Fetching image from AWS...');
-                return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addMinutes(10080));
-            });
-            $invoice->image = $link;
-        }
-
         return view('invoices.index', [
             'invoices' => $invoices,
         ]);
@@ -94,8 +85,12 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice)
     {
         $items = $invoice->invoice_lines;
-        dd($items);
-        return view('invoice.show', [
+        $invUrl = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
+            Log::info('Getting new temp. URL from AWS');
+            return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
+        });
+        $invoice->image = $invUrl;
+        return view('invoices.show', [
             'invoice' => $invoice,
             'items' => $items,
         ]);
