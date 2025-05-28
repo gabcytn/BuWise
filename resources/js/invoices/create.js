@@ -50,6 +50,8 @@ function addRow() {
     const discountInputClone = discountInput.cloneNode(true);
     discountInputClone.name = `discount_${rowCount}`;
     discountInputClone.addEventListener("input", updateTotals);
+    discountInputClone.id = "";
+    discountInputClone.classList.remove("d-none");
 
     discountCell.appendChild(discountInputClone);
 
@@ -58,6 +60,7 @@ function addRow() {
     const taxSelectClone = taxSelect.cloneNode(true);
     taxSelectClone.addEventListener("change", updateTotals);
     taxSelectClone.name = `tax_${rowCount}`;
+    taxSelectClone.classList.remove("d-none");
 
     taxCell.appendChild(taxSelectClone);
 
