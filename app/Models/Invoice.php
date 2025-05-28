@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\InvoiceCreated;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 
@@ -62,5 +63,10 @@ class Invoice extends Model
     public function journalEntry(): HasOne
     {
         return $this->hasOne(JournalEntry::class);
+    }
+
+    public function invoice_lines(): HasMany
+    {
+        return $this->hasMany(InvoiceLine::class);
     }
 }

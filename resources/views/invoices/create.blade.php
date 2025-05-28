@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-row">
                     <label>Due Date</label>
-                    <input type="date" name="due_date" />
+                    <input type="date" name="due_date" value="{{ now()->format('Y-m-d') }}" />
                 </div>
                 <div class="form-row">
                     <label>Transaction Type</label>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-row">
                     <label>Invoice Number</label>
-                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" />
+                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required />
                 </div>
                 <div class="form-row">
                     <label>Name of Supplier</label>
