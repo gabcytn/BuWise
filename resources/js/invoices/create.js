@@ -10,6 +10,7 @@ function addRow() {
 
     const tableBody = document.querySelector("#table-body");
     const newRow = document.createElement("tr");
+    newRow.dataset.rowNumber = rowCount;
 
     const itemNameCell = document.createElement("td");
     const itemNameInput = document.createElement("input");
@@ -95,18 +96,17 @@ function updateTotals() {
     const rows = document.querySelectorAll("#table-body tr");
 
     let sum = 0;
-    rows.forEach((row, idx) => {
+    rows.forEach((row) => {
+        const key = row.dataset.rowNumber;
         let finalAmount = 0;
-        const qty = row.querySelector(`input[name='qty_${idx + 1}']`);
-        const unitPrice = row.querySelector(
-            `input[name='unit_price_${idx + 1}']`,
-        );
-        const netAmount = row.querySelector(`#net_amount_${idx + 1}`);
+        const qty = row.querySelector(`input[name='qty_${key}']`);
+        const unitPrice = row.querySelector(`input[name='unit_price_${key}']`);
+        const netAmount = row.querySelector(`#net_amount_${key}`);
         const discountSelect = row.querySelector(
-            `select[name='discount_${idx + 1}']`,
+            `select[name='discount_${key}']`,
         );
-        const taxSelect = row.querySelector(`select[name='tax_${idx + 1}']`);
-        const totalAmount = row.querySelector(`#total_${idx + 1}`);
+        const taxSelect = row.querySelector(`select[name='tax_${key}']`);
+        const totalAmount = row.querySelector(`#total_${key}`);
 
         const qtyFloat = parseFloat(qty.value || 0);
         const unitPriceFloat = parseFloat(unitPrice.value || 0);
