@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     // invoice routes
     Route::resource('/invoices', InvoiceController::class)
-        ->only(['index', 'create', 'store']);
+        ->only(['index', 'create', 'store', 'show', 'edit', 'destroy']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {

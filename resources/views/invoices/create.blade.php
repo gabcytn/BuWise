@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Invoice</title>
-    @vite('resources/css/invoices/add.css')
+    @vite(['resources/css/invoices/add.css', 'resources/js/invoices/create.js'])
 </head>
 <x-app-layout>
     <form class="invoice-container" method="POST" action="{{ route('invoices.store') }}" enctype="multipart/form-data">
@@ -67,9 +67,9 @@
                 <div class="form-row">
                     <label>Tax Type</label>
                     <select name="tax">
-                        <option value="0" selected>No Tax</option>
+                        <option value="0" data-tax-value="0" selected>No Tax</option>
                         @foreach ($taxes as $tax)
-                            <option value="{{ $tax->id }}">
+                            <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
                                 {{ strtoupper($tax->name) . ' (' . $tax->value . ' %)' }}</option>
                         @endforeach
                     </select>
@@ -106,32 +106,19 @@
                     <th>Total Amount</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Sample Item</td>
-                    <td><input type="number" value="0" /></td>
-                    <td><input type="number" value="0.00" step="0.01" /></td>
-                    <td><input type="number" value="0.00" step="0.01" /></td>
-                    <td>
-                        <select>
-                            <option>Select Discount</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select>
-                            <option>Select Tax Type</option>
-                        </select>
-                    </td>
-                    <td><input type="number" value="0.00" step="0.01" /></td>
-                </tr>
+            <tbody id="table-body">
             </tbody>
+            <tfoot>
+                <td colspan="6"><strong>TOTAL</strong></td>
+                <td id="total-sum">0.00</td>
+            </tfoot>
         </table>
 
         <div class="actions">
-            <button class="btn add-row">+ Add New Row</button>
+            <button type="button" class="btn add-row">+ Add New Row</button>
             <div class="submit-buttons">
-                <button class="btn btn-primary">Proceed to Journal</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Proceed to Journal</button>
+                <button type="button" class="btn btn-secondary">Cancel</button>
             </div>
         </div>
     </form>
