@@ -1,8 +1,12 @@
 <?php
 namespace App\Services;
 
+use App\Models\EntryType;
 use App\Models\Invoice;
 use App\Models\InvoiceLine;
+use App\Models\LedgerEntry;
+use App\Models\Tax;
+use App\Models\TransactionType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -10,8 +14,12 @@ use Illuminate\Support\Str;
 
 class InvoiceStore
 {
+    private float $discountTotal;
+    private float $taxTotal;
+    private float $amountTotal;
+
     public function __construct(
-        private Request $request
+        private Request $request,
     ) {}
 
     public function store()
@@ -21,10 +29,24 @@ class InvoiceStore
             DB::beginTransaction();
 
             $filename = (string) Str::uuid() . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
-            $invoice = $this->creatInvoice($filename);
             $rowNumbers = $this->getRowNumbers($request);
             $items = $this->getInvoiceItems($request, $rowNumbers);
+            $invoice = $this->creatInvoice($filename);
             $this->createInvoiceLines($items, $invoice);
+
+            switch ($request->transaction_type) {
+                case TransactionType::SALES:
+                    $this->ledgerEntryForSales($invoice);
+                    break;
+                case TransactionType::PURCHASE:
+                    dd('here');
+                    $this->ledgerEntryForPurchases($invoice);
+                    break;
+                default:
+                    throw new \Exception('Invalid transaction type');
+                    break;
+            }
+
             $request->file('image')->storeAs('invoices/', $filename, 's3');
 
             DB::commit();
@@ -50,6 +72,7 @@ class InvoiceStore
         $request = $this->request;
         $invoice = Invoice::create([
             'client_id' => $request->client,
+            'amount' => $this->amountTotal,
             'image' => $filename,
             'issue_date' => $request->issue_date,
             'due_date' => $request->due_date ?? null,
@@ -68,6 +91,10 @@ class InvoiceStore
     private function getInvoiceItems(Request $request, array $rowNumbers): array
     {
         $items = [];
+
+        $discountTotal = 0;
+        $taxTotal = 0;
+        $netTotal = 0;
         foreach ($rowNumbers as $rowNumber) {
             $item = [
                 'item_name' => $request->input("item_$rowNumber"),
@@ -77,8 +104,27 @@ class InvoiceStore
                 'tax' => $request->input("tax_$rowNumber", '0'),
             ];
 
+            $taxModel = Tax::find((int) $item['tax']);
+
+            $baseTotal = (float) $item['unit_price'] * (float) $item['qty'];
+            $discount = ((float) $item['discount'] / 100) * $baseTotal;
+            $discountedTotal = $baseTotal - $discount;
+            if ($taxModel) {
+                $tax = ((float) $taxModel->value / 100) * $discountedTotal;
+            } else {
+                $tax = 0;
+            }
+            $net = $discountedTotal + $tax;
+
+            $discountTotal += $discount;
+            $taxTotal += $tax;
+            $netTotal += $net;
+
             $items[] = $item;
         }
+        $this->discountTotal = $discountTotal;
+        $this->taxTotal = $taxTotal;
+        $this->amountTotal = $netTotal;
         return $items;
     }
 
@@ -106,5 +152,33 @@ class InvoiceStore
                 'discount' => $item['discount']
             ]);
         }
+    }
+
+    private function ledgerEntryForSales(Invoice $invoice)
+    {
+        LedgerEntry::create([
+            'invoice_id' => $invoice->id,
+            'account_id' => 28,  // NOTE: "Sales" account
+            'entry_type_id' => EntryType::LOOKUP['credit'],
+            'amount' => $this->amountTotal - $this->taxTotal,
+        ]);
+        $taxEntry = LedgerEntry::create([
+            'invoice_id' => $invoice->id,
+            'account_id' => 19,  // NOTE: "Taxes Payable" account
+            'entry_type_id' => EntryType::LOOKUP['credit'],
+            'amount' => $this->taxTotal
+        ]);
+        LedgerEntry::create([
+            'invoice_id' => $invoice->id,
+            'account_id' => 1,  // NOTE: temporarily stored in "CASH" account
+            'entry_type_id' => EntryType::LOOKUP['debit'],
+            'tax_ledger_entry_id' => $taxEntry->id,
+            'amount' => $this->amountTotal,
+        ]);
+    }
+
+    private function ledgerEntryForPurchases()
+    {
+        // TODO: create a tax receivable account in COA
     }
 }
