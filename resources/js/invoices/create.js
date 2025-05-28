@@ -46,14 +46,12 @@ function addRow() {
     netAmountCell.textContent = "0.00";
 
     const discountCell = document.createElement("td");
-    const discountSelect = document.querySelector(
-        "select[name='discount_type']",
-    );
-    const discountSelectClone = discountSelect.cloneNode(true);
-    discountSelectClone.name = `discount_${rowCount}`;
-    discountSelectClone.addEventListener("change", updateTotals);
+    const discountInput = document.querySelector("#discount");
+    const discountInputClone = discountInput.cloneNode(true);
+    discountInputClone.name = `discount_${rowCount}`;
+    discountInputClone.addEventListener("input", updateTotals);
 
-    discountCell.appendChild(discountSelectClone);
+    discountCell.appendChild(discountInputClone);
 
     const taxCell = document.createElement("td");
     const taxSelect = document.querySelector("select[name='tax']");
@@ -102,8 +100,8 @@ function updateTotals() {
         const qty = row.querySelector(`input[name='qty_${key}']`);
         const unitPrice = row.querySelector(`input[name='unit_price_${key}']`);
         const netAmount = row.querySelector(`#net_amount_${key}`);
-        const discountSelect = row.querySelector(
-            `select[name='discount_${key}']`,
+        const discountInput = row.querySelector(
+            `input[name='discount_${key}']`,
         );
         const taxSelect = row.querySelector(`select[name='tax_${key}']`);
         const totalAmount = row.querySelector(`#total_${key}`);
@@ -113,17 +111,10 @@ function updateTotals() {
         netAmount.textContent = (qtyFloat * unitPriceFloat).toFixed(2);
         finalAmount = (qtyFloat * unitPriceFloat).toFixed(2);
 
-        switch (discountSelect[discountSelect.selectedIndex].value) {
-            case "senior_citizen":
-            case "pwd":
-                finalAmount = (
-                    parseFloat(finalAmount) -
-                    parseFloat(finalAmount) * 0.2
-                ).toFixed(2);
-                break;
-            default:
-                break;
-        }
+        finalAmount = (
+            parseFloat(finalAmount) -
+            parseFloat(finalAmount) * parseFloat(discountInput.value / 100)
+        ).toFixed(2);
 
         const taxValue = parseFloat(
             taxSelect[taxSelect.selectedIndex].dataset.taxValue,
@@ -139,3 +130,29 @@ function updateTotals() {
 
     document.querySelector("#total-sum").textContent = sum.toFixed(2);
 }
+
+const transactionType = document.querySelector(
+    "select[name='transaction_type']",
+);
+const customerSupplierLabel = document.querySelector(
+    "#customer-supplier-input label",
+);
+const customerSupplierInput = document.querySelector(
+    "#customer-supplier-input input",
+);
+transactionType.addEventListener("change", (e) => {
+    switch (transactionType[transactionType.selectedIndex].value) {
+        case "1":
+            customerSupplierLabel.textContent = "Name of Customer";
+            customerSupplierInput.placeholder = "Enter Name of Customer";
+            customerSupplierInput.name = "customer";
+            break;
+        case "2":
+            customerSupplierLabel.textContent = "Name of Supplier";
+            customerSupplierInput.placeholder = "Enter Name of Supplier";
+            customerSupplierInput.name = "supplier";
+            break;
+        default:
+            break;
+    }
+});

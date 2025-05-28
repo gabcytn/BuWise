@@ -38,16 +38,15 @@
                 <div class="form-row">
                     <label>Transaction Type</label>
                     <select required name="transaction_type">
-                        <option selected disabled value="">Select Transaction Type</option>
-                        <option value="{{ \App\Models\TransactionType::SALES }}">Sales</option>
                         <option value="{{ \App\Models\TransactionType::PURCHASE }}">Purchases</option>
+                        <option value="{{ \App\Models\TransactionType::SALES }}">Sales</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label>Invoice Number</label>
                     <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required />
                 </div>
-                <div class="form-row">
+                <div class="form-row" id="customer-supplier-input">
                     <label>Name of Supplier</label>
                     <input type="text" placeholder="Enter Name of Supplier" name="supplier" />
                 </div>
@@ -76,12 +75,8 @@
                     <small>Only select this option if tax applies as a whole.</small>
                 </div>
                 <div class="form-row">
-                    <label>Discount Type</label>
-                    <select name="discount_type">
-                        <option value="no_discount">No Discount</option>
-                        <option value="senior_citizen">Senior Citizen (20%)</option>
-                        <option value="pwd">PWD (20%)</option>
-                    </select>
+                    <label for="discount">Discount (in percentage)</label>
+                    <input id="discount" name="discount" type="number" placeholder="20" />
                     <small>Only select this option if a discount applies as a whole.</small>
                 </div>
             </div>
