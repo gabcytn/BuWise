@@ -93,3 +93,6 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
 Route::resource('invoices', InvoiceController::class);
 
 Route::get('/invoices/add', [InvoiceController::class, 'create'])->name('invoices.add');
+Route::get('/invoices/files', [InvoiceController::class, 'files'])->name('invoices.files');
+Route::get('/statements/income', [StatementController::class, 'income'])->name('statements.income');
+Route::get('/statements/balance', [StatementController::class, 'balance'])->name('statements.balance');

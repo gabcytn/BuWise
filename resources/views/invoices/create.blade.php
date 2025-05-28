@@ -9,13 +9,7 @@
     <div class="invoice-container">
         <h2 class="page-title">Add Invoice</h2>
         <div class="invoice-form">
-
-            <div class="form-section left">
-                <div class="image-placeholder">
-                    <span>📎 Image Here</span>
-                </div>
-            </div>
-
+            
             <div class="form-section right">
                 <div class="form-row">
                     <label>Issue Date</label>
