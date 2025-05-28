@@ -28,6 +28,7 @@ function addRow() {
     const tbody = document.getElementById("journalBody");
     const newRow = document.createElement("tr");
     newRow.classList = "journal-row";
+    newRow.dataset.rowNumber = rowCounter;
 
     // Account dropdown
     const accountCell = document.createElement("td");
@@ -148,12 +149,11 @@ function updateTotals() {
     let actualC = 0;
 
     const journalRows = document.querySelectorAll(".journal-row");
-    journalRows.forEach((row, idx) => {
-        const taxSelect = row.querySelector(`select[name='tax_${idx + 1}']`);
-        const debitInput = row.querySelector(`input[name='debit_${idx + 1}']`);
-        const creditInput = row.querySelector(
-            `input[name='credit_${idx + 1}']`,
-        );
+    journalRows.forEach((row) => {
+        const key = row.dataset.rowNumber;
+        const taxSelect = row.querySelector(`select[name='tax_${key}']`);
+        const debitInput = row.querySelector(`input[name='debit_${key}']`);
+        const creditInput = row.querySelector(`input[name='credit_${key}']`);
 
         if (!debitInput.disabled && debitInput.value) {
             totalDebits += parseFloat(debitInput.value || 0);
@@ -200,8 +200,6 @@ function updateTotals() {
         balanceWarning.style.display = "none";
         document.querySelector(".totals-row").style.color = "black";
     } else {
-        console.log(actualD);
-        console.log(actualC);
         submitButton.disabled = true;
         if (actualD > 0 || actualC > 0) {
             balanceWarning.style.display = "inline";
