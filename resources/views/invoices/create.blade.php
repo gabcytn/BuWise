@@ -7,6 +7,14 @@
     @vite(['resources/css/invoices/add.css', 'resources/js/invoices/create.js'])
 </head>
 <x-app-layout>
+    <select name="tax" class="d-none">
+        <option value="0" data-tax-value="0" selected>No Tax</option>
+        @foreach ($taxes as $tax)
+            <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
+                {{ strtoupper($tax->name) . ' (' . $tax->value . ' %)' }}</option>
+        @endforeach
+    </select>
+    <input class="d-none" id="discount" type="number" placeholder="20" step="0.01" />
     <form class="invoice-container" method="POST" action="{{ route('invoices.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="page-header">
@@ -62,22 +70,6 @@
                         <option value="cash">Cash</option>
                         <option value="bank">Bank Transfer</option>
                     </select>
-                </div>
-                <div class="form-row">
-                    <label>Tax Type</label>
-                    <select name="tax">
-                        <option value="0" data-tax-value="0" selected>No Tax</option>
-                        @foreach ($taxes as $tax)
-                            <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
-                                {{ strtoupper($tax->name) . ' (' . $tax->value . ' %)' }}</option>
-                        @endforeach
-                    </select>
-                    <small>Only select this option if tax applies as a whole.</small>
-                </div>
-                <div class="form-row">
-                    <label for="discount">Discount (in percentage)</label>
-                    <input id="discount" name="discount" type="number" placeholder="20" />
-                    <small>Only select this option if a discount applies as a whole.</small>
                 </div>
             </div>
         </div>
