@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     // invoice routes
     Route::resource('/invoices', InvoiceController::class)
-        ->only(['index']);
+        ->only(['index', 'create', 'store']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
@@ -89,7 +89,3 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
 
     return to_route('dashboard');
 })->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
-
-Route::resource('invoices', InvoiceController::class);
-
-Route::get('/invoices/add', [InvoiceController::class, 'create'])->name('invoices.add');
