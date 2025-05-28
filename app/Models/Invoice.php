@@ -12,6 +12,16 @@ class Invoice extends Model
     protected $fillable = [
         'client_id',
         'image',
+        'issue_date',
+        'due_date',
+        'transaction_type_id',
+        'invoice_number',
+        'supplier',
+        'vendor',
+        'payment_method',
+        'tax_id',
+        'discount_type',
+        'is_paid'
     ];
 
     /*
