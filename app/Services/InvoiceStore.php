@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\EntryType;
 use App\Models\Invoice;
 use App\Models\InvoiceLine;
+use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Tax;
 use App\Models\TransactionType;
@@ -158,19 +159,19 @@ class InvoiceStore
     {
         LedgerEntry::create([
             'invoice_id' => $invoice->id,
-            'account_id' => 28,  // NOTE: "Sales" account
+            'account_id' => LedgerAccount::SALES,
             'entry_type_id' => EntryType::LOOKUP['credit'],
             'amount' => $this->amountTotal - $this->taxTotal,
         ]);
         $taxEntry = LedgerEntry::create([
             'invoice_id' => $invoice->id,
-            'account_id' => 19,  // NOTE: "Taxes Payable" account
+            'account_id' => LedgerAccount::OUTPUT_VAT_PAYABLE,
             'entry_type_id' => EntryType::LOOKUP['credit'],
             'amount' => $this->taxTotal
         ]);
         LedgerEntry::create([
             'invoice_id' => $invoice->id,
-            'account_id' => 1,  // NOTE: temporarily stored in "CASH" account
+            'account_id' => 5,  // NOTE: temporarily stored in "Accounts Receivable" account
             'entry_type_id' => EntryType::LOOKUP['debit'],
             'tax_ledger_entry_id' => $taxEntry->id,
             'amount' => $this->amountTotal,
