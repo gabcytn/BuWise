@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class LedgerAccount extends Model
 {
+    public const CASH = 1;
+    public const INPUT_VAT_RECEIVABLE = 6;
+    public const TAX_PAYABLE = 20;
+    public const OUTPUT_VAT_PAYABLE = 21;
+    public const SALES = 30;
+
     protected $fillable = [
         'id',
         'account_group_id',
         'client_id',
         'name',
     ];
-
-    public const TAX_PAYABLE = 19;
 
     /*
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo

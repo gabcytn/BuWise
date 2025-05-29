@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Events\JournalEntryCreated;
 use App\Models\EntryType;
 use App\Models\JournalEntry;
+use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Status;
 use App\Models\Tax;
@@ -60,7 +61,7 @@ class JournalStore
                     $isTaxed = true;
                     $taxEntry = LedgerEntry::create([
                         'journal_entry_id' => $journalEntry->id,
-                        'account_id' => 19,  // Taxes Payable
+                        'account_id' => LedgerAccount::TAX_PAYABLE,  // Taxes Payable
                         'entry_type_id' => $entry['debit'] ? EntryType::LOOKUP['debit'] : EntryType::LOOKUP['credit'],
                         'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
                     ]);
