@@ -11,10 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('ledger_accounts', function (Blueprint $table) {
-            $table->integer('id')->primary()->autoIncrement();
+            $table->id();
+            $table->foreignUuid('accountant_id')->nullable()->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('code');
-            $table->smallInteger('account_group_id');
-            $table->foreignUuid('client_id')->nullable()->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unique(['id', 'code']);
+            $table->unsignedSmallInteger('account_group_id');
             $table->string('name');
             $table->timestamps();
 
