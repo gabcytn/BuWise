@@ -15,19 +15,19 @@ class AccountGroupSeeder extends Seeder
     {
         DB::table('account_groups')->insert([
             [
-                'name' => 'assets',
+                'name' => 'Assets',
             ],
             [
-                'name' => 'liabilities',
+                'name' => 'Liabilities',
             ],
             [
-                'name' => 'equity',
+                'name' => 'Equity',
             ],
             [
-                'name' => 'revenue',
+                'name' => 'Revenue',
             ],
             [
-                'name' => 'expenses',
+                'name' => 'Expenses',
             ],
         ]);
     }

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('account_groups', function (Blueprint $table) {
-            $table->smallInteger('id')->autoIncrement()->primary();
+            $table->unsignedSmallInteger('id')->autoIncrement()->primary();
             $table->string('name');
         });
     }

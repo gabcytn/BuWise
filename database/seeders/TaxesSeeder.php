@@ -15,7 +15,7 @@ class TaxesSeeder extends Seeder
     {
         DB::table('taxes')->insert([
             [
-                'name' => 'vat',
+                'name' => 'VAT',
                 'value' => 12
             ],
         ]);
