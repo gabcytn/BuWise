@@ -36,12 +36,12 @@ class TrialBalanceController extends Controller
                 $data = $this->getQuery($request->query('client'));
             }
 
-            foreach ($data as $datum) {
-                $openingBalance = LedgerAccountController::getInitialBalance($request->query('client'), $datum->acc_id, $datum->acc_group_id);
-                if ($openingBalance) {
-                    $openingBalance->entry_type_id == EntryType::DEBIT ? $datum->debit += $openingBalance->initial_balance : $datum->credit += $openingBalance->initial_balance;
-                }
-            }
+            // foreach ($data as $datum) {
+            //     $openingBalance = LedgerAccountController::getInitialBalance($request->query('client'), $datum->acc_id, $datum->acc_group_id);
+            //     if ($openingBalance) {
+            //         $openingBalance->entry_type_id == EntryType::DEBIT ? $datum->debit += $openingBalance->initial_balance : $datum->credit += $openingBalance->initial_balance;
+            //     }
+            // }
         }
 
         return view('ledger.trial-balance', [
@@ -55,21 +55,20 @@ class TrialBalanceController extends Controller
         $startDate .= ' 00:00:00';
         $endDate .= ' 23:59:59';
         return DB::table('ledger_entries AS le')
-            ->join('journal_entries AS je', 'je.id', '=', 'le.journal_entry_id')
-            ->join('users', 'users.id', '=', 'je.client_id')
+            ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')
+            ->join('users', 'users.id', '=', 'tr.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
-            ->join('status', 'status.id', '=', 'je.status_id')
-            ->where('je.client_id', $clientId)
-            ->where('je.status_id', '=', Status::APPROVED)
+            ->where('tr.client_id', '=', $clientId)
+            ->where('tr.status', '=', 'approved')
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->where(function ($q) use ($startDate, $endDate) {
                     $q
                         ->whereIn('acc.account_group_id', [AccountGroup::ASSETS, AccountGroup::LIABILITIES, AccountGroup::EQUITY])
-                        ->whereBetween('je.date', [$startDate, $endDate]);
+                        ->whereBetween('tr.date', [$startDate, $endDate]);
                 })->orWhere(function ($q) use ($startDate, $endDate) {
                     $q
                         ->whereNotIn('acc.account_group_id', [AccountGroup::ASSETS, AccountGroup::LIABILITIES, AccountGroup::EQUITY])
-                        ->whereBetween('je.date', [$startDate, $endDate]);
+                        ->whereBetween('tr.date', [$startDate, $endDate]);
                 });
             })
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
@@ -78,10 +77,9 @@ class TrialBalanceController extends Controller
                 'acc.id AS acc_id',
                 'acc.name AS acc_name',
                 'acc.account_group_id AS acc_group_id',
-                DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN amount ELSE 0 END) AS debit'),
-                DB::raw('SUM(CASE WHEN le.entry_type_id = ? THEN amount ELSE 0 END) AS credit')
+                DB::raw("SUM(CASE WHEN le.entry_type = 'debit' THEN le.amount ELSE 0 END) AS debit"),
+                DB::raw("SUM(CASE WHEN le.entry_type = 'credit' THEN le.amount ELSE 0 END) AS credit")
             )
-            ->setBindings([EntryType::DEBIT, EntryType::CREDIT], 'select')
             ->get();
     }
 }

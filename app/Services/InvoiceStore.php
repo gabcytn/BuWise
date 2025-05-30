@@ -170,26 +170,30 @@ class InvoiceStore
 
     private function ledgerEntryForSales(Transaction $invoice)
     {
-        $taxEntry = LedgerEntry::create([
-            'transaction_id' => $invoice->id,
-            'account_id' => LedgerAccount::OUTPUT_VAT_PAYABLE,
-            'entry_type' => 'credit',
-            'amount' => $this->taxTotal
-        ]);
-        LedgerEntry::insert([
-            [
+        if ($this->taxTotal > 0) {
+            $taxEntry = LedgerEntry::create([
                 'transaction_id' => $invoice->id,
-                'account_id' => LedgerAccount::SALES,
+                'account_id' => LedgerAccount::OUTPUT_VAT_PAYABLE,
                 'entry_type' => 'credit',
-                'tax_ledger_entry_id' => $taxEntry->id,
-                'amount' => $this->amountTotal - $this->taxTotal,
-            ],
-            [
+                'amount' => $this->taxTotal
+            ]);
+        }
+        if ($this->discountTotal > 0) {
+            LedgerEntry::create([
                 'transaction_id' => $invoice->id,
                 'account_id' => 32,  // NOTE: "Sales Discounts" account
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => null,
                 'amount' => $this->discountTotal,
+            ]);
+        }
+        LedgerEntry::insert([
+            [
+                'transaction_id' => $invoice->id,
+                'account_id' => LedgerAccount::SALES,
+                'entry_type' => 'credit',
+                'tax_ledger_entry_id' => $this->taxTotal > 0 ? $taxEntry->id : null,
+                'amount' => $this->amountTotal - $this->taxTotal,
             ],
             [
                 'transaction_id' => $invoice->id,
@@ -203,18 +207,20 @@ class InvoiceStore
 
     private function ledgerEntryForPurchases(Transaction $invoice)
     {
-        $taxEntry = LedgerEntry::create([
-            'transaction_id' => $invoice->id,
-            'account_id' => LedgerAccount::INPUT_VAT_RECEIVABLE,
-            'entry_type' => 'debit',
-            'amount' => $this->taxTotal
-        ]);
+        if ($this->taxTotal > 0) {
+            $taxEntry = LedgerEntry::create([
+                'transaction_id' => $invoice->id,
+                'account_id' => LedgerAccount::INPUT_VAT_RECEIVABLE,
+                'entry_type' => 'debit',
+                'amount' => $this->taxTotal
+            ]);
+        }
         LedgerEntry::insert([
             [
                 'transaction_id' => $invoice->id,
                 'account_id' => 41,  // NOTE: "Raw Materials" account
                 'entry_type' => 'debit',
-                'tax_ledger_entry_id' => $taxEntry->id,
+                'tax_ledger_entry_id' => $this->taxTotal > 0 ? $taxEntry->id : null,
                 'amount' => $this->amountTotal - $this->taxTotal
             ],
             [

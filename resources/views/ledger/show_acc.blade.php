@@ -6,9 +6,6 @@
     <div class="container">
         <div class="title-row">
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
-            @if (\App\Models\AccountGroup::IS_PERMANENT[$account->account_group_id])
-                <button id="set-initial-balance-btn">Set Initial Balance</button>
-            @endif
         </div>
         <select required name="date_range" id="date-range-select">
             @if (request()->query('start') && request()->query('end'))
@@ -32,10 +29,10 @@
                 </td>
             </tr>
             @foreach ($data as $datum)
-                @if ($datum->journal_date >= $start && $datum->journal_date <= $end)
+                @if ($datum->transaction_date >= $start && $datum->transaction_date <= $end)
                     <tr>
-                        <td>{{ formatDate($datum->journal_date) }}</td>
-                        <td>{{ truncate($datum->journal_description) }}</td>
+                        <td>{{ formatDate($datum->transaction_date) }}</td>
+                        <td>{{ truncate($datum->transaction_description) }}</td>
                         <td>{{ $datum->transaction_type }}</td>
                         <td>{{ $datum->acc_name }}</td>
                         <td>{{ ucfirst($datum->acc_group) }}</td>
@@ -68,28 +65,6 @@
         @endif
         <button type="button" id="back-button">Back</button>
     </div>
-    @if (\App\Models\AccountGroup::IS_PERMANENT[$account->account_group_id])
-        <dialog id="set-initial-balance-dialog">
-            <form action="{{ route('ledger.coa.update_initial', [$account, $user]) }}" method="POST">
-                @csrf
-                <label for="initial-balance">Current initial balance</label>
-                <div class="input-wrapper">
-                    <input value="{{ $initial_balance }}" name="initial_balance" id="initial-balance" />
-                    <div class="select-wrapper">
-                        <select required id="entry-type-select" name="entry_type_id">
-                            <option value="" selected disabled>Select an entry type</option>
-                            <option value="{{ \App\Models\EntryType::DEBIT }}">Debit</option>
-                            <option value="{{ \App\Models\EntryType::CREDIT }}">Credit</option>
-                        </select>
-                    </div>
-                </div>
-                <p id="note-message">NOTE: this will set the VERY initial balance of this account and will affect the
-                    reports.</p>
-                <button type="submit">Submit anyway</button>
-                <button type="button">Cancel</button>
-            </form>
-        </dialog>
-    @endif
     <dialog id="set-custom-date-range-dialog">
         <h2>Choose starting and ending date</h2>
         <form id="date-range-form">
