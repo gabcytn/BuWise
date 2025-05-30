@@ -39,8 +39,8 @@ class JournalEntryCreatedListener implements ShouldQueue
                         'users.email as client_email',
                         'ledger_accounts.name as acc_name',
                         'account_groups.name as acc_group',
-                        DB::raw('CASE WHEN ledger_entries.entry_type = "debit" THEN amount ELSE NULL END as debit'),
-                        DB::raw('CASE WHEN ledger_entries.entry_type = "credit" THEN amount ELSE NULL END as credit')
+                        DB::raw('CASE WHEN ledger_entries.entry_type = "debit" THEN ledger_entries.amount ELSE NULL END as debit'),
+                        DB::raw('CASE WHEN ledger_entries.entry_type = "credit" THEN le_entries.amount ELSE NULL END as credit')
                     )
                     ->where('ledger_accounts.id', $ledgerEntry->account_id)
                     ->where('transactions.status', '=', 'approved')
