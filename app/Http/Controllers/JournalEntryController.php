@@ -155,11 +155,11 @@ class JournalEntryController extends Controller
     public function approve(Transaction $journalEntry)
     {
         Gate::authorize('changeStatus', $journalEntry);
-        $journalEntry->status_id = Status::APPROVED;
+        $journalEntry->status = 'approved';
         $journalEntry->save();
 
         $arr = [];
-        foreach ($journalEntry->ledgerEntries as $data) {
+        foreach ($journalEntry->ledger_entries as $data) {
             $arr[] = $data;
         }
 
@@ -174,11 +174,11 @@ class JournalEntryController extends Controller
     public function reject(Transaction $journalEntry)
     {
         Gate::authorize('changeStatus', $journalEntry);
-        $journalEntry->status_id = Status::REJECTED;
+        $journalEntry->status = 'rejected';
         $journalEntry->save();
 
         $arr = [];
-        foreach ($journalEntry->ledgerEntries as $data) {
+        foreach ($journalEntry->ledger_entries as $data) {
             $arr[] = $data;
         }
 
