@@ -2,13 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\JournalEntry;
 use App\Models\Role;
-use App\Models\Status;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class JournalEntryPolicy
+class TransactionPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -25,7 +24,7 @@ class JournalEntryPolicy
      * Determine whether the user can view the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function view(User $user, JournalEntry $journalEntry)
+    public function view(User $user, Transaction $journalEntry)
     {
         $roleId = $user->role_id;
         if ($roleId === Role::ACCOUNTANT) {
@@ -57,7 +56,7 @@ class JournalEntryPolicy
      * Determine whether the user can update the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function update(User $user, JournalEntry $journalEntry)
+    public function update(User $user, Transaction $journalEntry)
     {
         return $this->view($user, $journalEntry);
     }
@@ -66,7 +65,7 @@ class JournalEntryPolicy
      * Determine whether the user can delete the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function delete(User $user, JournalEntry $journalEntry)
+    public function delete(User $user, Transaction $journalEntry)
     {
         return $this->view($user, $journalEntry);
     }
@@ -75,7 +74,7 @@ class JournalEntryPolicy
      * Determine whether the user can restore the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function changeStatus(User $user, JournalEntry $journalEntry)
+    public function changeStatus(User $user, Transaction $journalEntry)
     {
         return $this->view($user, $journalEntry);
     }
@@ -83,7 +82,7 @@ class JournalEntryPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, JournalEntry $journalEntry): bool
+    public function forceDelete(User $user, Transaction $journalEntry): bool
     {
         return false;
     }

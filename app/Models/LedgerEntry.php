@@ -8,23 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class LedgerEntry extends Model
 {
     protected $fillable = [
-        'journal_entry_id',
-        'invoice_id',
+        'transaction_id',
         'account_id',
-        'entry_type_id',
-        'description',
         'tax_id',
         'tax_ledger_entry_id',
+        'entry_type',
+        'description',
         'amount',
     ];
-
-    /*
-     * @return Illuminate\Database\Eloquent\Relations\BelongsTo;
-     */
-    public function journalEntries(): BelongsTo
-    {
-        return $this->belongsTo(JournalEntry::class);
-    }
 
     /*
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo;

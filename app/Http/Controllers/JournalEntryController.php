@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\JournalEntryCreated;
-use App\Models\JournalEntry;
+use App\Events\TransactionCreated;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\Tax;
+use App\Models\Transaction;
 use App\Models\TransactionType;
 use App\Services\JournalIndex;
 use App\Services\JournalShow;
@@ -30,7 +31,7 @@ class JournalEntryController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', JournalEntry::class);
+        Gate::authorize('viewAny', Transaction::class);
         $index = new JournalIndex();
         return $index->index($request);
     }
@@ -41,7 +42,7 @@ class JournalEntryController extends Controller
      */
     public function create(Request $request)
     {
-        Gate::authorize('create', JournalEntry::class);
+        Gate::authorize('create', Transaction::class);
         $user = $request->user();
         $clients = Cache::remember($user->id . '-clients', 3600, function () use ($user) {
             return getClients($user);
@@ -53,13 +54,11 @@ class JournalEntryController extends Controller
         });
 
         $accounts = LedgerAccount::all();
-        $transactionTypes = TransactionType::all();
 
         return view('journal-entries.create', [
             'taxes' => $taxes,
             'clients' => $clients,
             'accounts' => $accounts,
-            'transactionTypes' => $transactionTypes,
         ]);
     }
 
@@ -69,7 +68,7 @@ class JournalEntryController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', JournalEntry::class);
+        Gate::authorize('create', Transaction::class);
         $store = new JournalStore();
         return $store->store($request);
     }
@@ -78,7 +77,7 @@ class JournalEntryController extends Controller
      * Display the specified resource.
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(JournalEntry $journalEntry)
+    public function show(Transaction $journalEntry)
     {
         Gate::authorize('view', $journalEntry);
         $show = new JournalShow($journalEntry);
@@ -89,15 +88,14 @@ class JournalEntryController extends Controller
      * Show the form for editing the specified resource.
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit(Request $request, JournalEntry $journalEntry)
+    public function edit(Request $request, Transaction $journalEntry)
     {
         Gate::authorize('update', $journalEntry);
         $user = $request->user();
         $accounts = LedgerAccount::all();
-        $transactionTypes = TransactionType::all();
 
-        $ledgerEntries = LedgerEntry::where('journal_entry_id', $journalEntry->id)
-            ->where('account_id', '!=', 19)  // Exclude taxes payable
+        $ledgerEntries = LedgerEntry::where('transaction_id', $journalEntry->id)
+            ->where('account_id', '!=', LedgerAccount::TAX_PAYABLE)
             ->get();
 
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
@@ -108,7 +106,6 @@ class JournalEntryController extends Controller
 
         return view('journal-entries.edit', [
             'accounts' => $accounts,
-            'transactionTypes' => $transactionTypes,
             'journal_entry' => $journalEntry,
             'ledger_entries' => $ledgerEntries,
             'date' => $date->format('Y-m-d'),
@@ -119,7 +116,7 @@ class JournalEntryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JournalEntry $journalEntry)
+    public function update(Request $request, Transaction $journalEntry)
     {
         Gate::authorize('update', $journalEntry);
         $update = new JournalUpdate($request, $journalEntry);
@@ -129,25 +126,25 @@ class JournalEntryController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(JournalEntry $journalEntry)
+    public function destroy(Transaction $journalEntry)
     {
         Gate::authorize('delete', $journalEntry);
         try {
             Cache::delete('journal-' . $journalEntry->id);
 
             $arr = [];
-            foreach ($journalEntry->ledgerEntries as $data) {
+            foreach ($journalEntry->ledger_entries as $data) {
                 $arr[] = $data;
             }
 
             // update coa cache
-            JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
+            // JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
 
-            JournalEntry::destroy($journalEntry->id);
+            Transaction::destroy($journalEntry->id);
         } catch (\Exception $e) {
             Log::emergency('Exception while destroying a journal entry');
             Log::emergency($e->getMessage());
-            Log::emergency($e->getTraceAsString());
+            Log::emergency(truncate($e->getTraceAsString(), 300));
         }
         return to_route('journal-entries.index', ['type' => 'all', 'client' => 'all']);
     }
@@ -155,7 +152,7 @@ class JournalEntryController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function approve(JournalEntry $journalEntry)
+    public function approve(Transaction $journalEntry)
     {
         Gate::authorize('changeStatus', $journalEntry);
         $journalEntry->status_id = Status::APPROVED;
@@ -174,7 +171,7 @@ class JournalEntryController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function reject(JournalEntry $journalEntry)
+    public function reject(Transaction $journalEntry)
     {
         Gate::authorize('changeStatus', $journalEntry);
         $journalEntry->status_id = Status::REJECTED;

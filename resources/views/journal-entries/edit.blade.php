@@ -36,12 +36,12 @@
                     </div>
                     <div class="input-wrapper">
                         <label for="transaction-type">Transaction Type</label>
-                        <select required id="transaction-type" name="transaction_type_id">
-                            @foreach ($transactionTypes as $transactionType)
-                                <option
-                                    {{ $journal_entry->transaction_type_id === $transactionType->id ? 'selected' : '' }}
-                                    value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
-                            @endforeach
+                        <select required id="transaction-type" name="transaction_type">
+                            <option {{ $journal_entry->transaction_type === 'sales' ? 'selected' : '' }} value="sales">
+                                Sales</option>
+                            <option {{ $journal_entry->transaction_type === 'purchases' ? 'selected' : '' }}
+                                value="purchases">
+                                Purchases</option>
                         </select>
                     </div>
                     <div class="input-wrapper">
@@ -101,9 +101,7 @@
                                     </td>
                                     @php
                                         $debit_value =
-                                            $ledger_entry->entry_type_id === \App\Models\EntryType::DEBIT
-                                                ? $ledger_entry->amount
-                                                : '';
+                                            $ledger_entry->entry_type === 'debit' ? $ledger_entry->amount : '';
                                     @endphp
                                     <td><input type="number" min="0" step="0.01"
                                             name="{{ 'debit_' . $key + 1 }}" value="{{ $debit_value }}"
@@ -111,9 +109,7 @@
                                     </td>
                                     @php
                                         $credit_value =
-                                            $ledger_entry->entry_type_id === \App\Models\EntryType::CREDIT
-                                                ? $ledger_entry->amount
-                                                : '';
+                                            $ledger_entry->entry_type === 'credit' ? $ledger_entry->amount : '';
                                     @endphp
                                     <td><input type="number" min="0" step="0.01"
                                             name="{{ 'credit_' . $key + 1 }}" value="{{ $credit_value }}"
@@ -166,6 +162,9 @@
                     </p>
                 </div>
 
+                @if (session('status'))
+                    <p style="color: var(--green);">{{ session('status') }}</p>
+                @endif
                 @if ($errors->any())
                     <p style="color: red;">{{ $errors->first() }}</p>
                 @endif

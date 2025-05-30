@@ -32,11 +32,10 @@
                     </div>
                     <div class="input-wrapper">
                         <label for="transaction-type">Transaction Type</label>
-                        <select required id="transaction-type" name="transaction_type_id">
+                        <select required id="transaction-type" name="transaction_type">
                             <option value="" selected disabled>Select a transaction type</option>
-                            @foreach ($transactionTypes as $transactionType)
-                                <option value="{{ $transactionType->id }}">{{ $transactionType->name }}</option>
-                            @endforeach
+                            <option value="sales">Sales</option>
+                            <option value="purchases">Purchases</option>
                         </select>
                     </div>
                     <div class="input-wrapper client-select-wrapper">

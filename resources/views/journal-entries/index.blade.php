@@ -58,11 +58,10 @@
                     <select class="select" name="transaction_type">
                         <option value="all" {{ request()->query('transaction_type') === 'all' ? 'selected' : '' }}>
                             All Transactions</option>
-                        <option value="{{ \App\Models\TransactionType::SALES }}"
-                            {{ request()->query('transaction_type') == \App\Models\TransactionType::SALES ? 'selected' : '' }}>
+                        <option value="sales" {{ request()->query('transaction_type') == 'sales' ? 'selected' : '' }}>
                             Sales</option>
-                        <option value="{{ \App\Models\TransactionType::PURCHASE }}"
-                            {{ request()->query('transaction_type') == \App\Models\TransactionType::PURCHASE ? 'selected' : '' }}>
+                        <option value="purchases"
+                            {{ request()->query('transaction_type') == 'purchases' ? 'selected' : '' }}>
                             Purchases</option>
                     </select>
                 </div>
