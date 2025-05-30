@@ -42,6 +42,7 @@ class InvoiceController extends Controller
      */
     public function create(Request $request)
     {
+        Gate::authorize('create', Transaction::class);
         $user = $request->user();
         $accId = getAccountantId($user);
         $clients = Cache::remember($accId . '-clients', 3600, function () use ($user) {
@@ -61,6 +62,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Transaction::class);
         $request->validate([
             'client' => ['required', 'uuid:4'],
             'image' => ['required', File::image()->max(5000)],
@@ -82,6 +84,7 @@ class InvoiceController extends Controller
      */
     public function show(Transaction $invoice)
     {
+        Gate::authorize('view', $invoice);
         $items = $invoice->invoice_lines;
         $invUrl = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
             Log::info('Getting new temp. URL from AWS');
