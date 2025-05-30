@@ -28,27 +28,24 @@ class JournalEntryCreatedListener implements ShouldQueue
                 $result = DB::table('ledger_entries')
                     ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
                     ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
-                    ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
-                    ->join('journal_entries', 'journal_entries.id', '=', 'ledger_entries.journal_entry_id')
-                    ->join('transaction_types', 'transaction_types.id', '=', 'journal_entries.transaction_type_id')
+                    ->join('transactions', 'transactions.id', '=', 'ledger_entries.transaction_id')
                     ->join('users', 'journal_entries.client_id', '=', 'users.id')
-                    ->join('status', 'status.id', '=', 'journal_entries.status_id')
                     ->select(
-                        'journal_entries.id as journal_id',
-                        'journal_entries.description as journal_description',
-                        'journal_entries.date as journal_date',
-                        'transaction_types.name as transaction_type',
+                        'transactions.id as journal_id',
+                        'transactions.description as journal_description',
+                        'transactions.date as journal_date',
+                        'transactions.kind as transaction_type',
                         'users.name as client_name',
                         'users.email as client_email',
                         'ledger_accounts.name as acc_name',
                         'account_groups.name as acc_group',
-                        DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
-                        DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
+                        DB::raw('CASE WHEN ledger_entries.entry_type = "debit" THEN amount ELSE NULL END as debit'),
+                        DB::raw('CASE WHEN ledger_entries.entry_type = "credit" THEN amount ELSE NULL END as credit')
                     )
                     ->where('ledger_accounts.id', $ledgerEntry->account_id)
-                    ->where('journal_entries.status_id', '=', Status::APPROVED)
-                    ->where('journal_entries.client_id', $userId)
-                    ->orderByRaw('journal_entries.date DESC')
+                    ->where('transactions.status', '=', 'approved')
+                    ->where('transactions.client_id', '=', $userId)
+                    ->orderByRaw('transactions.date DESC')
                     ->get();
                 Cache::put('coa-' . $userId . '-' . $ledgerEntry->account_id, $result, $seconds = 3600);
             } catch (\Exception $e) {

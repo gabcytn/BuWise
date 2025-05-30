@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('ledger_entries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->references('id')->on('transactions');
-            $table->foreignId('account_id')->references('id')->on('ledger_accounts');
+            $table->foreignId('transaction_id')->references('id')->on('transactions')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('account_id')->references('id')->on('ledger_accounts')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->unsignedBigInteger('tax_ledger_entry_id')->nullable();
             $table->enum('entry_type', ['debit', 'credit']);

@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Role;
-use App\Models\Status;
-use App\Models\TransactionType;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -38,6 +36,7 @@ class JournalIndex
                 'entries' => $entries
             ]);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
@@ -61,7 +60,7 @@ class JournalIndex
         $query = $this->applyFilters($query, $filter);
 
         $query = $query
-            ->groupBy('je.id', 'client.name', 'tt.name', 'status.description', 'je.description', 'je.date', 'creator.name');
+            ->groupBy('je.id', 'client.name', 'je.kind', 'je.description', 'je.date', 'creator.name');
 
         $query = $this->getOrderBy($query, $filter);
 
@@ -76,23 +75,22 @@ class JournalIndex
     private function buildBaseQuery(User $user)
     {
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
-        return DB::table('journal_entries as je')
+        return DB::table('transactions as je')
             ->join('users as client', 'client.id', '=', 'je.client_id')
             ->join('users as creator', 'creator.id', '=', 'je.created_by')
-            ->join('transaction_types as tt', 'tt.id', '=', 'je.transaction_type_id')
-            ->join('ledger_entries as le', 'le.journal_entry_id', '=', 'je.id')
-            ->join('status', 'status.id', '=', 'je.status_id')
+            ->join('ledger_entries as le', 'le.transaction_id', '=', 'je.id')
             ->select(
                 'je.id',
                 'client.name as client_name',
                 'creator.name as creator',
-                'tt.name as transaction_type',
-                'status.description AS status',
+                'je.kind as transaction_type',
+                'je.status AS status',
                 'je.description',
                 DB::raw('MAX(le.amount) as amount'),
                 'je.date'
             )
-            ->where('client.accountant_id', '=', $accId);
+            ->where('client.accountant_id', '=', $accId)
+            ->where('je.type', '=', 'journal');
     }
 
     /**
@@ -112,11 +110,11 @@ class JournalIndex
         switch ($transaction_type) {
             case 'all':
                 break;
-            case strval(TransactionType::SALES):
-                $query->where('je.transaction_type_id', '=', TransactionType::SALES);
+            case strval('sales'):
+                $query->where('je.kind', '=', 'sales');
                 break;
-            case strval(TransactionType::PURCHASE):
-                $query->where('je.transaction_type_id', '=', TransactionType::PURCHASE);
+            case strval('purchases'):
+                $query->where('je.kind', '=', 'purchases');
                 break;
             default:
                 break;
@@ -179,7 +177,7 @@ class JournalIndex
                 $query->orderBy('client.name');
                 break;
             case 'transaction_type':
-                $query->orderBy('tt.name');
+                $query->orderBy('je.kind');
                 break;
             case 'description':
                 $query->orderBy('je.description');
