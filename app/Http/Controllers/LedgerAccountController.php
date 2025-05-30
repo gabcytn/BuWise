@@ -66,8 +66,7 @@ class LedgerAccountController extends Controller
             });
         }
 
-        $initialBalance = LedgerAccountController::getInitialBalance($user->id, $ledgerAccount->id, $ledgerAccount->account_group_id);
-        $arr = $this->calculateTotalDebitsAndCredits($data, $initialBalance, $start, $end);
+        $arr = $this->calculateTotalDebitsAndCredits($data, $start, $end);
 
         $totalDebits = $arr[0];
         $totalCredits = $arr[1];
@@ -84,7 +83,6 @@ class LedgerAccountController extends Controller
             'total_credits' => $totalCredits,
             'opening_balance' => $openingBalance,
             'opening_entry_type' => $openingEntry,
-            'initial_balance' => is_null($initialBalance) ? 0 : $initialBalance->initial_balance,
             'overall' => number_format($overall, 2),
             'start' => $start,
             'end' => $end,
@@ -92,64 +90,9 @@ class LedgerAccountController extends Controller
     }
 
     /*
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function setInitialBalance(Request $request, LedgerAccount $ledgerAccount, User $user)
-    {
-        Gate::authorize('setInitialBalance', $ledgerAccount);
-        $request->validate([
-            'initial_balance' => ['required', 'numeric', 'min:0'],
-            'entry_type_id' => ['required', 'numeric', 'min:1', 'max:2'],
-        ]);
-
-        try {
-            DB::table('accounts_opening_balance')
-                ->upsert(
-                    [
-                        'client_id' => $user->id,
-                        'ledger_account_id' => $ledgerAccount->id,
-                        'initial_balance' => $request->initial_balance,
-                        'entry_type_id' => $request->entry_type_id,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ],
-                    ['client_id', 'ledger_account_id'],
-                    ['initial_balance', 'entry_type_id', 'updated_at']
-                );
-        } catch (\Exception $e) {
-            Log::warning('Error occured while updating initial balance of an account');
-            return redirect()->back()->withInput()->withErrors([
-                'database' => 'Failed to validate request: ' . $e->getMessage(),
-            ]);
-        }
-
-        return redirect()->back();
-    }
-
-    /*
-     * @return ?Illuminate\Database\Concerns\TValue;
-     */
-    public static function getInitialBalance(string $userId, int $ledgerAccountId, int $accountGroupId)
-    {
-        if (AccountGroup::IS_TEMPORARY[$accountGroupId]) {
-            return null;
-        }
-        return DB::table('accounts_opening_balance')
-            ->join('users', 'users.id', '=', 'accounts_opening_balance.client_id')
-            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'accounts_opening_balance.ledger_account_id')
-            ->select(
-                'accounts_opening_balance.initial_balance',
-                'accounts_opening_balance.entry_type_id'
-            )
-            ->where('users.id', $userId)
-            ->where('ledger_accounts.id', $ledgerAccountId)
-            ->first();
-    }
-
-    /*
      * @return array
      */
-    private function calculateTotalDebitsAndCredits($data, $initialBalance, $start, $end)
+    private function calculateTotalDebitsAndCredits($data, $start, $end)
     {
         $openingDebits = 0;
         $openingCredits = 0;
@@ -160,22 +103,13 @@ class LedgerAccountController extends Controller
         foreach ($data as $datum) {
             $credit = $datum->credit ?? 0;
             $debit = $datum->debit ?? 0;
-            if ($datum->journal_date < $start && AccountGroup::IS_PERMANENT[$datum->acc_group_id]) {
+            if ($datum->transaction_date < $start && AccountGroup::IS_PERMANENT[$datum->acc_group_id]) {
                 $openingCredits += $credit;
                 $openingDebits += $debit;
-            } elseif ($datum->journal_date >= $start && $datum->journal_date <= $end) {
+            } elseif ($datum->transaction_date >= $start && $datum->transaction_date <= $end) {
                 $totalCredits += $credit;
                 $totalDebits += $debit;
             }
-        }
-
-        $veryInitial = is_null($initialBalance) ? 0 : $initialBalance->initial_balance;
-        $initialEntry = is_null($initialBalance) ? EntryType::CREDIT : $initialBalance->entry_type_id;
-
-        if ($initialEntry === EntryType::CREDIT) {
-            $openingCredits += $veryInitial;
-        } elseif ($initialEntry === EntryType::DEBIT) {
-            $openingDebits += $veryInitial;
         }
 
         if ($openingDebits > $openingCredits) {
@@ -193,37 +127,34 @@ class LedgerAccountController extends Controller
 
     private function getQuery(int $ledgerAccountId, string $userId, ?string $endDate = null)
     {
-        $query = DB::table('ledger_entries')
-            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'ledger_entries.account_id')
+        $query = DB::table('ledger_entries AS le')
+            ->join('ledger_accounts', 'ledger_accounts.id', '=', 'le.account_id')
             ->join('account_groups', 'account_groups.id', '=', 'ledger_accounts.account_group_id')
-            ->join('entry_types', 'entry_types.id', '=', 'ledger_entries.entry_type_id')
-            ->join('journal_entries', 'journal_entries.id', '=', 'ledger_entries.journal_entry_id')
-            ->join('transaction_types', 'transaction_types.id', '=', 'journal_entries.transaction_type_id')
-            ->join('users', 'journal_entries.client_id', '=', 'users.id')
-            ->join('status', 'status.id', '=', 'journal_entries.status_id')
+            ->join('transactions', 'transactions.id', '=', 'le.transaction_id')
+            ->join('users', 'transactions.client_id', '=', 'users.id')
             ->select(
-                'journal_entries.id as journal_id',
-                'journal_entries.description as journal_description',
-                'journal_entries.date as journal_date',
-                'transaction_types.name as transaction_type',
+                'transactions.id as transaction_id',
+                'transactions.description as transaction_description',
+                'transactions.date as transaction_date',
+                'transactions.kind as transaction_type',
                 'users.name as client_name',
                 'users.email as client_email',
                 'ledger_accounts.name as acc_name',
                 'account_groups.name as acc_group',
                 'account_groups.id as acc_group_id',
-                DB::raw('CASE WHEN entry_types.name = "debit" THEN amount ELSE NULL END as debit'),
-                DB::raw('CASE WHEN entry_types.name = "credit" THEN amount ELSE NULL END as credit')
+                DB::raw('CASE WHEN le.entry_type = "debit" THEN le.amount ELSE NULL END as debit'),
+                DB::raw('CASE WHEN le.entry_type = "credit" THEN le.amount ELSE NULL END as credit')
             )
             ->where('ledger_accounts.id', $ledgerAccountId)
-            ->where('journal_entries.status_id', '=', Status::APPROVED)
-            ->where('journal_entries.client_id', $userId);
+            ->where('transactions.status', '=', 'approved')
+            ->where('transactions.client_id', $userId);
 
         if ($endDate !== null) {
             $query = $query
-                ->where('journal_entries.date', '<=', $endDate);
+                ->where('transactions.date', '<=', $endDate);
         }
         return $query
-            ->orderByRaw('journal_entries.date DESC')
+            ->orderByRaw('transactions.date DESC')
             ->get();
     }
 }
