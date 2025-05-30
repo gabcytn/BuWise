@@ -7,6 +7,7 @@ use App\Models\InvoiceLine;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Tax;
+use App\Models\Transaction;
 use App\Models\TransactionType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,10 +37,10 @@ class InvoiceStore
             $this->createInvoiceLines($items, $invoice);
 
             switch ($request->transaction_type) {
-                case TransactionType::SALES:
+                case 'sales':
                     $this->ledgerEntryForSales($invoice);
                     break;
-                case TransactionType::PURCHASE:
+                case 'purchases':
                     dd('here');
                     $this->ledgerEntryForPurchases($invoice);
                     break;
@@ -71,20 +72,18 @@ class InvoiceStore
     private function creatInvoice(string $filename)
     {
         $request = $this->request;
-        $invoice = Invoice::create([
+        $invoice = Transaction::create([
             'client_id' => $request->client,
+            'created_by' => $this->request->user()->id,
+            'status' => 'approved',
+            'type' => 'invoice',
+            'kind' => $request->transaction_type,
             'amount' => $this->amountTotal,
-            'image' => $filename,
-            'issue_date' => $request->issue_date,
-            'due_date' => $request->due_date ?? null,
-            'transaction_type_id' => $request->transaction_type,
-            'invoice_number' => $request->invoice_number,
-            'supplier' => $request->supplier ?? null,
-            'vendor' => $request->vendor ?? null,
+            'date' => $request->issue_date,
             'payment_method' => $request->payment_method,
-            'tax_id' => $request->tax !== '0' ? $request->tax : null,
-            'discount_type' => $request->discount_type,
-            'is_paid' => $request->invoice_status === 'paid'
+            'reference_no' => $request->invoice_number,
+            'description' => $request->description,
+            'image' => $filename,
         ]);
         return $invoice;
     }
@@ -141,7 +140,7 @@ class InvoiceStore
         return $arr;
     }
 
-    private function createInvoiceLines(array $items, Invoice $invoice)
+    private function createInvoiceLines(array $items, Transaction $invoice)
     {
         foreach ($items as $item) {
             InvoiceLine::create([
@@ -155,22 +154,22 @@ class InvoiceStore
         }
     }
 
-    private function ledgerEntryForSales(Invoice $invoice)
+    private function ledgerEntryForSales(Transaction $invoice)
     {
         LedgerEntry::create([
-            'invoice_id' => $invoice->id,
+            'transaction_id' => $invoice->id,
             'account_id' => LedgerAccount::SALES,
             'entry_type_id' => EntryType::LOOKUP['credit'],
             'amount' => $this->amountTotal - $this->taxTotal,
         ]);
         $taxEntry = LedgerEntry::create([
-            'invoice_id' => $invoice->id,
+            'transaction_id' => $invoice->id,
             'account_id' => LedgerAccount::OUTPUT_VAT_PAYABLE,
             'entry_type_id' => EntryType::LOOKUP['credit'],
             'amount' => $this->taxTotal
         ]);
         LedgerEntry::create([
-            'invoice_id' => $invoice->id,
+            'transaction_id' => $invoice->id,
             'account_id' => 5,  // NOTE: temporarily stored in "Accounts Receivable" account
             'entry_type_id' => EntryType::LOOKUP['debit'],
             'tax_ledger_entry_id' => $taxEntry->id,

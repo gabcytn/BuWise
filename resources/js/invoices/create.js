@@ -133,29 +133,3 @@ function updateTotals() {
 
     document.querySelector("#total-sum").textContent = sum.toFixed(2);
 }
-
-const transactionType = document.querySelector(
-    "select[name='transaction_type']",
-);
-const customerSupplierLabel = document.querySelector(
-    "#customer-supplier-input label",
-);
-const customerSupplierInput = document.querySelector(
-    "#customer-supplier-input input",
-);
-transactionType.addEventListener("change", (e) => {
-    switch (transactionType[transactionType.selectedIndex].value) {
-        case "1":
-            customerSupplierLabel.textContent = "Name of Customer";
-            customerSupplierInput.placeholder = "Enter Name of Customer";
-            customerSupplierInput.name = "customer";
-            break;
-        case "2":
-            customerSupplierLabel.textContent = "Name of Supplier";
-            customerSupplierInput.placeholder = "Enter Name of Supplier";
-            customerSupplierInput.name = "supplier";
-            break;
-        default:
-            break;
-    }
-});

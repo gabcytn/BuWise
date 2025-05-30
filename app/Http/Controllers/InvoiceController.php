@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
 use App\Models\Role;
 use App\Models\Tax;
+use App\Models\Transaction;
 use App\Services\InvoiceStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -21,13 +21,14 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('viewAny', Invoice::class);
+        Gate::authorize('viewAny', Transaction::class);
         $user = $request->user();
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
-        $invoices = Invoice::with('client')
+        $invoices = Transaction::with('client')
             ->whereHas('client', function ($query) use ($accId) {
                 $query->where('accountant_id', $accId);
             })
+            ->where('type', '=', 'invoice')
             ->orderBy('id', 'DESC')
             ->get();
 
@@ -64,15 +65,12 @@ class InvoiceController extends Controller
             'client' => ['required', 'uuid:4'],
             'image' => ['required', File::image()->max(5000)],
             'issue_date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31', Rule::date()->format('Y-m-d')],
-            'due_date' => ['nullable', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31', Rule::date()->format('Y-m-d')],
-            'transaction_type' => ['required', 'numeric', 'between:1,2'],
+            'transaction_type' => ['required', 'in:sales,purchases'],
             'invoice_number' => ['required', 'numeric'],
-            'supplier' => ['nullable', 'string', 'max:255'],
-            'vendor' => ['nullable', 'string', 'max:255'],
-            'payment_method' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'payment_method' => ['required', 'string', 'in:cash,bank'],
             'tax' => ['nullable', 'numeric'],
             'discount_type' => ['nullable', 'string', 'max:100'],
-            'invoice_status' => ['required']
         ]);
 
         $invoiceStore = new InvoiceStore($request);
@@ -82,7 +80,7 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice)
+    public function show(Transaction $invoice)
     {
         $items = $invoice->invoice_lines;
         $invUrl = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
@@ -99,7 +97,7 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Invoice $invoice)
+    public function edit(Transaction $invoice)
     {
         //
     }
@@ -107,7 +105,7 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, Transaction $invoice)
     {
         //
     }
@@ -115,10 +113,10 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(Transaction $invoice)
     {
         Storage::delete('invoices/' . $invoice->image);
-        Invoice::destroy($invoice->id);
+        Transaction::destroy($invoice->id);
         return to_route('invoices.index');
     }
 }

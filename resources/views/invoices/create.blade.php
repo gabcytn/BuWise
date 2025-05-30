@@ -40,28 +40,15 @@
                     <input type="date" name="issue_date" value="{{ now()->format('Y-m-d') }}" />
                 </div>
                 <div class="form-row">
-                    <label>Due Date</label>
-                    <input type="date" name="due_date" value="{{ now()->format('Y-m-d') }}" />
-                </div>
-                <div class="form-row">
                     <label>Transaction Type</label>
                     <select required name="transaction_type">
-                        <option value="{{ \App\Models\TransactionType::PURCHASE }}">Purchases</option>
-                        <option value="{{ \App\Models\TransactionType::SALES }}">Sales</option>
+                        <option value="purchases">Purchases</option>
+                        <option value="sales">Sales</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label>Invoice Number</label>
                     <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required />
-                </div>
-                <div class="form-row" id="customer-supplier-input">
-                    <label>Name of Supplier</label>
-                    <input type="text" placeholder="Enter Name of Supplier" name="supplier" />
-                </div>
-                <div class="form-row">
-                    <label>Invoice Status</label>
-                    <label><input value="paid" type="radio" name="invoice_status" checked> Paid</label>
-                    <label><input value="unpaid" type="radio" name="invoice_status">Unpaid</label>
                 </div>
                 <div class="form-row">
                     <label>Payment Method</label>
@@ -70,6 +57,10 @@
                         <option value="cash">Cash</option>
                         <option value="bank">Bank Transfer</option>
                     </select>
+                </div>
+                <div class="form-row">
+                    <label for="description">Description</label>
+                    <input type="text" name="description" id="description" />
                 </div>
             </div>
         </div>

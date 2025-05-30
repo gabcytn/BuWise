@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Management</title>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    @vite('resources/css/invoices/invoice.css')
-</head>
-
 <x-app-layout>
+    @vite('resources/css/invoices/invoice.css')
     <div class="dashboard-wrapper">
         <div class="invoice-container">
             <div class="invoice-header">
@@ -47,12 +37,9 @@
                 <table class="invoice-table">
                     <thead>
                         <tr>
-                            <th>Invoice ID</th>
-                            <th>Billing Date</th>
-                            <th>Name of Supplier</th>
                             <th>Invoice Number</th>
+                            <th>Billing Date</th>
                             <th>Transaction Type</th>
-                            <th>Tax</th>
                             <th>Amount</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -61,23 +48,25 @@
                     <tbody>
                         @foreach ($invoices as $invoice)
                             <tr>
-                                <td>{{ $invoice->id }}</td>
-                                <td>{{ $invoice->billing_start }} - {{ $invoice->billing_end }}</td>
-                                <td>{{ $invoice->supplier }}</td>
-                                <td>{{ $invoice->invoice_number }}</td>
-                                <td>{{ $invoice->transaction_type }}</td>
-                                <td>{{ number_format($invoice->tax, 2) }}</td>
+                                <td>{{ $invoice->reference_no }}</td>
+                                <td>{{ $invoice->date }}</td>
+                                <td>{{ ucfirst($invoice->kind) }}</td>
                                 <td>{{ number_format($invoice->amount, 2) }}</td>
                                 <td>
-                                    <span class="status {{ strtolower($invoice->status) }}">{{ $invoice->status }}</span>
+                                    <span
+                                        class="status {{ strtolower($invoice->status) }}">{{ ucfirst($invoice->status) }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('invoices.show', $invoice->id) }}" class="action-view" title="View"><i class="fa fa-eye"></i></a>
-                                    <a href="{{ route('invoices.edit', $invoice->id) }}" class="action-edit" title="Edit"><i class="fa fa-pen"></i></a>
-                                    <form method="POST" action="{{ route('invoices.destroy', $invoice->id) }}" style="display:inline;" onsubmit="return confirm('Delete this invoice?')">
+                                    <a href="{{ route('invoices.show', $invoice->id) }}" class="action-view"
+                                        title="View"><i class="fa fa-eye"></i></a>
+                                    <a href="{{ route('invoices.edit', $invoice->id) }}" class="action-edit"
+                                        title="Edit"><i class="fa fa-pen"></i></a>
+                                    <form method="POST" action="{{ route('invoices.destroy', $invoice->id) }}"
+                                        style="display:inline;" onsubmit="return confirm('Delete this invoice?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="action-delete" title="Delete"><i class="fa fa-trash"></i></button>
+                                        <button type="submit" class="action-delete" title="Delete"><i
+                                                class="fa fa-trash"></i></button>
                                     </form>
                                 </td>
                             </tr>
