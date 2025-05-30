@@ -17,6 +17,7 @@
                     @endforeach
                 </select>
             </form>
+            <input type="search" id="search" placeholder="Search" />
         </div>
         <x-table-management :headers=$headers>
             @foreach ($accounts as $account)
