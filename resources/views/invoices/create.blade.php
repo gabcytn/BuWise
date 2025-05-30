@@ -22,7 +22,8 @@
             <select name="client" required>
                 <option selected disabled value="">Select Client</option>
                 @foreach ($clients as $client)
-                    <option value="{{ $client->id }}">{{ $client->name }}</option>
+                    <option {{ old('client') === $client->id ? 'selected' : '' }} value="{{ $client->id }}">
+                        {{ $client->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -30,37 +31,41 @@
 
             <div class="form-section left">
                 <div class="image-placeholder">
-                    <input name="image" type="file" required />
+                    <input name="image" type="file" required value="{{ old('image') }}" />
                 </div>
             </div>
 
             <div class="form-section right">
                 <div class="form-row">
                     <label>Issue Date</label>
-                    <input type="date" name="issue_date" value="{{ now()->format('Y-m-d') }}" />
+                    <input type="date" name="issue_date" value="{{ old('date') ?? now()->format('Y-m-d') }}" />
                 </div>
                 <div class="form-row">
                     <label>Transaction Type</label>
                     <select required name="transaction_type">
-                        <option value="purchases">Purchases</option>
-                        <option value="sales">Sales</option>
+                        <option {{ old('transaction_type') === 'purchases' ? 'selected' : '' }} value="purchases">
+                            Purchases</option>
+                        <option {{ old('transaction_type') === 'sales' ? 'selected' : '' }} value="sales">Sales
+                        </option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label>Invoice Number</label>
-                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required />
+                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required
+                        value="{{ old('invoice_number') }}" />
                 </div>
                 <div class="form-row">
                     <label>Payment Method</label>
                     <select name="payment_method" required>
                         <option selected disabled value="">Select Payment Type</option>
-                        <option value="cash">Cash</option>
-                        <option value="bank">Bank Transfer</option>
+                        <option {{ old('payment_method') === 'cash' ? 'selected' : '' }} value="cash">Cash</option>
+                        <option {{ old('payment_method') === 'bank' ? 'selected' : '' }} value="bank">Bank Transfer
+                        </option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label for="description">Description</label>
-                    <input type="text" name="description" id="description" />
+                    <input type="text" name="description" id="description" value="{{ old('description') }}" />
                 </div>
             </div>
         </div>
@@ -78,7 +83,6 @@
                     <th>Item</th>
                     <th>Quantity</th>
                     <th>Unit Price</th>
-                    <th>Net Amount</th>
                     <th>Less: Discount</th>
                     <th>Tax</th>
                     <th>Total Amount</th>
@@ -87,7 +91,7 @@
             <tbody id="table-body">
             </tbody>
             <tfoot>
-                <td colspan="6"><strong>TOTAL</strong></td>
+                <td colspan="5"><strong>TOTAL</strong></td>
                 <td id="total-sum">0.00</td>
             </tfoot>
         </table>

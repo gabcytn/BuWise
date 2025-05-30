@@ -1,17 +1,18 @@
 <?php
 namespace App\Services;
 
+use App\Exceptions\InvoiceCreationException;
 use App\Models\EntryType;
-use App\Models\Invoice;
 use App\Models\InvoiceLine;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Tax;
 use App\Models\Transaction;
-use App\Models\TransactionType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class InvoiceStore
@@ -33,7 +34,7 @@ class InvoiceStore
             $filename = (string) Str::uuid() . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
             $rowNumbers = $this->getRowNumbers($request);
             $items = $this->getInvoiceItems($request, $rowNumbers);
-            $invoice = $this->creatInvoice($filename);
+            $invoice = $this->createInvoice($filename);
             $this->createInvoiceLines($items, $invoice);
 
             switch ($request->transaction_type) {
@@ -41,11 +42,10 @@ class InvoiceStore
                     $this->ledgerEntryForSales($invoice);
                     break;
                 case 'purchases':
-                    dd('here');
                     $this->ledgerEntryForPurchases($invoice);
                     break;
                 default:
-                    throw new \Exception('Invalid transaction type');
+                    throw new InvoiceCreationException('Invalid transaction type');
                     break;
             }
 
@@ -54,22 +54,21 @@ class InvoiceStore
             DB::commit();
             return redirect()
                 ->back()
-                ->with([
-                    'status' => 'Invoice created successfully.'
-                ]);
+                ->with(['status' => 'Invoice created successfully.']);
+        } catch (InvoiceCreationException $e) {
+            Log::error('Error creating invoice: ' . $e->getMessage());
+            Log::error(truncate($e->getTraceAsString(), 100));
+            DB::rollBack();
+            return $this->returnErrorWithMessage('Invoice items contain invalid values.');
         } catch (\Exception $e) {
             Log::error('Error creating invoice: ' . $e->getMessage());
             Log::error(truncate($e->getTraceAsString(), 100));
             DB::rollBack();
-            return redirect()
-                ->back()
-                ->withErrors([
-                    'message' => 'Invoice creation failed.'
-                ]);
+            return $this->returnErrorWithMessage($e->getMessage());
         }
     }
 
-    private function creatInvoice(string $filename)
+    private function createInvoice(string $filename)
     {
         $request = $this->request;
         $invoice = Transaction::create([
@@ -91,7 +90,6 @@ class InvoiceStore
     private function getInvoiceItems(Request $request, array $rowNumbers): array
     {
         $items = [];
-
         $discountTotal = 0;
         $taxTotal = 0;
         $netTotal = 0;
@@ -101,23 +99,25 @@ class InvoiceStore
                 'qty' => $request->input("qty_$rowNumber"),
                 'unit_price' => $request->input("unit_price_$rowNumber"),
                 'discount' => $request->input("discount_$rowNumber", '0'),
-                'tax' => $request->input("tax_$rowNumber", '0'),
+                'tax' => $request->input("tax_$rowNumber"),
             ];
+            $this->validateInvoiceLines($item);
 
-            $taxModel = Tax::find((int) $item['tax']);
+            $unitPrice = round((float) $item['unit_price'], 2);
+            $discount = round(((float) $item['discount'] / 100) * $unitPrice, 2);
+            $discountedUnitPrice = $unitPrice - $discount;
 
-            $baseTotal = (float) $item['unit_price'] * (float) $item['qty'];
-            $discount = ((float) $item['discount'] / 100) * $baseTotal;
-            $discountedTotal = $baseTotal - $discount;
+            $taxModel = Tax::where('id', '=', (int) $item['tax'])->where('accountant_id', '=', null)->first();
             if ($taxModel) {
-                $tax = ((float) $taxModel->value / 100) * $discountedTotal;
+                $tax = round(((float) $taxModel->value / 100) * $discountedUnitPrice, 2);
             } else {
-                $tax = 0;
+                $tax = 0.0;
             }
-            $net = $discountedTotal + $tax;
+            $qty = $item['qty'];
+            $net = round(($discountedUnitPrice + $tax) * $qty, 2);
 
-            $discountTotal += $discount;
-            $taxTotal += $tax;
+            $discountTotal += $discount * $qty;
+            $taxTotal += $tax * $qty;
             $netTotal += $net;
 
             $items[] = $item;
@@ -126,6 +126,20 @@ class InvoiceStore
         $this->taxTotal = $taxTotal;
         $this->amountTotal = $netTotal;
         return $items;
+    }
+
+    private function validateInvoiceLines(array $item): void
+    {
+        $validator = Validator::make($item, [
+            'item_name' => ['required', 'string', 'max:100'],
+            'qty' => ['required', 'numeric', 'integer'],
+            'unit_price' => ['required', 'numeric'],
+            'discount' => ['nullable', 'numeric'],
+            'tax' => ['nullable', 'numeric'],
+        ]);
+
+        if ($validator->fails())
+            throw new InvoiceCreationException($validator->errors()->__toString());
     }
 
     private function getRowNumbers(Request $request): array
@@ -156,29 +170,70 @@ class InvoiceStore
 
     private function ledgerEntryForSales(Transaction $invoice)
     {
-        LedgerEntry::create([
-            'transaction_id' => $invoice->id,
-            'account_id' => LedgerAccount::SALES,
-            'entry_type_id' => EntryType::LOOKUP['credit'],
-            'amount' => $this->amountTotal - $this->taxTotal,
-        ]);
         $taxEntry = LedgerEntry::create([
             'transaction_id' => $invoice->id,
             'account_id' => LedgerAccount::OUTPUT_VAT_PAYABLE,
-            'entry_type_id' => EntryType::LOOKUP['credit'],
+            'entry_type' => 'credit',
             'amount' => $this->taxTotal
         ]);
-        LedgerEntry::create([
-            'transaction_id' => $invoice->id,
-            'account_id' => 5,  // NOTE: temporarily stored in "Accounts Receivable" account
-            'entry_type_id' => EntryType::LOOKUP['debit'],
-            'tax_ledger_entry_id' => $taxEntry->id,
-            'amount' => $this->amountTotal,
+        LedgerEntry::insert([
+            [
+                'transaction_id' => $invoice->id,
+                'account_id' => LedgerAccount::SALES,
+                'entry_type' => 'credit',
+                'tax_ledger_entry_id' => $taxEntry->id,
+                'amount' => $this->amountTotal - $this->taxTotal,
+            ],
+            [
+                'transaction_id' => $invoice->id,
+                'account_id' => 32,  // NOTE: "Sales Discounts" account
+                'entry_type' => 'debit',
+                'tax_ledger_entry_id' => null,
+                'amount' => $this->discountTotal,
+            ],
+            [
+                'transaction_id' => $invoice->id,
+                'account_id' => 5,  // NOTE: "Accounts Receivable" account
+                'entry_type' => 'debit',
+                'tax_ledger_entry_id' => null,
+                'amount' => $this->amountTotal - $this->discountTotal,
+            ]
         ]);
     }
 
-    private function ledgerEntryForPurchases()
+    private function ledgerEntryForPurchases(Transaction $invoice)
     {
-        // TODO: create a tax receivable account in COA
+        $taxEntry = LedgerEntry::create([
+            'transaction_id' => $invoice->id,
+            'account_id' => LedgerAccount::INPUT_VAT_RECEIVABLE,
+            'entry_type' => 'debit',
+            'amount' => $this->taxTotal
+        ]);
+        LedgerEntry::insert([
+            [
+                'transaction_id' => $invoice->id,
+                'account_id' => 41,  // NOTE: "Raw Materials" account
+                'entry_type' => 'debit',
+                'tax_ledger_entry_id' => $taxEntry->id,
+                'amount' => $this->amountTotal - $this->taxTotal
+            ],
+            [
+                'transaction_id' => $invoice->id,
+                'account_id' => 17,  // NOTE: "Accounts Payable" account
+                'entry_type' => 'credit',
+                'tax_ledger_entry_id' => null,
+                'amount' => $this->amountTotal,
+            ]
+        ]);
+    }
+
+    private function returnErrorWithMessage(string $message): RedirectResponse
+    {
+        return redirect()
+            ->back()
+            ->withInput()
+            ->withErrors([
+                'message' => $message
+            ]);
     }
 }
