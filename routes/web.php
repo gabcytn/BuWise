@@ -48,14 +48,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
 
     // journal entries
-    // Route::resource('/journal-entries', JournalEntryController::class);
-    Route::get('/journal-entries', [JournalEntryController::class, 'index'])->name('journal-entries.index');
-    Route::post('/journal-entries', [JournalEntryController::class, 'store'])->name('journal-entries.store');
-    Route::get('/journal-entries/create', [JournalEntryController::class, 'create'])->name('journal-entries.create');
-    Route::get('/journal-entries/{journalEntry}', [JournalEntryController::class, 'show'])->name('journal-entries.show');
-    Route::get('/journal-entries/edit/{journalEntry}', [JournalEntryController::class, 'edit'])->name('journal-entries.edit');
-    Route::put('/journal-entries/{journalEntry}', [JournalEntryController::class, 'update'])->name('journal-entries.update');
-    Route::delete('/journal-entries/{journalEntry}', [JournalEntryController::class, 'destroy'])->name('journal-entries.destroy');
+    Route::resource('/journal-entries', JournalEntryController::class);
     Route::post('/journal-entries/{journalEntry}/approve', [JournalEntryController::class, 'approve'])
         ->name('journal-entries.approve');
     Route::post('/journal-entries/{journalEntry}/reject', [JournalEntryController::class, 'reject'])
