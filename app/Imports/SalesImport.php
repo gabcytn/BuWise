@@ -32,6 +32,7 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
             switch ($this->transaction_type) {
                 case 'sales':
                     $this->handleSales($rows);
+                    break;
                 case 'purchases':
                     $this->handlePurchases($rows);
                     break;
