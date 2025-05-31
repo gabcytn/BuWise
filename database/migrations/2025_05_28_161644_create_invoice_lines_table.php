@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('invoice_lines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->references('id')->on('transactions');
+            $table->foreignId('invoice_id')->references('id')->on('transactions')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->string('item_name');
             $table->integer('quantity');

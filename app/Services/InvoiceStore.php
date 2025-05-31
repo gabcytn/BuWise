@@ -181,7 +181,7 @@ class InvoiceStore
         if ($this->discountTotal > 0) {
             LedgerEntry::create([
                 'transaction_id' => $invoice->id,
-                'account_id' => 32,  // NOTE: "Sales Discounts" account
+                'account_id' => LedgerAccount::SALES_DISCOUNT,
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => null,
                 'amount' => $this->discountTotal,
@@ -197,7 +197,7 @@ class InvoiceStore
             ],
             [
                 'transaction_id' => $invoice->id,
-                'account_id' => 5,  // NOTE: "Accounts Receivable" account
+                'account_id' => LedgerAccount::ACCOUNTS_RECEIVABLE,
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => null,
                 'amount' => $this->amountTotal - $this->discountTotal,
@@ -218,14 +218,14 @@ class InvoiceStore
         LedgerEntry::insert([
             [
                 'transaction_id' => $invoice->id,
-                'account_id' => 41,  // NOTE: "Raw Materials" account
+                'account_id' => LedgerAccount::GENERAL_EXPENSE,
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => $this->taxTotal > 0 ? $taxEntry->id : null,
                 'amount' => $this->amountTotal - $this->taxTotal
             ],
             [
                 'transaction_id' => $invoice->id,
-                'account_id' => 17,  // NOTE: "Accounts Payable" account
+                'account_id' => LedgerAccount::ACCOUNTS_PAYABLE,
                 'entry_type' => 'credit',
                 'tax_ledger_entry_id' => null,
                 'amount' => $this->amountTotal,

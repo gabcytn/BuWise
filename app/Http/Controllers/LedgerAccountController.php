@@ -50,11 +50,11 @@ class LedgerAccountController extends Controller
             'end' => [Rule::date()->format('Y-m-d')],
         ]);
 
-        $defaultStart = new \DateTime('@0')->format('Y-m-d H:i:s');
-        $start = $request->query('start') ? $request->query('start') . ' 00:00:00' : $defaultStart;
+        $defaultStart = new \DateTime('@0')->format('Y-m-d');
+        $start = $request->query('start') ?: $defaultStart;
 
-        $defaultEnd = new \DateTime('9999-12-31 23:59:59')->format('Y-m-d H:i:s');
-        $end = $request->query('end') ? $request->query('end') . ' 23:59:59' : $defaultEnd;
+        $defaultEnd = new \DateTime('9999-12-31')->format('Y-m-d');
+        $end = $request->query('end') ?: $defaultEnd;
 
         if ($request->query('start') && $request->query('end')) {
             Log::info('Request has a custom date: calculating...');

@@ -14,12 +14,12 @@ return new class extends Migration {
             $table->id();
             $table->foreignUuid('client_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignUuid('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status', ['approved', 'pending', 'rejected']);
+            $table->enum('status', ['approved', 'pending', 'rejected', 'archived']);
             $table->enum('type', ['invoice', 'journal']);
             $table->enum('kind', ['sales', 'purchases']);
             $table->float('amount');
             $table->date('date');
-            $table->string('payment_method');
+            $table->string('payment_method')->nullable();
             $table->string('description')->nullable();
             $table->string('reference_no')->nullable();
             $table->string('image')->nullable();

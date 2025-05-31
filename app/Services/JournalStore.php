@@ -49,7 +49,7 @@ class JournalStore
                 'kind' => $request->transaction_type,
                 'amount' => 1,  // TODO: calculate max amount
                 'date' => $request->date . ' ' . now()->format('H:i:s'),
-                'payment_method' => 'cash',  // TODO: request from user
+                'payment_method' => null,
                 'description' => $request->description ?? null,
                 'reference_no' => $request->reference_no ?? null
             ]);

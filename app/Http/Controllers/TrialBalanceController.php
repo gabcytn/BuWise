@@ -52,8 +52,6 @@ class TrialBalanceController extends Controller
 
     private function getQuery($clientId, $startDate = '1970-01-01', $endDate = '9999-12-31')
     {
-        $startDate .= ' 00:00:00';
-        $endDate .= ' 23:59:59';
         return DB::table('ledger_entries AS le')
             ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')
             ->join('users', 'users.id', '=', 'tr.client_id')

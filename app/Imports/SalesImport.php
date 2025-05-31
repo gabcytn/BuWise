@@ -138,7 +138,7 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
         LedgerEntry::insert([
             [
                 'transaction_id' => $tr->id,
-                'account_id' => 41,  // TODO: set to general Purchases account
+                'account_id' => LedgerAccount::GENERAL_EXPENSE,
                 'tax_id' => null,  // TODO: set to id of vat
                 'tax_ledger_entry_id' => $tax_entry->id,
                 'entry_type' => 'debit',
@@ -147,7 +147,7 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
             ],
             [
                 'transaction_id' => $tr->id,
-                'account_id' => 5,  // NOTE: accounts receivable
+                'account_id' => LedgerAccount::ACCOUNTS_RECEIVABLE,
                 'tax_id' => null,
                 'tax_ledger_entry_id' => null,
                 'entry_type' => 'credit',
@@ -162,12 +162,12 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
         return Transaction::create([
             'client_id' => $this->client_id,
             'created_by' => $this->creator_id,
-            'status' => 'approved',  // TODO: set to archived
+            'status' => 'archived',
             'type' => 'journal',
             'kind' => $this->transaction_type,
             'amount' => $row[6],
-            'date' => $row['1'] . ' 00:00:00',
-            'payment_method' => 'receivable',  // TODO: set to null
+            'date' => $row['1'],
+            'payment_method' => null,
             'description' => $row[2],
             'reference_no' => $row[0],
         ]);
