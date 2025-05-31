@@ -84,7 +84,7 @@ class JournalEntryController extends Controller
      */
     public function show(Transaction $journalEntry)
     {
-        Gate::authorize('view', $journalEntry);
+        Gate::authorize('view', [$journalEntry, ['journal', 'invoice'], $journalEntry->type]);
         $show = new JournalShow($journalEntry);
         return $show->show($journalEntry);
     }

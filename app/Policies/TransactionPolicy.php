@@ -24,14 +24,14 @@ class TransactionPolicy
      * Determine whether the user can view the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function view(User $user, Transaction $journalEntry)
+    public function view(User $user, Transaction $journalEntry, array $typesToAllow, string $typeOfTransaction)
     {
         $roleId = $user->role_id;
         if ($roleId === Role::ACCOUNTANT) {
-            return $journalEntry->client->accountant_id === $user->id
+            return $journalEntry->client->accountant_id === $user->id && in_array($typeOfTransaction, $typesToAllow)
                 ? Response::allow()
                 : Response::denyAsNotFound();
-        } else if ($roleId === Role::LIAISON || $roleId == Role::CLERK) {
+        } else if (($roleId === Role::LIAISON || $roleId == Role::CLERK) && in_array($typeOfTransaction, $typesToAllow)) {
             $accId = $user->accountant_id;
             return $journalEntry->client->accountant_id === $accId
                 ? Response::allow()
