@@ -7,7 +7,15 @@
 </head>
 <x-app-layout>
     <div class="invoice-container">
-        <h2 class="page-title">Add Invoice</h2>
+<div class="page-header">
+    <h2 class="page-title">Add Invoice</h2>
+    <div class="customer-select">
+        <label for="customer">Name of Customer (Client)</label>
+        <select id="customer">
+            <option>Select Client</option>
+        </select>
+    </div>
+</div>
         <div class="invoice-form">
             
             <div class="form-section right">
@@ -34,10 +42,13 @@
                     <input type="text" placeholder="Enter Name of Supplier" />
                 </div>
                 <div class="form-row">
-                    <label>Invoice Status</label>
-                    <label><input type="checkbox" checked> Paid</label>
-                    <label><input type="checkbox"> Unpaid</label>
-                </div>
+    <label>Invoice Status</label>
+    <div class="status-checkboxes">
+        <label><input type="checkbox" checked> Paid</label>
+        <label><input type="checkbox"> Unpaid</label>
+    </div>
+</div>
+
                 <div class="form-row">
                     <label>Payment Method</label>
                     <select><option>Select Payment Type</option></select>
@@ -54,6 +65,8 @@
                 </div>
             </div>
         </div>
+
+        
 
         <table class="invoice-items-table">
             <thead>

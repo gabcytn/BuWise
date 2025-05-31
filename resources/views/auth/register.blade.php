@@ -1,48 +1,60 @@
 <x-root-layout>
     @vite(['resources/css/auth/register.css', 'resources/js/auth/register.js'])
-    <div class="left-section">
-        <img src="{{ asset('images/imgbg.jpg') }}" alt="BuWise" class="register-image">
+
+    <div class="register-page">
+        <!-- Left Illustration Section -->
+        <div class="left-section">
+            <img src="{{ asset('images/Buwiselogo.png') }}" alt="Buwise Logo" class="logo">
+            <img src="{{ asset('images/main.png') }}" alt="Register Illustration" class="illustration">
+        </div>
+
+        <!-- Right Form Section -->
+        <div class="right-section">
+            <form method="POST" action="{{ route('register') }}" class="form-card">
+                @csrf
+
+                <h1 class="title">Start as an<br><span>Accountant</span></h1>
+                <p class="subtitle">Manage your staff and clients online</p>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <div class="input-box">
+                        <i class="fas fa-envelope icon"></i>
+                        <input type="email" name="email" value="{{ old('email') }}" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-box">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" name="password" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <div class="input-box">
+                        <i class="fas fa-lock icon"></i>
+                        <input type="password" name="password_confirmation" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <span class="bold">Terms and Conditions</span></label>
+                </div>
+
+                <button type="submit" class="btn-primary">Sign Up</button>
+
+                <p class="bottom-text">Already have an account? <a href="{{ route('login') }}">Log In</a></p>
+
+                @if ($errors->any())
+                    <p class="error-msg">{{ $errors->first() }}</p>
+                @endif
+            </form>
+        </div>
     </div>
-    <div class="right-section">
-        <form method="POST" action="{{ route('register') }}" id="register-form">
-            @csrf
-            <h2 id="title">Welcome</h2>
-            <p id="subtitle">Simplifying and Automating Your Workflow</p>
-            <div class="input-group">
-                <label for="name">Name</label>
-                <div class="input-wrapper">
-                    <span class="icon"><i class="fas fa-user"></i></span>
-                    <input id="name" type="text" name="name" required autocomplete="name">
-                </div>
-            </div>
-            <div class="input-group">
-                <label for="email">Email</label>
-                <div class="input-wrapper">
-                    <span class="icon"><i class="fas fa-envelope"></i></span>
-                    <input id="email" type="email" name="email" required autocomplete="username">
-                </div>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
-                    <span class="icon"><i class="fas fa-lock"></i></span>
-                    <input id="password" type="password" name="password" required>
-                </div>
-                <p id="password-feedback" class="feedback"></p>
-            </div>
-            <div class="input-group">
-                <label for="password_confirmation">Confirm Password</label>
-                <div class="input-wrapper">
-                    <span class="icon"><i class="fas fa-lock"></i></span>
-                    <input id="password_confirmation" type="password" name="password_confirmation" required>
-                </div>
-                <p id="confirm-feedback" class="weak feedback"></p>
-            </div>
-            <button type="submit">{{ 'Sign Up' }}</button>
-            @if ($errors->any())
-                <p style="color: red; font-size: 0.8rem; margin: 0.25rem 0;">{{ $errors->first() }}</p>
-            @endif
-        </form>
-    </div>
-    <script src="bower_components/zxcvbn/dist/zxcvbn.js"></script>
 </x-root-layout>

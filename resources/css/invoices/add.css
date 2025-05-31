@@ -141,6 +141,51 @@ body {
     gap: 12px;
 }
 
+
 select:disabled {
     background-color: #eee;
+}
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dbe1e8;
+    margin-bottom: 20px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.customer-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.customer-select label {
+    white-space: nowrap;
+}
+
+.customer-select select {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 200px;
+}
+.status-checkboxes {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+}
+.status-checkboxes label {
+    margin: 0;
+    font-weight: normal;
+}
+.status-checkboxes input[type="checkbox"] {
+    margin-right: 6px;
 }
