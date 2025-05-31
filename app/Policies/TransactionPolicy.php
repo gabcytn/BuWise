@@ -24,16 +24,16 @@ class TransactionPolicy
      * Determine whether the user can view the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function view(User $user, Transaction $journalEntry, array $typesToAllow, string $typeOfTransaction)
+    public function view(User $user, Transaction $transaction, array $typesToAllow, string $typeOfTransaction)
     {
         $roleId = $user->role_id;
         if ($roleId === Role::ACCOUNTANT) {
-            return $journalEntry->client->accountant_id === $user->id && in_array($typeOfTransaction, $typesToAllow)
+            return $transaction->client->accountant_id === $user->id && in_array($typeOfTransaction, $typesToAllow)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         } else if (($roleId === Role::LIAISON || $roleId == Role::CLERK) && in_array($typeOfTransaction, $typesToAllow)) {
             $accId = $user->accountant_id;
-            return $journalEntry->client->accountant_id === $accId
+            return $transaction->client->accountant_id === $accId
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
@@ -56,33 +56,45 @@ class TransactionPolicy
      * Determine whether the user can update the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function update(User $user, Transaction $journalEntry)
+    public function update(User $user, Transaction $transaction)
     {
-        return $this->view($user, $journalEntry);
+        $roleId = $user->role_id;
+        if ($roleId === Role::ACCOUNTANT) {
+            return $transaction->client->accountant_id === $user->id
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        } else if ($roleId === Role::LIAISON || $roleId == Role::CLERK) {
+            $accId = $user->accountant_id;
+            return $transaction->client->accountant_id === $accId
+                ? Response::allow()
+                : Response::denyAsNotFound();
+        }
+
+        return Response::denyAsNotFound();
     }
 
     /**
      * Determine whether the user can delete the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function delete(User $user, Transaction $journalEntry)
+    public function delete(User $user, Transaction $transaction)
     {
-        return $this->view($user, $journalEntry);
+        return $this->update($user, $transaction);
     }
 
     /**
      * Determine whether the user can restore the model.
      * @return \Illuminate\Auth\Access\Response;
      */
-    public function changeStatus(User $user, Transaction $journalEntry)
+    public function changeStatus(User $user, Transaction $transaction)
     {
-        return $this->view($user, $journalEntry);
+        return $this->update($user, $transaction);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Transaction $journalEntry): bool
+    public function forceDelete(User $user, Transaction $transaction): bool
     {
         return false;
     }
