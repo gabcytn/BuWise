@@ -1,53 +1,62 @@
 <x-root-layout>
     @vite(['resources/css/auth/login.css', 'resources/js/login.js'])
-    <div class="left-section">
-        <img src="{{ asset('images/imgbg.jpg') }}" alt="BuWise" class="login-image">
-    </div>
 
-    <div class="right-section">
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+    <div class="section-wrapper">
+        <!-- Left Section -->
+        <div class="left-section">
+            <img src="{{ asset('images/Buwiselogo.png') }}" alt="Buwise Logo" class="logo">
+            <img src="{{ asset('images/main2.png') }}" alt="Register Illustration" class="illustration">
+        </div>
 
-            <h2 id="title">Welcome Back!</h2>
-            <p id="subtitle">Simplifying and Automating Your Workflow</p>
+        <!-- Right Section -->
+        <div class="right-section">
+            <form method="POST" action="{{ route('login') }}" class="form-card">
+                @csrf
 
-            {{-- email field --}}
-            <div class="input-wrapper">
-                <label for="email">{{ 'Email' }}</label>
-                <div class="input-box">
-                    <i class="fas fa-envelope"></i>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required />
+                <h2 class="title">Welcome Back!</h2>
+                <p class="subtitle">Simplifying and Automating Your Workflow</p>
+
+                <!-- Email Field -->
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <div class="input-box">
+                        <i class="fas fa-envelope icon"></i>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required />
+                    </div>
+                    @error('email')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
                 </div>
-                @error('email')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
-            </div>
 
-            {{-- password field --}}
-            <div class="input-wrapper">
-                <label for="password">{{ 'Password' }}</label>
-                <div class="input-box">
-                    <i class="fas fa-lock lock-icon"></i>
-                    <input id="password" type="password" name="password" required />
-                    <i class="fas fa-eye" id="toggle-password"></i>
+                <!-- Password Field -->
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-box">
+                        <i class="fas fa-lock icon"></i>
+                        <input id="password" type="password" name="password" required />
+                        <i class="fas fa-eye toggle-password" id="toggle-password"></i>
+                    </div>
+                    @error('password')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
                 </div>
-                @error('password')
-                    <p class="error-message">{{ $message }}</p>
-                @enderror
-            </div>
 
-            <div class="remember-container">
-                <input name="remember" type="checkbox" id="remember-me" />
-                <label for="remember-me">Remember me</label>
-            </div>
+                <!-- Remember me + Forgot password -->
+                <div class="form-footer">
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="remember" id="remember-me">
+                        <label for="remember-me">Remember me</label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="{{ route('password.request') }}">Forgot your password?</a>
+                    </div>
+                </div>
 
-            <div class="forgot-password-container">
-                <a class="#" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            </div>
-
-            <button type="submit">{{ __('Login') }}</button>
-        </form>
+                <!-- Login Button -->
+                <button type="submit" class="btn-primary">
+                    {{ __('Login') }}
+                </button>
+            </form>
+        </div>
     </div>
 </x-root-layout>
