@@ -137,17 +137,25 @@
         <h2>Upload CSV</h2>
         <form action="/journal-entries/csv" method="POST" enctype="multipart/form-data">
             @csrf
-            <select name="client" required>
-                <option value="" selected disabled>Select a client</option>
-                @foreach ($clients as $client)
-                    <option value="{{ $client->id }}">
-                        {{ $client->name }}
-                    </option>
-                @endforeach
-            </select>
-            <input name="csv" required id="csv" type="file" />
-            <button type="submit">Submit</button>
-            <button type="button" style="margin-left: 0.5rem;">Cancel</button>
+            <div class="dialog-select-container">
+                <input name="csv" required id="csv" type="file" />
+                <select name="transaction_type" required>
+                    <option value="sales">Sales</option>
+                    <option value="purchases">Purchases</option>
+                </select>
+                <select name="client" required>
+                    <option value="" selected disabled>Select a client</option>
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}">
+                            {{ $client->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="dialog-button-container">
+                <button type="submit">Submit</button>
+                <button type="button">Cancel</button>
+            </div>
         </form>
     </dialog>
     <x-confirmable-dialog title="Confirm Delete" affirmText="Delete" denyText="Back"></x-confirmable-dialog>
