@@ -31,4 +31,9 @@ class Transaction extends Model
     {
         return $this->hasMany(LedgerEntry::class);
     }
+
+    public function invoice_lines(): HasMany
+    {
+        return $this->hasMany(InvoiceLine::class, 'invoice_id');
+    }
 }
