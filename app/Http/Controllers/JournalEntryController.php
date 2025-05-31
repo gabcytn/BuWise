@@ -195,10 +195,11 @@ class JournalEntryController extends Controller
     {
         $request->validate([
             'csv' => ['required', 'mimes:csv,xlsx'],
-            'client' => ['required', 'uuid:4']
+            'client' => ['required', 'uuid:4'],
+            'transaction_type' => ['required', 'in:sales,purchases'],
         ]);
         $filename = $request->file('csv')->store('csv/', 'public');
-        ParseExcelUpload::dispatch(basename($filename), $request->client, $request->user()->id);
+        ParseExcelUpload::dispatch(basename($filename), $request->client, $request->user()->id, $request->transaction_type);
         return redirect()->back()->with(['status' => 'File uploaded successfully']);
     }
 }

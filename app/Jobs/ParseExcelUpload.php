@@ -18,7 +18,8 @@ class ParseExcelUpload implements ShouldQueue
     public function __construct(
         private string $filename,
         private string $clientId,
-        private string $creatorId
+        private string $creatorId,
+        private string $transactionType,
     ) {}
 
     /**
@@ -27,7 +28,7 @@ class ParseExcelUpload implements ShouldQueue
     public function handle(): void
     {
         Excel::import(
-            new SalesImport($this->clientId, $this->creatorId),
+            new SalesImport($this->clientId, $this->creatorId, $this->transactionType),
             Storage::disk('public')->path('csv/' . $this->filename)
         );
 
