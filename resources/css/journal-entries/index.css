@@ -19,10 +19,29 @@
         justify-content: center;
         align-items: center;
         flex-direction: row;
+        position: relative;
 
         button[type="submit"] {
             border-top-left-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            background-color: var(--clear-white);
+            padding: 0.65rem 0;
+            text-decoration: none;
+            color: var(--soft-black);
+            border-radius: 0.15rem;
+        }
+
+        .dropdown:hover {
+            background-color: var(--main-blue);
+            color: var(--off-white);
         }
     }
 

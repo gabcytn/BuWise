@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\JournalEntryCreated;
 use App\Events\TransactionCreated;
+use App\Imports\SalesImport;
+use App\Jobs\ParseExcelUpload;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Role;
@@ -19,6 +21,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
 
 class JournalEntryController extends Controller
@@ -185,5 +189,16 @@ class JournalEntryController extends Controller
         // update coa cache
         JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
         return redirect()->back()->with(['status' => 'Journal rejected!']);
+    }
+
+    public function csv(Request $request)
+    {
+        $request->validate([
+            'csv' => ['required', 'mimes:csv,xlsx'],
+            'client' => ['required', 'uuid:4']
+        ]);
+        $filename = $request->file('csv')->store('csv/', 'public');
+        ParseExcelUpload::dispatch(basename($filename), $request->client, $request->user()->id);
+        return redirect()->back()->with(['status' => 'File uploaded successfully']);
     }
 }

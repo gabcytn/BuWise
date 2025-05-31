@@ -23,6 +23,9 @@
             <div class="button-container">
                 <button type="submit">Create</button>
                 <button type="button" id="dropdown-button">&#11206;</button>
+                <a class="dropdown d-none" href="#">
+                    Import Excel
+                </a>
                 <button type="button" id="vertical-ellipsis">&#8942;</button>
             </div>
         </form>
@@ -130,6 +133,22 @@
             @endif
         </div>
     </div>
-
+    <dialog id="csv-dialog">
+        <h2>Upload CSV</h2>
+        <form action="/journal-entries/csv" method="POST" enctype="multipart/form-data">
+            @csrf
+            <select name="client" required>
+                <option value="" selected disabled>Select a client</option>
+                @foreach ($clients as $client)
+                    <option value="{{ $client->id }}">
+                        {{ $client->name }}
+                    </option>
+                @endforeach
+            </select>
+            <input name="csv" required id="csv" type="file" />
+            <button type="submit">Submit</button>
+            <button type="button" style="margin-left: 0.5rem;">Cancel</button>
+        </form>
+    </dialog>
     <x-confirmable-dialog title="Confirm Delete" affirmText="Delete" denyText="Back"></x-confirmable-dialog>
 </x-app-layout>

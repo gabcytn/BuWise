@@ -23,11 +23,11 @@ body {
 }
 
 .header-container {
-    background-color: var(--clear-white);
+    background-color: var(--main-blue);
 }
 
 .header-sm {
-    background-color: var(--clear-white);
+    background-color: var(--main-blue);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -144,6 +144,7 @@ section {
     left: 0;
     background-color: var(--clear-white);
     border-radius: 5px;
+    z-index: 10;
 }
 
 .popover ul li {
@@ -187,11 +188,16 @@ main {
 
     #account-name {
         font-size: 0.9rem;
+        color: var(--off-white);
     }
 
     #account-role {
         font-size: 0.8rem;
-        color: var(--grey);
+        color: var(--off-white);
+    }
+
+    .fa-solid.fa-bell {
+        color: var(--off-white);
     }
 
     body {

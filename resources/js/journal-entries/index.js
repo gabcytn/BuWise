@@ -28,3 +28,17 @@ tr.forEach((row) => {
         }
     });
 });
+
+document.querySelector("#dropdown-button").addEventListener("click", (e) => {
+    document.querySelector(".dropdown").classList.toggle("d-none");
+});
+
+document.querySelector(".dropdown").addEventListener("click", () => {
+    document.querySelector("#csv-dialog").showModal();
+});
+
+document
+    .querySelector("#csv-dialog button[type='button']")
+    .addEventListener("click", () => {
+        document.querySelector("#csv-dialog").close();
+    });
