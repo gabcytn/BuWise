@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
 
     // journal entries
+    Route::get('/journal-entries/archives', [JournalEntryController::class, 'archives'])->name('journal-entries.archives');
     Route::resource('/journal-entries', JournalEntryController::class);
     Route::post('/journal-entries/csv', [JournalEntryController::class, 'csv']);
     Route::post('/journal-entries/{journalEntry}/approve', [JournalEntryController::class, 'approve'])

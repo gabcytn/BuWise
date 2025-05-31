@@ -13,27 +13,38 @@ class JournalIndex
 {
     private const ITEMS_PER_PAGE = 6;
 
+    private string $title;
+    private string $subtitle;
+    private string $route;
+
+    public function __construct(string $title, string $subtitle, string $route)
+    {
+        $this->title = $title;
+        $this->subtitle = $subtitle;
+        $this->route = $route;
+    }
+
     public function index(Request $request)
     {
         $user = $request->user();
         $filter = $request->only(['client', 'period', 'search', 'sort', 'transaction_type']);
         $clients = $this->getCachedClients($user);
 
-        if (empty($filter)) {
-            $filter = [
-                'client' => 'all',
-                'period' => 'all_time',
-                'transaction_type' => 'all',
-                'search' => '',
-            ];
-        }
+        if (!array_key_exists('period', $filter))
+            $filter['period'] = $this->route === 'index' ? 'this_year' : 'last_year';
+        if (!array_key_exists('client', $filter))
+            $filter['client'] = 'all';
+        if (!array_key_exists('transaction_type', $filter))
+            $filter['transaction_type'] = 'all';
 
         try {
             $entries = $this->getFilteredEntries($user, $filter);
 
             return view('journal-entries.index', [
                 'clients' => $clients,
-                'entries' => $entries
+                'entries' => $entries,
+                'title' => $this->title,
+                'subtitle' => $this->subtitle,
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -75,6 +86,7 @@ class JournalIndex
     private function buildBaseQuery(User $user)
     {
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+        $status = $this->route === 'archives' ? 'archived' : 'approved';
         return DB::table('transactions as je')
             ->join('users as client', 'client.id', '=', 'je.client_id')
             ->join('users as creator', 'creator.id', '=', 'je.created_by')
@@ -90,7 +102,8 @@ class JournalIndex
                 'je.date'
             )
             ->where('client.accountant_id', '=', $accId)
-            ->where('je.type', '=', 'journal');
+            ->where('je.type', '=', 'journal')
+            ->where('je.status', '=', $status);
     }
 
     /**
@@ -98,10 +111,10 @@ class JournalIndex
      */
     private function applyFilters($query, array $filter)
     {
-        $client = $filter['client'] ?? 'all';
-        $period = $filter['period'] ?? 'all_time';
+        $client = $filter['client'];
+        $period = $filter['period'];
+        $transaction_type = $filter['transaction_type'];
         $search = $filter['search'] ?? null;
-        $transaction_type = $filter['transaction_type'] ?? 'all';
 
         // Filter by client if not "all"
         if ($client !== 'all') {
@@ -110,22 +123,17 @@ class JournalIndex
         switch ($transaction_type) {
             case 'all':
                 break;
-            case strval('sales'):
+            case 'sales':
                 $query->where('je.kind', '=', 'sales');
                 break;
-            case strval('purchases'):
+            case 'purchases':
                 $query->where('je.kind', '=', 'purchases');
                 break;
             default:
                 break;
         }
 
-        $start = null;
-        $end = null;
-
         switch ($period) {
-            case 'all_time':
-                break;
             case 'this_year':
                 $start = Carbon::now()->startOfYear()->toDateString();
                 $end = Carbon::now()->endOfYear()->toDateString();
@@ -143,19 +151,19 @@ class JournalIndex
                 $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY)->toDateString();
                 break;
             case 'last_month':
-                $start = Carbon::now()->subMonth()->startOfMonth()->toDateString();
-                $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();
+                $start = Carbon::now()->subMonthsNoOverflow()->startOfMonth()->toDateString();
+                $end = Carbon::now()->subMonthsNoOverflow()->endOfMonth()->toDateString();
                 break;
             case 'last_year':
                 $start = Carbon::now()->subYear()->startOfYear()->toDateString();
                 $end = Carbon::now()->subYear()->endOfYear()->toDateString();
                 break;
             default:
+                $start = Carbon::now()->startOfYear()->toDateString();
+                $end = Carbon::now()->endOfYear()->toDateString();
                 break;
         }
-
-        if ($start && $end)
-            $query->whereBetween('je.date', [$start, $end]);
+        $query->whereBetween('je.date', [$start, $end]);
         if ($search)
             $query->where('je.id', '=', $search);
 
@@ -201,19 +209,4 @@ class JournalIndex
 
         return $query;
     }
-
-    /**
-     * Validate that the filter combination is allowed
-     */
-    private function validateFilterCombination($type, $client, $invoiceFilter, $hasInvoiceFilter)
-    {
-        // Invalid case: Invoice filter without invoice type
-        if ($type !== 'invoices' && $hasInvoiceFilter) {
-            throw new \Exception('Invalid combinations of filter');
-        }
-
-        return true;
-    }
 }
-
-?>

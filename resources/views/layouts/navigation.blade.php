@@ -31,18 +31,39 @@
             <div class="nav-section">
                 <p>Transactions</p>
                 <div class="nav-section__item">
-                    <li class="{{ in_array($routeName, ['invoices.index']) ? 'active-tab' : '' }}">
+                    <li
+                        class="{{ in_array($routeName, ['invoices.index', 'invoices.create', 'invoices.show']) ? 'active-tab' : '' }}">
                         <a href="{{ route('invoices.index') }}">
                             <i class="fa-solid fa-file-invoice"></i>
                             Invoice
                         </a>
                     </li>
-                    <li
-                        class="{{ in_array($routeName, ['journal-entries.index', 'journal-entries.create', 'journal-entries.show', 'journal-entries.edit']) ? 'active-tab' : '' }}">
-                        <a href="{{ route('journal-entries.index') }}">
+                    <li class="">
+                        <a href="#"
+                            class="nav-dropdown {{ in_array($routeName, ['journal-entries.index', 'journal-entries.create', 'journal-entries.show', 'journal-entries.edit', 'journal-entries.archives']) ? 'active-tab' : '' }}">
                             <i class="fa-solid fa-book"></i>
                             Journals
                         </a>
+                        <ul class="dropdown-list">
+                            <li class="d-none">
+                                <a href="{{ route('journal-entries.index') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    Current
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="{{ route('journal-entries.create') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    Create
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="{{ route('journal-entries.archives') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    Archives
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="">
                         <a href="#"

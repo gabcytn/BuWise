@@ -163,7 +163,7 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
         return Transaction::create([
             'client_id' => $this->client_id,
             'created_by' => $this->creator_id,
-            'status' => 'archived',
+            'status' => $row['1'] < now()->startOfYear()->format('Y-m-d') ? 'archived' : 'approved',
             'type' => 'journal',
             'kind' => $this->transaction_type,
             'amount' => $row[6],

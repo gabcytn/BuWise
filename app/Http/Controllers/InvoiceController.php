@@ -84,6 +84,8 @@ class InvoiceController extends Controller
      */
     public function show(Transaction $invoice)
     {
+        if ($invoice->type !== 'invoice')
+            abort(404);
         Gate::authorize('view', $invoice);
         $items = $invoice->invoice_lines;
         $invUrl = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {

@@ -36,7 +36,8 @@ class JournalEntryController extends Controller
     public function index(Request $request)
     {
         Gate::authorize('viewAny', Transaction::class);
-        $index = new JournalIndex();
+        $subtitle = 'Create journal entries and organize financial records';
+        $index = new JournalIndex('General Journal', $subtitle, 'index');
         return $index->index($request);
     }
 
@@ -201,5 +202,15 @@ class JournalEntryController extends Controller
         $filename = $request->file('csv')->store('csv/', 'public');
         ParseExcelUpload::dispatch(basename($filename), $request->client, $request->user()->id, $request->transaction_type);
         return redirect()->back()->with(['status' => 'File uploaded successfully']);
+    }
+
+    public function archives(Request $request)
+    {
+        Gate::authorize('viewAny', Transaction::class);
+        $subtitle = "View your clients' transactions from previous fiscal years.";
+        $index = new JournalIndex('Archived Journals', $subtitle, 'archives');
+        return $index->index($request);
+
+        $period_options = ['Last Year', 'Last 2 Year'];
     }
 }

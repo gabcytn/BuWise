@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\Events\JournalEntryCreated;
-use App\Models\EntryType;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
-use App\Models\Status;
 use App\Models\Tax;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
@@ -47,9 +45,8 @@ class JournalStore
                 'status' => 'approved',
                 'type' => 'journal',
                 'kind' => $request->transaction_type,
-                'amount' => 1,  // TODO: calculate max amount
-                'date' => $request->date . ' ' . now()->format('H:i:s'),
-                'payment_method' => null,
+                'amount' => $totalDebits,
+                'date' => $request->date,
                 'description' => $request->description ?? null,
                 'reference_no' => $request->reference_no ?? null
             ]);

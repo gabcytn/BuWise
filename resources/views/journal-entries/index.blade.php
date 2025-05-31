@@ -17,37 +17,42 @@
     <div class="container">
         <form class="create-journal-form" action="{{ route('journal-entries.create') }}" method="GET">
             <div class="first-texts">
-                <h2 id="page-title">General Journal</h2>
-                <p>Create journal entries and organize financial records.</p>
+                <h2 id="page-title">{{ $title }}</h2>
+                <p>{{ $subtitle }}</p>
             </div>
             <div class="button-container">
-                <button type="submit">Create</button>
-                <button type="button" id="dropdown-button">&#11206;</button>
-                <a class="dropdown d-none" href="#">
-                    Import Excel
-                </a>
-                <button type="button" id="vertical-ellipsis">&#8942;</button>
+                @if (request()->routeIs('journal-entries.index'))
+                    <button type="submit">Create</button>
+                    <button type="button" id="dropdown-button">&#11206;</button>
+                    <a class="dropdown d-none" href="#">
+                        Import Excel
+                    </a>
+                    <button type="button" id="vertical-ellipsis">&#8942;</button>
+                @endif
             </div>
         </form>
         <div class="journal-container">
             <form class="select-container" action="" method="GET">
                 <div class="select-container__left">
-                    <select class="select" name="period">
-                        <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>All
-                            time</option>
-                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
-                            This Year</option>
-                        <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
-                            This Month</option>
-                        <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>
-                            This Week</option>
-                        <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>
-                            Last Week</option>
-                        <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
-                            Last Month</option>
-                        <option value="last_year" {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>
-                            Last Year</option>
-                    </select>
+                    @if (request()->routeIs('journal-entries.index'))
+                        <select class="select" name="period">
+                            <option value="this_year"
+                                {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
+                                This Year</option>
+                            <option value="this_month"
+                                {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
+                                This Month</option>
+                            <option value="this_week"
+                                {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>
+                                This Week</option>
+                            <option value="last_week"
+                                {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>
+                                Last Week</option>
+                            <option value="last_month"
+                                {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
+                                Last Month</option>
+                        </select>
+                    @endif
                     <select class="select select-clients" name="client">
                         <option value="all" {{ request()->query('client') === 'all' ? 'selected' : '' }}>All Clients
                         </option>
