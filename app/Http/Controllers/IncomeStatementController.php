@@ -56,6 +56,10 @@ class IncomeStatementController extends Controller
     private function getStartAndEndDate(string $period): array
     {
         switch ($period) {
+            case 'all_time':
+                $start = Carbon::now()->subMillennium();
+                $end = Carbon::now()->endOfMillennium();
+                break;
             case 'this_year':
                 $start = Carbon::now()->startOfYear();
                 $end = Carbon::now()->endOfYear();
@@ -95,7 +99,7 @@ class IncomeStatementController extends Controller
             ->join('users', 'users.id', '=', 'tr.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->where('tr.client_id', '=', $clientId)
-            ->where('tr.status', '=', 'approved')
+            ->whereIn('tr.status', ['approved', 'archived'])
             ->whereBetween('tr.date', [$startDate, $endDate])
             ->whereIn('acc.account_group_id', [AccountGroup::REVENUE, AccountGroup::EXPENSES])
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
