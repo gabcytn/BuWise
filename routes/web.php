@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\ProfileInformationController;
-use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TrialBalanceController;
+use App\Http\Controllers\WorkingPaperController;
 use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -71,9 +73,9 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::resource('/invoices', InvoiceController::class);
 
     // reports
-    Route::get('/reports/balance-sheet', [ReportsController::class, 'balanceSheet'])->name('reports.balance-sheet');
-    Route::get('/reports/income-statement', [ReportsController::class, 'incomeStatement'])->name('reports.income-statement');
-    Route::get('/reports/working-paper', [ReportsController::class, 'workingPaper'])->name('reports.working-paper');
+    Route::get('/reports/balance-sheet', [BalanceSheetController::class, 'index'])->name('reports.balance-sheet');
+    Route::get('/reports/income-statement', [IncomeStatementController::class, 'index'])->name('reports.income-statement');
+    Route::get('/reports/working-paper', [WorkingPaperController::class, 'index'])->name('reports.working-paper');
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {

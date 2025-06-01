@@ -10,14 +10,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class ReportsController extends Controller
+class IncomeStatementController extends Controller
 {
-    public function balanceSheet(Request $request)
-    {
-        return 'balance sheet';
-    }
-
-    public function incomeStatement(Request $request)
+    public function index(Request $request)
     {
         $user = $request->user();
         $accId = getAccountantId($user);
@@ -91,12 +86,6 @@ class ReportsController extends Controller
                 break;
         }
         return [$start, $end];
-    }
-
-    public function workingPaper(Request $request)
-    {
-        // TODO: do something
-        return 'working paper';
     }
 
     private function getIncomeStatementData(string $clientId, $startDate, $endDate)
