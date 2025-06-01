@@ -31,7 +31,7 @@
                     <button type="submit">Run Report</button>
                 </div>
                 <div class="report-header__right">
-                    <button type="button">Print to PDF</button>
+                    <button type="button" id="download-table-btn">Print to PDF</button>
                 </div>
             </div>
             <hr />
@@ -47,46 +47,50 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <td>ACCOUNT</td>
-                                        <td>TOTAL</td>
+                                        <th>ACCOUNT</th>
+                                        <th>TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Revenues</td>
+                                        <td><strong>Revenues</strong></td>
                                         <td></td>
                                     </tr>
                                     @foreach ($revenues as $revenue)
                                         <tr>
-                                            <td>{{ $revenue->acc_name }}</td>
+                                            <td class="account-name">{{ $revenue->acc_name }}</td>
                                             <td class="revenues">
                                                 {{ $revenue->debit > 0 ? '-' . number_format($revenue->debit, 2) : number_format($revenue->credit, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
-                                    <tr>
+                                    <tr class="total-row">
                                         <td>Total Revenues</td>
                                         <td class="revenues-total">0.00</td>
                                     </tr>
                                     <tr>
-                                        <td>Revenues</td>
+                                        <td><strong>Expenses</strong></td>
                                         <td></td>
                                     </tr>
                                     @foreach ($expenses as $expense)
                                         <tr>
-                                            <td>{{ $expense->acc_name }}</td>
+                                            <td class="account-name">{{ $expense->acc_name }}</td>
                                             <td class="expenses">
                                                 {{ $expense->debit > 0 ? number_format($expense->debit, 2) : '-' . number_format($expense->credit, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
-                                    <tr>
+                                    <tr class="total-row">
                                         <td>Total Expenses</td>
                                         <td class="expenses-total">0.00</td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
-                                    <tr>
+                                    <tr class="total-row">
+                                        <td>
+                                            <strong>Net Profit/Loss</strong>
+                                        </td>
+                                        <td><strong id="net"></strong></td>
                                     </tr>
                                 </tfoot>
                             </table>

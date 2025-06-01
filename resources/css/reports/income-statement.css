@@ -4,6 +4,7 @@
     margin: 2rem auto;
 
     form {
+        margin-top: 1rem;
         background-color: var(--clear-white);
         border: 1px solid rgba(0, 0, 0, 0.3);
         border-radius: 0.375rem;
@@ -65,15 +66,38 @@
 
     .report-body__table {
         table {
+            margin-top: 1rem;
             border: 1px solid rgba(0, 0, 0, 0.3);
             border-collapse: collapse;
             width: 100%;
         }
 
+        thead tr {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            text-align: left;
+            padding: 0.5rem 0 0.5rem 1rem;
+        }
+
         td {
-            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(0, 0, 0, 0.3);
             border-collapse: separate;
-            padding: 0.5rem 0;
+            padding: 0.5rem 0 0.5rem 1rem;
+        }
+
+        td:nth-child(2),
+        th:nth-child(2) {
+            text-align: center;
+        }
+
+        .account-name {
+            padding: 0.5rem 0 0.5rem 3rem;
+        }
+
+        .total-row {
+            background-color: rgba(0, 0, 0, 0.1);
         }
     }
 }

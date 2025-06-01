@@ -33,7 +33,7 @@ class ReportsController extends Controller
             $selected_client = User::find($request->client);
             $period = $this->getStartAndEndDate($request->period);
             Session::flash('has_data', 'true');
-            $data = $this->getIncomeStatementData($selected_client->id);
+            $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
             $revenues = [];
             $expenses = [];
             foreach ($data as $datum) {
@@ -46,8 +46,8 @@ class ReportsController extends Controller
             return view('reports.income-statement', [
                 'clients' => $clients,
                 'selected_client' => $selected_client,
-                'start_date' => $period[0],
-                'end_date' => $period[1],
+                'start_date' => $period[0]->format('d F Y'),
+                'end_date' => $period[1]->format('d F Y'),
                 'revenues' => $revenues,
                 'expenses' => $expenses,
             ]);
@@ -90,7 +90,7 @@ class ReportsController extends Controller
                 $end = Carbon::now()->endOfYear();
                 break;
         }
-        return [$start->format('d F Y'), $end->format('d F Y')];
+        return [$start, $end];
     }
 
     public function workingPaper(Request $request)
@@ -99,7 +99,7 @@ class ReportsController extends Controller
         return 'working paper';
     }
 
-    private function getIncomeStatementData(string $clientId)
+    private function getIncomeStatementData(string $clientId, $startDate, $endDate)
     {
         return DB::table('ledger_entries AS le')
             ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')
@@ -107,6 +107,7 @@ class ReportsController extends Controller
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->where('tr.client_id', '=', $clientId)
             ->where('tr.status', '=', 'approved')
+            ->whereBetween('tr.date', [$startDate, $endDate])
             ->whereIn('acc.account_group_id', [AccountGroup::REVENUE, AccountGroup::EXPENSES])
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
             ->orderBy('acc.code')

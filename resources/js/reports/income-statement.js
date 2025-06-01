@@ -16,4 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector(".expenses-total").textContent =
         expenseTotal.toFixed(2);
+
+    document.querySelector("#net").textContent = (
+        revenueTotal - expenseTotal
+    ).toFixed(2);
 });
