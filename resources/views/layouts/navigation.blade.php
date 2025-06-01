@@ -98,13 +98,28 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#"
+                            class="nav-dropdown {{ in_array($routeName, ['reports.income-statement', 'reports.balance-sheet']) ? 'active-tab' : '' }}">
                             <i class="fa-solid fa-newspaper"></i>
                             Statements
                         </a>
+                        <ul class="dropdown-list">
+                            <li class="d-none">
+                                <a href="{{ route('reports.balance-sheet') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    Balance Sheet
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="{{ route('reports.income-statement') }}" style="font-size: 0.75rem;">
+                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
+                                    P/L Statement
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('reports.working-paper') }}">
                             <i class="fa-solid fa-hospital-user"></i>
                             Audit
                         </a>
