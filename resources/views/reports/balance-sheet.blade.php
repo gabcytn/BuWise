@@ -19,6 +19,8 @@
                             Last Week</option>
                         <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
                             Last Month</option>
+                        <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>
+                            All Time</option>
                     </select>
                     <select required name="client">
                         <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select Client
@@ -31,7 +33,9 @@
                     <button type="submit">Run Report</button>
                 </div>
                 <div class="report-header__right">
-                    <button type="button" id="download-table-btn">Print to PDF</button>
+                    @if (session('has_data'))
+                        <button type="button" id="download-table-btn">Export to CSV</button>
+                    @endif
                 </div>
             </div>
             <hr />

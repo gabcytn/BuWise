@@ -63,3 +63,34 @@ function formatNumber(number, decimals) {
         maximumFractionDigits: decimals,
     });
 }
+
+document.querySelector("#download-table-btn").addEventListener("click", () => {
+    const csvData = gatherTableData();
+    downloadCSVFile(csvData);
+});
+
+function gatherTableData() {
+    let csvData = [];
+    const rows = document.querySelectorAll(".report-body__table tr");
+    rows.forEach((row) => {
+        const columns = row.querySelectorAll("td, th");
+        const value = columns[1].innerText.replaceAll(",", "");
+        csvData.push([columns[0].innerText, value].join(",", 1));
+    });
+    return csvData.join("\n");
+}
+function downloadCSVFile(csv_data) {
+    const CSVFile = new Blob([csv_data], { type: "text/csv" });
+    let url = window.URL.createObjectURL(CSVFile);
+
+    const tempLink = document.createElement("a");
+    tempLink.download = "balance-sheet.csv";
+    tempLink.href = url;
+    tempLink.style.display = "block";
+    tempLink.style.fontSize = "5rem";
+
+    document.body.appendChild(tempLink);
+
+    tempLink.click();
+    document.body.removeChild(tempLink);
+}
