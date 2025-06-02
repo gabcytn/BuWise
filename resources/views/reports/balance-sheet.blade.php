@@ -65,8 +65,8 @@
                                         </tr>
                                     @endforeach
                                     <tr class="total-row">
-                                        <td>Total assets</td>
-                                        <td class="assets-total">0.00</td>
+                                        <td><strong>Total Assets</strong></td>
+                                        <td class="assets-total"><strong>0.00</strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>Liabilities</strong></td>
@@ -96,6 +96,10 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <td class="account-name">Current Year's Earnings</td>
+                                        <td class="equities">{{ number_format($equity_from_income_statement, 2) }}</td>
+                                    </tr>
                                     <tr class="total-row">
                                         <td>Total Equities</td>
                                         <td class="equities-total">0.00</td>
@@ -104,7 +108,7 @@
                                 <tfoot>
                                     <tr class="total-row">
                                         <td>
-                                            <strong>Net Profit/Loss</strong>
+                                            <strong>Total Liabilities and Equities</strong>
                                         </td>
                                         <td><strong id="net"></strong></td>
                                     </tr>

@@ -41,6 +41,7 @@ class BalanceSheetController extends Controller
                     $equities[] = $datum;
                 }
             }
+            $equityFromIncomeStatement = new IncomeStatementController()->getNetProfitLoss($request);
             return view('reports.balance-sheet', [
                 'clients' => $clients,
                 'selected_client' => $selected_client,
@@ -49,6 +50,7 @@ class BalanceSheetController extends Controller
                 'assets' => $assets,
                 'liabilities' => $liabilities,
                 'equities' => $equities,
+                'equity_from_income_statement' => $equityFromIncomeStatement,
             ]);
         }
 
@@ -60,10 +62,6 @@ class BalanceSheetController extends Controller
     private function getStartAndEndDate(string $period): array
     {
         switch ($period) {
-            case 'this_year':
-                $start = Carbon::now()->startOfYear();
-                $end = Carbon::now()->endOfYear();
-                break;
             case 'this_month':
                 $start = Carbon::now()->startOfMonth();
                 $end = Carbon::now()->endOfMonth();
@@ -92,7 +90,7 @@ class BalanceSheetController extends Controller
         return [$start, $end];
     }
 
-    private function getIncomeStatementData(string $clientId, $startDate, $endDate)
+    private function getIncomeStatementData(string $clientId, $startDate, $endDate): \Illuminate\Support\Collection
     {
         return DB::table('ledger_entries AS le')
             ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')

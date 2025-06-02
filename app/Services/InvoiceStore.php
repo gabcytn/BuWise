@@ -2,7 +2,6 @@
 namespace App\Services;
 
 use App\Exceptions\InvoiceCreationException;
-use App\Models\EntryType;
 use App\Models\InvoiceLine;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
@@ -114,7 +113,8 @@ class InvoiceStore
                 $tax = 0.0;
             }
             $qty = $item['qty'];
-            $net = round(($discountedUnitPrice + $tax) * $qty, 2);
+            // $net = round(($discountedUnitPrice + $tax) * $qty, 2);
+            $net = round($unitPrice * $qty, 2);
 
             $discountTotal += $discount * $qty;
             $taxTotal += $tax * $qty;

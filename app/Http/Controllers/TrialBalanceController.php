@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountGroup;
-use App\Models\EntryType;
 use App\Models\LedgerAccount;
-use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +15,7 @@ class TrialBalanceController extends Controller
     {
         Gate::authorize('trialBalance', LedgerAccount::class);
         $user = $request->user();
-        $clients = Cache::remember($user->id . '-clients', $ttl = 3600, function () use ($user) {
+        $clients = Cache::remember($user->id . '-clients', 3600, function () use ($user) {
             return getClients($user);
         });
 
@@ -35,13 +33,6 @@ class TrialBalanceController extends Controller
             } else {
                 $data = $this->getQuery($request->query('client'));
             }
-
-            // foreach ($data as $datum) {
-            //     $openingBalance = LedgerAccountController::getInitialBalance($request->query('client'), $datum->acc_id, $datum->acc_group_id);
-            //     if ($openingBalance) {
-            //         $openingBalance->entry_type_id == EntryType::DEBIT ? $datum->debit += $openingBalance->initial_balance : $datum->credit += $openingBalance->initial_balance;
-            //     }
-            // }
         }
 
         return view('ledger.trial-balance', [

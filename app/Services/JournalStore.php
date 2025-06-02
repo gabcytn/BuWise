@@ -42,7 +42,7 @@ class JournalStore
             $journalEntry = Transaction::create([
                 'client_id' => $request->client_id,
                 'created_by' => $request->user()->id,
-                'status' => 'approved',
+                'status' => $request->date < now()->startOfYear()->format('Y-m-d') ? 'archived' : 'approved',
                 'type' => 'journal',
                 'kind' => $request->transaction_type,
                 'amount' => $totalDebits,

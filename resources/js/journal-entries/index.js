@@ -24,7 +24,7 @@ deleteEntryButtons.forEach((button) => {
 tr.forEach((row) => {
     row.addEventListener("click", (e) => {
         if (!e.target.classList.contains("fa-regular")) {
-            location = row.dataset.url;
+            location = window.origin + "/" + row.dataset.url;
         }
     });
 });

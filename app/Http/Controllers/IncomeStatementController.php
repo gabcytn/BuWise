@@ -12,7 +12,12 @@ use Illuminate\Support\Facades\Session;
 
 class IncomeStatementController extends Controller
 {
-    public function index(Request $request)
+    public function getNetProfitLoss(Request $request)
+    {
+        return $this->index($request, true);
+    }
+
+    public function index(Request $request, $fromBalanceSheet = false)
     {
         $user = $request->user();
         $accId = getAccountantId($user);
@@ -31,13 +36,19 @@ class IncomeStatementController extends Controller
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
             $revenues = [];
             $expenses = [];
+            $revenuesTotal = 0;
+            $expensesTotal = 0;
             foreach ($data as $datum) {
                 if ($datum->acc_code >= 400 && $datum->acc_code < 500) {
                     $revenues[] = $datum;
+                    $revenuesTotal += $datum->debit > 0 ? -$datum->debit : $datum->credit;
                 } else {
                     $expenses[] = $datum;
+                    $expensesTotal += $datum->debit > 0 ? $datum->debit : -$datum->credit;
                 }
             }
+            if ($fromBalanceSheet)
+                return $revenuesTotal - $expensesTotal;
             return view('reports.income-statement', [
                 'clients' => $clients,
                 'selected_client' => $selected_client,
