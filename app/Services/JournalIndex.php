@@ -200,7 +200,7 @@ class JournalIndex
                 $query->orderBy('creator');
                 break;
             case 'status':
-                $query->orderBy('status.description');
+                $query->orderBy('je.status');
                 break;
             default:
                 $query->orderByDesc('je.id');
