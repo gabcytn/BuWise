@@ -57,7 +57,8 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($revenues as $revenue)
-                                        <tr>
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$revenue->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $revenue->acc_name }}</td>
                                             <td class="revenues">
                                                 {{ $revenue->debit > 0 ? '-' . number_format($revenue->debit, 2) : number_format($revenue->credit, 2) }}
@@ -73,7 +74,8 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($expenses as $expense)
-                                        <tr>
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$expense->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $expense->acc_name }}</td>
                                             <td class="expenses">
                                                 {{ $expense->debit > 0 ? number_format($expense->debit, 2) : '-' . number_format($expense->credit, 2) }}
