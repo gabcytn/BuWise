@@ -94,3 +94,9 @@ function downloadCSVFile(csv_data) {
     tempLink.click();
     document.body.removeChild(tempLink);
 }
+
+document.querySelectorAll(".clickable").forEach((item) => {
+    item.addEventListener("click", () => {
+        location.href = item.dataset.redirect;
+    });
+});

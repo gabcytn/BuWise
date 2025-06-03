@@ -61,7 +61,8 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($assets as $asset)
-                                        <tr>
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$asset->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $asset->acc_name }}</td>
                                             <td class="assets">
                                                 {{ $asset->debit > 0 ? number_format($asset->debit, 2) : '-' . number_format($asset->credit, 2) }}
@@ -77,7 +78,8 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($liabilities as $liability)
-                                        <tr>
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$liability->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $liability->acc_name }}</td>
                                             <td class="liabilities">
                                                 {{ $liability->debit > 0 ? '-' . number_format($liability->debit, 2) : number_format($liability->credit, 2) }}
@@ -93,14 +95,16 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($equities as $equity)
-                                        <tr>
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$equity->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $equity->acc_name }}</td>
                                             <td class="equities">
                                                 {{ $equity->debit > 0 ? '-' . number_format($equity->debit, 2) : number_format($equity->credit, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
-                                    <tr>
+                                    <tr class="clickable"
+                                        data-redirect="{{ route('reports.income-statement', ['period' => 'this_year', 'client' => $selected_client->id]) }}">
                                         <td class="account-name">Current Year's Earnings</td>
                                         <td class="equities">{{ number_format($equity_from_income_statement, 2) }}</td>
                                     </tr>

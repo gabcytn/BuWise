@@ -105,3 +105,11 @@
 hr {
     color: rgba(0, 0, 0, 0.3);
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
