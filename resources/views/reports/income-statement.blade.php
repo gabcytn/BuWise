@@ -31,7 +31,7 @@
                     <button type="submit">Run Report</button>
                 </div>
                 <div class="report-header__right">
-                    <button type="button" id="download-table-btn">Print to PDF</button>
+                    <button type="button" id="download-table-btn">Export to CSV</button>
                 </div>
             </div>
             <hr />
