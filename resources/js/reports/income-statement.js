@@ -2,10 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const revenues = document.querySelectorAll(".revenues");
     let revenueTotal = 0;
     revenues.forEach((revenue) => {
-        revenueTotal += parseFloat(revenue.textContent);
+        revenueTotal += parseFloat(revenue.innerText.replaceAll(",", ""));
     });
 
-    document.querySelector(".revenues-total").textContent = formatNumber(
+    document.querySelector(".revenues-total").innerText = formatNumber(
         revenueTotal,
         2,
     );
@@ -13,15 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const expenses = document.querySelectorAll(".expenses");
     let expenseTotal = 0;
     expenses.forEach((expense) => {
-        expenseTotal += parseFloat(expense.textContent.replaceAll(",", ""));
+        expenseTotal += parseFloat(expense.innerText.replaceAll(",", ""));
     });
 
-    document.querySelector(".expenses-total").textContent = formatNumber(
+    document.querySelector(".expenses-total").innerText = formatNumber(
         expenseTotal,
         2,
     );
 
-    document.querySelector("#net").textContent = formatNumber(
+    document.querySelector("#net").innerText = formatNumber(
         revenueTotal - expenseTotal,
         2,
     );
