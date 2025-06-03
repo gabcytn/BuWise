@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\AccountGroup;
 use App\Models\EntryType;
 use App\Models\LedgerAccount;
-use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -146,7 +145,7 @@ class LedgerAccountController extends Controller
                 DB::raw('CASE WHEN le.entry_type = "credit" THEN le.amount ELSE NULL END as credit')
             )
             ->where('ledger_accounts.id', $ledgerAccountId)
-            ->where('transactions.status', '=', 'approved')
+            ->whereIn('transactions.status', ['approved', 'archived'])
             ->where('transactions.client_id', $userId);
 
         if ($endDate !== null) {
