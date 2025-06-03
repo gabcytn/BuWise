@@ -104,7 +104,7 @@
                                         </tr>
                                     @endforeach
                                     <tr class="clickable"
-                                        data-redirect="{{ route('reports.income-statement', ['period' => 'this_year', 'client' => $selected_client->id]) }}">
+                                        data-redirect="{{ route('reports.income-statement', ['period' => request()->query('period'), 'client' => $selected_client->id]) }}">
                                         <td class="account-name">Current Year's Earnings</td>
                                         <td class="equities">{{ number_format($equity_from_income_statement, 2) }}</td>
                                     </tr>
