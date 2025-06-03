@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountGroup;
-use App\Models\EntryType;
 use App\Models\LedgerAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -113,11 +112,11 @@ class LedgerAccountController extends Controller
 
         if ($openingDebits > $openingCredits) {
             $openingBalance = $openingDebits - $openingCredits;
-            $openingEntry = EntryType::DEBIT;
+            $openingEntry = 'debit';
             $totalDebits += $openingBalance;
         } else {
             $openingBalance = $openingCredits - $openingDebits;
-            $openingEntry = EntryType::CREDIT;
+            $openingEntry = 'credit';
             $totalCredits += $openingBalance;
         }
 

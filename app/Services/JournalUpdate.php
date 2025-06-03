@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Events\JournalEntryCreated;
-use App\Models\EntryType;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Tax;
