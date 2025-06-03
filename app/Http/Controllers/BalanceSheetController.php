@@ -27,7 +27,6 @@ class BalanceSheetController extends Controller
             ]);
             $selected_client = User::find($request->client);
             $period = $this->getStartAndEndDate($request->period);
-            Session::flash('has_data', 'true');
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
             $assets = [];
             $liabilities = [];
@@ -43,6 +42,7 @@ class BalanceSheetController extends Controller
             }
             $equityFromIncomeStatement = new IncomeStatementController()->getNetProfitLoss($request);
             return view('reports.balance-sheet', [
+                'has_data' => true,
                 'clients' => $clients,
                 'selected_client' => $selected_client,
                 'start_date' => $period[0]->format('d F Y'),
@@ -55,6 +55,7 @@ class BalanceSheetController extends Controller
         }
 
         return view('reports.balance-sheet', [
+            'has_data' => false,
             'clients' => $clients,
         ]);
     }

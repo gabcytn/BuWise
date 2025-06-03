@@ -32,7 +32,6 @@ class IncomeStatementController extends Controller
             ]);
             $selected_client = User::find($request->client);
             $period = $this->getStartAndEndDate($request->period);
-            Session::flash('has_data', 'true');
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
             $revenues = [];
             $expenses = [];
@@ -50,6 +49,7 @@ class IncomeStatementController extends Controller
             if ($fromBalanceSheet)
                 return $revenuesTotal - $expensesTotal;
             return view('reports.income-statement', [
+                'has_data' => true,
                 'clients' => $clients,
                 'selected_client' => $selected_client,
                 'start_date' => $period[0]->format('d F Y'),
@@ -60,6 +60,7 @@ class IncomeStatementController extends Controller
         }
 
         return view('reports.income-statement', [
+            'has_data' => false,
             'clients' => $clients,
         ]);
     }

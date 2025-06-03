@@ -31,12 +31,14 @@
                     <button type="submit">Run Report</button>
                 </div>
                 <div class="report-header__right">
-                    <button type="button" id="download-table-btn">Export to CSV</button>
+                    @if ($has_data)
+                        <button type="button" id="download-table-btn">Export to CSV</button>
+                    @endif
                 </div>
             </div>
             <hr />
             <div class="p-3">
-                @if (session('has_data'))
+                @if ($has_data)
                     <div class="report-body">
                         <div class="report-body__header">
                             <p>{{ $selected_client->name }}</p>
