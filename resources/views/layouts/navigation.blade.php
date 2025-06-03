@@ -118,7 +118,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="{{ request()->routeIs('reports.working-paper') ? 'active-tab' : '' }}">
                         <a href="{{ route('reports.working-paper') }}">
                             <i class="fa-solid fa-hospital-user"></i>
                             Audit

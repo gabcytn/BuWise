@@ -31,7 +31,7 @@ class JournalIndex
         $clients = $this->getCachedClients($user);
 
         if (!array_key_exists('period', $filter))
-            $filter['period'] = $this->route === 'index' ? 'this_year' : 'last_year';
+            $filter['period'] = $this->route === 'index' ? 'this_year' : 'archived';
         if (!array_key_exists('client', $filter))
             $filter['client'] = 'all';
         if (!array_key_exists('transaction_type', $filter))
@@ -156,6 +156,10 @@ class JournalIndex
                 break;
             case 'last_year':
                 $start = Carbon::now()->subYear()->startOfYear()->toDateString();
+                $end = Carbon::now()->subYear()->endOfYear()->toDateString();
+                break;
+            case 'archived':
+                $start = '1970-01-01';
                 $end = Carbon::now()->subYear()->endOfYear()->toDateString();
                 break;
             default:

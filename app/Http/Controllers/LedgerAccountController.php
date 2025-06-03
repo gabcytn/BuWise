@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AccountGroup;
 use App\Models\LedgerAccount;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -143,9 +144,10 @@ class LedgerAccountController extends Controller
                 DB::raw('CASE WHEN le.entry_type = "debit" THEN le.amount ELSE NULL END as debit'),
                 DB::raw('CASE WHEN le.entry_type = "credit" THEN le.amount ELSE NULL END as credit')
             )
-            ->where('ledger_accounts.id', $ledgerAccountId)
+            ->where('ledger_accounts.id', '=', $ledgerAccountId)
             ->whereIn('transactions.status', ['approved', 'archived'])
             ->where('transactions.client_id', $userId);
+        // ->groupBy('transactions.id', 'transactions.description', 'transactions.date', 'transactions.kind', 'users.name', 'users.email', 'ledger_accounts.name', 'account_groups.id', 'account_groups.name', 'le.entry_type', 'le.amount');
 
         if ($endDate !== null) {
             $query = $query
@@ -154,5 +156,13 @@ class LedgerAccountController extends Controller
         return $query
             ->orderByRaw('transactions.date DESC')
             ->get();
+    }
+
+    public function getOpeningBalanceForAudit(int $accountId, string $clientId)
+    {
+        $endDate = Carbon::now()->subYear()->endOfYear()->toDateString();
+        $res = $this->getQuery($accountId, $clientId, $endDate);
+        $res = $this->calculateTotalDebitsAndCredits($res, '1970-01-01', $endDate);
+        return $res;
     }
 }

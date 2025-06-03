@@ -51,6 +51,7 @@
     .report-header__right {
         display: flex;
         justify-content: flex-end;
+        gap: 1rem;
     }
 
 }
@@ -112,4 +113,8 @@ hr {
 
 .clickable:hover {
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+.cursor-default {
+    cursor: default;
 }

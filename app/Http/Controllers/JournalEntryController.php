@@ -210,7 +210,5 @@ class JournalEntryController extends Controller
         $subtitle = "View your clients' transactions from previous fiscal years.";
         $index = new JournalIndex('Archived Journals', $subtitle, 'archives');
         return $index->index($request);
-
-        $period_options = ['Last Year', 'Last 2 Year'];
     }
 }
