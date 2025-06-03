@@ -65,7 +65,7 @@
                                             data-redirect="{{ route('ledger.coa.show', [$asset->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $asset->acc_name }}</td>
                                             <td class="assets">
-                                                {{ $asset->debit > 0 ? number_format($asset->debit, 2) : '-' . number_format($asset->credit, 2) }}
+                                                {{ $asset->debit > 0 ? number_format($asset->debit - $asset->credit, 2) : '-' . number_format($asset->credit - $asset->debit, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -82,7 +82,7 @@
                                             data-redirect="{{ route('ledger.coa.show', [$liability->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $liability->acc_name }}</td>
                                             <td class="liabilities">
-                                                {{ $liability->debit > 0 ? '-' . number_format($liability->debit, 2) : number_format($liability->credit, 2) }}
+                                                {{ $liability->debit > 0 ? '-' . number_format($liability->debit - $liability->credit, 2) : number_format($liability->credit - $liability->debit, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -99,7 +99,7 @@
                                             data-redirect="{{ route('ledger.coa.show', [$equity->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $equity->acc_name }}</td>
                                             <td class="equities">
-                                                {{ $equity->debit > 0 ? '-' . number_format($equity->debit, 2) : number_format($equity->credit, 2) }}
+                                                {{ $equity->debit > 0 ? '-' . number_format($equity->debit - $equity->credit, 2) : number_format($equity->credit - $equity->debit, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
