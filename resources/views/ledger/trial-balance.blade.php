@@ -13,8 +13,14 @@
                         {{ request()->query('client') == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
                 @endforeach
             </select>
-            <select id="date-range-select">
+            <select id="date-range-select" name="period" required>
                 <option value="all_time" {{ request()->query('start_date') ? '' : 'selected' }}>All time</option>
+                <option value="this_year" {{ request()->query('this_year') ? '' : 'selected' }}>This year</option>
+                <option value="this_month" {{ request()->query('this_month') ? '' : 'selected' }}>This month</option>
+                <option value="this_week" {{ request()->query('this_week') ? '' : 'selected' }}>This week</option>
+                <option value="last_week" {{ request()->query('last_week') ? '' : 'selected' }}>Last week</option>
+                <option value="last_month" {{ request()->query('last_month') ? '' : 'selected' }}>Last month</option>
+                <option value="last_month" {{ request()->query('last_month') ? '' : 'selected' }}>Last month</option>
                 <option value="custom" id="custom-option" {{ request()->query('start_date') ? 'selected' : '' }}>Custom
                 </option>
             </select>
