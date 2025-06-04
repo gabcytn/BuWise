@@ -65,7 +65,7 @@ class IncomeStatementController extends Controller
         ]);
     }
 
-    private function getStartAndEndDate(string $period): array
+    public function getStartAndEndDate(string $period): array
     {
         switch ($period) {
             case 'all_time':
