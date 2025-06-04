@@ -1,127 +1,155 @@
-body {
-    min-height: 100dvh;
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #1879ca;
+}
+
+/* Layout */
+.section-wrapper {
     display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Left Panel */
+.left-section {
+    width: 50%;
+    background-color: #ffffff;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.left-section .logo {
+    width: 150px;
+    margin-bottom: 2rem;
+}
+
+.left-section .illustration {
+    max-width: 100%;
+    height: auto;
+    margin-top: auto;
+}
+
+/* Right Panel */
+.right-section {
+    width: 50%;
+    background-color: #1879ca;
+    color: #ffffff;
+    display: flex;
     align-items: center;
-    background-color: var(--dark-blue);
+    justify-content: center;
+    padding: 3rem;
 }
 
-.otp-box {
-    background: var(--dark-blue-secondary);
-    max-width: 450px;
-    width: 80%;
-    padding: 2.5rem;
-    border-radius: 8px;
-    text-align: center;
+/* Form */
+.form-card {
+    width: 100%;
+    max-width: 400px;
 }
 
-#title {
-    color: var(--off-white);
-    font-size: 24px;
-    margin-bottom: 20px;
+.title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
 }
 
-#subtitle {
-    color: var(--subtitle);
-    font-size: 14px;
-    margin-bottom: 10px;
+.title span {
+    font-weight: 800;
 }
 
-button {
-    cursor: pointer;
+.subtitle {
+    font-size: 0.95rem;
+    color: #cde5fa;
+    margin-bottom: 2rem;
 }
 
 .otp-inputs {
     display: flex;
     justify-content: center;
-    margin-bottom: 1.25rem;
-}
-
-.otp-input {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    text-align: center;
-    border-radius: 4px;
-    border: none;
-    background-color: #fff;
-    margin: 0 5px;
-}
-
-.button-group {
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 1.5rem;
     gap: 10px;
 }
 
-button {
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
-}
-
-.btn-verify {
-    background-color: var(--green);
-    color: white;
-    padding: 10px;
-    border-radius: 4px;
+.otp-input {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
     text-align: center;
-    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    backdrop-filter: blur(8px);
 }
 
-.btn-cancel {
-    background-color: var(--grey);
-    color: white;
-    padding: 10px;
-    border-radius: 4px;
-    text-align: center;
-    display: block;
-    text-decoration: none;
-    border: none;
+.otp-input:focus {
+    outline: none;
+    border: 2px solid #ffffff;
 }
 
-button:hover {
-    opacity: 0.85;
-}
-
-form#form-cancel button {
+.btn-primary {
     width: 100%;
-    margin-top: 10px;
+    padding: 0.9rem;
+    background-color: #ffffff;
+    color: #1879ca;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.recovery-code-wrapper {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
+.btn-primary:hover {
+    background-color: #f0f0f0;
 }
 
-.recovery-code-wrapper a {
-    color: var(--off-white);
-    text-decoration: none;
+.bottom-text {
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 1.2rem;
 }
 
-.recovery-code-wrapper input {
-    margin-top: 1rem;
-    padding: 0.5rem;
+.bottom-text a {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: underline;
 }
 
-.d-none {
-    display: none;
+.error-msg {
+    color: #ffdddd;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    text-align: center;
 }
 
-@media screen and (max-width: 500px) {
-    .otp-box {
-        width: 95%;
-        padding: 1rem;
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .section-wrapper {
+        flex-direction: column;
+    }
+
+    .left-section, .right-section {
+        width: 100%;
+        border-radius: 0;
     }
 
     .otp-input {
-        width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
-    }
-
-    button {
-        font-size: 0.8rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
     }
 }
