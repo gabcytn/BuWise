@@ -7,15 +7,27 @@
         <div class="title-row">
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
         </div>
-        <select required name="date_range" id="date-range-select">
-            @if (request()->query('start') && request()->query('end'))
-                <option selected value="custom" id="custom-option">Custom</option>
-                <option value="all_time" id="alltime-option">All time</option>
-            @else
-                <option selected value="all_time" id="alltime-option">All time</option>
-                <option id="custom-option" value="custom">Custom</option>
-            @endif
-        </select>
+        <form action="{{ route('ledger.coa.show', [$account, $user]) }}" method="GET">
+            <select required name="period" id="date-range-select">
+                <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This year
+                </option>
+                <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>This month
+                </option>
+                <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>This week
+                </option>
+                <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>Last week
+                </option>
+                <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last
+                    month</option>
+                <option value="last_year" {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>Last year
+                </option>
+                <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>All time
+                </option>
+                <option id="custom-option" value="custom"
+                    {{ request()->query('start') && request()->query('end') ? 'selected' : '' }}>Custom</option>
+            </select>
+            <button type="submit">Run</button>
+        </form>
         <x-table-management :headers=$headers>
             <tr>
                 <td></td>

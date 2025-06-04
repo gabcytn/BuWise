@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountGroup;
 use App\Models\LedgerAccount;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -15,30 +17,72 @@ class TrialBalanceController extends Controller
     {
         Gate::authorize('trialBalance', LedgerAccount::class);
         $user = $request->user();
-        $clients = Cache::remember($user->id . '-clients', 3600, function () use ($user) {
+        $accId = getAccountantId($user);
+        $clients = Cache::remember($accId . '-clients', 3600, function () use ($user) {
             return getClients($user);
         });
 
-        // TODO: cache the db results
-        if ($request->query('client')) {
-            $request->validate([
-                'client' => ['uuid:4']
+        if (!$request->query('client')) {
+            return view('ledger.trial-balance', [
+                'clients' => $clients,
+                'data' => null,
             ]);
-            if ($request->query('start_date') && $request->query('end_date')) {
-                $request->validate([
-                    'start_date' => ['date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
-                    'end_date' => ['date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
-                ]);
-                $data = $this->getQuery($request->query('client'), $request->query('start_date'), $request->query('end_date'));
-            } else {
-                $data = $this->getQuery($request->query('client'));
-            }
         }
-
+        $client = User::find($request->client);
+        if (!$client)
+            abort(404);
+        if ($request->query('start_date') && $request->query('end_date')) {
+            $request->validate([
+                'start_date' => ['date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
+                'end_date' => ['date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
+            ]);
+            $data = $this->getQuery($request->client, $request->query('start_date'), $request->query('end_date'));
+        } else if ($request->query('period')) {
+            $request->validate([
+                'period' => 'in:this_year,this_month,this_week,last_week,last_month,last_year,all_time',
+            ]);
+            $period = $this->getStartAndEndDate($request->period);
+            $data = $this->getQuery($request->client, $period[0], $period[1]);
+        }
         return view('ledger.trial-balance', [
             'clients' => $clients,
-            'data' => $data ?? null,
+            'data' => $data,
         ]);
+    }
+
+    private function getStartAndEndDate(string $period): array
+    {
+        switch ($period) {
+            case 'all_time':
+                $start = Carbon::now()->subMillennium();
+                $end = Carbon::now()->endOfMillennium();
+                break;
+            case 'this_month':
+                $start = Carbon::now()->startOfMonth();
+                $end = Carbon::now()->endOfMonth();
+                break;
+            case 'this_week':
+                $start = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+                $end = Carbon::now()->endOfWeek(Carbon::SATURDAY);
+                break;
+            case 'last_week':
+                $start = Carbon::now()->subWeek()->startOfWeek(Carbon::SUNDAY);
+                $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY);
+                break;
+            case 'last_month':
+                $start = Carbon::now()->subMonthsNoOverflow()->startOfMonth();
+                $end = Carbon::now()->subMonthsNoOverflow()->endOfMonth();
+                break;
+            case 'last_year':
+                $start = Carbon::now()->subYear()->startOfYear();
+                $end = Carbon::now()->subYear()->endOfYear();
+                break;
+            default:
+                $start = Carbon::now()->startOfYear();
+                $end = Carbon::now()->endOfYear();
+                break;
+        }
+        return [$start, $end];
     }
 
     private function getQuery($clientId, $startDate = '1970-01-01', $endDate = '9999-12-31')

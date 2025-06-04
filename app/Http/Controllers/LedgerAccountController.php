@@ -47,22 +47,24 @@ class LedgerAccountController extends Controller
         $request->validate([
             'start' => [Rule::date()->format('Y-m-d')],
             'end' => [Rule::date()->format('Y-m-d')],
+            'period' => 'in:this_year,this_month,this_week,last_week,last_month,last_year,all_time',
         ]);
 
-        $defaultStart = new \DateTime('@0')->format('Y-m-d');
-        $start = $request->query('start') ?: $defaultStart;
+        $start = $request->query('start') ?: null;
+        $end = $request->query('end') ?: null;
 
-        $defaultEnd = new \DateTime('9999-12-31')->format('Y-m-d');
-        $end = $request->query('end') ?: $defaultEnd;
-
-        if ($request->query('start') && $request->query('end')) {
-            Log::info('Request has a custom date: calculating...');
+        if ($request->query('period')) {
+            $period = $this->getStartAndEndDate($request->period);
+            $start = $period[0];
+            $end = $period[1];
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
-        } else {
-            $data = Cache::remember('coa-' . $user->id . '-' . $ledgerAccount->id, 3600, function () use ($user, $ledgerAccount) {
-                Log::info('Recalculating COA cache...');
-                return $this->getQuery($ledgerAccount->id, $user->id);
-            });
+        } else if ($start && $end) {
+            $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
+        } else if (!$start && !$end) {
+            $period = $this->getStartAndEndDate('this_year');
+            $start = $period[0];
+            $end = $period[1];
+            $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         }
 
         $arr = $this->calculateTotalDebitsAndCredits($data, $start, $end);
@@ -156,6 +158,41 @@ class LedgerAccountController extends Controller
         return $query
             ->orderByRaw('transactions.date DESC')
             ->get();
+    }
+
+    private function getStartAndEndDate(string $period): array
+    {
+        switch ($period) {
+            case 'all_time':
+                $start = Carbon::now()->subMillennium();
+                $end = Carbon::now()->endOfMillennium();
+                break;
+            case 'this_month':
+                $start = Carbon::now()->startOfMonth();
+                $end = Carbon::now()->endOfMonth();
+                break;
+            case 'this_week':
+                $start = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+                $end = Carbon::now()->endOfWeek(Carbon::SATURDAY);
+                break;
+            case 'last_week':
+                $start = Carbon::now()->subWeek()->startOfWeek(Carbon::SUNDAY);
+                $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY);
+                break;
+            case 'last_month':
+                $start = Carbon::now()->subMonthsNoOverflow()->startOfMonth();
+                $end = Carbon::now()->subMonthsNoOverflow()->endOfMonth();
+                break;
+            case 'last_year':
+                $start = Carbon::now()->subYear()->startOfYear();
+                $end = Carbon::now()->subYear()->endOfYear();
+                break;
+            default:
+                $start = Carbon::now()->startOfYear();
+                $end = Carbon::now()->endOfYear();
+                break;
+        }
+        return [$start->format('Y-m-d'), $end->format('Y-m-d')];
     }
 
     public function getOpeningBalanceForAudit(int $accountId, string $clientId)

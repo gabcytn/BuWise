@@ -100,9 +100,22 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Transaction $invoice)
+    public function edit(Request $request, Transaction $invoice)
     {
-        //
+        $user = $request->user();
+        $image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
+            Log::info('Getting new temp. URL from AWS');
+            return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
+        });
+        $accId = getAccountantId($user);
+        $taxes = Tax::where('accountant_id', '=', $accId)
+            ->orWhere('accountant_id', '=', null)
+            ->get();
+        return view('invoices.edit', [
+            'invoice' => $invoice,
+            'image' => $image,
+            'taxes' => $taxes,
+        ]);
     }
 
     /**
@@ -110,7 +123,21 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Transaction $invoice)
     {
-        //
+        $request->validate([
+            'client' => ['required', 'uuid:4'],
+            'issue_date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31', Rule::date()->format('Y-m-d')],
+            'transaction_type' => ['required', 'in:sales,purchases'],
+            'invoice_number' => ['required', 'numeric'],
+            'description' => ['nullable', 'string', 'max:255'],
+        ]);
+        $invoice->client_id = $request->client;
+        $invoice->date = $request->issue_date;
+        $invoice->kind = $request->transaction_type;
+        $invoice->reference_no = $request->invoice_number;
+        $invoice->description = $request->description;
+        $invoice->save();
+
+        return to_route('invoices.show', $invoice);
     }
 
     /**

@@ -21,12 +21,16 @@ if (!function_exists('formatDate')) {
 if (!function_exists('getClients')) {
     function getClients(User $user)
     {
-        if ($user->role_id === Role::ACCOUNTANT) {
-            return $user->clients;
-        } else if ($user->role_id !== Role::CLIENT) {
-            return $user->accountant->clients;
+        switch ($user->role_id) {
+            case Role::ACCOUNTANT:
+                return $user->clients;
+            case Role::LIAISON:
+            case Role::CLERK:
+                return $user->accountant->clients;
+            default:
+                abort(403);
+                break;
         }
-        return null;
     }
 }
 
