@@ -4,24 +4,11 @@ const dateRangeForm = document.querySelector("#date-range-form");
 
 dateRangeSelect.addEventListener("change", () => {
     const val = dateRangeSelect[dateRangeSelect.selectedIndex].value;
-    switch (val) {
-        case "custom":
-            dateRangeDialog.showModal();
-            break;
-        case "all_time":
-            location.href = location.origin + location.pathname;
-            break;
-        default:
-            break;
-    }
+    if (val === "custom") dateRangeDialog.showModal();
 });
 
 document.querySelector("#custom-option").addEventListener("click", () => {
     dateRangeDialog.showModal();
-});
-
-document.querySelector("#alltime-option").addEventListener("click", () => {
-    location.href = location.origin + location.pathname;
 });
 
 document
