@@ -1,6 +1,11 @@
 <x-root-layout>
     @vite('resources/css/auth/verify-email.css')
+
     <div class="container">
+        <img src="{{ asset('images/Buwiselogo.png') }}" alt="BuWise Logo" class="logo" />
+
+        <h1 class="title">Successful!</h1>
+
         <p id="greeting">
             {{ __('Thanks for signing up! Before getting started, please verify your email address by clicking on the link we just emailed to you.') }}
         </p>

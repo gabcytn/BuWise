@@ -61,3 +61,16 @@ form.addEventListener("submit", (e) => {
         e.preventDefault();
     }
 })
+
+
+// Password toggle functionality
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+    icon.addEventListener("click", () => {
+        const input = icon.previousElementSibling;
+        const isPassword = input.getAttribute("type") === "password";
+        input.setAttribute("type", isPassword ? "text" : "password");
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+    });
+});
+

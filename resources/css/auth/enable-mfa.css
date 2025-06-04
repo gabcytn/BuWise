@@ -1,158 +1,142 @@
-body {
-    background-color: var(--dark-blue);
-    color: var(--off-white);
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--off-white);
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+:root {
+    --primary: #1B80C3;
+    --background: #F4FBFF;
+    --white: #FFFFFF;
+    --green: #609950;
 }
 
-.container {
-    background-color: var(--dark-blue-secondary);
-    max-width: 500px;
-    width: 80%;
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--background);
+    color: var(--primary);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    max-width: 600px;
-    margin: 0 auto;
-    gap: 1rem;
-    border-radius: 10px;
-}
-
-#title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--off-white);
+    min-height: 100vh;
     text-align: center;
 }
 
-#subtitle {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: var(--off-white);
-    text-align: center;
+.logo {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
 }
 
 form {
     width: 100%;
     max-width: 320px;
-    display: flex;
-    flex-direction: column;
-}
-
-#enable-mfa-button {
-    background-color: var(--green);
-}
-
-#submit-code-button {
-    margin-top: 1rem;
-    background-color: var(--green);
-}
-
-#logout-button {
-    background-color: var(--grey);
-}
-
-button {
-    color: var(--off-white);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-}
-
-button:hover {
-    opacity: 0.85;
-}
-
-button[type="submit"] {
-    width: 100%;
+    margin-bottom: 20px;
 }
 
 input {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
-    background-color: white;
-    transition: border-color 0.2s ease;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
-input:focus {
-    outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+.primary-button,
+.logout-button {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: var(--white);
 }
 
-label {
-    font-weight: 500;
-    color: #4a5568;
-    margin-bottom: 0.25rem;
+.primary-button {
+    background-color: var(--green);
 }
 
-ul {
-    list-style-position: inside;
+.primary-button:hover {
+    background-color: #4d7a3e;
+}
+
+.logout-button {
+    background-color: var(--primary);
+}
+
+.logout-button:hover {
+    background-color: #166aa2;
+}
+
+.recovery-codes {
+    list-style: none;
+    padding: 0;
+    background-color: #f0f8ff;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: left;
     width: 100%;
     max-width: 320px;
-    padding: 1rem;
-    background-color: var(--off-white);
-    border-radius: 0.375rem;
 }
 
-li {
+.recovery-codes li {
     font-family: monospace;
-    font-size: 0.9rem;
-    padding: 0.25rem 0;
-    color: #64748b;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #555;
 }
 
-a {
-    color: var(--off-white);
+.recovery-codes li:last-child {
+    border-bottom: none;
+}
+
+.link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary);
     text-decoration: underline;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-a:hover {
+.link:hover {
     text-decoration: none;
 }
 
-#confirmed-mfa {
-    color: var(--green);
-    text-align: center;
+.qr-code svg {
+    margin: 20px 0;
+    background-color: var(--white);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    max-width: 180px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#recovery-code-reminder {
-    text-align: center;
-}
-
-/* QR code */
-svg {
-    margin: 1rem 0;
-    border: 1px solid #e2e8f0;
-    padding: 0.5rem;
-    background-color: var(--off-white);
-    border-radius: 0.375rem;
-}
-
-@media screen and (max-width: 500px) {
-    .container {
-        width: 95%;
-        padding: 1rem;
+@media (max-width: 480px) {
+    .title {
+        font-size: 22px;
     }
 
-    #title,
-    #subtitle {
-        font-size: 1rem;
-    }
-
-    button {
-        font-size: 0.75rem;
+    .primary-button,
+    .logout-button {
+        font-size: 13px;
     }
 }
