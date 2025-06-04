@@ -1,7 +1,7 @@
 <x-app-layout>
     @php
         $headers = [
-            'Journal ID',
+            'Reference No.',
             'Client Name',
             'Transaction Type',
             'Description',
@@ -88,7 +88,7 @@
                     @foreach ($entries as $key => $entry)
                         <tr class="journal-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
                             <td>
-                                <p>{{ $entry->id }}</p>
+                                <p>{{ $entry->reference_no }}</p>
                             </td>
                             <td>
                                 <p>{{ $entry->client_name }}</p>

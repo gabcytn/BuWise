@@ -95,6 +95,7 @@ class JournalIndex
                 'je.id',
                 'client.name as client_name',
                 'creator.name as creator',
+                'je.reference_no',
                 'je.kind as transaction_type',
                 'je.status AS status',
                 'je.description',

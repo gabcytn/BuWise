@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Jobs\DispatchMissingInvoiceJob;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Transaction;
@@ -29,35 +30,29 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
     {
         try {
             DB::beginTransaction();
-            switch ($this->transaction_type) {
-                case 'sales':
-                    $this->handleSales($rows);
-                    break;
-                case 'purchases':
-                    $this->handlePurchases($rows);
-                    break;
-                default:
-                    break;
+            $invoice_numbers = [];
+            foreach ($rows as $row) {
+                $validated_row = $this->validateRow($row);
+                if (!$validated_row)
+                    continue;
+                switch ($this->transaction_type) {
+                    case 'sales':
+                        $this->salesEntry($validated_row);
+                        break;
+                    case 'purchases':
+                        $this->purchasesEntry($validated_row);
+                        break;
+                    default:
+                        break;
+                }
+                $invoice_numbers[] = $validated_row[0];
             }
+            DispatchMissingInvoiceJob::dispatch($this->creator_id, $this->client_id, $invoice_numbers);
             DB::commit();
             Log::info('Successfully migrated data');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-        }
-    }
-
-    private function handleSales(Collection $rows)
-    {
-        foreach ($rows as $row) {
-            $this->salesEntry($row);
-        }
-    }
-
-    private function handlePurchases(Collection $rows)
-    {
-        foreach ($rows as $row) {
-            $this->purchasesEntry($row);
         }
     }
 
@@ -89,9 +84,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
 
     private function salesEntry(Collection $row)
     {
-        $row = $this->validateRow($row);
-        if (!$row)
-            return;
         $tr = $this->createTransaction($row);
         $tax_entry = LedgerEntry::create([
             'transaction_id' => $tr->id,
