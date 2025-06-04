@@ -1,32 +1,75 @@
-@php
+@php  
     $headers = ['ACCOUNT CODE', 'ACCOUNT NAME', 'ACCOUNT TYPE'];
 @endphp
-@vite('resources/js/ledger/coa.js')
+@vite(['resources/js/ledger/coa.js', 'resources/css/ledger/coa.css'])
+
 <x-app-layout>
-    <div class="container" style="max-width: 1000px; width: 90%; margin: 0 auto;">
-        <div style="">
-            <h2 id="page-title" style="margin-top: 1.5rem;">All Accounts</h2>
-            <p style="font-size: 0.85rem;">View and manage all ledger accounts</p>
+    <div class="coa-page-header">
+        <div class="left">
+            <h2>All Accounts</h2>
+            <p>Manage your organization’s Chart of Accounts</p>
         </div>
-        <div class="" style="margin-top: 1rem;">
-            <form action="" method="GET" id="ledger-form">
-                <select id="client-select" required>
-                    <option value="" selected disabled>Select a client</option>
-                    @foreach ($clients as $client)
-                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+        <div class="right" style="display: flex; align-items: center; gap: 0.5rem;">
+    <button class="add-account-btn">+ Add Account</button>
+    <button class="more-btn" aria-label="More options">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1f2d3d">
+            <circle cx="12" cy="5" r="2"/>
+            <circle cx="12" cy="12" r="2"/>
+            <circle cx="12" cy="19" r="2"/>
+        </svg>
+    </button>
+</div>
+
+
+    </div>
+
+    <div class="coa-box">
+        <div class="coa-controls">
+            <div class="coa-filters">
+<button class="filter-btn">
+    <img src="{{ asset('images/filterbyicon.png') }}" alt="Filter Icon" class="btn-icon left-icon">
+    <span>Filter by: Type</span>
+    <img src="{{ asset('images/menudown.png') }}" alt="Menu Down" class="btn-icon menu-down-icon">
+</button>
+
+
+                <div class="client-select-wrapper">
+                    <img src="{{ asset('images/allclientsicon.png') }}" alt="Client Icon" class="btn-icon left-icon client-icon">
+                    <select class="client-select">
+                        <option value="" selected disabled>All Clients</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                        @endforeach
+                    </select>
+                    <img src="{{ asset('images/menudown.png') }}" alt="Menu Down" class="btn-icon right-icon dropdown-icon">
+                </div>
+            </div>
+
+           <div class="search-wrapper"> 
+    <img src="{{ asset('images/magnify.png') }}" alt="Search Icon" class="search-icon">
+    <input type="search" id="account-search" placeholder="Search Accounts.." />
+</div>
+        </div>
+
+        <div class="coa-table-wrapper">
+            <table class="coa-table">
+                <thead>
+                    <tr>
+                        @foreach ($headers as $header)
+                            <th>{{ $header }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($accounts as $account)
+                        <tr class="ledger-account" data-account-code="{{ $account->id }}">
+                            <td>{{ $account->code }}</td>
+                            <td>{{ $account->name }}</td>
+                            <td>{{ ucfirst($account->accountGroup->name) }}</td>
+                        </tr>
                     @endforeach
-                </select>
-            </form>
-            <input type="search" id="search" placeholder="Search" />
+                </tbody>
+            </table>
         </div>
-        <x-table-management :headers=$headers>
-            @foreach ($accounts as $account)
-                <tr data-account-code="{{ $account->id }}" class="ledger-account" style="cursor: pointer;">
-                    <td>{{ $account->code }}</td>
-                    <td>{{ $account->name }}</td>
-                    <td>{{ ucfirst($account->accountGroup->name) }}</td>
-                </tr>
-            @endforeach
-        </x-table-management>
     </div>
 </x-app-layout>

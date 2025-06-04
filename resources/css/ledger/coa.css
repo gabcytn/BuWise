@@ -1,0 +1,205 @@
+ /* Page header */
+.coa-page-header {
+    max-width: 1200px;
+    margin: 2rem auto 1.5rem auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.coa-page-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2d3d;
+    margin-bottom: 0.25rem;
+}
+
+.coa-page-header p {
+    font-size: 0.85rem;
+    color: #66788a;
+}
+
+.coa-page-header .add-account-btn {
+    background-color: #1B80C3;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* White container */
+.coa-box {
+    background: #fff;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Controls */
+.coa-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.coa-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-btn {
+    background: #f0f4f8;
+    border: 1px solid #cbd5e0;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+        position: relative;
+    padding-right: 2rem; /* Add space for right-side icon */
+}
+.menu-down-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+.search-wrapper .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+.more-btn {
+    background: #f0f4f8;
+    border: 1px solid #cbd5e0;
+    padding: 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.more-btn .btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Select wrapper */
+.client-select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.client-select-wrapper .client-select {
+    padding: 0.45rem 0.8rem;
+    padding-left: 32px;
+    padding-right: 40px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    appearance: none;
+}
+
+/* Icons */
+.btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.left-icon {
+    margin-right: 6px;
+}
+
+.right-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.client-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Search */
+.search-wrapper {
+    position: relative;
+    width: 220px;
+}
+
+.search-wrapper .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.search-wrapper input[type="search"] {
+    padding: 0.5rem 1rem 0.5rem 2.2rem;
+    border-radius: 6px;
+    border: 1px solid #cbd5e0;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+/* Table */
+.coa-table-wrapper {
+    overflow-x: auto;
+}
+
+.coa-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: white;
+}
+
+.coa-table thead {
+    background-color: #1B80C3;
+    color: white;
+}
+
+.coa-table th, .coa-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.ledger-account {
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.ledger-account:hover {
+    background-color: #f4f7fa;
+}
