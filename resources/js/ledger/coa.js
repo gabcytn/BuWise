@@ -1,6 +1,6 @@
 const ledgerAccounts = document.querySelectorAll(".ledger-account");
 const mainForm = document.querySelector("#ledger-form");
-const clientSelect = document.querySelector("#client-select");
+const clientSelect = document.querySelector(".client-select");
 
 // Handle account row clicks
 ledgerAccounts.forEach((account) => {
@@ -37,3 +37,31 @@ document.querySelector("#account-search").addEventListener("input", (e) => {
         }
     }
 });
+
+const dialog = document.querySelector("#add-new-account");
+document.querySelector(".add-account-btn").addEventListener("click", () => {
+    dialog.showModal();
+});
+document
+    .querySelector("#close-account-dialog-btn")
+    .addEventListener("click", () => {
+        dialog.close();
+    });
+
+const accountType = document.querySelector("select#account-type");
+const accountCode = document.querySelector("input#account-code");
+
+accountCode.addEventListener("input", validateAccountCodePrefix);
+accountType.addEventListener("change", validateAccountCodePrefix);
+
+function validateAccountCodePrefix() {
+    const accountTypeValue = accountType[accountType.selectedIndex].value;
+    if (
+        accountCode.value &&
+        accountTypeValue &&
+        !accountCode.value.startsWith(accountTypeValue)
+    ) {
+        alert(`Account Code should start with a ${accountTypeValue}`);
+        accountCode.value = "";
+    }
+}

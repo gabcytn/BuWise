@@ -18,9 +18,9 @@ class LedgerAccount extends Model
     public const GENERAL_EXPENSE = 36;
 
     protected $fillable = [
-        'id',
+        'code',
         'account_group_id',
-        'client_id',
+        'accountant_id',
         'name',
     ];
 

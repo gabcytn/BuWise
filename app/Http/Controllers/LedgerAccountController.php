@@ -30,11 +30,14 @@ class LedgerAccountController extends Controller
         $accounts = LedgerAccount::with('accountGroup')
             ->where('accountant_id', $accId)
             ->orWhere('accountant_id', null)
+            ->orderBy('code')
             ->get();
+        $accountGroups = AccountGroup::all();
 
         return view('ledger.coa', [
             'clients' => $clients,
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'accountGroups' => $accountGroups,
         ]);
     }
 
@@ -201,5 +204,27 @@ class LedgerAccountController extends Controller
         $res = $this->getQuery($accountId, $clientId, $endDate);
         $res = $this->calculateTotalDebitsAndCredits($res, '1970-01-01', $endDate);
         return $res;
+    }
+
+    public function createAccount(Request $request)
+    {
+        $request->validate([
+            'account_type' => 'required|in:1,2,3,4,5',
+            'account_code' => 'required|numeric',
+            'account_name' => 'required|string|max:100',
+            'account_description' => 'nullable|string|max:255',
+        ]);
+
+        if (!str_starts_with($request->account_code, $request->account_type))
+            return redirect()->back()->withErrors(['error' => 'Account code prefix is incorrect']);
+
+        LedgerAccount::create([
+            'code' => $request->account_code,
+            'account_group_id' => $request->account_type,
+            'accountant_id' => $request->user()->id,
+            'name' => $request->account_name
+        ]);
+
+        return redirect()->back()->with(['status' => 'Account created successfully!']);
     }
 }

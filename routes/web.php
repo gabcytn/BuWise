@@ -62,6 +62,8 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     // ledger routes
     Route::get('/ledger/chart-of-accounts', [LedgerAccountController::class, 'chartOfAccounts'])
         ->name('ledger.coa');
+    Route::post('/ledger/chart-of-accounts', [LedgerAccountController::class, 'createAccount'])
+        ->name('ledger.create-account');
     Route::get('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'showAccount'])
         ->name('ledger.coa.show');
     Route::get('/ledger/trial-balance', [TrialBalanceController::class, 'index'])

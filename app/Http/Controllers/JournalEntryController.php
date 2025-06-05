@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events\JournalEntryCreated;
-use App\Events\TransactionCreated;
-use App\Imports\SalesImport;
 use App\Jobs\ParseExcelUpload;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Role;
-use App\Models\Status;
 use App\Models\Tax;
 use App\Models\Transaction;
-use App\Models\TransactionType;
 use App\Services\JournalIndex;
 use App\Services\JournalShow;
 use App\Services\JournalStore;
@@ -21,8 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 use DateTime;
 
 class JournalEntryController extends Controller
@@ -58,7 +52,10 @@ class JournalEntryController extends Controller
             return Tax::where('accountant_id', $accId)->orWhere('accountant_id', null)->get();
         });
 
-        $accounts = LedgerAccount::all();
+        $accounts = LedgerAccount::where('accountant_id', $accId)
+            ->orWhere('accountant_id', null)
+            ->orderBy('code')
+            ->get();
 
         return view('journal-entries.create', [
             'taxes' => $taxes,
