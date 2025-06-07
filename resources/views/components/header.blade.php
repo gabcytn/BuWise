@@ -1,9 +1,9 @@
-@vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css'])
+@vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css', 'resources/css/components/notifs.css'])
 <div class="header-container">
     <header class="header-sm">
         <i class="fa-solid fa-bars"></i>
         <div class="header-side">
-            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-bell" id="notifToggle"></i>
             <div class="header-side__account" style="cursor: pointer;">
                 @php
                     $profileImg = request()->user()->profile_img;
@@ -29,6 +29,77 @@
         </div>
     </header>
 </div>
+
+<!-- Notification Panel -->
+<div class="notifications-panel d-none" id="notificationPanel">
+    <div class="notifications-header">
+        <span>Notifications</span>
+        <div class="notification-filter">
+            <button class="dropdown-toggle" onclick="toggleDropdown()">All <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="dropdown-menu" id="notifDropdown">
+                <button>All</button>
+                <button>Unread</button>
+                <button>Important</button>
+                <button>New Client</button>
+                <button>New Invoice</button>
+                <button>New Entry</button>
+                <button>New Login</button>
+            </div>
+        </div>
+    </div>
+    <div class="notifications-list" id="notifList">
+        <div class="notification-item">
+            <i class="fa-solid fa-user-check notification-icon"></i>
+            <div class="notification-content">
+                <div class="notification-title">New User Registered</div>
+                <div class="notification-time">1 minute ago</div>
+            </div>
+            <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+        <div class="notification-item">
+            <i class="fa-solid fa-user-check notification-icon"></i>
+            <div class="notification-content">
+                <div class="notification-title">New User Registered</div>
+                <div class="notification-time">1 minute ago</div>
+            </div>
+            <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+        <div class="notification-item">
+            <i class="fa-solid fa-user-plus notification-icon"></i>
+            <div class="notification-content">
+                <div class="notification-title">New Client Added</div>
+                <div class="notification-time">2 minutes ago</div>
+            </div>
+            <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+            
+        <div class="notification-item">
+            <i class="fa-solid fa-triangle-exclamation notification-icon"></i>
+            <div class="notification-content">
+                <div class="notification-title">Missing Invoice</div>
+                <div class="notification-time">3 minutes ago</div>
+            </div>
+            <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+        <div class="notification-item">
+            <i class="fa-solid fa-envelope-open-text notification-icon"></i>
+            <div class="notification-content">
+                <div class="notification-title">Camille Garcia added a new contact</div>
+                <div class="notification-time">10 minutes ago</div>
+            </div>
+            <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+        <div class="notification-item">
+            <i class="fa-solid fa-user-clock notification-icon"></i>
+            <div class="notification-content">
+                <div class="notification-title">Lailanie Joyeyo made a new Journal Entry</div>
+                <div class="notification-time">30 minutes ago</div>
+            </div>
+            <span class="notification-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+    </div>
+</div>
+
 <dialog class="confirm-logout-dialog">
     <h3 style="text-align: center; margin: 1rem 0;">Confirm Logout</h3>
     <form action="/logout" method="POST">
@@ -37,3 +108,22 @@
         <button style="margin-left: 0.25rem;" type="button">Cancel</button>
     </form>
 </dialog>
+
+<!-- Optional JavaScript to toggle notifications -->
+<script>
+    document.getElementById('notifToggle').addEventListener('click', () => {
+        document.getElementById('notificationPanel').classList.toggle('d-none');
+    });
+
+    function toggleDropdown() {
+        const dropdown = document.getElementById('notifDropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    window.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('notifDropdown');
+        if (!e.target.closest('.notification-filter')) {
+            dropdown.classList.remove('active');
+        }
+    });
+</script>
