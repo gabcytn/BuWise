@@ -91,8 +91,8 @@
             <div class="nav-section">
                 <p>Reports</p>
                 <div class="nav-section__item">
-                    <li>
-                        <a href="#">
+                    <li class="{{ request()->routeIs('reports.insights') ? 'active-tab' : '' }}">
+                        <a href="{{ route('reports.insights') }}">
                             <i class="fa-solid fa-chart-line"></i>
                             Insights
                         </a>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IncomeStatementController;
+use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
@@ -14,6 +15,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
 
@@ -78,6 +80,29 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/reports/balance-sheet', [BalanceSheetController::class, 'index'])->name('reports.balance-sheet');
     Route::get('/reports/income-statement', [IncomeStatementController::class, 'index'])->name('reports.income-statement');
     Route::get('/reports/working-paper', [WorkingPaperController::class, 'index'])->name('reports.working-paper');
+    Route::get('/reports/insights', [InsightsController::class, 'index'])->name('reports.insights');
+
+    Route::get('/cash-flow/{user}', function (User $user) {
+        $data = DB::table('ledger_entries AS le')
+            ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')
+            ->join('users', 'users.id', '=', 'tr.client_id')
+            ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
+            ->join('account_groups AS acc_group', 'acc_group.id', '=', 'acc.account_group_id')
+            ->whereIn('le.account_id', [1, 2, 3, 4])
+            ->where('users.id', '=', $user->id)
+            ->select(
+                'acc.code',
+                'acc.name AS acc_name',
+                'acc_group.name AS acc_group',
+                'tr.date',
+                'tr.kind',
+                'le.amount',
+                'le.entry_type',
+            )
+            ->orderBy('tr.date')
+            ->get();
+        return json_decode(json_encode($data));
+    });
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
