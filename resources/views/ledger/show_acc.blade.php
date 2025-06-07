@@ -81,7 +81,9 @@
         <button type="button" id="back-button">Go Back</button>
     </div>
 
-    <dialog id="set-custom-date-range-dialog">
+<dialog id="set-custom-date-range-dialog">
+    <div class="dialog-container">
+        <div class="dialog-header">Custom Date</div>
         <h2>Choose starting and ending date</h2>
         <form id="date-range-form">
             <div class="date-input-wrapper">
@@ -93,5 +95,7 @@
                 <button type="button">Cancel</button>
             </div>
         </form>
-    </dialog>
+    </div>
+</dialog>
+
 </x-app-layout>
