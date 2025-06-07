@@ -1,57 +1,140 @@
-.invoice-container {
-    max-width: 1000px;
-    width: 90%;
-    margin: 20px auto;
+/* Layout container */
+.dashboard-wrapper {
     font-family: 'Segoe UI', sans-serif;
-    color: #2c3e50;
 }
 
+/* Header Row (Title + Button) */
+.invoice-header-row {
+    max-width: 1200px;
+    margin: 2rem auto 1rem;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Header */
 .invoice-header h2 {
-    font-size: 28px;
-    margin-bottom: 5px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2d3d;
+    margin-bottom: 0.25rem;
 }
 
 .invoice-header p {
-    font-size: 14px;
-    color: #666;
+    font-size: 0.9rem;
+    color: #66788a;
 }
 
+/* Button Toolbar (inside flex row) */
+.top-toolbar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Toolbar container */
 .invoice-toolbar {
+    max-width: 1200px;
+    margin: 0 auto 1.5rem;
+    padding: 0 2rem;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 1rem;
 }
 
-.invoice-toolbar select,
-.invoice-toolbar input {
-    padding: 8px 12px;
-    font-size: 14px;
-    border: 1px solid #ccc;
+/* Fixed select padding */
+.invoice-toolbar select {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+    padding-left: 2.8rem;
+    padding-right: 2.5rem;
+    background-repeat: no-repeat;
+    background-position: left 12px center, right 12px center;
+    background-size: 18px 18px, 14px 14px;
+    border: 1px solid #cbd5e0;
     border-radius: 6px;
+    font-size: 0.9rem;
     min-width: 180px;
+    background-color: white;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Selects & search input */
+.invoice-toolbar input {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 180px;
+    background-color: white;
 }
 
 .search-input {
+    position: relative;
     flex-grow: 1;
 }
 
-.btn-new-invoice {
-    background-color: #007bff;
-    color: #fff;
-    padding: 8px 14px;
+.search-input input {
+    padding: 0.5rem 1rem 0.5rem 2.2rem; /* Leave space for icon on left */
+    width: 100%;
+    font-size: 0.95rem;
+    border: 1px solid #cbd5e0;
     border-radius: 6px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+ .more-btn {
+     background: #f0f4f8;
+     border: 1px solid #cbd5e0;
+     padding: 0.4rem;
+     border-radius: 6px;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 36px;
+     height: 36px;
+ }
+
+ .more-btn .btn-icon {
+     width: 16px;
+     height: 16px;
+ }
+
+
+/* New Invoice Button */
+.btn-new-invoice {
+    background-color: #1B80C3;
+    color: white;
+    padding: 0.5rem 1.2rem;
     border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
     cursor: pointer;
-    white-space: nowrap;
-    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .btn-new-invoice:hover {
-    background-color: #0056b3;
+    opacity: 0.9;
 }
 
+/* Dropdown */
 .dropdown {
     position: relative;
 }
@@ -59,15 +142,15 @@
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
+    top: 110%;
     right: 0;
     background: white;
     border: 1px solid #ccc;
     border-radius: 6px;
-    padding: 8px 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     min-width: 160px;
+    z-index: 999;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -76,45 +159,56 @@
 
 .dropdown-menu a {
     display: block;
-    padding: 8px 16px;
-    font-size: 14px;
+    padding: 0.5rem 1rem;
     color: #333;
+    font-size: 0.9rem;
     text-decoration: none;
-    transition: background 0.2s;
 }
 
 .dropdown-menu a:hover {
-    background-color: #f0f0f0;
+    background-color: #f0f4f8;
 }
 
+/* Invoice container */
+.invoice-container {
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Table */
 .invoice-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 14px;
+    font-size: 0.95rem;
+    background: white;
+    margin-top: 1.5rem;
+}
+
+.invoice-table thead {
+    background-color: #1B80C3;
+    color: white;
 }
 
 .invoice-table th,
 .invoice-table td {
-    padding: 10px 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e0e0e0;
+    text-align: center;
     vertical-align: middle;
 }
 
-.invoice-table th {
-    background-color: #f5f5f5;
-    font-weight: bold;
-}
-
+/* Status pills */
 .status {
-    padding: 4px 10px;
+    padding: 0.4rem 0.75rem;
     border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 0.75rem;
+    font-weight: 600;
     display: inline-block;
-    text-align: center;
-    min-width: 60px;
+    min-width: 70px;
 }
 
 .status.unpaid {
@@ -127,14 +221,20 @@
     color: #27ae60;
 }
 
+/* Actions */
 .action-view,
 .action-edit,
 .action-delete {
-    margin-right: 8px;
+    margin-right: 6px;
+    display: inline-block;
+    vertical-align: middle;
     text-decoration: none;
-    font-size: 16px;
-    color: #333;
-    transition: transform 0.2s;
+}
+
+.action-view img,
+.action-edit img,
+.action-delete img {
+    display: block;
 }
 
 .action-view:hover,
@@ -147,4 +247,22 @@
 .action-delete button {
     background: none;
     border: none;
+    padding: 0;
+    margin: 0;
 }
+
+.action-delete {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+}
+
+.action-delete:focus,
+.action-delete:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
