@@ -1,34 +1,48 @@
-.invoice-container {
-    padding: 20px;
+body {
     font-family: 'Segoe UI', sans-serif;
+    background-color: #f7f9fc;
+}
+
+.invoice-container {
+    background: white;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .page-header {
+    margin-bottom: 30px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .page-title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 600;
-    margin-bottom: 20px;
+    color: #2a2e3f;
 }
 
+.page-header select {
+    width: 250px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+
 .invoice-form {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
     margin-bottom: 30px;
 }
 
-.form-section.left {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-placeholder {
-    width: 200px;
+.form-section.left .image-placeholder {
+    width: 100%;
     height: 260px;
     border: 2px dashed #ccc;
     display: flex;
@@ -36,13 +50,13 @@
     justify-content: center;
     color: #999;
     background-color: #f8f8f8;
+    border-radius: 10px;
 }
 
 .form-section.right {
-    flex: 2;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 20px;
 }
 
 .form-row {
@@ -50,66 +64,96 @@
     flex-direction: column;
 }
 
+.form-row label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
 .form-row input,
 .form-row select {
-    padding: 8px;
+    padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 6px;
-}
-
-.form-row small {
-    font-size: 12px;
-    color: #666;
-    margin-top: 4px;
+    background-color: #fff;
 }
 
 .invoice-items-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
     font-size: 14px;
+    margin-top: 10px;
+}
+
+.invoice-items-table thead {
+    background-color: #1B80C3;
+    color: white;
 }
 
 .invoice-items-table th,
 .invoice-items-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    border: 1px solid #dee2e6;
+    padding: 10px;
     text-align: center;
+}
+
+.invoice-items-table tfoot td {
+    font-weight: bold;
+    background-color: #f1f1f1;
 }
 
 .invoice-items-table input,
 .invoice-items-table select {
-    width: 100%;
     padding: 6px;
     font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 20px;
 }
 
 .btn {
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: 14px;
     border-radius: 6px;
-    border: none;
     cursor: pointer;
+    border: none;
 }
 
 .btn.add-row {
     background-color: #e8f0fa;
-    color: #007bff;
+    color: #1B80C3;
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: #1B80C3;
     color: white;
 }
 
 .btn-secondary {
-    background-color: #ccc;
-    color: black;
+    background-color: #e2e2e2;
+    color: #333;
+}
+
+.submit-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.error-text {
+    color: red;
+    font-size: 0.85rem;
+    margin: 0.5rem;
+}
+
+.status-text {
+    color: green;
+    font-size: 0.85rem;
+    margin: 0.5rem;
 }

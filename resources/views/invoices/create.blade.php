@@ -6,6 +6,7 @@
     <title>Add Invoice</title>
     @vite(['resources/css/invoices/add.css', 'resources/js/invoices/create.js'])
 </head>
+
 <x-app-layout>
     <select name="tax" class="d-none">
         <option value="0" data-tax-value="0" selected>No Tax</option>
@@ -14,9 +15,12 @@
                 {{ strtoupper($tax->name) . ' (' . $tax->value . ' %)' }}</option>
         @endforeach
     </select>
+
     <input class="d-none" id="discount" type="number" placeholder="20" step="0.01" />
+
     <form class="invoice-container" method="POST" action="{{ route('invoices.store') }}" enctype="multipart/form-data">
         @csrf
+
         <div class="page-header">
             <h2 class="page-title">Add Invoice</h2>
             <select name="client" required>
@@ -27,8 +31,8 @@
                 @endforeach
             </select>
         </div>
-        <div class="invoice-form">
 
+        <div class="invoice-form">
             <div class="form-section left">
                 <div class="image-placeholder">
                     <input name="image" type="file" required value="{{ old('image') }}" />
@@ -43,24 +47,20 @@
                 <div class="form-row">
                     <label>Transaction Type</label>
                     <select required name="transaction_type">
-                        <option {{ old('transaction_type') === 'purchases' ? 'selected' : '' }} value="purchases">
-                            Purchases</option>
-                        <option {{ old('transaction_type') === 'sales' ? 'selected' : '' }} value="sales">Sales
-                        </option>
+                        <option {{ old('transaction_type') === 'purchases' ? 'selected' : '' }} value="purchases">Purchases</option>
+                        <option {{ old('transaction_type') === 'sales' ? 'selected' : '' }} value="sales">Sales</option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label>Invoice Number</label>
-                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required
-                        value="{{ old('invoice_number') }}" />
+                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required value="{{ old('invoice_number') }}" />
                 </div>
                 <div class="form-row">
                     <label>Payment Method</label>
                     <select name="payment_method" required>
                         <option selected disabled value="">Select Payment Type</option>
                         <option {{ old('payment_method') === 'cash' ? 'selected' : '' }} value="cash">Cash</option>
-                        <option {{ old('payment_method') === 'bank' ? 'selected' : '' }} value="bank">Bank Transfer
-                        </option>
+                        <option {{ old('payment_method') === 'bank' ? 'selected' : '' }} value="bank">Bank Transfer</option>
                     </select>
                 </div>
                 <div class="form-row">
@@ -71,10 +71,10 @@
         </div>
 
         @if ($errors->any())
-            <p style="color: red; font-size: 0.85rem; margin: 0.5rem;">{{ $errors->first() }}</p>
+            <p class="error-text">{{ $errors->first() }}</p>
         @endif
         @if (session('status'))
-            <p style="color: var(--green); font-size: 0.85rem; margin: 0.5rem;">{{ session('status') }}</p>
+            <p class="status-text">{{ session('status') }}</p>
         @endif
 
         <table class="invoice-items-table">
@@ -89,10 +89,13 @@
                 </tr>
             </thead>
             <tbody id="table-body">
+                <!-- JS will append rows here -->
             </tbody>
             <tfoot>
-                <td colspan="5"><strong>TOTAL</strong></td>
-                <td id="total-sum">0.00</td>
+                <tr>
+                    <td colspan="5"><strong>Total</strong></td>
+                    <td id="total-sum">0.00</td>
+                </tr>
             </tfoot>
         </table>
 
