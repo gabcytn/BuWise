@@ -70,6 +70,10 @@ if (!function_exists('getStartAndEndDate')) {
                 $start = Carbon::now()->subYear()->startOfYear();
                 $end = Carbon::now()->subYear()->endOfYear();
                 break;
+            case 'today':
+                $start = Carbon::today();
+                $end = Carbon::today();
+                break;
             default:
                 $start = Carbon::now()->startOfYear();
                 $end = Carbon::now()->endOfYear();
