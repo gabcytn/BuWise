@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Response;
 
 class ReportsController extends Controller
 {
-    public function incomeStatemetn(Request $request)
+    public function incomeStatement(Request $request)
     {
         $request->validate([
             'period' => 'required|in:this_year,this_month,this_week,today,last_week,last_month,last_year,all_time',
