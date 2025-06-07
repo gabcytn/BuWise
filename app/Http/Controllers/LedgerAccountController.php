@@ -56,14 +56,14 @@ class LedgerAccountController extends Controller
         $end = $request->query('end') ?: null;
 
         if ($request->query('period')) {
-            $period = $this->getStartAndEndDate($request->period);
+            $period = getStartAndEndDate($request->period);
             $start = $period[0];
             $end = $period[1];
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         } else if ($start && $end) {
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         } else if (!$start && !$end) {
-            $period = $this->getStartAndEndDate('this_year');
+            $period = getStartAndEndDate('this_year');
             $start = $period[0];
             $end = $period[1];
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
@@ -160,41 +160,6 @@ class LedgerAccountController extends Controller
         return $query
             ->orderByRaw('transactions.date DESC')
             ->get();
-    }
-
-    private function getStartAndEndDate(string $period): array
-    {
-        switch ($period) {
-            case 'all_time':
-                $start = Carbon::now()->subMillennium();
-                $end = Carbon::now()->endOfMillennium();
-                break;
-            case 'this_month':
-                $start = Carbon::now()->startOfMonth();
-                $end = Carbon::now()->endOfMonth();
-                break;
-            case 'this_week':
-                $start = Carbon::now()->startOfWeek(Carbon::SUNDAY);
-                $end = Carbon::now()->endOfWeek(Carbon::SATURDAY);
-                break;
-            case 'last_week':
-                $start = Carbon::now()->subWeek()->startOfWeek(Carbon::SUNDAY);
-                $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY);
-                break;
-            case 'last_month':
-                $start = Carbon::now()->subMonthsNoOverflow()->startOfMonth();
-                $end = Carbon::now()->subMonthsNoOverflow()->endOfMonth();
-                break;
-            case 'last_year':
-                $start = Carbon::now()->subYear()->startOfYear();
-                $end = Carbon::now()->subYear()->endOfYear();
-                break;
-            default:
-                $start = Carbon::now()->startOfYear();
-                $end = Carbon::now()->endOfYear();
-                break;
-        }
-        return [$start->format('Y-m-d'), $end->format('Y-m-d')];
     }
 
     public function getOpeningBalanceForAudit(int $accountId, string $clientId)

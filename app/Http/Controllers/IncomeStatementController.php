@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountGroup;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class IncomeStatementController extends Controller
 {
@@ -31,7 +29,7 @@ class IncomeStatementController extends Controller
                 'period' => 'required|in:this_year,this_month,this_week,today,last_week,last_month,all_time',
             ]);
             $selected_client = User::find($request->client);
-            $period = $this->getStartAndEndDate($request->period);
+            $period = getStartAndEndDate($request->period);
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
             $revenues = [];
             $expenses = [];
@@ -63,45 +61,6 @@ class IncomeStatementController extends Controller
             'has_data' => false,
             'clients' => $clients,
         ]);
-    }
-
-    public function getStartAndEndDate(string $period): array
-    {
-        switch ($period) {
-            case 'all_time':
-                $start = Carbon::now()->subMillennium();
-                $end = Carbon::now()->endOfMillennium();
-                break;
-            case 'this_year':
-                $start = Carbon::now()->startOfYear();
-                $end = Carbon::now()->endOfYear();
-                break;
-            case 'this_month':
-                $start = Carbon::now()->startOfMonth();
-                $end = Carbon::now()->endOfMonth();
-                break;
-            case 'this_week':
-                $start = Carbon::now()->startOfWeek(Carbon::SUNDAY);
-                $end = Carbon::now()->endOfWeek(Carbon::SATURDAY);
-                break;
-            case 'last_week':
-                $start = Carbon::now()->subWeek()->startOfWeek(Carbon::SUNDAY);
-                $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY);
-                break;
-            case 'last_month':
-                $start = Carbon::now()->subMonthsNoOverflow()->startOfMonth();
-                $end = Carbon::now()->subMonthsNoOverflow()->endOfMonth();
-                break;
-            case 'last_year':
-                $start = Carbon::now()->subYear()->startOfYear();
-                $end = Carbon::now()->subYear()->endOfYear();
-                break;
-            default:
-                $start = Carbon::now()->startOfYear();
-                $end = Carbon::now()->endOfYear();
-                break;
-        }
-        return [$start, $end];
     }
 
     private function getIncomeStatementData(string $clientId, $startDate, $endDate)

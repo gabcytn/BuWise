@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\AccountGroup;
 use App\Models\LedgerAccount;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -41,48 +40,13 @@ class TrialBalanceController extends Controller
             $request->validate([
                 'period' => 'in:this_year,this_month,this_week,last_week,last_month,last_year,all_time',
             ]);
-            $period = $this->getStartAndEndDate($request->period);
+            $period = getStartAndEndDate($request->period);
             $data = $this->getQuery($request->client, $period[0], $period[1]);
         }
         return view('ledger.trial-balance', [
             'clients' => $clients,
             'data' => $data,
         ]);
-    }
-
-    private function getStartAndEndDate(string $period): array
-    {
-        switch ($period) {
-            case 'all_time':
-                $start = Carbon::now()->subMillennium();
-                $end = Carbon::now()->endOfMillennium();
-                break;
-            case 'this_month':
-                $start = Carbon::now()->startOfMonth();
-                $end = Carbon::now()->endOfMonth();
-                break;
-            case 'this_week':
-                $start = Carbon::now()->startOfWeek(Carbon::SUNDAY);
-                $end = Carbon::now()->endOfWeek(Carbon::SATURDAY);
-                break;
-            case 'last_week':
-                $start = Carbon::now()->subWeek()->startOfWeek(Carbon::SUNDAY);
-                $end = Carbon::now()->subWeek()->endOfWeek(Carbon::SATURDAY);
-                break;
-            case 'last_month':
-                $start = Carbon::now()->subMonthsNoOverflow()->startOfMonth();
-                $end = Carbon::now()->subMonthsNoOverflow()->endOfMonth();
-                break;
-            case 'last_year':
-                $start = Carbon::now()->subYear()->startOfYear();
-                $end = Carbon::now()->subYear()->endOfYear();
-                break;
-            default:
-                $start = Carbon::now()->startOfYear();
-                $end = Carbon::now()->endOfYear();
-                break;
-        }
-        return [$start, $end];
     }
 
     private function getQuery($clientId, $startDate = '1970-01-01', $endDate = '9999-12-31')
