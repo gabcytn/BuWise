@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BalanceSheetController extends Controller
 {
@@ -25,20 +26,40 @@ class BalanceSheetController extends Controller
             ]);
             $selected_client = User::find($request->client);
             $period = getStartAndEndDate($request->period);
-            $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+            $data = Cache::remember(
+                $selected_client->id . '-balance-sheet-' . $request->period,
+                300,
+                function () use ($selected_client, $period) {
+                    Log::info('Calculating new balance sheet (web)...');
+                    return $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                }
+            );
             $assets = [];
             $liabilities = [];
             $equities = [];
+            $revenues = [];
+            $expenses = [];
+            $revenuesTotal = 0;
+            $expensesTotal = 0;
             foreach ($data as $datum) {
                 if ($datum->acc_code >= 100 && $datum->acc_code < 200) {
                     $assets[] = $datum;
                 } else if ($datum->acc_code >= 200 && $datum->acc_code < 300) {
                     $liabilities[] = $datum;
-                } else {
+                } else if ($datum->acc_code >= 300 && $datum->acc_code < 400) {
                     $equities[] = $datum;
+                } else if ($datum->acc_code >= 400 && $datum->acc_code < 500) {
+                    $revenues[] = $datum;
+                    $revenuesTotal += $datum->debit > 0 ? -$datum->debit : $datum->credit;
+                } else {
+                    $expenses[] = $datum;
+                    $expensesTotal += $datum->debit > 0 ? $datum->debit : -$datum->credit;
                 }
+                $amount = abs($datum->debit - $datum->credit);
+                $entryType = $datum->debit > $datum->credit ? 'DR' : 'CR';
+                $datum->amount = $amount . ' ' . $entryType;
             }
-            $equityFromIncomeStatement = new IncomeStatementController()->getNetProfitLoss($request);
+            $equityFromIncomeStatement = $revenuesTotal - $expensesTotal;
             return view('reports.balance-sheet', [
                 'has_data' => true,
                 'clients' => $clients,
@@ -67,7 +88,6 @@ class BalanceSheetController extends Controller
             ->where('tr.client_id', '=', $clientId)
             ->whereIn('tr.status', ['approved', 'archived'])
             ->whereBetween('tr.date', [$startDate, $endDate])
-            ->whereIn('acc.account_group_id', [AccountGroup::ASSETS, AccountGroup::LIABILITIES, AccountGroup::EQUITY])
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
             ->orderBy('acc.code')
             ->select(
