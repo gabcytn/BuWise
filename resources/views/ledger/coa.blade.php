@@ -23,11 +23,18 @@
     <div class="coa-box">
         <form class="coa-controls" id="ledger-form" action="#">
             <div class="coa-filters">
-                <button class="filter-btn">
-                    <img src="{{ asset('images/filterbyicon.png') }}" alt="Filter Icon" class="btn-icon left-icon">
-                    <span>Filter by: Type</span>
+                <div class="client-select-wrapper">
+                    <img src="{{ asset('images/filterbyicon.png') }}" alt="Filter Icon"
+                        class="btn-icon left-icon client-icon">
+                    <select class="client-select type-select">
+                        <option value="" selected disabled>Filter by: Type</option>
+                        <option value="all">All</option>
+                        @foreach (\App\Models\AccountGroup::all() as $item)
+                            <option value="{{ strtolower($item->name) }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
                     <img src="{{ asset('images/menudown.png') }}" alt="Menu Down" class="btn-icon menu-down-icon">
-                </button>
+                </div>
                 <div class="client-select-wrapper">
                     <img src="{{ asset('images/allclientsicon.png') }}" alt="Client Icon"
                         class="btn-icon left-icon client-icon">

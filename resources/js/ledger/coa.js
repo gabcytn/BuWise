@@ -24,12 +24,10 @@ document.querySelector("#account-search").addEventListener("input", (e) => {
         const columns = ledgerAccounts[i].querySelectorAll("td");
         const accountCode = columns[0].textContent.toLowerCase();
         const accountName = columns[1].textContent.toLowerCase();
-        const accountGroup = columns[2].textContent.toLowerCase();
 
         if (
             accountCode.includes(searchText) ||
-            accountName.includes(searchText) ||
-            accountGroup.includes(searchText)
+            accountName.includes(searchText)
         ) {
             ledgerAccounts[i].style.display = "";
         } else {
@@ -65,3 +63,14 @@ function validateAccountCodePrefix() {
         accountCode.value = "";
     }
 }
+
+document.querySelector(".type-select").addEventListener("change", (e) => {
+    for (let i = 0; i < ledgerAccounts.length; i++) {
+        const columns = ledgerAccounts[i].querySelectorAll("td");
+        const accountGroup = columns[2].textContent.toLowerCase();
+        if (e.target.value === "all") ledgerAccounts[i].style.display = "";
+        else if (accountGroup.includes(e.target.value))
+            ledgerAccounts[i].style.display = "";
+        else ledgerAccounts[i].style.display = "none";
+    }
+});
