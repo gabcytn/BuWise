@@ -23,10 +23,10 @@
     <div class="coa-box">
         <form class="coa-controls" id="ledger-form" action="#">
             <div class="coa-filters">
-                <div class="client-select-wrapper">
+                <div class="type-select-wrapper">
                     <img src="{{ asset('images/filterbyicon.png') }}" alt="Filter Icon"
                         class="btn-icon left-icon client-icon">
-                    <select class="client-select type-select">
+                    <select class="type-select">
                         <option value="" selected disabled>Filter by: Type</option>
                         <option value="all">All</option>
                         @foreach (\App\Models\AccountGroup::all() as $item)

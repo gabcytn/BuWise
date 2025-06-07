@@ -110,13 +110,15 @@
  }
 
  /* Select wrapper */
- .client-select-wrapper {
+ .client-select-wrapper,
+ .type-select-wrapper {
      position: relative;
      display: flex;
      align-items: center;
  }
 
- .client-select-wrapper .client-select {
+ .client-select-wrapper .client-select,
+ .type-select-wrapper .type-select {
      padding: 0.45rem 0.8rem;
      padding-left: 32px;
      padding-right: 40px;
