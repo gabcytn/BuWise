@@ -69,7 +69,7 @@ class LedgerAccountController extends Controller
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         }
 
-        $arr = $this->calculateTotalDebitsAndCredits($data, $start, $end);
+        $arr = $this->calculateTotalDebitsAndCredits($data, $start->format('Y-m-d'), $end->format('Y-m-d'));
 
         $totalDebits = $arr[0];
         $totalCredits = $arr[1];
@@ -95,7 +95,7 @@ class LedgerAccountController extends Controller
     /*
      * @return array
      */
-    private function calculateTotalDebitsAndCredits($data, $start, $end)
+    private function calculateTotalDebitsAndCredits($data, string $start, string $end)
     {
         $openingDebits = 0;
         $openingCredits = 0;
@@ -151,7 +151,6 @@ class LedgerAccountController extends Controller
             ->where('ledger_accounts.id', '=', $ledgerAccountId)
             ->whereIn('transactions.status', ['approved', 'archived'])
             ->where('transactions.client_id', $userId);
-        // ->groupBy('transactions.id', 'transactions.description', 'transactions.date', 'transactions.kind', 'users.name', 'users.email', 'ledger_accounts.name', 'account_groups.id', 'account_groups.name', 'le.entry_type', 'le.amount');
 
         if ($endDate !== null) {
             $query = $query
