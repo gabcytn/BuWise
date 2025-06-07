@@ -16,8 +16,8 @@ class ReportsController extends Controller
     {
         $this->validate($request);
         $clientId = $request->user()->id;
-        $period = new IncomeStatementController()->getStartAndEndDate($request->period);
-        $data = Cache::remember("api-$clientId-reports", 300, function () use ($clientId, $period) {
+        $period = getStartAndEndDate($request->period);
+        $data = Cache::remember("api-$clientId-reports-" . $period, 300, function () use ($clientId, $period) {
             Log::info('calculating new reports');
             return $this->getReportsData($clientId, $period[0], $period[1]);
         });
@@ -52,8 +52,8 @@ class ReportsController extends Controller
     {
         $this->validate($request);
         $clientId = $request->user()->id;
-        $period = new IncomeStatementController()->getStartAndEndDate($request->period);
-        $data = Cache::remember("api-$clientId-reports", 300, function () use ($clientId, $period) {
+        $period = getStartAndEndDate($request->period);
+        $data = Cache::remember("api-$clientId-reports-" . $period, 300, function () use ($clientId, $period) {
             Log::info('calculating new reports');
             return $this->getReportsData($clientId, $period[0], $period[1]);
         });
