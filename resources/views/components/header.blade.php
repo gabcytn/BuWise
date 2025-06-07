@@ -1,4 +1,4 @@
-@vite('resources/css/dialog/dialog.css')
+@vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css'])
 <div class="header-container">
     <header class="header-sm">
         <i class="fa-solid fa-bars"></i>
