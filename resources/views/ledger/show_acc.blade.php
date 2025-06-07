@@ -31,7 +31,7 @@
         <x-table-management :headers=$headers>
             <tr>
                 <td></td>
-                <td>Opening balance</td>
+                <td>Opening balance (excluded in total)</td>
                 <td></td>
                 <td></td>
                 <td></td>

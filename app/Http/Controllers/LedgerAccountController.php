@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class LedgerAccountController extends Controller
@@ -119,11 +118,11 @@ class LedgerAccountController extends Controller
         if ($openingDebits > $openingCredits) {
             $openingBalance = $openingDebits - $openingCredits;
             $openingEntry = 'debit';
-            $totalDebits += $openingBalance;
+            // $totalDebits += $openingBalance;
         } else {
             $openingBalance = $openingCredits - $openingDebits;
             $openingEntry = 'credit';
-            $totalCredits += $openingBalance;
+            // $totalCredits += $openingBalance;
         }
 
         return [$totalDebits, $totalCredits, $openingBalance, $openingEntry];
