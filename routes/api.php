@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/income-statement', [ReportsController::class, 'incomeStatement']);
+    Route::get('/balance-sheet', [ReportsController::class, 'balanceSheet']);
 });
