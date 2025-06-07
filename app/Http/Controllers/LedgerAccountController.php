@@ -57,19 +57,19 @@ class LedgerAccountController extends Controller
 
         if ($request->query('period')) {
             $period = getStartAndEndDate($request->period);
-            $start = $period[0];
-            $end = $period[1];
+            $start = $period[0]->format('Y-m-d');
+            $end = $period[1]->format('Y-m-d');
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         } else if ($start && $end) {
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         } else if (!$start && !$end) {
             $period = getStartAndEndDate('this_year');
-            $start = $period[0];
-            $end = $period[1];
+            $start = $period[0]->format('Y-m-d');
+            $end = $period[1]->format('Y-m-d');
             $data = $this->getQuery($ledgerAccount->id, $user->id, $end);
         }
 
-        $arr = $this->calculateTotalDebitsAndCredits($data, $start->format('Y-m-d'), $end->format('Y-m-d'));
+        $arr = $this->calculateTotalDebitsAndCredits($data, $start, $end);
 
         $totalDebits = $arr[0];
         $totalCredits = $arr[1];
@@ -118,11 +118,9 @@ class LedgerAccountController extends Controller
         if ($openingDebits > $openingCredits) {
             $openingBalance = $openingDebits - $openingCredits;
             $openingEntry = 'debit';
-            // $totalDebits += $openingBalance;
         } else {
             $openingBalance = $openingCredits - $openingDebits;
             $openingEntry = 'credit';
-            // $totalCredits += $openingBalance;
         }
 
         return [$totalDebits, $totalCredits, $openingBalance, $openingEntry];
