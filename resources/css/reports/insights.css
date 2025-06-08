@@ -111,19 +111,87 @@
 }
 
 .inflows {
-    background: #fff3cd;
-    border: 1px solid #ffeaa7;
-
-    .card-value {
-        color: #e17055;
-    }
+    background-color: var(--peach);
 }
 
 .outflows {
-    background: #f8d7da;
-    border: 1px solid #f5c6cb;
+    background-color: var(--violet)
+}
+
+.receivables-vs-payables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 1rem;
+
+    >* {
+        background-color: var(--clear-white);
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .p-3 {
+        padding: 1rem;
+    }
+
+    .receivables-texts,
+    .payables-texts {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    hr {
+        color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+.profit-and-loss {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--clear-white);
+    border-radius: 0.375rem;
+    padding: 1rem 2rem;
+    margin: 1rem 0;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+
+    .pl-header {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .pl-body {
+        display: flex;
+
+        .chart-container {
+            flex: 2;
+            position: relative;
+            height: 400px;
+        }
+
+        .pl-texts {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+
+    .pl-revenue {
+        background: var(--light-green);
+    }
+
+    .pl-expenses {
+        background: var(--light-blue);
+    }
+
+    .pl-profit {
+        background: var(--orange);
+    }
 
     .card-value {
-        color: #a29bfe;
+        color: var(--soft-black);
     }
+
 }

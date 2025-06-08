@@ -82,27 +82,10 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/reports/working-paper', [WorkingPaperController::class, 'index'])->name('reports.working-paper');
     Route::get('/reports/insights', [InsightsController::class, 'index'])->name('reports.insights');
 
-    Route::get('/cash-flow/{user}', function (User $user) {
-        $data = DB::table('ledger_entries AS le')
-            ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')
-            ->join('users', 'users.id', '=', 'tr.client_id')
-            ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
-            ->join('account_groups AS acc_group', 'acc_group.id', '=', 'acc.account_group_id')
-            ->whereIn('le.account_id', [1, 2, 3, 4])
-            ->where('users.id', '=', $user->id)
-            ->select(
-                'acc.code',
-                'acc.name AS acc_name',
-                'acc_group.name AS acc_group',
-                'tr.date',
-                'tr.kind',
-                'le.amount',
-                'le.entry_type',
-            )
-            ->orderBy('tr.date')
-            ->get();
-        return json_decode(json_encode($data));
-    });
+    Route::get('/cash-flow/{user}', [InsightsController::class, 'cashFlow']);
+    Route::get('/receivables/{user}', [InsightsController::class, 'receivables']);
+    Route::get('/payables/{user}', [InsightsController::class, 'payables']);
+    Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {

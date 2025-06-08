@@ -19,11 +19,76 @@
         <div class="insights-body d-none">
             <div class="receivables-vs-payables">
                 <div class="receivables">
+                    <div class="p-3">
+                        <div class="receivables-texts">
+                            <h2>Total Receivables</h2>
+                            <select name="receivables-period">
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="receivables-canvas"></canvas>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="p-3">
+                        <div class="receivables-summary">
+
+                        </div>
+                    </div>
                 </div>
                 <div class="payables">
+                    <div class="p-3">
+                        <div class="payables-texts">
+                            <h2>Total Payables</h2>
+                            <select name="payables-period">
+                                @foreach ($periods as $period)
+                                    <option value="{{ $period }}">{{ $period }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="payables-canvas"></canvas>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="p-3">
+                        <div class="payables-summary">
+
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="profit-and-loss">
+                <div class="pl-header">
+                    <h2>Profit and Loss</h2>
+                    <select name="pl-period">
+                        @foreach ($periods as $period)
+                            <option value="{{ $period }}">{{ $period }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="pl-body">
+                    <div class="chart-container">
+                        <canvas id="pl-canvas"></canvas>
+                    </div>
+                    <div class="pl-texts">
+                        <div class="summary-card pl-revenue">
+                            <h6 class="card-label">Total Revenue</h6>
+                            <p class="card-value">10,007.99</p>
+                        </div>
+                        <div class="summary-card pl-expenses">
+                            <h6 class="card-label">Total Expenses</h6>
+                            <p class="card-value">8971.05</p>
+                        </div>
+                        <div class="summary-card pl-profit">
+                            <h6 class="card-label">Profit</h6>
+                            <p class="card-value">8971.05</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="cash-flow">
                 <div class="cash-flow__header">

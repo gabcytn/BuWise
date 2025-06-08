@@ -10,6 +10,11 @@
     --green: #609950;
     --soft-black: #020202;
     --subtitle: #BEC6D0;
+    --violet: rgba(170, 91, 213, 255);
+    --peach: rgba(255, 197, 132, 255);
+    --light-green: rgba(195, 248, 223, 255);
+    --light-blue: rgba(199, 218, 255, 255);
+    --orange: rgba(237, 161, 13, 255);
 }
 
 * {
