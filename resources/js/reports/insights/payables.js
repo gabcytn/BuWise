@@ -2,19 +2,19 @@ export async function getPayablesData(clientId) {
     const res = await fetch(`/payables/${clientId}`);
     const data = await res.json();
 
-    console.log(data);
-
     const entries = new Map();
     data.forEach((item) => {
-        if (item.entry_type === "debit") return;
-        let v;
-        if (entries.get(item.acc_name)) {
-            v = entries.get(item.acc_name);
-            v += item.amount;
-        } else {
-            v = item.amount;
+        let v = entries.get(item.acc_name) ?? 0;
+        switch (item.entry_type) {
+            case "debit":
+                v -= item.amount;
+                break;
+            case "credit":
+                v += item.amount;
+                break;
+            default:
+                break;
         }
-
         entries.set(item.acc_name, v);
     });
 
@@ -41,7 +41,43 @@ function start(entries) {
                 },
             ],
         },
+        options: {
+            plugins: {
+                legend: {
+                    display: false,
+                },
+            },
+        },
     };
     const receivablesCanvas = document.querySelector("#payables-canvas");
     const myChart = new Chart(receivablesCanvas, config);
+    createSummary(entries);
+}
+
+function createSummary(entries) {
+    const accountNames = entries.map((entry) => entry.account);
+    const accountValues = entries.map((entry) => entry.amount);
+
+    const summaryDiv = document.querySelector(".payables-summary");
+
+    for (let i = 0; i < accountNames.length; i++) {
+        const div = document.createElement("div");
+        const title = document.createElement("h3");
+        const amount = document.createElement("p");
+
+        title.textContent = accountNames[i];
+        amount.textContent = formatNumber(accountValues[i], 2);
+
+        div.appendChild(title);
+        div.appendChild(amount);
+
+        summaryDiv.appendChild(div);
+    }
+}
+
+function formatNumber(number, decimals) {
+    return Number(number).toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+    });
 }

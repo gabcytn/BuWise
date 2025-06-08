@@ -48,6 +48,10 @@
     }
 }
 
+.insights-body {
+    margin: 1rem 0;
+}
+
 .cash-flow {
     display: flex;
     flex-direction: column;
@@ -127,6 +131,12 @@
         background-color: var(--clear-white);
         box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
         border-radius: 5px;
+
+        .chart-container {
+            max-width: 25rem;
+            width: 90%;
+            margin: 0 auto;
+        }
     }
 
     .p-3 {
@@ -137,6 +147,13 @@
     .payables-texts {
         display: flex;
         justify-content: space-between;
+    }
+
+    .receivables-summary,
+    .payables-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        row-gap: 0.75rem;
     }
 
     hr {
