@@ -212,3 +212,12 @@
     }
 
 }
+
+@media (max-width: 1236px) {
+
+    .cash-flow__body,
+    .pl-body {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
