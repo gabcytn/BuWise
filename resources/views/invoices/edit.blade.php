@@ -4,14 +4,12 @@
     {
         $unit_price = $item->unit_price;
         $qty = $item->quantity;
-        $discount = $item->discount;
         $total = $unit_price;
-        if ($discount) {
-            $total *= 1 - $discount / 100;
+        if ($item->discount) {
+            $total -= $item->discount;
         }
-        if ($item->tax_id) {
-            $tax_value = $item->tax->value;
-            $total += ($tax_value / 100) * $total;
+        if ($item->tax) {
+            $total += $item->tax;
         }
 
         $total *= $qty;
@@ -69,16 +67,8 @@
                         </td>
                         <td><input value="{{ $item->discount ? $item->discount : 0 }}"
                                 name="{{ 'discount_' . $key + 1 }}" required /></td>
-                        <td>
-                            <select name="{{ 'tax_' . $key + 1 }}" required>
-                                <option value="0" data-tax-value="0">No Tax</option>
-                                @foreach ($taxes as $tax)
-                                    <option {{ $tax->id === $item->tax_id ? 'selected' : '' }}
-                                        value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
-                                        {{ $tax->name . ' (' . $tax->value . '%)' }}</option>
-                                @endforeach
-                            </select>
-                        </td>
+                        <td><input value="{{ $item->tax ? $item->tax : 0 }}" name="{{ 'tax_' . $key + 1 }}"
+                                required /></td>
                         <td>{{ calculateTotal($item) }}</td>
                     </tr>
                 @endforeach
