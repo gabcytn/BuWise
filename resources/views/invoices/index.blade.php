@@ -108,6 +108,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $invoices->links() }}
             @else
                 <h2>No invoices found.</h2>
             @endif
