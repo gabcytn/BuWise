@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APIs;
 
-use App\Events\ParseInvoice;
-use App\Models\Invoice;
+use App\Http\Controllers\Controller;
+use App\Jobs\InvoiceReceived;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 
 class MobileInvoiceController extends Controller
@@ -17,24 +19,19 @@ class MobileInvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Invoice::class);
+        Gate::authorize('create', Transaction::class);
         $request->validate([
             'file' => ['required', File::image()->max(10000)],
-            'transaction_type' => ['required', 'string', 'in:Sales,Purchases']
+            'transaction_type' => ['required', 'string', 'in:sales,purchases']
         ]);
         try {
             $file = $request->file('file');
             $transactionType = $request->transaction_type;
-            $filename = $this->storeImageToAws($file);
-
-            $invoice = Invoice::create([
-                'client_id' => $request->user()->id,
-                'image' => $filename,
-            ]);
+            $filename = time() . '_' . Str::uuid();
 
             // temporarily store image locally for invoice parser access.
             Storage::disk('public')->put("invoices/$filename", file_get_contents($file));
-            ParseInvoice::dispatch($filename, $file->getMimeType(), $invoice->id, $transactionType);
+            InvoiceReceived::dispatch($filename, $transactionType, $request->user());
 
             return Response::json([
                 'message' => 'Successfully created invoice'
@@ -46,7 +43,7 @@ class MobileInvoiceController extends Controller
         }
     }
 
-    private function storeImageToAws($file): string
+    private function temporarilyStoreToAws($file): string
     {
         $path = $file->store('invoices/', 's3');
         return basename($path);
