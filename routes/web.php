@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BalanceSheetController;
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InsightsController;
@@ -94,6 +95,10 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         return view('auth.enable-mfa');
     })->name('mfa.enable')->withoutMiddleware(EnableMFA::class);
 });
+
+Route::get('/bot/invoices/create', [BotController::class, 'index'])
+    ->middleware('auth')
+    ->name('bot-invoices.create');
 
 // allow email verification without signing in
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {

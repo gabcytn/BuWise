@@ -29,7 +29,7 @@ if (!function_exists('getClients')) {
             case Role::CLERK:
                 return $user->accountant->clients;
             default:
-                abort(403);
+                return null;
                 break;
         }
     }

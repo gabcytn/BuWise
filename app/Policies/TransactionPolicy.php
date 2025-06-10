@@ -15,9 +15,16 @@ class TransactionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role_id !== Role::CLIENT
-            ? Response::allow()
-            : Response::denyAsNotFound();
+        switch ($user->role_id) {
+            case Role::ACCOUNTANT:
+            case Role::LIAISON:
+            case Role::CLERK:
+                return Response::allow();
+                break;
+            default:
+                return Response::denyAsNotFound();
+                break;
+        }
     }
 
     /**
@@ -47,7 +54,7 @@ class TransactionPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id !== Role::CLIENT
+        return $user->role_id !== Role::CLIENT || $user->role_id !== Role::BOT
             ? Response::allow()
             : Response::denyAsNotFound();
     }

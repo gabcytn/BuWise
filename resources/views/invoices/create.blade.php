@@ -8,14 +8,6 @@
 </head>
 
 <x-app-layout>
-    <select name="tax" class="d-none">
-        <option value="0" data-tax-value="0" selected>No Tax</option>
-        @foreach ($taxes as $tax)
-            <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
-                {{ strtoupper($tax->name) . ' (' . $tax->value . ' %)' }}</option>
-        @endforeach
-    </select>
-
     <input class="d-none" id="discount" type="number" placeholder="20" step="0.01" />
 
     <form class="invoice-container" method="POST" action="{{ route('invoices.store') }}" enctype="multipart/form-data">
@@ -42,25 +34,30 @@
             <div class="form-section right">
                 <div class="form-row">
                     <label>Issue Date</label>
-                    <input type="date" name="issue_date" value="{{ old('date') ?? now()->format('Y-m-d') }}" />
+                    <input type="date" name="issue_date" value="{{ old('date') ?? now()->format('Y-m-d') }}"
+                        required />
                 </div>
                 <div class="form-row">
                     <label>Transaction Type</label>
                     <select required name="transaction_type">
-                        <option {{ old('transaction_type') === 'purchases' ? 'selected' : '' }} value="purchases">Purchases</option>
-                        <option {{ old('transaction_type') === 'sales' ? 'selected' : '' }} value="sales">Sales</option>
+                        <option {{ old('transaction_type') === 'purchases' ? 'selected' : '' }} value="purchases">
+                            Purchases</option>
+                        <option {{ old('transaction_type') === 'sales' ? 'selected' : '' }} value="sales">Sales
+                        </option>
                     </select>
                 </div>
                 <div class="form-row">
                     <label>Invoice Number</label>
-                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required value="{{ old('invoice_number') }}" />
+                    <input type="text" placeholder="Enter Invoice Number" name="invoice_number" required
+                        value="{{ old('invoice_number') }}" />
                 </div>
                 <div class="form-row">
                     <label>Payment Method</label>
                     <select name="payment_method" required>
                         <option selected disabled value="">Select Payment Type</option>
                         <option {{ old('payment_method') === 'cash' ? 'selected' : '' }} value="cash">Cash</option>
-                        <option {{ old('payment_method') === 'bank' ? 'selected' : '' }} value="bank">Bank Transfer</option>
+                        <option {{ old('payment_method') === 'bank' ? 'selected' : '' }} value="bank">Bank Transfer
+                        </option>
                     </select>
                 </div>
                 <div class="form-row">
@@ -84,7 +81,7 @@
                     <th>Quantity</th>
                     <th>Unit Price</th>
                     <th>Less: Discount</th>
-                    <th>Tax</th>
+                    <th>Tax (per qty)</th>
                     <th>Total Amount</th>
                 </tr>
             </thead>

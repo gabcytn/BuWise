@@ -42,23 +42,24 @@ function addRow() {
     unitPriceCell.appendChild(unitPriceInput);
 
     const discountCell = document.createElement("td");
-    const discountInput = document.querySelector("#discount");
-    const discountInputClone = discountInput.cloneNode(true);
-    discountInputClone.name = `discount_${rowCount}`;
-    discountInputClone.addEventListener("input", updateTotals);
-    discountInputClone.id = "";
-    discountInputClone.classList.remove("d-none");
+    const discountInput = document.createElement("input");
+    discountInput.name = `discount_${rowCount}`;
+    discountInput.addEventListener("input", updateTotals);
+    discountInput.placeholder = "0.00";
+    discountInput.type = "number";
+    discountInput.step = "0.01";
 
-    discountCell.appendChild(discountInputClone);
+    discountCell.appendChild(discountInput);
 
     const taxCell = document.createElement("td");
-    const taxSelect = document.querySelector("select[name='tax']");
-    const taxSelectClone = taxSelect.cloneNode(true);
-    taxSelectClone.addEventListener("change", updateTotals);
-    taxSelectClone.name = `tax_${rowCount}`;
-    taxSelectClone.classList.remove("d-none");
+    const taxInput = document.createElement("input");
+    taxInput.addEventListener("input", updateTotals);
+    taxInput.name = `tax_${rowCount}`;
+    taxInput.type = "number";
+    taxInput.step = "0.01";
+    taxInput.placeholder = "0.00";
 
-    taxCell.appendChild(taxSelectClone);
+    taxCell.appendChild(taxInput);
 
     const totalAmountCell = document.createElement("td");
     totalAmountCell.id = `total_${rowCount}`;
@@ -100,32 +101,24 @@ function updateTotals() {
         const discountInput = row.querySelector(
             `input[name='discount_${key}']`,
         );
-        const taxSelect = row.querySelector(`select[name='tax_${key}']`);
+        const taxInput = row.querySelector(`input[name='tax_${key}']`);
         const totalAmount = row.querySelector(`#total_${key}`);
 
         const qtyFloat = parseFloat(qty.value || 0);
         const unitPriceFloat = parseFloat(unitPrice.value || 0);
+        const taxFloat = parseFloat(taxInput.value || 0);
+        const discountFloat = parseFloat(discountInput.value || 0);
+
         runningAmount = unitPriceFloat;
 
-        if (
-            discountInput.value &&
-            typeof parseFloat(discountInput.value) === "number"
-        ) {
-            // get the remaining percentage of subtotal after subtracting discount;
-            const remainingPercentage =
-                (100 - parseFloat(discountInput.value)) / 100;
-            runningAmount = (
-                parseFloat(runningAmount) * remainingPercentage
-            ).toFixed(2);
+        if (discountFloat && discountFloat > 0) {
+            runningAmount = (parseFloat(runningAmount) - discountFloat).toFixed(
+                2,
+            );
         }
 
-        const taxValue = parseFloat(
-            taxSelect[taxSelect.selectedIndex].dataset.taxValue,
-        );
-        if (typeof taxValue === "number" && taxValue !== 0) {
-            const percentage = taxValue / 100;
-            const taxed = parseFloat(runningAmount) * percentage;
-            runningAmount = (parseFloat(runningAmount) + taxed).toFixed(2);
+        if (taxFloat && taxFloat > 0) {
+            runningAmount = (parseFloat(runningAmount) + taxFloat).toFixed(2);
         }
 
         const finalAnswer = (runningAmount * qtyFloat).toFixed(2);

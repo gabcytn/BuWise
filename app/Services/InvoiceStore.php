@@ -5,7 +5,6 @@ use App\Exceptions\InvoiceCreationException;
 use App\Models\InvoiceLine;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
-use App\Models\Tax;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -72,7 +71,7 @@ class InvoiceStore
         $request = $this->request;
         $invoice = Transaction::create([
             'client_id' => $request->client,
-            'created_by' => $this->request->user()->id,
+            'created_by' => $request->user()->id,
             'status' => 'approved',
             'type' => 'invoice',
             'kind' => $request->transaction_type,
@@ -97,22 +96,17 @@ class InvoiceStore
                 'item_name' => $request->input("item_$rowNumber"),
                 'qty' => $request->input("qty_$rowNumber"),
                 'unit_price' => $request->input("unit_price_$rowNumber"),
-                'discount' => $request->input("discount_$rowNumber", '0'),
-                'tax' => $request->input("tax_$rowNumber"),
+                'discount' => $request->input("discount_$rowNumber", 0),
+                'tax' => $request->input("tax_$rowNumber", 0),
             ];
             $this->validateInvoiceLines($item);
 
             $unitPrice = round((float) $item['unit_price'], 2);
-            $discount = round(((float) $item['discount'] / 100) * $unitPrice, 2);
-            $discountedUnitPrice = $unitPrice - $discount;
+            $discount = round((float) $item['discount'], 2);
+            // $discountedUnitPrice = $unitPrice - $discount;
 
-            $taxModel = Tax::where('id', '=', (int) $item['tax'])->where('accountant_id', '=', null)->first();
-            if ($taxModel) {
-                $tax = round(((float) $taxModel->value / 100) * $discountedUnitPrice, 2);
-            } else {
-                $tax = 0.0;
-            }
-            $qty = $item['qty'];
+            $tax = round((float) $item['tax'], 2);
+            $qty = (int) $item['qty'];
             // $net = round(($discountedUnitPrice + $tax) * $qty, 2);
             $net = round($unitPrice * $qty, 2);
 
@@ -159,7 +153,7 @@ class InvoiceStore
         foreach ($items as $item) {
             InvoiceLine::create([
                 'invoice_id' => $invoice->id,
-                'tax_id' => (int) $item['tax'] !== 0 ? $item['tax'] : null,
+                'tax' => (int) $item['tax'],
                 'item_name' => $item['item_name'],
                 'quantity' => $item['qty'],
                 'unit_price' => $item['unit_price'],

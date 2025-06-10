@@ -27,6 +27,11 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'client_id');
     }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function ledger_entries(): HasMany
     {
         return $this->hasMany(LedgerEntry::class);
