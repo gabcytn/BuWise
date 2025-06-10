@@ -21,7 +21,9 @@ class BotSeeder extends Seeder
                 'name' => 'Bot',
                 'email' => 'bot@bot.com',
                 'role_id' => Role::BOT,
-                'password' => Hash::make(env('BOT_PASSWORD'))
+                'password' => Hash::make(env('BOT_PASSWORD')),
+                'email_verified_at' => now(),
+                'two_factor_confirmed_at' => now(),
             ]
         ]);
     }
