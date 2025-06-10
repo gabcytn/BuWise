@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APIs;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 
-class ApiAuthController extends Controller
+class AuthController extends Controller
 {
     public function login(Request $request)
     {
@@ -50,5 +52,18 @@ class ApiAuthController extends Controller
         return Response::json([
             'message' => 'Successfully changed password'
         ]);
+    }
+
+    public function user(Request $request)
+    {
+        return DB::table('users')
+            ->join('roles', 'roles.id', '=', 'users.role_id')
+            ->where('users.id', '=', $request->user()->id)
+            ->select(
+                'users.name',
+                'roles.name AS userType',
+                'users.email'
+            )
+            ->first();
     }
 }
