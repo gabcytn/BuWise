@@ -20,8 +20,8 @@
                             Dashboard
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li class="{{ request()->routeIs('calendar.index') ? 'active-tab' : '' }}">
+                        <a href="{{ route('calendar.index') }}">
                             <i class="fa-solid fa-calendar-days"></i>
                             Calendar
                         </a>
