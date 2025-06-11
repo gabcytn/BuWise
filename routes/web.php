@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\BotController;
-use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InsightsController;
@@ -10,6 +9,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\ProfileInformationController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\WorkingPaperController;
 use App\Http\Middleware\EnableMFA;
@@ -94,7 +94,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
 
     // calendar
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::resource('/tasks', TaskController::class)->only(['index', 'store']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
