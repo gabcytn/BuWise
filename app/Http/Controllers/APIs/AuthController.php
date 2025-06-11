@@ -29,7 +29,10 @@ class AuthController extends Controller
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        return Response::json([
+            'role' => $user->role->name,
+            'token' => $user->createToken($request->device_name)->plainTextToken
+        ]);
     }
 
     public function updatePassword(Request $request)
