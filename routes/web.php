@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\BotController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InsightsController;
@@ -16,7 +17,6 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
 
@@ -36,6 +36,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
 
 Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', function (Request $request) {
         return view('profile.edit', [
             'user' => $request->user()
@@ -83,10 +87,14 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/reports/working-paper', [WorkingPaperController::class, 'index'])->name('reports.working-paper');
     Route::get('/reports/insights', [InsightsController::class, 'index'])->name('reports.insights');
 
+    // insights
     Route::get('/cash-flow/{user}', [InsightsController::class, 'cashFlow']);
     Route::get('/receivables/{user}', [InsightsController::class, 'receivables']);
     Route::get('/payables/{user}', [InsightsController::class, 'payables']);
     Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
+
+    // calendar
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
