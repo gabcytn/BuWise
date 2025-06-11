@@ -28,25 +28,15 @@
                         <label for="task-name">Task Name</label>
                         <input name="task_name" id="task-name" required />
                     </div>
-                    <div class="select-wrapper task-input">
-                        <div class="select-wrapper__child">
-                            <label for="assign">Assign To</label>
-                            <select class="excempt" name="assign" id="assign" required>
-                                <option value="" selected disabled>Pick User to Assign</option>
-                                <option value="{{ request()->user()->id }}">{{ request()->user()->name }}</option>
-                                @foreach ($staff as $s)
-                                    <option value="{{ $s->id }}">{{ $s->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="select-wrapper__child">
-                            <label for="priority">Priority</label>
-                            <select class="excempt" name="priority" id="priority" required>
-                                <option value="low">Low</option>
-                                <option selected value="medium">Medium</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
+                    <div class="task-input">
+                        <label for="assign">Assign To</label>
+                        <select name="assign" id="assign" required>
+                            <option value="" selected disabled>Pick User to Assign</option>
+                            <option value="{{ request()->user()->id }}">{{ request()->user()->name }}</option>
+                            @foreach ($staff as $s)
+                                <option value="{{ $s->id }}">{{ $s->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="task-input">
                         <label for="description">Description</label>
@@ -57,15 +47,16 @@
                     <div class="task-input">
                         <label for="status">Status</label>
                         <select name="status" id="status" required>
-                            <option selected value="not_start">Not Started</option>
+                            <option selected value="not_started">Not Started</option>
                             <option value="in_progress">In Progress</option>
                             <option value="completed">Completed</option>
                         </select>
                     </div>
                     <div class="task-input">
-                        <label for="client">Client</label>
-                        <select name="client" id="client" required>
+                        <label for="client">Client (optional)</label>
+                        <select name="client" id="client">
                             <option value="" selected disabled>Pick Category</option>
+                            <option value="none">None</option>
                             @foreach ($clients as $client)
                                 <option value="{{ $client->id }}">{{ $client->name }}</option>
                             @endforeach
@@ -84,13 +75,11 @@
                     </div>
                     <div class="task-input">
                         <label for="start-date">Start Date</label>
-                        <input type="date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="start_date"
-                            id="start-date" required />
+                        <input type="date" name="start_date" id="start-date" required />
                     </div>
                     <div class="task-input">
                         <label for="end-date">End Date</label>
-                        <input type="date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" name="end_date"
-                            id="end-date" required />
+                        <input type="date" name="end_date" id="end-date" required />
                     </div>
                 </div>
             </form>

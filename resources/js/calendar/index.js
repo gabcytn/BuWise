@@ -61,12 +61,11 @@ taskForm.addEventListener("submit", (e) => {
     addTaskDialog.close();
     taskForm.reset();
 
-    // TODO: post to server via fetch API
+    postToServer();
 });
 
 const taskName = document.querySelector("#task-name");
 const assignSelect = document.querySelector("#assign");
-const prioritySelect = document.querySelector("#priority");
 const description = document.querySelector("#description");
 const statusSelect = document.querySelector("#status");
 const clientSelect = document.querySelector("#client");
@@ -74,16 +73,18 @@ const freqSelect = document.querySelector("#frequency");
 
 async function postToServer() {
     try {
-        const res = await fetch("", {
+        const res = await fetch("/tasks", {
             headers: {
                 "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]',
+                ).content,
                 Accept: "application/json",
             },
             method: "POST",
             body: JSON.stringify({
                 name: taskName.value,
-                assign: assignSelect[assignSelect.selectedIndex].value,
-                priority: prioritySelect[prioritySelect.selectedIndex].value,
+                assignedTo: assignSelect[assignSelect.selectedIndex].value,
                 description: description.value,
                 status: statusSelect[statusSelect.selectedIndex].value,
                 client: clientSelect[clientSelect.selectedIndex].value,
@@ -92,14 +93,11 @@ async function postToServer() {
                 endDate: endDate.value,
             }),
         });
-        const data = await res.json();
-        if (!res.ok)
-            throw new Error(`Error status code of ${res.status}\n${data}`);
-        console.log(`Status ${res.status}`);
-        console.log(data);
+        if (!res.ok) throw new Error(`Error status code of ${res.status}`);
     } catch (e) {
         if (e instanceof Error) {
             console.error(e.message);
+            alert("Error saving task.\nPlease try again.");
         }
     }
 }
