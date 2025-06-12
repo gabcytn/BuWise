@@ -21,8 +21,14 @@
     width: 80%;
 }
 
-.content.aside {
+.aside {
     width: 20%;
+
+    aside {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
 
 dialog#add-task {
@@ -124,8 +130,11 @@ hr {
         flex-direction: column;
     }
 
-    .content.aside,
     .content.calendar {
+        width: 100%;
+    }
+
+    .aside {
         width: 100%;
     }
 }
