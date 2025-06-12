@@ -20,6 +20,11 @@ class Task extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public function toClient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'client');
     }
 }
