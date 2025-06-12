@@ -3,67 +3,104 @@ const startDate = document.querySelector("#start-date");
 const endDate = document.querySelector("#end-date");
 const taskForm = document.querySelector("#add-task-form");
 
-let globalCalendar = null;
-var calendarEl = document.getElementById("calendar");
-var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: "dayGridMonth",
-    selectable: true,
-    selectMirror: true,
-    dayMaxEventRows: 3,
-    customButtons: {
-        myCustomButton: {
-            text: "Add Task",
-            click: function () {
-                addTaskDialog.showModal();
+async function getTasks() {
+    try {
+        const res = await fetch("/api/tasks", {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            throw new Error(`Error status code of ${res.status}`);
+        }
+
+        return data.tasks;
+    } catch (e) {
+        if (e instanceof Error) {
+            console.error(e.message);
+            alert("Request failed. Try again.");
+        }
+    }
+}
+
+start();
+
+async function start() {
+    const tasks = await getTasks();
+    let globalCalendar = null;
+    const calendarEl = document.getElementById("calendar");
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        selectable: true,
+        selectMirror: true,
+        dayMaxEventRows: 3,
+        events: tasks.map((task) => {
+            return {
+                title: task.name,
+                start: task.start_date,
+                end: task.end_date,
+                display:
+                    getDateDifference(task.start_date, task.end_date) > 1
+                        ? "block"
+                        : "list-item",
+            };
+        }),
+        customButtons: {
+            myCustomButton: {
+                text: "Add Task",
+                click: function () {
+                    addTaskDialog.showModal();
+                },
             },
         },
-    },
-    headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: "dayGridMonth,dayGridYear myCustomButton",
-    },
-    select: function (info) {
-        const s = info.startStr;
-        const e = info.endStr;
-        startDate.value = s;
-        endDate.value = e;
-        globalCalendar = calendar;
-        addTaskDialog.showModal();
-    },
-    eventClick: function (e) {
-        alert(`Remove ${e.event.title}?`);
-        console.log(e.event.remove());
-    },
-});
-calendar.render();
+        headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,dayGridYear myCustomButton",
+        },
+        select: function (info) {
+            const s = info.startStr;
+            const e = info.endStr;
+            startDate.value = s;
+            endDate.value = e;
+            globalCalendar = calendar;
+            addTaskDialog.showModal();
+        },
+        eventClick: function (e) {
+            alert(`Remove ${e.event.title}?`);
+        },
+    });
+    calendar.render();
+    addEventListeners(calendar);
+}
 
-addTaskDialog
-    .querySelector("button[type='button']")
-    .addEventListener("click", () => {
+function addEventListeners(calendar) {
+    addTaskDialog
+        .querySelector("button[type='button']")
+        .addEventListener("click", () => {
+            addTaskDialog.close();
+        });
+
+    taskForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        calendar.addEvent({
+            title: document.querySelector("#task-name").value,
+            start: startDate.value,
+            end: endDate.value,
+            allDay: true,
+            interactive: true,
+            display:
+                getDateDifference(startDate.value, endDate.value) > 1
+                    ? "block"
+                    : "list-item",
+        });
         addTaskDialog.close();
+        // taskForm.reset();
+
+        postToServer();
     });
-
-taskForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const date1 = new Date(startDate.value);
-    const date2 = new Date(endDate.value);
-    const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    calendar.addEvent({
-        title: document.querySelector("#task-name").value,
-        start: startDate.value,
-        end: endDate.value,
-        allDay: true,
-        interactive: true,
-        display: diffDays > 1 ? "block" : "list-item",
-    });
-    addTaskDialog.close();
-    taskForm.reset();
-
-    postToServer();
-});
-
+}
 const taskName = document.querySelector("#task-name");
 const assignSelect = document.querySelector("#assign");
 const description = document.querySelector("#description");
@@ -93,6 +130,7 @@ async function postToServer() {
                 endDate: endDate.value,
             }),
         });
+        const data = await res.json();
         if (!res.ok) throw new Error(`Error status code of ${res.status}`);
     } catch (e) {
         if (e instanceof Error) {
@@ -100,4 +138,12 @@ async function postToServer() {
             alert("Error saving task.\nPlease try again.");
         }
     }
+}
+
+function getDateDifference(d1, d2) {
+    const date1 = new Date(d1);
+    const date2 = new Date(d2);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
 }
