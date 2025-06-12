@@ -48,9 +48,6 @@ class JournalEntryController extends Controller
         });
 
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
-        $taxes = Cache::remember($accId . '-taxes', 3600, function () use ($accId) {
-            return Tax::where('accountant_id', $accId)->orWhere('accountant_id', null)->get();
-        });
 
         $accounts = LedgerAccount::where('accountant_id', $accId)
             ->orWhere('accountant_id', null)
@@ -58,7 +55,6 @@ class JournalEntryController extends Controller
             ->get();
 
         return view('journal-entries.create', [
-            'taxes' => $taxes,
             'clients' => $clients,
             'accounts' => $accounts,
         ]);

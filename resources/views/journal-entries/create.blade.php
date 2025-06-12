@@ -10,14 +10,6 @@
                     <option value="{{ $account->id }}">{{ $account->code . ' ' . $account->name }}</option>
                 @endforeach
             </select>
-            <select style="display: none;" class="tax-select" required>
-                <option value="0" data-tax-value="0">No Tax</option>
-                @foreach ($taxes as $tax)
-                    <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
-                        {{ strtoupper($tax->name) . ' (' . $tax->value . '%)' }}
-                    </option>
-                @endforeach
-            </select>
             <form id="journalForm" method="POST" action="{{ route('journal-entries.store') }}">
                 @csrf
                 <div class="row">
@@ -29,14 +21,6 @@
                         <label for="date">Date</label>
                         <input type="date" name="date" id="date"
                             value="{{ old('date') ?? now()->format('Y-m-d') }}" />
-                    </div>
-                    <div class="input-wrapper">
-                        <label for="transaction-type">Transaction Type</label>
-                        <select required id="transaction-type" name="transaction_type">
-                            <option value="" selected disabled>Select a transaction type</option>
-                            <option value="sales">Sales</option>
-                            <option value="purchases">Purchases</option>
-                        </select>
                     </div>
                     <div class="input-wrapper client-select-wrapper">
                         <label for="client-select">Client</label>
@@ -58,7 +42,6 @@
                             <tr>
                                 <th>Account</th>
                                 <th>Description</th>
-                                <th>Tax</th>
                                 <th>Debits</th>
                                 <th>Credits</th>
                                 <th></th>
@@ -68,24 +51,10 @@
                             <!-- Rows will be added here -->
                         </tbody>
                         <tfoot>
-                            <tr class="subtotals-row">
-                                <td colspan="2">
-                                    <div style="text-align: right; margin-right: 0.5rem;">Subtotal</div>
-                                </td>
-                                <td></td>
-                                <td id="totalDebits">
-                                    <div style="margin-left: 0.5rem;">0.00</div>
-                                </td>
-                                <td id="totalCredits">
-                                    <div style="margin-left: 0.5rem;">0.00</div>
-                                </td>
-                                <td></td>
-                            </tr>
                             <tr class="totals-row">
                                 <td colspan="2">
-                                    <div style="text-align: right; margin-right: 0.5rem;">Total (PHP) with tax</div>
+                                    <div style="text-align: right; margin-right: 0.5rem;">Total</div>
                                 </td>
-                                <td></td>
                                 <td>
                                     <div style="margin-left: 0.5rem;" id="actual-total-debits">0.00</div>
                                 </td>
