@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Notification as ModelsNotification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -35,9 +36,15 @@ class MissingInvoice extends Notification implements ShouldQueue
 
     public function toBroadcast(object $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage([
+        $n = ModelsNotification::create([
             'title' => 'Missing Invoice',
-            'time' => Carbon::now()->format('Y-m-d H:i:s')
+            'user_id' => $this->user->id,
+            'description' => 'The following invoices are missing from your previous excel file upload: ' . implode(', ', $this->invoices),
+        ]);
+        return new BroadcastMessage([
+            'id' => $n->id,
+            'title' => $n->title,
+            'created_at' => $n->created_at,
         ]);
     }
 

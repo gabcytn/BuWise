@@ -32,10 +32,19 @@ async function fetchUserDetails() {
 
 async function startup() {
     if (!sessionStorage.getItem("id")) await fetchUserDetails();
+    const res = await fetch("/api/notifications");
+    const data = await res.json();
+    const notifs = data.notifications;
+    if (notifs.length > 0) {
+        notifs.forEach((notif) => {
+            addItemInNotificationPanel(notif);
+        });
+    }
     window.Echo.private(
         `App.Models.User.${sessionStorage.getItem("id")}`,
     ).notification((notif) => {
         addItemInNotificationPanel(notif);
+        document.querySelector("#notificationPanel").classList.remove("d-none");
     });
 }
 
@@ -43,6 +52,7 @@ function addItemInNotificationPanel(notif) {
     const notifList = document.querySelector("#notifList");
     const parentContainer = document.createElement("div");
     parentContainer.className = "notification-item";
+    parentContainer.dataset.id = notif.id;
 
     const icon = document.createElement("i");
     icon.className = "fa-solid fa-user-check notification-icon";
@@ -56,7 +66,7 @@ function addItemInNotificationPanel(notif) {
 
     const notifTime = document.createElement("div");
     notifTime.className = "notification-time";
-    notifTime.textContent = notif.time;
+    notifTime.textContent = notif.created_at;
 
     notifContent.appendChild(notifTitle);
     notifContent.appendChild(notifTime);
@@ -66,6 +76,14 @@ function addItemInNotificationPanel(notif) {
     span.textContent = "×";
     span.onclick = () => {
         notifList.removeChild(parentContainer);
+        fetch(`/notifications/${notif.id}`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]',
+                ).content,
+            },
+        });
     };
 
     parentContainer.appendChild(icon);
