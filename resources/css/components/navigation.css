@@ -47,7 +47,7 @@
 
 .nav i {
     margin-right: 12px;
-    margin-left: 20px; /* Move the icon a bit to the left */
+    margin-left: 20px;
     min-width: 20px;
     text-align: center;
 }
@@ -57,7 +57,7 @@
     color: #ffffff;
     text-decoration: none;
     padding: 5px 10px;
-    display: inline-block; /* Makes width match the text */
+    display: inline-block; 
     border-radius: 6px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -65,7 +65,6 @@
 .nav a:hover {
     background-color: #ffffff;
     color: #1B80C3;
-    /* No changes to padding or margin */
 }
 
 
@@ -102,11 +101,10 @@
 .dropdown ul li a:hover {
     background-color: #ffffff;
     color: #1B80C3;
-    text-align: center; /* Center align text (optional) */
+    text-align: center; 
 }
 
 
-/* If you were using custom .icon- classes previously */
 i[class^="icon-"] {
-    display: none; /* Hide old dummy icons */
+    display: none; 
 }
