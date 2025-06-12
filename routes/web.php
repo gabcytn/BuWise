@@ -36,6 +36,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
 
 Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

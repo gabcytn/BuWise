@@ -88,7 +88,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
         $tax_entry = LedgerEntry::create([
             'transaction_id' => $tr->id,
             'account_id' => LedgerAccount::OUTPUT_VAT_PAYABLE,
-            'tax_id' => null,
             'tax_ledger_entry_id' => null,
             'entry_type' => 'credit',
             'description' => null,
@@ -98,7 +97,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
             [
                 'transaction_id' => $tr->id,
                 'account_id' => LedgerAccount::SALES,
-                'tax_id' => null,  // TODO: set to id of vat
                 'tax_ledger_entry_id' => $tax_entry->id,
                 'entry_type' => 'credit',
                 'description' => null,
@@ -107,7 +105,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
             [
                 'transaction_id' => $tr->id,
                 'account_id' => 5,
-                'tax_id' => null,
                 'tax_ledger_entry_id' => null,
                 'entry_type' => 'debit',
                 'description' => null,
@@ -132,7 +129,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
             [
                 'transaction_id' => $tr->id,
                 'account_id' => LedgerAccount::GENERAL_EXPENSE,
-                'tax_id' => null,  // TODO: set to id of vat
                 'tax_ledger_entry_id' => $tax_entry->id,
                 'entry_type' => 'debit',
                 'description' => null,
@@ -141,7 +137,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
             [
                 'transaction_id' => $tr->id,
                 'account_id' => LedgerAccount::ACCOUNTS_RECEIVABLE,
-                'tax_id' => null,
                 'tax_ledger_entry_id' => null,
                 'entry_type' => 'credit',
                 'description' => null,

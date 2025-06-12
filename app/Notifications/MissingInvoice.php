@@ -3,8 +3,10 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -27,7 +29,16 @@ class MissingInvoice extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['broadcast'];
+        // return ['mail', 'broadcast'];
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage([
+            'title' => 'Missing Invoice',
+            'time' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
     }
 
     /**

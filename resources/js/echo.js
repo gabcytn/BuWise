@@ -16,3 +16,61 @@ window.Echo = new Echo({
 window.Echo.channel("task.1").listen("NotificationReminders", (e) => {
     console.log(e.task);
 });
+
+startup();
+
+async function fetchUserDetails() {
+    const res = await fetch("/user", {
+        headers: {
+            Accept: "application/json",
+        },
+    });
+
+    const data = await res.json();
+    sessionStorage.setItem("id", data.id);
+}
+
+async function startup() {
+    if (!sessionStorage.getItem("id")) await fetchUserDetails();
+    window.Echo.private(
+        `App.Models.User.${sessionStorage.getItem("id")}`,
+    ).notification((notif) => {
+        addItemInNotificationPanel(notif);
+    });
+}
+
+function addItemInNotificationPanel(notif) {
+    const notifList = document.querySelector("#notifList");
+    const parentContainer = document.createElement("div");
+    parentContainer.className = "notification-item";
+
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-user-check notification-icon";
+
+    const notifContent = document.createElement("div");
+    notifContent.className = "notification-content";
+
+    const notifTitle = document.createElement("div");
+    notifTitle.className = "notification-title";
+    notifTitle.textContent = notif.title;
+
+    const notifTime = document.createElement("div");
+    notifTime.className = "notification-time";
+    notifTime.textContent = notif.time;
+
+    notifContent.appendChild(notifTitle);
+    notifContent.appendChild(notifTime);
+
+    const span = document.createElement("span");
+    span.className = "notification-close";
+    span.textContent = "×";
+    span.onclick = () => {
+        notifList.removeChild(parentContainer);
+    };
+
+    parentContainer.appendChild(icon);
+    parentContainer.appendChild(notifContent);
+    parentContainer.appendChild(span);
+
+    notifList.appendChild(parentContainer);
+}
