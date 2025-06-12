@@ -32,9 +32,15 @@ async function fetchUserDetails() {
 
 async function startup() {
     if (!sessionStorage.getItem("id")) await fetchUserDetails();
-    const res = await fetch("/api/notifications");
-    const data = await res.json();
-    const notifs = data.notifications;
+    let notifs;
+    if (!sessionStorage.getItem("notifications")) {
+        const res = await fetch("/api/notifications");
+        const data = await res.json();
+        notifs = data.notifications;
+        sessionStorage.setItem("notifications", JSON.stringify(notifs));
+    } else {
+        notifs = JSON.parse(sessionStorage.getItem("notifications"));
+    }
     if (notifs.length > 0) {
         notifs.forEach((notif) => {
             addItemInNotificationPanel(notif);
@@ -43,6 +49,9 @@ async function startup() {
     window.Echo.private(
         `App.Models.User.${sessionStorage.getItem("id")}`,
     ).notification((notif) => {
+        const oldList = JSON.parse(sessionStorage.getItem("notifications"));
+        oldList.push(notif);
+        sessionStorage.setItem("notifications", JSON.stringify(oldList));
         addItemInNotificationPanel(notif);
         document.querySelector("#notificationPanel").classList.remove("d-none");
     });
@@ -84,6 +93,13 @@ function addItemInNotificationPanel(notif) {
                 ).content,
             },
         });
+        let notifs = sessionStorage.getItem("notifications");
+        if (!notifs) return;
+        notifs = JSON.parse(notifs);
+        const newList = notifs.filter((item) => {
+            return item.id !== notif.id;
+        });
+        sessionStorage.setItem("notifications", JSON.stringify(newList));
     };
 
     parentContainer.appendChild(icon);
