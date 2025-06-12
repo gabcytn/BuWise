@@ -19,6 +19,15 @@ class InvoiceStore
     private float $taxTotal;
     private float $amountTotal;
 
+    private const ACCOUNT_LOOKUP = [
+        'cash' => LedgerAccount::CASH,
+        'checkings' => LedgerAccount::CHECKINGS,
+        'savings' => LedgerAccount::SAVINGS,
+        'petty_cash' => LedgerAccount::PETTY_CASH,
+        'receivable' => LedgerAccount::ACCOUNTS_RECEIVABLE,
+        'payable' => LedgerAccount::ACCOUNTS_PAYABLE,
+    ];
+
     public function __construct(
         private Request $request,
     ) {}
@@ -103,11 +112,9 @@ class InvoiceStore
 
             $unitPrice = round((float) $item['unit_price'], 2);
             $discount = round((float) $item['discount'], 2);
-            // $discountedUnitPrice = $unitPrice - $discount;
 
             $tax = round((float) $item['tax'], 2);
             $qty = (int) $item['qty'];
-            // $net = round(($discountedUnitPrice + $tax) * $qty, 2);
             $net = round($unitPrice * $qty, 2);
 
             $discountTotal += $discount * $qty;
@@ -126,7 +133,7 @@ class InvoiceStore
     {
         $validator = Validator::make($item, [
             'item_name' => ['required', 'string', 'max:100'],
-            'qty' => ['required', 'numeric', 'integer'],
+            'qty' => ['required', 'numeric', 'integer', 'gt:0'],
             'unit_price' => ['required', 'numeric'],
             'discount' => ['nullable', 'numeric'],
             'tax' => ['nullable', 'numeric'],
@@ -191,7 +198,7 @@ class InvoiceStore
             ],
             [
                 'transaction_id' => $invoice->id,
-                'account_id' => LedgerAccount::ACCOUNTS_RECEIVABLE,
+                'account_id' => self::ACCOUNT_LOOKUP[$this->request->payment_method],
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => null,
                 'amount' => $this->amountTotal - $this->discountTotal,
@@ -219,7 +226,7 @@ class InvoiceStore
             ],
             [
                 'transaction_id' => $invoice->id,
-                'account_id' => LedgerAccount::ACCOUNTS_PAYABLE,
+                'account_id' => self::ACCOUNT_LOOKUP[$this->request->payment_method],
                 'entry_type' => 'credit',
                 'tax_ledger_entry_id' => null,
                 'amount' => $this->amountTotal,

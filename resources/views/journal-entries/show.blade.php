@@ -52,9 +52,11 @@
             </form>
         @endif
         <button type="button" id="back-button">Back</button>
-        <form action="{{ route('journal-entries.edit', $journalEntry) }}" method="GET">
-            <button type="submit">Edit</button>
-        </form>
+        @if ($journalEntry->type === 'journal')
+            <form action="{{ route('journal-entries.edit', $journalEntry) }}" method="GET">
+                <button type="submit">Edit</button>
+            </form>
+        @endif
     </div>
     <script>
         document.querySelector("#back-button").addEventListener("click", () => {

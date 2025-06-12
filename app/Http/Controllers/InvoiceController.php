@@ -67,7 +67,7 @@ class InvoiceController extends Controller
             'transaction_type' => ['required', 'in:sales,purchases'],
             'invoice_number' => ['required', 'numeric'],
             'description' => ['nullable', 'string', 'max:255'],
-            'payment_method' => ['required', 'string', 'in:cash,bank'],
+            'payment_method' => ['required', 'string', 'in:cash,checkings,savings,petty_cash,receivable,payable'],
             'tax' => ['nullable', 'numeric'],
             'discount_type' => ['nullable', 'string', 'max:100'],
         ]);
