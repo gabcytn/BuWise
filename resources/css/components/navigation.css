@@ -7,6 +7,7 @@
     font-family: 'Segoe UI', sans-serif;
     overflow-y: auto;
     padding: 20px 0;
+    width: 300px;
 }
 
 .logo {
@@ -89,7 +90,7 @@
 }
 
 .dropdown ul li a {
-    font-size: 14px;
+    font-size: 16px;
     color: #ffffff;
     text-decoration: none;
     padding: 5px 10px;
