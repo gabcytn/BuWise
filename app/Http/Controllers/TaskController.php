@@ -31,7 +31,7 @@ class TaskController extends Controller
     {
         $user = $request->user();
         $tasks = Cache::remember($user->id . '-tasks', 3600, function () use ($user) {
-            return Task::where('assigned_to', '=', $user->id)->get();
+            return Task::with(['user', 'toClient'])->where('assigned_to', '=', $user->id)->get();
         });
         return Response::json([
             'tasks' => $tasks,
@@ -64,7 +64,7 @@ class TaskController extends Controller
                 return $this->backWithErrors('Client not found');
         }
 
-        $task = Task::create([
+        Task::create([
             'name' => $request->name,
             'assigned_to' => $assigned->id,
             'client' => $client ? $client->id : null,
@@ -75,11 +75,7 @@ class TaskController extends Controller
             'end_date' => $request->endDate,
         ]);
 
-        $currentTasks = Cache::remember($assigned->id . '-tasks', 3600, function () use ($assigned) {
-            return Task::where('assigned_to', '=', $assigned->id)->get();
-        });
-        $currentTasks[] = $task;
-        Cache::put($assigned->id . '-tasks', $currentTasks);
+        Cache::forget($assigned->id . '-tasks');
 
         // TODO: schedule task reminders
 

@@ -1,7 +1,15 @@
 const addTaskDialog = document.querySelector("dialog#add-task");
+const viewTaskDialog = document.querySelector("dialog#view-task");
 const startDate = document.querySelector("#start-date");
 const endDate = document.querySelector("#end-date");
 const taskForm = document.querySelector("#add-task-form");
+
+const statusIdxMap = { not_started: 0, in_progress: 1, completed: 2 };
+const bgColorMap = {
+    not_started: "red",
+    in_progress: "yellow",
+    completed: "green",
+};
 
 async function getTasks() {
     try {
@@ -28,7 +36,7 @@ start();
 
 async function start() {
     const tasks = await getTasks();
-    let globalCalendar = null;
+    sessionStorage.setItem("tasks", JSON.stringify(tasks));
     const calendarEl = document.getElementById("calendar");
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
@@ -44,6 +52,12 @@ async function start() {
                     getDateDifference(task.start_date, task.end_date) > 1
                         ? "block"
                         : "list-item",
+                backgroundColor: bgColorMap[task.status],
+                extendedProps: {
+                    description: task.description,
+                    status: task.status,
+                    id: task.id,
+                },
             };
         }),
         customButtons: {
@@ -64,11 +78,20 @@ async function start() {
             const e = info.endStr;
             startDate.value = s;
             endDate.value = e;
-            globalCalendar = calendar;
             addTaskDialog.showModal();
         },
         eventClick: function (e) {
-            alert(`Remove ${e.event.title}?`);
+            viewTaskDialog.querySelector("h3").textContent = e.event.title;
+            viewTaskDialog.querySelector("#description").value =
+                e.event.extendedProps.description;
+            const s = e.event.extendedProps.status;
+            viewTaskDialog.querySelector("#status")[statusIdxMap[s]].selected =
+                true;
+            const forms = viewTaskDialog.querySelectorAll("form");
+            forms.forEach((form) => {
+                form.action = `/tasks/${e.event.extendedProps.id}`;
+            });
+            viewTaskDialog.showModal();
         },
     });
     calendar.render();
@@ -80,6 +103,11 @@ function addEventListeners(calendar) {
         .querySelector("button[type='button']")
         .addEventListener("click", () => {
             addTaskDialog.close();
+        });
+    viewTaskDialog
+        .querySelector("button[type='button']")
+        .addEventListener("click", () => {
+            viewTaskDialog.close();
         });
 
     taskForm.addEventListener("submit", (e) => {

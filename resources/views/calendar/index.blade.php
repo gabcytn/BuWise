@@ -90,5 +90,36 @@
             <button type="button">Cancel</button>
         </div>
     </dialog>
+    <dialog id="view-task">
+        <h3>Task Name Here</h3>
+        <div class="form-wrapper">
+            <form class="form" action="" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="task-input">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="6"></textarea>
+                </div>
+                <div class="task-input">
+                    <label for="status">Status</label>
+                    <select name="status" id="status" required>
+                        <option value="not_started">Not Started</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <hr />
+        <div class="form-wrapper button-container">
+            <button type="submit" form="add-task-form">Edit</button>
+            <form action="" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Delete</button>
+            </form>
+            <button type="button">Cancel</button>
+        </div>
+    </dialog>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
 </x-app-layout>
