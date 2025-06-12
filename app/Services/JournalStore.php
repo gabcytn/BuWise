@@ -3,21 +3,20 @@
 namespace App\Services;
 
 use App\Events\JournalEntryCreated;
-use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
-use App\Models\Tax;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class JournalStore
 {
     public function store(Request $request)
     {
         $request->validate([
-            'client_id' => 'uuid:4',
+            'client_id' => ['required', 'uuid:4'],
             'description' => ['required', 'string', 'max:255'],
             'transaction_type' => ['required', 'in:sales,purchases'],
             'date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31'],
@@ -27,8 +26,8 @@ class JournalStore
         $rowNumbers = $this->getRowNumbers($request);
         $journalEntries = $this->getJournalEntries($request, $rowNumbers);
 
-        $totalDebits = array_sum(array_column($journalEntries, 'taxed_debit'));
-        $totalCredits = array_sum(array_column($journalEntries, 'taxed_credit'));
+        $totalDebits = array_sum(array_column($journalEntries, 'debit'));
+        $totalCredits = array_sum(array_column($journalEntries, 'credit'));
 
         if ($totalDebits != $totalCredits)
             return $this->redirectWithErrors('balance', 'Journal entries must have equal debits and credits');
@@ -54,23 +53,9 @@ class JournalStore
             $ledgerEntries = [];
             // Create individual journal lines
             foreach ($journalEntries as $entry) {
-                $debitTax = $entry['taxed_debit'] - $entry['debit'];
-                $creditTax = $entry['taxed_credit'] - $entry['credit'];
-                $isTaxed = false;
-                if ($debitTax > 0 || $creditTax > 0) {
-                    $isTaxed = true;
-                    $taxEntry = LedgerEntry::create([
-                        'transaction_id' => $journalEntry->id,
-                        'account_id' => LedgerAccount::TAX_PAYABLE,  // Taxes Payable
-                        'entry_type' => $entry['debit'] ? 'debit' : 'credit',
-                        'amount' => $entry['debit'] !== 0.0 ? $debitTax : $creditTax
-                    ]);
-                }
                 $ledgerEntry = LedgerEntry::create([
                     'transaction_id' => $journalEntry->id,
                     'account_id' => $entry['account'],
-                    'tax_id' => $isTaxed ? (int) $entry['tax_id'] : null,
-                    'tax_ledger_entry_id' => $isTaxed ? $taxEntry->id : null,
                     'entry_type' => $entry['debit'] ? 'debit' : 'credit',
                     'description' => $entry['description'],
                     'amount' => $entry['debit'] !== 0.0 ? $entry['debit'] : $entry['credit'],
@@ -81,7 +66,7 @@ class JournalStore
             DB::commit();
 
             // update cache
-            JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
+            // JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
 
             return redirect()
                 ->route('journal-entries.create')
@@ -116,13 +101,8 @@ class JournalStore
                 'credit' => (float) $request->input("credit_$rowId", 0),
                 'description' => $request->input("description_$rowId"),
             ];
+            $this->validateJournalLines($entry);
 
-            $taxId = $request->input("tax_$rowId", '');
-            $entry['taxed_debit'] = $this->getTaxedValue($taxId, $entry['debit']);
-            $entry['taxed_credit'] = $this->getTaxedValue($taxId, $entry['credit']);
-            $entry['tax_id'] = $taxId;
-
-            // Only include rows with actual data
             if ($entry['account'] && ($entry['debit'] > 0 || $entry['credit'] > 0)) {
                 $journalEntries[] = $entry;
             }
@@ -130,15 +110,17 @@ class JournalStore
         return $journalEntries;
     }
 
-    private function getTaxedValue(string $tax, float $originalValue)
+    private function validateJournalLines(array $item)
     {
-        if ($tax !== '0') {
-            $tax = Tax::find($tax);
-            $percentage = ((int) $tax->value) / 100;
-            $withTax = (float) round($originalValue * $percentage, 2);
-            return $originalValue + $withTax;
-        }
-        return $originalValue;
+        $validator = Validator::make($item, [
+            'account' => 'required|numeric',
+            'debit' => 'required|numeric',
+            'credit' => 'required|numeric',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails())
+            throw new \Exception($validator->errors()->__toString());
     }
 
     private function redirectWithErrors($key, $value): RedirectResponse

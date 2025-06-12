@@ -1,6 +1,6 @@
 <x-app-layout>
     @php
-        $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Notes', 'Tax', 'Debit', 'Credit'];
+        $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Notes', 'Debit', 'Credit'];
         $journalStatus = $journalEntry->status;
     @endphp
     @vite('resources/css/journal-entries/show.css')
@@ -30,7 +30,6 @@
                     <td>{{ $entry->account_name }}</td>
                     <td>{{ ucfirst($entry->account_group_name) }}</td>
                     <td title="{{ $entry->description }}">{{ truncate($entry->description) }}</td>
-                    <td>{{ $entry->tax_value }}</td>
                     <td>{{ $entry->debit }}</td>
                     <td>{{ $entry->credit }}</td>
                 </tr>

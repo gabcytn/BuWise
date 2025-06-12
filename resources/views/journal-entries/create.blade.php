@@ -22,6 +22,14 @@
                         <input type="date" name="date" id="date"
                             value="{{ old('date') ?? now()->format('Y-m-d') }}" />
                     </div>
+                    <div class="input-wrapper">
+                        <label for="transaction-type">Transaction Type</label>
+                        <select required id="transaction-type" name="transaction_type">
+                            <option value="" selected disabled>Select a transaction type</option>
+                            <option value="sales">Sales</option>
+                            <option value="purchases">Purchases</option>
+                        </select>
+                    </div>
                     <div class="input-wrapper client-select-wrapper">
                         <label for="client-select">Client</label>
                         <select name="client_id" id="client-select" required="">
@@ -53,7 +61,7 @@
                         <tfoot>
                             <tr class="totals-row">
                                 <td colspan="2">
-                                    <div style="text-align: right; margin-right: 0.5rem;">Total</div>
+                                    <div style="text-align: right; margin-right: 0.5rem;">Total (PHP) with tax</div>
                                 </td>
                                 <td>
                                     <div style="margin-left: 0.5rem;" id="actual-total-debits">0.00</div>
