@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('description');
             $table->enum('status', ['not_started', 'in_progress', 'completed']);
-            $table->enum('frequency', ['once', 'daily', 'weekly', 'monthly', 'quarterly', 'annully']);
+            $table->enum('frequency', ['once', 'daily', 'weekly', 'monthly', 'quarterly', 'annually']);
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();
