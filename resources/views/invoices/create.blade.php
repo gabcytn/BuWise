@@ -52,11 +52,21 @@
                         value="{{ old('invoice_number') }}" />
                 </div>
                 <div class="form-row">
-                    <label>Payment Method</label>
+                    <label id="payment-method">Payment Method</label>
                     <select name="payment_method" required>
                         <option selected disabled value="">Select Payment Type</option>
                         <option {{ old('payment_method') === 'cash' ? 'selected' : '' }} value="cash">Cash</option>
-                        <option {{ old('payment_method') === 'bank' ? 'selected' : '' }} value="bank">Bank Transfer
+                        <option {{ old('payment_method') === 'checkings' ? 'selected' : '' }} value="checkings">Bank
+                            (Checkings)
+                        <option {{ old('payment_method') === 'savings' ? 'selected' : '' }} value="savings">Bank
+                            (Savings)
+                        </option>
+                        <option {{ old('payment_method') === 'petty_cash' ? 'selected' : '' }} value="petty_cash">Petty
+                            Cash</option>
+                        <option {{ old('payment_method') === 'receivable' ? 'selected' : '' }} value="receivable">
+                            Accounts Receivable</option>
+                        <option {{ old('payment_method') === 'payable' ? 'selected' : '' }} value="payable">Accounts
+                            Payable
                         </option>
                     </select>
                 </div>

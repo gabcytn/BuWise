@@ -128,3 +128,28 @@ function updateTotals() {
 
     document.querySelector("#total-sum").textContent = sum.toFixed(2);
 }
+
+// receivable/payable switch
+const paymentMethodSelect = document.querySelector(
+    "select[name='payment_method']",
+);
+const transactionTypeSelect = document.querySelector(
+    "select[name='transaction_type']",
+);
+
+transactionTypeSelect.addEventListener("change", updatePaymentLabel);
+
+updatePaymentLabel();
+function updatePaymentLabel() {
+    const paymentMethodLabel = document.querySelector("#payment-method");
+    switch (transactionTypeSelect[transactionTypeSelect.selectedIndex].value) {
+        case "purchases":
+            paymentMethodLabel.textContent = "Credit To";
+            break;
+        case "sales":
+            paymentMethodLabel.textContent = "Debit To";
+            break;
+        default:
+            break;
+    }
+}

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class LedgerAccount extends Model
 {
     public const CASH = 1;
+    public const CHECKINGS = 2;
+    public const SAVINGS = 3;
+    public const PETTY_CASH = 4;
     public const ACCOUNTS_RECEIVABLE = 5;
     public const INPUT_VAT_RECEIVABLE = 6;
     public const ACCOUNTS_PAYABLE = 17;
