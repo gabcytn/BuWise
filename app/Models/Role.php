@@ -11,6 +11,7 @@ class Role extends Model
     public const LIAISON = 2;
     public const CLERK = 3;
     public const CLIENT = 4;
+    public const BOT = 5;
 
     /*
      * @return HasMany

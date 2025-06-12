@@ -9,7 +9,7 @@ class InvoiceLine extends Model
 {
     protected $fillable = [
         'invoice_id',
-        'tax_id',
+        'tax',
         'item_name',
         'quantity',
         'unit_price',

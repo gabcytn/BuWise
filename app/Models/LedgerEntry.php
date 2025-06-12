@@ -10,7 +10,7 @@ class LedgerEntry extends Model
     protected $fillable = [
         'transaction_id',
         'account_id',
-        'tax_id',
+        'tax',
         'tax_ledger_entry_id',
         'entry_type',
         'description',

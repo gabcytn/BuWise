@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -101,46 +100,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /*
-     * @return HasManyThrough
-     */
-    public function clientsJournalEntries()
-    {
-        return $this
-            ->hasManyThrough(
-                JournalEntry::class,
-                User::class,
-                'accountant_id',
-                'client_id',
-                'id',
-                'id'
-            )
-            ->select('journal_entries.*')
-            ->with(['client', 'ledgerEntries'])
-            ->orderByDesc('journal_entries.id');
-    }
-
-    /*
      * @return HasMany
      */
-    public function vendors(): HasMany
+    public function transactions(): HasMany
     {
-        return $this->hasMany(Vendor::class);
-    }
-
-    /*
-     * @return HasMany
-     */
-    public function customers(): HasMany
-    {
-        return $this->hasMany(Customer::class);
-    }
-
-    /*
-     * @return HasMany
-     */
-    public function invoices(): HasMany
-    {
-        return $this->hasMany(Invoice::class);
+        return $this->hasMany(Transaction::class);
     }
 
     /*

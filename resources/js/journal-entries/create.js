@@ -48,17 +48,6 @@ function addRow() {
 
     descriptionCell.appendChild(descriptionInput);
 
-    // Tax field
-    const taxCell = document.createElement("td");
-    const taxSelect = document.querySelector("select.tax-select");
-    const taxSelectClone = taxSelect.cloneNode(true);
-    taxSelectClone.style.display = "block";
-    taxSelectClone.name = `tax_${rowCounter}`;
-
-    taxSelectClone.addEventListener("change", updateTotals);
-
-    taxCell.appendChild(taxSelectClone);
-
     // Debits field
     const debitCell = document.createElement("td");
     const debitInput = document.createElement("input");
@@ -133,7 +122,6 @@ function addRow() {
     // Append all cells to the row
     newRow.appendChild(accountCell);
     newRow.appendChild(descriptionCell);
-    newRow.appendChild(taxCell);
     newRow.appendChild(debitCell);
     newRow.appendChild(creditCell);
     newRow.appendChild(deleteCell);
@@ -145,66 +133,39 @@ function addRow() {
 function updateTotals() {
     let totalDebits = 0;
     let totalCredits = 0;
-    let actualD = 0;
-    let actualC = 0;
 
     const journalRows = document.querySelectorAll(".journal-row");
     journalRows.forEach((row) => {
         const key = row.dataset.rowNumber;
-        const taxSelect = row.querySelector(`select[name='tax_${key}']`);
         const debitInput = row.querySelector(`input[name='debit_${key}']`);
         const creditInput = row.querySelector(`input[name='credit_${key}']`);
 
-        if (!debitInput.disabled && debitInput.value) {
+        if (!debitInput.disabled && debitInput.value)
             totalDebits += parseFloat(debitInput.value || 0);
-            actualD += parseFloat(debitInput.value || 0);
-            const taxSelectedValue =
-                taxSelect[taxSelect.selectedIndex].dataset.taxValue;
-            if (taxSelectedValue !== "0") {
-                const percentage = parseFloat(taxSelectedValue) / 100;
-                actualD += parseFloat(
-                    (debitInput.value * percentage).toFixed(2),
-                );
-            }
-        } else if (!creditInput.disabled && creditInput.value) {
+        else if (!creditInput.disabled && creditInput.value)
             totalCredits += parseFloat(creditInput.value || 0);
-            actualC += parseFloat(creditInput.value || 0);
-            const taxSelectedValue =
-                taxSelect[taxSelect.selectedIndex].dataset.taxValue;
-            if (taxSelectedValue !== "0") {
-                const percentage = parseFloat(taxSelectedValue) / 100;
-                actualC += parseFloat(
-                    (creditInput.value * percentage).toFixed(2),
-                );
-            }
-        }
     });
 
-    // Update totals display
-    document.querySelector(".subtotals-row #totalDebits div").textContent =
-        totalDebits.toFixed(2);
-    document.querySelector(".subtotals-row #totalCredits div").textContent =
-        totalCredits.toFixed(2);
-
     document.querySelector("#actual-total-debits").textContent =
-        actualD.toFixed(2);
+        totalDebits.toFixed(2);
     document.querySelector("#actual-total-credits").textContent =
-        actualC.toFixed(2);
+        totalCredits.toFixed(2);
 
     // Enable/disable submit button based on balance
     const submitButton = document.getElementById("submitButton");
     const balanceWarning = document.getElementById("balanceWarning");
 
-    if (actualD === actualC && actualD > 0) {
+    if (totalDebits === totalCredits && totalDebits > 0 && totalCredits > 0) {
         submitButton.disabled = false;
         balanceWarning.style.display = "none";
         document.querySelector(".totals-row").style.color = "black";
     } else {
         submitButton.disabled = true;
-        if (actualD > 0 || actualC > 0) {
+        if (totalCredits > 0 || totalDebits > 0) {
             balanceWarning.style.display = "inline";
             document.querySelector(".totals-row").style.color = "red";
         } else {
+            // when both debits & credits are set to 0
             balanceWarning.style.display = "none";
             document.querySelector(".totals-row").style.color = "black";
         }

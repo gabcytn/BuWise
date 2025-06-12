@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\BalanceSheetController;
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IncomeStatementController;
+use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileInformationController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\WorkingPaperController;
 use App\Http\Middleware\EnableMFA;
@@ -33,6 +37,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
 
 Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', function (Request $request) {
         return view('profile.edit', [
             'user' => $request->user()
@@ -78,6 +89,21 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/reports/balance-sheet', [BalanceSheetController::class, 'index'])->name('reports.balance-sheet');
     Route::get('/reports/income-statement', [IncomeStatementController::class, 'index'])->name('reports.income-statement');
     Route::get('/reports/working-paper', [WorkingPaperController::class, 'index'])->name('reports.working-paper');
+    Route::get('/reports/insights', [InsightsController::class, 'index'])->name('reports.insights');
+
+    // insights
+    Route::get('/cash-flow/{user}', [InsightsController::class, 'cashFlow']);
+    Route::get('/receivables/{user}', [InsightsController::class, 'receivables']);
+    Route::get('/payables/{user}', [InsightsController::class, 'payables']);
+    Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
+
+    // calendar
+    Route::resource('/tasks', TaskController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/api/tasks', [TaskController::class, 'tasks']);
+
+    // notifications
+    Route::get('/api/notifications', [NotificationController::class, 'notifications']);
+    Route::resource('/notifications', NotificationController::class)->only(['destroy']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
@@ -86,6 +112,10 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         return view('auth.enable-mfa');
     })->name('mfa.enable')->withoutMiddleware(EnableMFA::class);
 });
+
+Route::get('/bot/invoices/create', [BotController::class, 'index'])
+    ->middleware('auth')
+    ->name('bot-invoices.create');
 
 // allow email verification without signing in
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {

@@ -1,0 +1,140 @@
+.container {
+    max-width: 1500px;
+    width: 95%;
+    margin: 2rem auto;
+
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
+.content {
+    padding: 2rem;
+    background-color: var(--clear-white);
+    border-radius: 0.375rem;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.content.calendar {
+    width: 80%;
+}
+
+.aside {
+    width: 20%;
+
+    aside {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+dialog#add-task {
+    h2 {
+        padding: 1rem 2rem;
+        background-color: var(--main-blue);
+        color: var(--off-white);
+    }
+
+    .form-wrapper {
+        padding: 1rem 2rem;
+
+        button:hover {
+            opacity: 0.85;
+        }
+    }
+
+    #add-task-form {
+        display: flex;
+        gap: 3rem;
+        border: none;
+        padding: 0;
+    }
+
+    .task-input {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+
+        #description {
+            resize: none;
+        }
+
+        select,
+        input,
+        textarea {
+            padding: 0.375rem;
+            width: 20rem;
+        }
+    }
+
+    .task-input+.task-input {
+        margin-top: 0.5rem;
+    }
+}
+
+hr {
+    color: rgba(0, 0, 0, 0.2);
+}
+
+#view-task {
+    h3 {
+        color: var(--off-white);
+        padding: 1rem 2rem;
+        background-color: var(--main-blue);
+    }
+
+    .form-wrapper {
+        padding: 1rem 2rem;
+    }
+
+
+    form {
+        display: flex;
+        flex-direction: column;
+        border: none;
+        padding: 0;
+
+        .task-input {
+            display: grid;
+        }
+
+        .task-input+.task-input {
+            margin-top: 1rem;
+        }
+
+        select,
+        textarea {
+            padding: 0.375rem;
+        }
+    }
+
+    .form-wrapper.button-container {
+        display: flex;
+        gap: 1rem;
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        form button {
+            background-color: red;
+        }
+    }
+}
+
+@media (max-width: 1000px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .content.calendar {
+        width: 100%;
+    }
+
+    .aside {
+        width: 100%;
+    }
+}

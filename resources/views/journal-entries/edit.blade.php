@@ -8,14 +8,6 @@
             </option>
         @endforeach
     </select>
-    <select id="tax-select-clone" required class="d-none">
-        <option value="0" data-tax-value="0">No Tax</option>
-        @foreach ($taxes as $tax)
-            <option value="{{ $tax->id }}" data-tax-value="{{ $tax->value }}">
-                {{ strtoupper($tax->name) . ' (' . $tax->value . '%)' }}
-            </option>
-        @endforeach
-    </select>
     <div class="container">
         <h2 id="page-title">Journal Entry</h2>
         <hr />
@@ -32,7 +24,7 @@
                     </div>
                     <div class="input-wrapper">
                         <label for="date">Date</label>
-                        <input value="{{ $date }}" type="date" name="date" id="date" />
+                        <input value="{{ $journal_entry->date }}" type="date" name="date" id="date" />
                     </div>
                     <div class="input-wrapper">
                         <label for="transaction-type">Transaction Type</label>
@@ -63,7 +55,6 @@
                             <tr>
                                 <th>Account</th>
                                 <th>Description</th>
-                                <th>Tax</th>
                                 <th>Debits</th>
                                 <th>Credits</th>
                                 <th></th>
@@ -86,18 +77,6 @@
                                     <td>
                                         <input name="{{ 'description_' . $key + 1 }}" class="row-description"
                                             value="{{ $ledger_entry->description }}" placeholder="Description" />
-                                    </td>
-                                    <td>
-                                        <select class="tax-select" required name={{ 'tax_' . $key + 1 }}>
-                                            <option value="0" data-tax-value="0">No Tax</option>
-                                            @foreach ($taxes as $tax)
-                                                <option value="{{ $tax->id }}"
-                                                    data-tax-value="{{ $tax->value }}"
-                                                    {{ $ledger_entry->tax_id === $tax->id ? 'selected' : '' }}>
-                                                    {{ strtoupper($tax->name) . ' (' . $tax->value . '%)' }}
-                                                </option>
-                                            @endforeach
-                                        </select>
                                     </td>
                                     @php
                                         $debit_value =
@@ -122,24 +101,10 @@
                             @endforeach
                         </tbody>
                         <tfoot>
-                            <tr class="subtotals-row">
-                                <td colspan="2">
-                                    <div style="text-align: right; margin-right: 0.5rem;">Subtotal</div>
-                                </td>
-                                <td><input class="tax-input" placeholder="0.00" disabled /></td>
-                                <td id="totalDebits">
-                                    <div style="margin-left: 0.5rem;">0.00</div>
-                                </td>
-                                <td id="totalCredits">
-                                    <div style="margin-left: 0.5rem;">0.00</div>
-                                </td>
-                                <td></td>
-                            </tr>
                             <tr class="totals-row">
                                 <td colspan="2">
-                                    <div style="text-align: right; margin-right: 0.5rem;">Total (PHP) with tax</div>
+                                    <div style="text-align: right; margin-right: 0.5rem;">Total</div>
                                 </td>
-                                <td></td>
                                 <td>
                                     <div style="margin-left: 0.5rem;" id="actual-total-debits">0.00</div>
                                 </td>
@@ -153,10 +118,7 @@
                 </div>
 
                 <div class="button-container">
-                    <button type="button" class="add-row-btn">
-                        Add New Row
-                    </button>
-                    <button type="submit" class="submit-btn" id="submitButton">Submit Journal Entry</button>
+                    <button type="submit" class="submit-btn" id="submitButton">Update</button>
                     <p id="balanceWarning" style="color: red; display: none;">
                         Debits and credits must be equal before submitting.
                     </p>

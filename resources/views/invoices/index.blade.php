@@ -4,7 +4,8 @@
     <div class="dashboard-wrapper">
 
         <!-- Header Row: Title + New Invoice Button + Extra Buttons -->
-        <div class="invoice-header-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div class="invoice-header-row"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <div class="invoice-header">
                 <h2>Invoice Management</h2>
                 <p>Efficiently handle your client’s invoices. View each invoice by clicking the corresponding row.</p>
@@ -51,7 +52,8 @@
 
                 <!-- Search Input with Icon Inside -->
                 <div class="search-input" style="position: relative;">
-                    <img src="{{ asset('images/magnify.png') }}" alt="Search" class="search-icon" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); height: 16px;">
+                    <img src="{{ asset('images/magnify.png') }}" alt="Search" class="search-icon"
+                        style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); height: 16px;">
                     <input type="text" placeholder="Search Invoices..." style="padding-left: 30px;" />
                 </div>
             </div>
@@ -65,6 +67,7 @@
                             <th>Transaction Type</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <th>Processed By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -79,19 +82,25 @@
                                     <span class="status {{ strtolower($invoice->status) }}">
                                         {{ ucfirst($invoice->status) }}
                                     </span>
+                                </td>
+                                <td title="{{ $invoice->creator->name }}">{{ truncate($invoice->creator->name) }}
+                                </td>
                                 <td>
-    <a href="{{ route('invoices.show', $invoice->id) }}" class="action-view" title="View">
-        <img src="{{ asset('images/viewicon.png') }}" alt="View" />
-    </a>
-    <a href="{{ route('invoices.edit', $invoice->id) }}" class="action-edit" title="Edit">
-        <img src="{{ asset('images/editicon.png') }}" alt="Edit" />
-    </a>
-    <form method="POST" action="{{ route('invoices.destroy', $invoice->id) }}" style="display:inline;" onsubmit="return confirm('Delete this invoice?')">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="action-delete" title="Delete">
-            <img src="{{ asset('images/deleteicon.png') }}" alt="Delete" />
-        </button>
+                                    <a href="{{ route('invoices.show', $invoice->id) }}" class="action-view"
+                                        title="View">
+                                        <img src="{{ asset('images/viewicon.png') }}" alt="View" />
+                                    </a>
+                                    <a href="{{ route('invoices.edit', $invoice->id) }}" class="action-edit"
+                                        title="Edit">
+                                        <img src="{{ asset('images/editicon.png') }}" alt="Edit" />
+                                    </a>
+                                    <form method="POST" action="{{ route('invoices.destroy', $invoice->id) }}"
+                                        style="display:inline;" onsubmit="return confirm('Delete this invoice?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="action-delete" title="Delete">
+                                            <img src="{{ asset('images/deleteicon.png') }}" alt="Delete" />
+                                        </button>
 
                                     </form>
                                 </td>
@@ -99,6 +108,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $invoices->links() }}
             @else
                 <h2>No invoices found.</h2>
             @endif

@@ -2,25 +2,34 @@
 
 namespace App\Policies;
 
-use App\Models\Invoice;
 use App\Models\Role;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class InvoicePolicy
+class TaskPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): Response
     {
-        return $user->role_id !== Role::CLIENT ? Response::allow() : Response::denyAsNotFound();
+        switch ($user->role_id) {
+            case Role::ACCOUNTANT:
+            case Role::LIAISON:
+            case Role::CLERK:
+                return Response::allow();
+                break;
+            default:
+                return Response::denyAsNotFound();
+                break;
+        }
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Invoice $invoice): bool
+    public function view(User $user, Task $task): bool
     {
         return false;
     }
@@ -30,29 +39,30 @@ class InvoicePolicy
      */
     public function create(User $user): Response
     {
-        return $user->role_id === Role::CLIENT ? Response::allow() : Response::denyAsNotFound();
+        return $this->viewAny($user);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Invoice $invoice): bool
+    public function update(User $user, Task $task): bool
     {
-        return false;
+        $validRole = in_array($user->role_id, [Role::ACCOUNTANT, Role::LIAISON, Role::CLERK]);
+        return $validRole && $task->created_by === $user->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Invoice $invoice): bool
+    public function delete(User $user, Task $task): bool
     {
-        return false;
+        return $this->update($user, $task);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Invoice $invoice): bool
+    public function restore(User $user, Task $task): bool
     {
         return false;
     }
@@ -60,7 +70,7 @@ class InvoicePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Invoice $invoice): bool
+    public function forceDelete(User $user, Task $task): bool
     {
         return false;
     }

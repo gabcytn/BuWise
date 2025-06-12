@@ -1,0 +1,223 @@
+.container {
+    max-width: 1500px;
+    width: 95%;
+    margin: 2rem auto;
+}
+
+.insights-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        color: var(--grey);
+    }
+
+    #page-title {
+        font-size: 2.5rem;
+    }
+}
+
+.insights-header__left {
+    display: flex;
+    flex-direction: column;
+}
+
+.insights-header__right {
+    display: flex;
+    gap: 1rem;
+
+    select,
+    button {
+        padding: 0.375rem 0.75rem;
+    }
+
+    button {
+        background-color: var(--main-blue);
+        color: var(--off-white);
+        border-radius: 0.15rem;
+        border: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        opacity: 0.85;
+    }
+}
+
+.insights-body {
+    margin: 1rem 0;
+}
+
+.cash-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--clear-white);
+    border-radius: 0.375rem;
+    padding: 1rem 2rem;
+    margin: 1rem 0;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cash-flow__header {
+    display: flex;
+    justify-content: space-between;
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    select {
+        background-color: var(--off-white);
+        border: none;
+        outline: none;
+        padding: 0.375rem 1rem;
+    }
+}
+
+.cash-flow__body {
+    display: flex;
+
+    .chart-container {
+        flex: 2;
+        position: relative;
+        height: 400px;
+    }
+
+    .cash-flow__body--texts {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+.summary-card {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: right;
+
+    .card-label {
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 8px;
+    }
+
+    .card-value {
+        font-size: 24px;
+        font-weight: 600;
+    }
+}
+
+.inflows {
+    background-color: var(--peach);
+}
+
+.outflows {
+    background-color: var(--violet)
+}
+
+.receivables-vs-payables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 1rem;
+
+    >* {
+        background-color: var(--clear-white);
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+
+        .chart-container {
+            max-width: 25rem;
+            width: 90%;
+            margin: 0 auto;
+        }
+    }
+
+    .p-3 {
+        padding: 1rem;
+    }
+
+    .receivables-texts,
+    .payables-texts {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .receivables-summary,
+    .payables-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        row-gap: 0.75rem;
+    }
+
+    hr {
+        color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+.profit-and-loss {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--clear-white);
+    border-radius: 0.375rem;
+    padding: 1rem 2rem;
+    margin: 1rem 0;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+
+    .pl-header {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .pl-body {
+        display: flex;
+
+        .chart-container {
+            flex: 2;
+            position: relative;
+            height: 400px;
+        }
+
+        .pl-texts {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+
+    .pl-revenue {
+        background: var(--light-green);
+    }
+
+    .pl-expenses {
+        background: var(--light-blue);
+    }
+
+    .pl-profit {
+        background: var(--orange);
+    }
+
+    .card-value {
+        color: var(--soft-black);
+    }
+
+}
+
+@media (max-width: 1236px) {
+
+    .cash-flow__body,
+    .pl-body {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

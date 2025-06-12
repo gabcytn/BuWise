@@ -48,9 +48,6 @@ class JournalEntryController extends Controller
         });
 
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
-        $taxes = Cache::remember($accId . '-taxes', 3600, function () use ($accId) {
-            return Tax::where('accountant_id', $accId)->orWhere('accountant_id', null)->get();
-        });
 
         $accounts = LedgerAccount::where('accountant_id', $accId)
             ->orWhere('accountant_id', null)
@@ -58,7 +55,6 @@ class JournalEntryController extends Controller
             ->get();
 
         return view('journal-entries.create', [
-            'taxes' => $taxes,
             'clients' => $clients,
             'accounts' => $accounts,
         ]);
@@ -96,22 +92,12 @@ class JournalEntryController extends Controller
         $user = $request->user();
         $accounts = LedgerAccount::all();
 
-        $ledgerEntries = LedgerEntry::where('transaction_id', $journalEntry->id)
-            ->where('account_id', '!=', LedgerAccount::TAX_PAYABLE)
-            ->get();
-
-        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
-        $taxes = Cache::remember($accId . '-taxes', 3600, function () use ($accId) {
-            return Tax::where('accountant_id', $accId)->orWhere('accountant_id', null)->get();
-        });
-        $date = new DateTime($journalEntry->date);
+        $ledgerEntries = LedgerEntry::where('transaction_id', $journalEntry->id)->get();
 
         return view('journal-entries.edit', [
             'accounts' => $accounts,
             'journal_entry' => $journalEntry,
             'ledger_entries' => $ledgerEntries,
-            'date' => $date->format('Y-m-d'),
-            'taxes' => $taxes,
         ]);
     }
 

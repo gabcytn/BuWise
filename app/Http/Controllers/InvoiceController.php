@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\Tax;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Services\InvoiceStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -30,7 +31,7 @@ class InvoiceController extends Controller
             })
             ->where('type', '=', 'invoice')
             ->orderBy('id', 'DESC')
-            ->get();
+            ->paginate(6);
 
         return view('invoices.index', [
             'invoices' => $invoices,
@@ -48,12 +49,8 @@ class InvoiceController extends Controller
         $clients = Cache::remember($accId . '-clients', 3600, function () use ($user) {
             return getClients($user);
         });
-        $taxes = Tax::where('accountant_id', '=', $accId)
-            ->orWhere('accountant_id', '=', null)
-            ->get();
         return view('invoices.create', [
             'clients' => $clients,
-            'taxes' => $taxes
         ]);
     }
 
@@ -108,13 +105,9 @@ class InvoiceController extends Controller
             return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
         });
         $accId = getAccountantId($user);
-        $taxes = Tax::where('accountant_id', '=', $accId)
-            ->orWhere('accountant_id', '=', null)
-            ->get();
         return view('invoices.edit', [
             'invoice' => $invoice,
             'image' => $image,
-            'taxes' => $taxes,
         ]);
     }
 
