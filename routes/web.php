@@ -94,7 +94,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
 
     // calendar
-    Route::resource('/tasks', TaskController::class)->only(['index', 'store']);
+    Route::resource('/tasks', TaskController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/api/tasks', [TaskController::class, 'tasks']);
 
     Route::get('/enable-2fa', function (Request $request) {

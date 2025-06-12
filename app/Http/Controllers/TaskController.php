@@ -40,9 +40,6 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        foreach ($request->all() as $key => $value) {
-            Log::info("$key: $value");
-        }
         $request->validate([
             'name' => 'required|string|max:150',
             'assignedTo' => 'required|uuid:4',
@@ -82,6 +79,29 @@ class TaskController extends Controller
         return Response::json([
             'message' => 'Successfully created task'
         ], 201);
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $request->validate([
+            'description' => 'required|string|max:255',
+            'status' => 'required|in:not_started,in_progress,completed',
+        ]);
+
+        $task->description = $request->description;
+        $task->status = $request->status;
+        $task->save();
+
+        Cache::forget($request->user()->id . '-tasks');
+
+        return redirect()->back()->with('status', 'Successfully updated task');
+    }
+
+    public function destroy(Request $request, Task $task)
+    {
+        $task->delete();
+        Cache::forget($request->user()->id . '-tasks');
+        return redirect()->back()->with('status', 'Successfully deleted task');
     }
 
     private function backWithErrors(string $message)

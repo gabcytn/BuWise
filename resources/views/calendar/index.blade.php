@@ -93,7 +93,7 @@
     <dialog id="view-task">
         <h3>Task Name Here</h3>
         <div class="form-wrapper">
-            <form class="form" action="" method="POST">
+            <form id="edit-task-form" action="" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="task-input">
@@ -112,7 +112,7 @@
         </div>
         <hr />
         <div class="form-wrapper button-container">
-            <button type="submit" form="add-task-form">Edit</button>
+            <button type="submit" form="edit-task-form">Edit</button>
             <form action="" method="POST">
                 @csrf
                 @method('DELETE')
