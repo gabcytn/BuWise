@@ -1,6 +1,9 @@
 import Echo from "laravel-echo";
-
 import Pusher from "pusher-js";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
@@ -75,7 +78,7 @@ function addItemInNotificationPanel(notif) {
 
     const notifTime = document.createElement("div");
     notifTime.className = "notification-time";
-    notifTime.textContent = notif.created_at;
+    notifTime.textContent = dayjs().to(dayjs(notif.created_at));
 
     notifContent.appendChild(notifTitle);
     notifContent.appendChild(notifTime);
