@@ -32,7 +32,10 @@ class TaskController extends Controller
         Gate::authorize('viewAny', Task::class);
         $user = $request->user();
         $tasks = Cache::remember($user->id . '-tasks', 3600, function () use ($user) {
-            return Task::where('assigned_to', '=', $user->id)->orderBy('start_date')->get();
+            return Task::where('assigned_to', '=', $user->id)
+                ->orWhere('created_by', '=', $user->id)
+                ->orderBy('start_date')
+                ->get();
         });
         return Response::json([
             'tasks' => $tasks,
@@ -65,8 +68,9 @@ class TaskController extends Controller
 
         Task::create([
             'name' => $request->name,
+            'created_by' => $request->user()->id,
             'assigned_to' => $assigned->id,
-            'client' => $client ? $client->id : null,
+            'client_id' => $client ? $client->id : null,
             'description' => $request->description,
             'status' => $request->status,
             'frequency' => $request->frequency,

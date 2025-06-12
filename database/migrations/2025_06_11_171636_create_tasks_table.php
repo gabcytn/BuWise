@@ -12,8 +12,9 @@ return new class extends Migration {
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->foreignUuid('created_by')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignUuid('assigned_to')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreignUuid('client')->nullable()->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignUuid('client_id')->nullable()->references('id')->on('users')->cascadeOnDelete();
             $table->string('name');
             $table->string('description');
             $table->enum('status', ['not_started', 'in_progress', 'completed']);
