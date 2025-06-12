@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Jobs\InvoiceReceived;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,6 +16,22 @@ use Illuminate\Validation\Rules\File;
 
 class MobileInvoiceController extends Controller
 {
+    public function index(Request $request)
+    {
+        $invoices = Transaction::where('type', '=', 'invoice')
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        foreach ($invoices as $invoice) {
+            $invoice->image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
+                Log::info('Requesting for new temp. url');
+                Storage::temporaryUrl('invoices/' . $invoice->image);
+            });
+        }
+
+        return $invoices;
+    }
+
     /*
      * @return \Illuminate\Http\JsonResponse
      */
