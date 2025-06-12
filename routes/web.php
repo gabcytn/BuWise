@@ -95,6 +95,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     // calendar
     Route::resource('/tasks', TaskController::class)->only(['index', 'store']);
+    Route::get('/api/tasks', [TaskController::class, 'tasks']);
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
