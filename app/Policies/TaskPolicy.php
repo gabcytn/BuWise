@@ -45,18 +45,16 @@ class TaskPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Task $task): Response
+    public function update(User $user, Task $task): bool
     {
         $validRole = in_array($user->role_id, [Role::ACCOUNTANT, Role::LIAISON, Role::CLERK]);
-        return $validRole && $task->assigned_to === $user->id
-            ? Response::allow()
-            : Response::denyAsNotFound();
+        return $validRole && $task->created_by === $user->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Task $task): Response
+    public function delete(User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }
