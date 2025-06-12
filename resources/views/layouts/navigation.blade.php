@@ -11,7 +11,7 @@
 
 <div class="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/Buwiselogo.png') }}" alt="BuWise Logo" class="logo-icon">
+        <img src="{{ asset('images/navbuwise.png') }}" alt="BuWise Logo" class="logo-icon">
     </div>
 
     <ul class="nav">
