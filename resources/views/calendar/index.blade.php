@@ -5,15 +5,16 @@
             <div class="content calendar">
                 <div id="calendar"></div>
             </div>
-            <div class="content aside">
+            <div class="aside">
                 <aside>
-                    <ul>
-                        <li>Hi</li>
-                        <li>Hi</li>
-                        <li>Hi</li>
-                        <li>Hi</li>
-                        <li>Hi</li>
-                    </ul>
+                    <div class="content chart-container">
+                        <h4>Task Statistics</h4>
+                        <canvas id="chart"></canvas>
+                    </div>
+                    <div class="content task-list">
+                        <ul>
+                        </ul>
+                    </div>
                 </aside>
             </div>
         </div>
@@ -122,4 +123,5 @@
         </div>
     </dialog>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </x-app-layout>

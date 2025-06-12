@@ -36,7 +36,6 @@ start();
 
 async function start() {
     const tasks = await getTasks();
-    sessionStorage.setItem("tasks", JSON.stringify(tasks));
     const calendarEl = document.getElementById("calendar");
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: "dayGridMonth",
@@ -96,6 +95,8 @@ async function start() {
     });
     calendar.render();
     addEventListeners(calendar);
+    displayChartOnSidebar(tasks);
+    displayTasksOnSidebar(tasks);
 }
 
 function addEventListeners(calendar) {
@@ -166,6 +167,46 @@ async function postToServer() {
             alert("Error saving task.\nPlease try again.");
         }
     }
+}
+
+function displayTasksOnSidebar(tasks) {
+    const ul = document.querySelector(".aside ul");
+    tasks.forEach((task) => {
+        const li = document.createElement("li");
+        li.textContent = `${task.name}: ${task.start_date}`;
+        ul.appendChild(li);
+    });
+}
+
+function displayChartOnSidebar(tasks) {
+    const data = {};
+    tasks.forEach((task) => {
+        let v = data[task.status];
+        if (v) v++;
+        else v = 1;
+        data[task.status] = v;
+    });
+    const config = {
+        type: "pie",
+        data: {
+            labels: Object.keys(data).map((datum) => datum.replace("_", " ")),
+            datasets: [
+                {
+                    data: Object.values(data),
+                },
+            ],
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                },
+            },
+        },
+    };
+    const tasksChart = document.querySelector("#chart");
+    const myChart = new Chart(tasksChart, config);
 }
 
 function getDateDifference(d1, d2) {
