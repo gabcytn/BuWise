@@ -1,12 +1,9 @@
-const dropdowns = document.querySelectorAll(".nav-dropdown");
-
-dropdowns.forEach((dropdown) => {
-    dropdown.addEventListener("click", () => {
-        const dropdownChildren = dropdown.parentNode.children[1].children;
-        const arr = Array.from(dropdownChildren);
-
-        arr.forEach((item) => {
-            item.classList.toggle("d-none")
-        })
-    })
-})
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.nav-dropdown').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.closest('li');
+            parent.classList.toggle('open');
+        });
+    });
+});
