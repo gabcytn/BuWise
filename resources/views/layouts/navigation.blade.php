@@ -1,3 +1,4 @@
+
 @php
     use App\Models\Role;
 
@@ -5,148 +6,72 @@
     $routeName = request()->route()->getName();
 @endphp
 @vite('resources/js/components/nav.js')
-<nav class="nav-sm hidden">
-    <div>
-        <div class="nav-brand">
-            <img src="{{ asset('images/nav-logo.png') }}" alt="Company Logo" id="nav-logo" />
-            <h3 id="app-name">{{ config('app.name') }}</h3>
-        </div>
-        <ul class="nav-list">
-            <div class="nav-section">
-                <div class="nav-section__item">
-                    <li class="{{ request()->routeIs('dashboard') ? 'active-tab' : '' }}">
-                        <a href="{{ route('dashboard') }}">
-                            <i class="fa-solid fa-gauge"></i>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li class="{{ request()->routeIs('tasks.index') ? 'active-tab' : '' }}">
-                        <a href="{{ route('tasks.index') }}">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            Calendar
-                        </a>
-                    </li>
-                </div>
-            </div>
-            <div class="nav-section">
-                <p>Transactions</p>
-                <div class="nav-section__item">
-                    <li
-                        class="{{ in_array($routeName, ['invoices.index', 'invoices.create', 'invoices.show']) ? 'active-tab' : '' }}">
-                        <a href="{{ route('invoices.index') }}">
-                            <i class="fa-solid fa-file-invoice"></i>
-                            Invoice
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#"
-                            class="nav-dropdown {{ in_array($routeName, ['journal-entries.index', 'journal-entries.create', 'journal-entries.show', 'journal-entries.edit', 'journal-entries.archives']) ? 'active-tab' : '' }}">
-                            <i class="fa-solid fa-book"></i>
-                            Journals
-                        </a>
-                        <ul class="dropdown-list">
-                            <li class="d-none">
-                                <a href="{{ route('journal-entries.index') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    Current
-                                </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="{{ route('journal-entries.create') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    Create
-                                </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="{{ route('journal-entries.archives') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    Archives
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="#"
-                            class="nav-dropdown {{ in_array($routeName, ['ledger.coa', 'ledger.coa.show', 'ledger.trial-balance']) ? 'active-tab' : '' }}">
-                            <i class="fa-solid fa-book-open"></i>
-                            Ledger
-                        </a>
-                        <ul class="dropdown-list">
-                            <li class="d-none">
-                                <a href="{{ route('ledger.coa') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    Ledger Summary
-                                </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="{{ route('ledger.trial-balance') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    Trial Balance
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </div>
-            </div>
-            <div class="nav-section">
-                <p>Reports</p>
-                <div class="nav-section__item">
-                    <li class="{{ request()->routeIs('reports.insights') ? 'active-tab' : '' }}">
-                        <a href="{{ route('reports.insights') }}">
-                            <i class="fa-solid fa-chart-line"></i>
-                            Insights
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-dropdown {{ in_array($routeName, ['reports.income-statement', 'reports.balance-sheet']) ? 'active-tab' : '' }}">
-                            <i class="fa-solid fa-newspaper"></i>
-                            Statements
-                        </a>
-                        <ul class="dropdown-list">
-                            <li class="d-none">
-                                <a href="{{ route('reports.balance-sheet') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    Balance Sheet
-                                </a>
-                            </li>
-                            <li class="d-none">
-                                <a href="{{ route('reports.income-statement') }}" style="font-size: 0.75rem;">
-                                    <i class="fa-solid fa-receipt" style="width: auto;"></i>
-                                    P/L Statement
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="{{ request()->routeIs('reports.working-paper') ? 'active-tab' : '' }}">
-                        <a href="{{ route('reports.working-paper') }}">
-                            <i class="fa-solid fa-hospital-user"></i>
-                            Audit
-                        </a>
-                    </li>
-                </div>
-            </div>
-            @if ($roleId !== Role::CLERK)
-                <div class="nav-section">
-                    <p>Manage</p>
-                    <div class="nav-section__item">
-                        <li class="{{ in_array($routeName, ['clients.index', 'clients.edit']) ? 'active-tab' : '' }}">
-                            <a href="{{ route('clients.index') }}">
-                                <i class="fa-solid fa-briefcase"></i>
-                                Clients
-                            </a>
-                        </li>
-                        @if ($roleId === Role::ACCOUNTANT)
-                            <li class="{{ in_array($routeName, ['staff.index', 'staff.edit']) ? 'active-tab' : '' }}">
-                                <a href="{{ route('staff.index') }}">
-                                    <i class="fa-solid fa-users"></i>
-                                    Staff
-                                </a>
-                            </li>
-                        @endif
-                    </div>
-                </div>
-            @endif
-        </ul>
+@vite('resources/css/components/navigation.css')
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<div class="sidebar">
+    <div class="logo">
+        <img src="{{ asset('images/Buwiselogo.png') }}" alt="BuWise Logo" class="logo-icon">
     </div>
-</nav>
+
+    <ul class="nav">
+            <li class="section-title">Home</li>
+
+        <li><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+
+        <li class="dropdown">
+            <a href="#"><i class="fas fa-calendar-alt"></i> Calendar</a>
+            <ul>
+                <li><a href="#">Scheduling</a></li>
+            </ul>
+        </li>
+
+        <li class="section-title">Transactions</li>
+        <li><a href="#"><i class="fas fa-file-invoice"></i> Invoices</a></li>
+
+        <li class="dropdown">
+            <a href="#"><i class="fas fa-book"></i> Journals</a>
+            <ul>
+                <li><a href="#">Current</a></li>
+                <li><a href="#">Create</a></li>
+                <li><a href="#">Archives</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#"><i class="fas fa-balance-scale"></i> Ledger</a>
+            <ul>
+                <li><a href="#">Ledger Summary</a></li>
+                <li><a href="#">Trial Balance</a></li>
+            </ul>
+        </li>
+
+        <li class="section-title">Reports</li>
+
+        <li class="dropdown">
+            <a href="#"><i class="fas fa-chart-line"></i> Insights</a>
+            <ul>
+                <li><a href="#">Bookkeeper</a></li>
+                <li><a href="#">Client</a></li>
+            </ul>
+        </li>
+
+        <li class="dropdown">
+            <a href="#"><i class="fas fa-file-alt"></i> Statements</a>
+            <ul>
+                <li><a href="#">Balance Sheet</a></li>
+                <li><a href="#">P/L Statement</a></li>
+            </ul>
+        </li>
+
+        <li><a href="#"><i class="fas fa-clipboard-check"></i> Audit</a></li>
+
+        <li class="section-title">Users</li>
+        <li><a href="#"><i class="fas fa-user"></i> Clients</a></li>
+        <li><a href="#"><i class="fas fa-users-cog"></i> Staff</a></li>
+
+        <li class="section-title">Policies</li>
+        <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+    </ul>
+</div>
