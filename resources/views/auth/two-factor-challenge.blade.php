@@ -2,13 +2,11 @@
     @vite(['resources/css/auth/two-factor-challenge.css', 'resources/js/auth/two-factor-challenge.js'])
 
     <div class="section-wrapper">
-        <!-- Left Section (White Panel) -->
         <div class="left-section">
             <img src="/images/Buwiselogo.png" alt="Logo" class="logo" />
             <img src="/images/main.png" alt="OTP Illustration" class="illustration" />
         </div>
 
-        <!-- Right Section (Blue Panel with Form) -->
         <div class="right-section">
             <div class="form-card">
                 <h2 class="title">Enter <span>OTP</span></h2>
@@ -41,12 +39,14 @@
                 </form>
 
                 <div class="bottom-text">
-                    <a href="#">Login with a recovery code</a>
-                    <form method="POST" action="/two-factor-challenge" class="d-none">
-                        @csrf
-                        <input name="recovery_code" />
-                    </form>
-                </div>
+    <label for="toggle-recovery">Login with a recovery code</label>
+    <input type="checkbox" id="toggle-recovery" class="toggle-recovery">
+    <form method="POST" action="/two-factor-challenge" class="recovery-form">
+        @csrf
+        <input name="recovery_code" placeholder="Enter recovery code" />
+    </form>
+</div>
+
             </div>
         </div>
     </div>
