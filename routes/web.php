@@ -83,6 +83,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
         ->name('ledger.coa.update_initial');
 
     // invoice routes
+    Route::post('/invoices/scan', [InvoiceController::class, 'scan'])->name('invoices.scan');
     Route::resource('/invoices', InvoiceController::class);
 
     // reports

@@ -24,6 +24,7 @@ class InvoiceStore
         'cash' => LedgerAccount::CASH,
         'checkings' => LedgerAccount::CHECKINGS,
         'savings' => LedgerAccount::SAVINGS,
+        'bank' => LedgerAccount::SAVINGS,
         'petty_cash' => LedgerAccount::PETTY_CASH,
         'receivable' => LedgerAccount::ACCOUNTS_RECEIVABLE,
         'payable' => LedgerAccount::ACCOUNTS_PAYABLE,
