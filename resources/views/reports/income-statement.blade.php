@@ -1,3 +1,9 @@
+@php
+    function getAbsoluteDifference($account)
+    {
+        return number_format(abs($account->debit - $account->credit), 2);
+    }
+@endphp
 <x-app-layout>
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/income-statement.js'])
 
@@ -9,18 +15,26 @@
             <div class="p-3 report-header">
                 <div class="report-header__left">
                     <select class="select" name="period">
-                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This Year</option>
-                        <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>This Month</option>
-                        <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>This Week</option>
-                        <option value="today" {{ request()->query('period') === 'today' ? 'selected' : '' }}>Today</option>
-                        <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>Last Week</option>
-                        <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last Month</option>
+                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This
+                            Year</option>
+                        <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
+                            This Month</option>
+                        <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>
+                            This Week</option>
+                        <option value="today" {{ request()->query('period') === 'today' ? 'selected' : '' }}>Today
+                        </option>
+                        <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>
+                            Last Week</option>
+                        <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
+                            Last Month</option>
                     </select>
 
                     <select required name="client">
-                        <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select Client</option>
+                        <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select Client
+                        </option>
                         @foreach ($clients as $client)
-                            <option {{ request()->query('client') === $client->id ? 'selected' : '' }} value="{{ $client->id }}">{{ $client->name }}</option>
+                            <option {{ request()->query('client') === $client->id ? 'selected' : '' }}
+                                value="{{ $client->id }}">{{ $client->name }}</option>
                         @endforeach
                     </select>
 
@@ -65,10 +79,14 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($revenues as $revenue)
-                                        <tr class="clickable" data-redirect="{{ route('ledger.coa.show', [$revenue->acc_id, $selected_client]) }}">
+                                        @php
+                                            $value = getAbsoluteDifference($revenue);
+                                        @endphp
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$revenue->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $revenue->acc_name }}</td>
                                             <td class="revenues">
-                                                {{ $revenue->debit > 0 ? '-' . number_format($revenue->debit, 2) : number_format($revenue->credit, 2) }}
+                                                {{ $revenue->debit > $revenue->credit ? '-' . $value : $value }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -81,10 +99,14 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($expenses as $expense)
-                                        <tr class="clickable" data-redirect="{{ route('ledger.coa.show', [$expense->acc_id, $selected_client]) }}">
+                                        @php
+                                            $value = getAbsoluteDifference($expense);
+                                        @endphp
+                                        <tr class="clickable"
+                                            data-redirect="{{ route('ledger.coa.show', [$expense->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $expense->acc_name }}</td>
                                             <td class="expenses">
-                                                {{ $expense->debit > 0 ? number_format($expense->debit, 2) : '-' . number_format($expense->credit, 2) }}
+                                                {{ $expense->debit > $expense->credit ? $value : '-' . $value }}
                                             </td>
                                         </tr>
                                     @endforeach

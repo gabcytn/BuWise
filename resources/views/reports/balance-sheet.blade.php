@@ -1,3 +1,9 @@
+@php
+    function getAbsoluteDifference($account)
+    {
+        return number_format(abs($account->debit - $account->credit), 2);
+    }
+@endphp
 <x-app-layout>
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/balance-sheet.js'])
     <div class="container">
@@ -61,11 +67,14 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($assets as $asset)
+                                        @php
+                                            $value = getAbsoluteDifference($asset);
+                                        @endphp
                                         <tr class="clickable"
                                             data-redirect="{{ route('ledger.coa.show', [$asset->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $asset->acc_name }}</td>
                                             <td class="assets">
-                                                {{ $asset->debit > 0 ? number_format($asset->debit - $asset->credit, 2) : '-' . number_format($asset->credit - $asset->debit, 2) }}
+                                                {{ $asset->debit > $asset->credit ? $value : '-' . $value }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -78,11 +87,14 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($liabilities as $liability)
+                                        @php
+                                            $value = getAbsoluteDifference($liability);
+                                        @endphp
                                         <tr class="clickable"
                                             data-redirect="{{ route('ledger.coa.show', [$liability->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $liability->acc_name }}</td>
                                             <td class="liabilities">
-                                                {{ $liability->debit > 0 ? '-' . number_format($liability->debit - $liability->credit, 2) : number_format($liability->credit - $liability->debit, 2) }}
+                                                {{ $liability->debit > $liability->credit ? '-' . $value : $value }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -95,11 +107,14 @@
                                         <td></td>
                                     </tr>
                                     @foreach ($equities as $equity)
+                                        @php
+                                            $value = getAbsoluteDifference($equity);
+                                        @endphp
                                         <tr class="clickable"
                                             data-redirect="{{ route('ledger.coa.show', [$equity->acc_id, $selected_client]) }}">
                                             <td class="account-name">{{ $equity->acc_name }}</td>
                                             <td class="equities">
-                                                {{ $equity->debit > 0 ? '-' . number_format($equity->debit - $equity->credit, 2) : number_format($equity->credit - $equity->debit, 2) }}
+                                                {{ $equity->debit > $equity->credit ? '-' . $value : $value }}
                                             </td>
                                         </tr>
                                     @endforeach
