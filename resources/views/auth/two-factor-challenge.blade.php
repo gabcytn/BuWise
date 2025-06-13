@@ -36,11 +36,16 @@
 
                 <form method="POST" action="/logout" id="form-cancel">
                     @csrf
-                    <button type="submit" class="btn-primary" style="margin-top: 1rem; background-color: transparent; border: 1px solid #fff; color: #fff;">Cancel</button>
+                    <button type="submit" class="btn-primary"
+                        style="margin-top: 1rem; background-color: transparent; border: 1px solid #fff; color: #fff;">Cancel</button>
                 </form>
 
                 <div class="bottom-text">
                     <a href="#">Login with a recovery code</a>
+                    <form method="POST" action="/two-factor-challenge" class="d-none">
+                        @csrf
+                        <input name="recovery_code" />
+                    </form>
                 </div>
             </div>
         </div>
