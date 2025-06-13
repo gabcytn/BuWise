@@ -1,4 +1,3 @@
-/* Reset */
 .d-none {
     display: none;
 }
@@ -24,7 +23,6 @@ html {
     overflow: hidden;
 }
 
-/* Left Panel */
 .left-section {
     width: 50%;
     background-color: #ffffff;
@@ -140,8 +138,59 @@ html {
     margin-bottom: 1rem;
     text-align: center;
 }
+.toggle-recovery {
+    display: none;
+}
 
-/* Responsive */
+.bottom-text label {
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.recovery-form {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0; 
+}
+
+.toggle-recovery:checked ~ .recovery-form {
+    max-height: 150px;
+    opacity: 1;
+    padding: 1rem 0;
+}
+
+.recovery-form input[name="recovery_code"] {
+    width: 240px;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    color: #1B80C3;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    text-align: center;
+    transition: border 0.3s ease;
+}
+
+.recovery-form input[name="recovery_code"]:focus {
+    outline: none;
+    border: 2px solid #ffffff;
+}
+.recovery-form input[name="recovery_code"]::placeholder {
+    color: #fff;
+    opacity: 3; 
+}
+
+
+
 @media screen and (max-width: 768px) {
     .section-wrapper {
         flex-direction: column;
