@@ -1,5 +1,5 @@
 .sidebar {
-     
+
     width: 250px;
     height: 100vh;
     background-color: #2B3C56;
@@ -12,8 +12,8 @@
 
 .logo {
     display: flex;
-    align-items: center;    
-    justify-content: center; 
+    align-items: center;
+    justify-content: center;
     padding: 0 20px;
     margin-bottom: 30px;
 }
@@ -42,7 +42,7 @@
     align-items: center;
 }
 
-.nav li a  {
+.nav li a {
     margin-right: 12px;
     min-width: 20px;
     text-align: center;
@@ -60,7 +60,7 @@
     color: #ffffff;
     text-decoration: none;
     padding: 5px 10px;
-    display: inline-block; 
+    display: inline-block;
     border-radius: 6px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -87,8 +87,8 @@
     margin-top: 5px;
 }
 
-.dropdown:hover ul {
-    display: block;
+.d-block {
+    display: block !important;
 }
 
 .dropdown ul li a {
@@ -96,7 +96,8 @@
     color: #ffffff;
     text-decoration: none;
     padding: 5px 10px;
-    display: inline-block; /* Makes width match the text */
+    display: inline-block;
+    /* Makes width match the text */
     border-radius: 6px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -104,10 +105,10 @@
 .dropdown ul li a:hover {
     background-color: #ffffff;
     color: #1B80C3;
-    text-align: center; 
+    text-align: center;
 }
 
 
 i[class^="icon-"] {
-    display: none; 
+    display: none;
 }
