@@ -86,8 +86,7 @@ class JournalIndex
     private function buildBaseQuery(User $user)
     {
         $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
-        $status = $this->route === 'archives' ? 'archived' : 'approved';
-        return DB::table('transactions as je')
+        $query = DB::table('transactions as je')
             ->join('users as client', 'client.id', '=', 'je.client_id')
             ->join('users as creator', 'creator.id', '=', 'je.created_by')
             ->join('ledger_entries as le', 'le.transaction_id', '=', 'je.id')
@@ -103,8 +102,10 @@ class JournalIndex
                 'je.date'
             )
             ->where('client.accountant_id', '=', $accId)
-            ->where('je.type', '=', 'journal')
-            ->where('je.status', '=', $status);
+            ->where('je.type', '=', 'journal');
+        return $this->route === 'archives'
+            ? $query->where('je.status', '=', 'archived')
+            : $query->where('je.status', '!=', 'archived');
     }
 
     /**
