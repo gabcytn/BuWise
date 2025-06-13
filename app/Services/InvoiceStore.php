@@ -18,8 +18,9 @@ class InvoiceStore
     private float $discountTotal;
     private float $taxTotal;
     private float $amountTotal;
+    private float $purchasesTotal;
 
-    private const ACCOUNT_LOOKUP = [
+    public const ACCOUNT_LOOKUP = [
         'cash' => LedgerAccount::CASH,
         'checkings' => LedgerAccount::CHECKINGS,
         'savings' => LedgerAccount::SAVINGS,
@@ -40,9 +41,13 @@ class InvoiceStore
 
             $filename = (string) Str::uuid() . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
             $rowNumbers = $this->getRowNumbers($request);
-            $items = $this->getInvoiceItems($request, $rowNumbers);
+            $arr = $this->getInvoiceItems($request, $rowNumbers);
+            $this->discountTotal = $arr['discountTotal'];
+            $this->taxTotal = $arr['taxTotal'];
+            $this->amountTotal = $arr['amountTotal'];
+            $this->purchasesTotal = $arr['purchasesTotal'];
             $invoice = $this->createInvoice($filename);
-            $this->createInvoiceLines($items, $invoice);
+            $this->createInvoiceLines($arr['items'], $invoice);
 
             switch ($request->transaction_type) {
                 case 'sales':
@@ -94,12 +99,13 @@ class InvoiceStore
         return $invoice;
     }
 
-    private function getInvoiceItems(Request $request, array $rowNumbers): array
+    public function getInvoiceItems(Request $request, array $rowNumbers): array
     {
         $items = [];
         $discountTotal = 0;
         $taxTotal = 0;
         $netTotal = 0;
+        $purchasesTotal = 0;
         foreach ($rowNumbers as $rowNumber) {
             $item = [
                 'item_name' => $request->input("item_$rowNumber"),
@@ -121,12 +127,19 @@ class InvoiceStore
             $taxTotal += $tax * $qty;
             $netTotal += $net;
 
+            $discountedUnitPrice = $unitPrice - $discount;
+            $purchasesNet = round(($discountedUnitPrice + $tax) * $qty, 2);
+            $purchasesTotal += $purchasesNet;
+
             $items[] = $item;
         }
-        $this->discountTotal = $discountTotal;
-        $this->taxTotal = $taxTotal;
-        $this->amountTotal = $netTotal;
-        return $items;
+        return [
+            'items' => $items,
+            'discountTotal' => $discountTotal,
+            'taxTotal' => $taxTotal,
+            'amountTotal' => $netTotal,
+            'purchasesTotal' => $purchasesTotal,
+        ];
     }
 
     private function validateInvoiceLines(array $item): void
@@ -143,7 +156,7 @@ class InvoiceStore
             throw new InvoiceCreationException($validator->errors()->__toString());
     }
 
-    private function getRowNumbers(Request $request): array
+    public function getRowNumbers(Request $request): array
     {
         $arr = [];
         foreach ($request->all() as $key => $value) {
@@ -222,14 +235,14 @@ class InvoiceStore
                 'account_id' => LedgerAccount::GENERAL_EXPENSE,
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => $this->taxTotal > 0 ? $taxEntry->id : null,
-                'amount' => $this->amountTotal - $this->taxTotal
+                'amount' => $this->purchasesTotal - $this->taxTotal,
             ],
             [
                 'transaction_id' => $invoice->id,
                 'account_id' => self::ACCOUNT_LOOKUP[$this->request->payment_method],
                 'entry_type' => 'credit',
                 'tax_ledger_entry_id' => null,
-                'amount' => $this->amountTotal,
+                'amount' => $this->purchasesTotal,
             ]
         ]);
     }

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
-use App\Models\Tax;
 use App\Models\Transaction;
-use App\Models\User;
 use App\Services\InvoiceStore;
+use App\Services\InvoiceUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -68,8 +67,6 @@ class InvoiceController extends Controller
             'invoice_number' => ['required', 'numeric'],
             'description' => ['nullable', 'string', 'max:255'],
             'payment_method' => ['required', 'string', 'in:cash,checkings,savings,petty_cash,receivable,payable'],
-            'tax' => ['nullable', 'numeric'],
-            'discount_type' => ['nullable', 'string', 'max:100'],
         ]);
 
         $invoiceStore = new InvoiceStore($request);
@@ -99,12 +96,10 @@ class InvoiceController extends Controller
      */
     public function edit(Request $request, Transaction $invoice)
     {
-        $user = $request->user();
         $image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
             Log::info('Getting new temp. URL from AWS');
             return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
         });
-        $accId = getAccountantId($user);
         return view('invoices.edit', [
             'invoice' => $invoice,
             'image' => $image,
@@ -117,20 +112,13 @@ class InvoiceController extends Controller
     public function update(Request $request, Transaction $invoice)
     {
         $request->validate([
-            'client' => ['required', 'uuid:4'],
             'issue_date' => ['required', 'date', 'after_or_equal:1970-01-01', 'before_or_equal:2999-12-31', Rule::date()->format('Y-m-d')],
-            'transaction_type' => ['required', 'in:sales,purchases'],
             'invoice_number' => ['required', 'numeric'],
+            'payment_method' => ['required', 'string', 'in:cash,checkings,savings,petty_cash,receivable,payable'],
             'description' => ['nullable', 'string', 'max:255'],
         ]);
-        $invoice->client_id = $request->client;
-        $invoice->date = $request->issue_date;
-        $invoice->kind = $request->transaction_type;
-        $invoice->reference_no = $request->invoice_number;
-        $invoice->description = $request->description;
-        $invoice->save();
-
-        return to_route('invoices.show', $invoice);
+        $helper = new InvoiceUpdate($request, $invoice);
+        return $helper->update();
     }
 
     /**
