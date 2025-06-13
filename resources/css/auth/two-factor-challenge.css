@@ -1,4 +1,8 @@
 /* Reset */
+.d-none {
+    display: none;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +10,8 @@
     font-family: 'Inter', sans-serif;
 }
 
-body, html {
+body,
+html {
     height: 100%;
     background-color: #1879ca;
 }
@@ -142,7 +147,8 @@ body, html {
         flex-direction: column;
     }
 
-    .left-section, .right-section {
+    .left-section,
+    .right-section {
         width: 100%;
         border-radius: 0;
     }

@@ -40,8 +40,8 @@ form.addEventListener("submit", (e) => {
 
 // Recovery Code
 
-const openRecoveryCode = document.querySelector(".recovery-code-wrapper a");
-const recoveryCodeInput = document.querySelector(".recovery-code-wrapper form");
+const openRecoveryCode = document.querySelector(".bottom-text a");
+const recoveryCodeInput = document.querySelector(".bottom-text form");
 
 openRecoveryCode.addEventListener("click", () => {
     recoveryCodeInput.classList.toggle("d-none");
