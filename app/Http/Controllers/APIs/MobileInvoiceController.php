@@ -16,7 +16,7 @@ use Illuminate\Validation\Rules\File;
 
 class MobileInvoiceController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $invoices = Transaction::where('type', '=', 'invoice')
             ->orderBy('id', 'DESC')
@@ -25,7 +25,7 @@ class MobileInvoiceController extends Controller
         foreach ($invoices as $invoice) {
             $invoice->image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
                 Log::info('Requesting for new temp. url');
-                Storage::temporaryUrl('invoices/' . $invoice->image);
+                Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
             });
         }
 
