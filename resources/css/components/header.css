@@ -1,9 +1,11 @@
 .header-container {
-    background-color: var(--main-blue);
+    background-color: #ffffff; /* dark accountant blue */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* subtle shadow below */
+    
 }
 
 .header-sm {
-    background-color: var(--main-blue);
+    background-color: #ffffff; /* dark accountant blue */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -58,6 +60,31 @@
     background-color: var(--off-white);
 }
 
+#notifToggle {
+    color: #1B80C3; /* Accountant blue */
+}
+
+/* Static Notification Styles */
+.notification-item {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    color: #2B3C56; /* Name color */
+}
+
+.notification-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1B80C3; /* Message text color */
+}
+
+.notification-item small {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #999999;
+}
+
 @media (min-width: 800px) {
     .header-side__account {
         display: flex;
@@ -70,15 +97,15 @@
 
     #account-name {
         font-size: 0.9rem;
-        color: var(--off-white);
+        color: #2B3C56; /* Name text in details */
     }
 
     #account-role {
         font-size: 0.8rem;
-        color: var(--off-white);
+        color: #1B80C3; /* Role text in details */
     }
 
     .fa-solid.fa-bell {
-        color: var(--off-white);
+        color: #1B80C3; /* Bell icon color */
     }
 }

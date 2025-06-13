@@ -1,9 +1,9 @@
 @vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css', 'resources/css/components/notifs.css', 'resources/js/echo.js'])
+
 <div class="header-container">
     <header class="header-sm">
         <i class="fa-solid fa-bars"></i>
         <div class="header-side">
-            <i class="fa-solid fa-bell" id="notifToggle"></i>
             <div class="header-side__account" style="cursor: pointer;">
                 @php
                     $profileImg = request()->user()->profile_img;
@@ -26,6 +26,7 @@
                     </ul>
                 </div>
             </div>
+            <i class="fa-solid fa-bell" id="notifToggle"></i>
         </div>
     </header>
 </div>
@@ -35,7 +36,12 @@
     <div class="notifications-header">
         <span>Notifications</span>
     </div>
-    <div class="notifications-list" id="notifList"></div>
+    <div class="notifications-list" id="notifList">
+        <div class="notification-item">
+            <p><strong>New Message:</strong> Your profile has been updated successfully.</p>
+            <small>Just now</small>
+        </div>
+    </div>
 </div>
 
 <dialog class="confirm-logout-dialog">
@@ -47,7 +53,6 @@
     </form>
 </dialog>
 
-<!-- Optional JavaScript to toggle notifications -->
 <script>
     document.getElementById('notifToggle').addEventListener('click', () => {
         document.getElementById('notificationPanel').classList.toggle('d-none');
