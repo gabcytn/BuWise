@@ -24,7 +24,7 @@
                 @if (request()->routeIs('journal-entries.index'))
                     <button type="submit">Create</button>
                     <button type="button" id="dropdown-button">&#11206;</button>
-                    <a class="dropdown d-none" href="#">
+                    <a class="dropdown-import d-none" href="#">
                         Import Excel
                     </a>
                     <button type="button" id="vertical-ellipsis">&#8942;</button>
