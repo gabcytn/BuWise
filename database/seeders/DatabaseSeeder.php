@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AccountGroupSeeder::class,
             LedgerAccountSeeder::class,
-            TaxesSeeder::class,
             BotSeeder::class,
         ]);
     }
