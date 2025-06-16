@@ -66,7 +66,7 @@ body {
 }
 
 .nav-section:has(+ .nav-section) {
-    border-bottom: 3px solid var(--off-white);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .nav-section__item {
@@ -74,7 +74,6 @@ body {
 }
 
 .nav-section p {
-    color: var(--grey);
     margin-bottom: 0.5rem;
     font-size: 0.85rem;
 }
@@ -126,12 +125,9 @@ main {
     .nav-sm {
         position: static;
         border-right: 3px solid var(--off-white);
-        /* min-height: 100dvh; */
         height: 100dvh;
         overflow: scroll;
-        min-width: 12rem;
-        background-color: var(--clear-white);
-        color: var(--soft-black);
+        min-width: 15rem;
         padding-top: 1rem;
     }
 
@@ -141,7 +137,6 @@ main {
 
     .nav-section p {
         margin-bottom: 0.75rem;
-        color: var(--grey);
     }
 
     .nav-section li {
@@ -161,19 +156,19 @@ main {
 
     .nav-section a:hover,
     .nav-section li:hover>a {
-        background-color: var(--main-blue);
-        color: var(--clear-white) !important;
+        background-color: var(--off-white);
+        color: var(--main-blue) !important;
     }
 
 
     .active-tab {
-        color: var(--clear-white) !important;
-        background-color: var(--main-blue);
+        background-color: var(--off-white);
+        color: var(--main-blue) !important;
     }
 
     .active-tab a,
     .active-tab i {
-        color: var(--clear-white) !important;
+        color: var(--main-blue) !important;
     }
 
     .nav-section li+li {
@@ -182,7 +177,6 @@ main {
 
 
     .nav-sm li a {
-        color: var(--soft-black);
         font-size: 0.85rem;
     }
 

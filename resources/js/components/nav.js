@@ -1,7 +1,12 @@
-const dropdowns = document.querySelectorAll(".dropdown");
+const dropdowns = document.querySelectorAll(".nav-dropdown");
+
 dropdowns.forEach((dropdown) => {
     dropdown.addEventListener("click", () => {
-        const ul = dropdown.querySelector("ul");
-        ul.classList.toggle("d-block");
+        const dropdownChildren = dropdown.parentNode.children[1].children;
+        const arr = Array.from(dropdownChildren);
+
+        arr.forEach((item) => {
+            item.classList.toggle("d-none");
+        });
     });
 });
