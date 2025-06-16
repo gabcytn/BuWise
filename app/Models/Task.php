@@ -26,6 +26,11 @@ class Task extends Model
 
     public function toClient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client');
+        return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

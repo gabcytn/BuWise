@@ -99,6 +99,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
 
     // calendar
+    Route::get('/tasks/todo', [TaskController::class, 'todo'])->name('tasks.todo');
     Route::resource('/tasks', TaskController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/api/tasks', [TaskController::class, 'tasks']);
 

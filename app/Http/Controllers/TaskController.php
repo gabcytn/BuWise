@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -110,6 +111,21 @@ class TaskController extends Controller
         $task->delete();
         Cache::forget($request->user()->id . '-tasks');
         return redirect()->back()->with('status', 'Successfully deleted task');
+    }
+
+    public function todo(Request $request)
+    {
+        $user = $request->user();
+        $tasks = Task::where('assigned_to', '=', $user->id)->orderBy('end_date')->get();
+        $completed = $tasks->where('status', '=', 'completed');
+        $upcoming = $tasks->where('end_date', '>', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
+        $todo = $tasks->where('end_date', '<=', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
+        // dd($todo, $upcoming, $completed);
+        return view('calendar.todo', [
+            'todo' => $todo,
+            'upcoming' => $upcoming,
+            'completed' => $completed,
+        ]);
     }
 
     private function backWithErrors(string $message)
