@@ -100,6 +100,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
 
     // calendar
     Route::get('/tasks/todo', [TaskController::class, 'todo'])->name('tasks.todo');
+    Route::post('/tasks/status/{task}', [TaskController::class, 'changeStatus']);
     Route::resource('/tasks', TaskController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('/api/tasks', [TaskController::class, 'tasks']);
 

@@ -148,6 +148,19 @@ class TaskController extends Controller
         ]);
     }
 
+    public function changeStatus(Request $request, Task $task)
+    {
+        $request->validate([
+            'status' => 'required|in:completed,not_started',
+        ]);
+
+        $task->status = $request->status;
+        $task->save();
+        return Response::json([
+            'message' => 'Successfully updated status'
+        ]);
+    }
+
     private function backWithErrors(string $message)
     {
         return Response::json([

@@ -80,7 +80,7 @@
                     </thead>
                     <tbody>
                         @foreach ($todo as $item)
-                            <tr>
+                            <tr data-task-id="{{ $item->id }}" data-task-complete="false">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
@@ -111,7 +111,7 @@
                     </thead>
                     <tbody>
                         @foreach ($upcoming as $item)
-                            <tr>
+                            <tr data-task-id="{{ $item->id }}" data-task-complete="false">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
@@ -142,7 +142,7 @@
                     </thead>
                     <tbody>
                         @foreach ($completed as $item)
-                            <tr>
+                            <tr data-task-id="{{ $item->id }}" data-task-complete="true">
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
