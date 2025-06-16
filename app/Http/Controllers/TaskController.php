@@ -116,15 +116,35 @@ class TaskController extends Controller
     public function todo(Request $request)
     {
         $user = $request->user();
-        $tasks = Task::where('assigned_to', '=', $user->id)->orderBy('end_date')->get();
+        $filters = $request->only(['client', 'staff', 'priority', 'search']);
+
+        $tasks = Task::where('assigned_to', '=', $user->id)->orderBy('end_date');
+        if (array_key_exists('client', $filters) && $filters['client'])
+            $tasks->where('client_id', '=', $filters['client']);
+        if (array_key_exists('staff', $filters) && $filters['staff'])
+            $tasks->where('', '=', $filters['staff']);
+        if (array_key_exists('priority', $filters) && $filters['priority'])
+            $tasks->where('priority', '=', $filters['priority']);
+        if (array_key_exists('search', $filters) && $filters['search'])
+            $tasks->whereLike('name', '%' . $filters['search'] . '%');
+        $tasks = $tasks->get();
+
         $completed = $tasks->where('status', '=', 'completed');
         $upcoming = $tasks->where('end_date', '>', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
         $todo = $tasks->where('end_date', '<=', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
-        // dd($todo, $upcoming, $completed);
+
+        $accId = getAccountantId($user);
+        $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
+            return getClients($user);
+        });
+        $staff = $user->staff;
+
         return view('calendar.todo', [
             'todo' => $todo,
             'upcoming' => $upcoming,
             'completed' => $completed,
+            'clients' => $clients,
+            'staffs' => $staff,
         ]);
     }
 

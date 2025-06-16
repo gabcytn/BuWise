@@ -24,31 +24,45 @@
             </div>
         </div>
         <div class="todo-body">
-            <section class="filters-row">
+            <form class="filters-row">
                 <div class="search-container">
-                    <input type="search" id="search" name="search" placeholder="Search Tasks" />
+                    <input type="search" id="search" name="search" placeholder="Search Tasks"
+                        value="{{ request()->query('search') }}" />
                 </div>
                 <div class="select-container">
                     <select name="client">
-                        <option value="" selected disabled>Select Client</option>
+                        <option value="" selected>All Clients</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}"
+                                {{ request()->query('client') === $client->id ? 'selected' : '' }}>{{ $client->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
                     <div class="select-container">
                         <select name="staff">
-                            <option value="" selected disabled>Select Staff</option>
+                            <option value="" selected>All Staff</option>
+                            @foreach ($staffs as $staff)
+                                <option value="{{ $client->id }}"
+                                    {{ request()->query('staff') === $staff->id ? 'selected' : '' }}>{{ $staff->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 @endif
                 <div class="select-container">
                     <select name="priority">
-                        <option value="all" selected>All Priority</option>
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
+                        <option value="" selected>All Priority</option>
+                        <option {{ request()->query('priority') === 'high' ? 'selected' : '' }} value="high">High
+                        </option>
+                        <option {{ request()->query('priority') === 'medium' ? 'selected' : '' }} value="medium">Medium
+                        </option>
+                        <option {{ request()->query('priority') === 'low' ? 'selected' : '' }} value="low">Low
+                        </option>
                     </select>
                 </div>
-            </section>
+            </form>
             <section class="todo-table content">
                 <h3>To Do</h3>
                 <table>
@@ -71,7 +85,7 @@
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td><em>category</em></td>
-                                <td><em>priority</em></td>
+                                <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
                                 <td>{{ $item->creator->name }}</td>
                                 <td><button>Mark as Complete</button></td>
@@ -102,7 +116,7 @@
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td><em>category</em></td>
-                                <td><em>priority</em></td>
+                                <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
                                 <td>{{ $item->creator->name }}</td>
                                 <td><button>Mark as Complete</button></td>
@@ -133,7 +147,7 @@
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td><em>category</em></td>
-                                <td><em>priority</em></td>
+                                <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
                                 <td>{{ $item->creator->name }}</td>
                                 <td><button>Mark Incomplete</button></td>
