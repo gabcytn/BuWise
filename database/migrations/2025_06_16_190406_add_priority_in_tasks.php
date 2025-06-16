@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::table('tasks', function (Blueprint $table) {
             $table->enum('priority', ['high', 'medium', 'low'])->after('status');
+            $table->dropColumn('frequency');
         });
     }
 
@@ -22,6 +23,7 @@ return new class extends Migration {
     {
         Schema::table('tasks', function (Blueprint $table) {
             $table->dropColumn('priority');
+            $table->enum('frequency', ['once', 'daily', 'weekly', 'monthly', 'quarterly', 'annually'])->after('status');
         });
     }
 };

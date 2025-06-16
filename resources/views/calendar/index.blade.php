@@ -1,5 +1,8 @@
 <x-app-layout>
     @vite(['resources/js/calendar/index.js', 'resources/css/calendar/index.css'])
+    @if ($errors->any())
+        <p>{{ $errors->first() }}</p>
+    @endif
     <div class="container">
         <div class="content-wrapper">
             <div class="content calendar">
@@ -27,11 +30,11 @@
                 <div class="form-left">
                     <div class="task-input">
                         <label for="task-name">Task Name</label>
-                        <input name="task_name" id="task-name" required />
+                        <input name="name" id="task-name" required />
                     </div>
                     <div class="task-input">
                         <label for="assign">Assign To</label>
-                        <select name="assign" id="assign" required>
+                        <select name="assigned_to" id="assign" required>
                             <option value="" selected disabled>Pick User to Assign</option>
                             <option value="{{ request()->user()->id }}">{{ request()->user()->name }}</option>
                             @foreach ($staff as $s)
@@ -64,14 +67,11 @@
                         </select>
                     </div>
                     <div class="task-input">
-                        <label for="frequency">Reminder Frequency</label>
-                        <select name="frequency" id="frequency" required>
-                            <option selected value="once">Once</option>
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="quarterly">Quarterly</option>
-                            <option value="annually">Annually</option>
+                        <label for="priority">Priority</label>
+                        <select name="priority" id="priority" required>
+                            <option value="low">Low</option>
+                            <option selected value="medium">Medium</option>
+                            <option value="high">High</option>
                         </select>
                     </div>
                     <div class="task-input">
@@ -114,11 +114,13 @@
         <hr />
         <div class="form-wrapper button-container">
             <button type="submit" form="edit-task-form">Edit</button>
-            <form action="" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Delete</button>
-            </form>
+            @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
+                <form action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete</button>
+                </form>
+            @endif
             <button type="button">Cancel</button>
         </div>
     </dialog>

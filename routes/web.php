@@ -38,7 +38,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        $user = $request->user();
+        return User::with('role')->where('id', '=', $user->id)->first();
     });
     Route::get('/dashboard', function () {
         return view('dashboard');

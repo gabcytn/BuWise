@@ -48,24 +48,21 @@ class TaskController extends Controller
         Gate::authorize('create', Task::class);
         $request->validate([
             'name' => 'required|string|max:150',
-            'assignedTo' => 'required|uuid:4',
+            'assigned_to' => 'required|uuid:4',
             'description' => 'required|string|max:255',
             'status' => 'required|in:not_started,in_progress,completed',
-            'client' => 'nullable|uuid:4',
-            'frequency' => 'required|in:once,daily,weekly,monthly,quarterly,annually',
-            'startDate' => [Rule::date()->format('Y-m-d')],
-            'endDate' => [Rule::date()->format('Y-m-d')]
+            'client' => 'required|uuid:4',
+            'priority' => 'required|in:low,medium,high',
+            'start_date' => [Rule::date()->format('Y-m-d')],
+            'end_date' => [Rule::date()->format('Y-m-d')]
         ]);
 
-        $assigned = User::find($request->assignedTo);
-        $client = null;
+        $assigned = User::find($request->assigned_to);
+        $client = User::find($request->client);
         if (!$assigned)
             return $this->backWithErrors('Task assigned to is unknown');
-        if ($request->client) {
-            $client = User::find($request->client);
-            if (!$client)
-                return $this->backWithErrors('Client not found');
-        }
+        else if (!$client)
+            return $this->backWithErrors('Client not found');
 
         Task::create([
             'name' => $request->name,
@@ -74,18 +71,16 @@ class TaskController extends Controller
             'client_id' => $client ? $client->id : null,
             'description' => $request->description,
             'status' => $request->status,
-            'frequency' => $request->frequency,
-            'start_date' => $request->startDate,
-            'end_date' => $request->endDate,
+            'priority' => $request->priority,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
         ]);
 
-        Cache::forget($assigned->id . '-tasks');
+        Cache::forget($request->user()->id . '-tasks');
 
         // TODO: schedule task reminders
 
-        return Response::json([
-            'message' => 'Successfully created task'
-        ], 201);
+        return redirect()->back()->with('status', 'Created task successfully.');
     }
 
     public function update(Request $request, Task $task)
@@ -165,7 +160,7 @@ class TaskController extends Controller
 
     private function backWithErrors(string $message)
     {
-        return Response::json([
+        return redirect()->back()->withErrors([
             'message' => $message,
         ]);
     }
