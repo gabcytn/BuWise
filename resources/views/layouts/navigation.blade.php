@@ -163,8 +163,8 @@
                             Privacy Policy
                         </a>
                     </li>
-                    <li class="{{ in_array($routeName, ['staff.index', 'staff.edit']) ? 'active-tab' : '' }}">
-                        <a href="{{ route('staff.index') }}">
+                    <li>
+                        <a href="#">
                             <i class="fas fa-cog"></i>
                             Settings
                         </a>
