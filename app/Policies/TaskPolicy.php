@@ -37,9 +37,9 @@ class TaskPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user): bool
     {
-        return $this->viewAny($user);
+        return $user->role_id === Role::ACCOUNTANT;
     }
 
     /**
@@ -48,7 +48,7 @@ class TaskPolicy
     public function update(User $user, Task $task): bool
     {
         $validRole = in_array($user->role_id, [Role::ACCOUNTANT, Role::LIAISON, Role::CLERK]);
-        return $validRole && $task->created_by === $user->id;
+        return $validRole && ($task->created_by === $user->id || $task->assigned_to === $user->id);
     }
 
     /**
@@ -56,7 +56,8 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $this->update($user, $task);
+        $validRole = in_array($user->role_id, [Role::ACCOUNTANT, Role::LIAISON, Role::CLERK]);
+        return $validRole && $task->created_by === $user->id;
     }
 
     /**

@@ -115,6 +115,7 @@ class TaskController extends Controller
 
     public function todo(Request $request)
     {
+        Gate::authorize('viewAny', Task::class);
         $user = $request->user();
         $filters = $request->only(['client', 'staff', 'priority', 'search']);
 
@@ -150,6 +151,7 @@ class TaskController extends Controller
 
     public function changeStatus(Request $request, Task $task)
     {
+        Gate::authorize('update', $task);
         $request->validate([
             'status' => 'required|in:completed,not_started',
         ]);
