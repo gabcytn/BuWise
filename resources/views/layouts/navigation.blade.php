@@ -66,9 +66,13 @@
 
         <li><a href="{{ route('reports.working-paper') }}"><i class="fas fa-clipboard-check"></i> Audit</a></li>
 
-        <li class="section-title">Users</li>
-        <li><a href="{{ route('clients.index') }}"><i class="fas fa-user"></i> Clients</a></li>
-        <li><a href="{{ route('staff.index') }}"><i class="fas fa-users-cog"></i> Staff</a></li>
+        @if (in_array($roleId, [Role::ACCOUNTANT, Role::LIAISON]))
+            <li class="section-title">Users</li>
+            <li><a href="{{ route('clients.index') }}"><i class="fas fa-user"></i> Clients</a></li>
+            @if ($roleId === Role::ACCOUNTANT)
+                <li><a href="{{ route('staff.index') }}"><i class="fas fa-users-cog"></i> Staff</a></li>
+            @endif
+        @endif
 
         <li class="section-title">Policies</li>
         <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
