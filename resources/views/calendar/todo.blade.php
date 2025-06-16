@@ -71,7 +71,6 @@
                             <th>Task Name</th>
                             <th>Assigned To</th>
                             <th>Client</th>
-                            <th>Task Category</th>
                             <th>Priority</th>
                             <th>Due Date</th>
                             <th>Created By</th>
@@ -84,7 +83,6 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
-                                <td><em>category</em></td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
                                 <td>{{ $item->creator->name }}</td>
@@ -102,7 +100,6 @@
                             <th>Task Name</th>
                             <th>Assigned To</th>
                             <th>Client</th>
-                            <th>Task Category</th>
                             <th>Priority</th>
                             <th>Due Date</th>
                             <th>Created By</th>
@@ -115,7 +112,6 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
-                                <td><em>category</em></td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
                                 <td>{{ $item->creator->name }}</td>
@@ -133,7 +129,6 @@
                             <th>Task Name</th>
                             <th>Assigned To</th>
                             <th>Client</th>
-                            <th>Task Category</th>
                             <th>Priority</th>
                             <th>Due Date</th>
                             <th>Created By</th>
@@ -146,7 +141,6 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
-                                <td><em>category</em></td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
                                 <td>{{ $item->creator->name }}</td>
