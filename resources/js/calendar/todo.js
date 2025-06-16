@@ -16,7 +16,7 @@ document.querySelectorAll("table td button").forEach((button) => {
         const id = button.parentElement.parentElement.dataset.taskId;
         const isComplete =
             button.parentElement.parentElement.dataset.taskComplete === "true";
-        fetch(`/tasks/status/${id}`, {
+        await fetch(`/tasks/status/${id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -29,5 +29,6 @@ document.querySelectorAll("table td button").forEach((button) => {
                 status: isComplete ? "not_started" : "completed",
             }),
         });
+        window.location.reload();
     });
 });
