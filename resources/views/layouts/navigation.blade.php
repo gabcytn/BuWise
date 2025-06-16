@@ -22,6 +22,7 @@
             <a href="#"><i class="fas fa-calendar-alt"></i> Calendar</a>
             <ul>
                 <li><a href="{{ route('tasks.index') }}">Scheduling</a></li>
+                <li><a href="{{ route('tasks.todo') }}">To Do</a></li>
             </ul>
         </li>
 
