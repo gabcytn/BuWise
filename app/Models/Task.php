@@ -14,7 +14,7 @@ class Task extends Model
         'client_id',
         'description',
         'status',
-        'frequency',
+        'priority',
         'start_date',
         'end_date',
     ];
