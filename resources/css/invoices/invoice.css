@@ -1,3 +1,7 @@
+.d-block {
+    display: block !important;
+}
+
 /* Layout container */
 .dashboard-wrapper {
     font-family: 'Segoe UI', sans-serif;
@@ -79,7 +83,8 @@
 }
 
 .search-input input {
-    padding: 0.5rem 1rem 0.5rem 2.2rem; /* Leave space for icon on left */
+    padding: 0.5rem 1rem 0.5rem 2.2rem;
+    /* Leave space for icon on left */
     width: 100%;
     font-size: 0.95rem;
     border: 1px solid #cbd5e0;
@@ -97,23 +102,23 @@
     opacity: 0.6;
 }
 
- .more-btn {
-     background: #f0f4f8;
-     border: 1px solid #cbd5e0;
-     padding: 0.4rem;
-     border-radius: 6px;
-     cursor: pointer;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     width: 36px;
-     height: 36px;
- }
+.more-btn {
+    background: #f0f4f8;
+    border: 1px solid #cbd5e0;
+    padding: 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
 
- .more-btn .btn-icon {
-     width: 16px;
-     height: 16px;
- }
+.more-btn .btn-icon {
+    width: 16px;
+    height: 16px;
+}
 
 
 /* New Invoice Button */
@@ -153,9 +158,9 @@
     z-index: 999;
 }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
+/* .dropdown:hover .dropdown-menu { */
+/*     display: block; */
+/* } */
 
 .dropdown-menu a {
     display: block;
@@ -265,4 +270,3 @@
     outline: none !important;
     box-shadow: none !important;
 }
-

@@ -30,10 +30,10 @@ tr.forEach((row) => {
 });
 
 document.querySelector("#dropdown-button").addEventListener("click", (e) => {
-    document.querySelector(".dropdown").classList.toggle("d-none");
+    document.querySelector(".dropdown-import").classList.toggle("d-none");
 });
 
-document.querySelector(".dropdown").addEventListener("click", () => {
+document.querySelector(".dropdown-import").addEventListener("click", () => {
     document.querySelector("#csv-dialog").showModal();
 });
 

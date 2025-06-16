@@ -1,7 +1,35 @@
 <x-app-layout>
-    @vite('resources/css/invoices/invoice.css')
+    @vite(['resources/css/invoices/invoice.css', 'resources/js/invoices/index.js'])
 
     <div class="dashboard-wrapper">
+        @if (session('status'))
+            <p style="color: red">{{ session('status') }}</p>
+        @endif
+        @if ($errors->any())
+            <p style="color: red">{{ $errors->first() }}</p>
+        @endif
+        <dialog id="scan-invoice-dialog">
+            <h2>Scan an Invoice</h2>
+            <form action="{{ route('invoices.scan') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div>
+                    <input type="file" name="invoice" /><br />
+                    <select name="transaction_type" required>
+                        <option value="" selected disabled>Choose Transaction Type</option>
+                        <option value="sales">Sales</option>
+                        <option value="purchases">Purchases</option>
+                    </select>
+                    <select name="client" required>
+                        <option value="" selected disabled>Choose Client</option>
+                        @foreach ($clients as $client)
+                            <option value="{{ $client->id }}">{{ $client->name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit">Scan</button>
+                    <button type="button">Cancel</button>
+                </div>
+            </form>
+        </dialog>
 
         <!-- Header Row: Title + New Invoice Button + Extra Buttons -->
         <div class="invoice-header-row"
@@ -18,7 +46,7 @@
                             <i class="fa fa-plus"></i> New Invoice
                         </button>
                         <div class="dropdown-menu">
-                            <a href="#">From Gallery</a>
+                            <a href="#" id="from-gallery">From Gallery</a>
                             <a href="{{ route('invoices.create') }}">Manual Invoice</a>
                         </div>
                     </div>

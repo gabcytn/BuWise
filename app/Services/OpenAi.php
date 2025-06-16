@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class OpenAi
@@ -23,34 +24,23 @@ class OpenAi
     public function prompt(): string
     {
         $url = env('OPEN_AI_URL');
-        $postData = json_encode([
+        $postData = [
             'model' => env('OPEN_AI_MODEL'),
             'input' => $this->input
-        ]);
-        $ch = curl_init($url);
-        try {
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Authorization: Bearer ' . env('OPEN_AI_KEY'),
-                'Content-Type: application/json'
-            ]);
+        ];
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('OPEN_AI_KEY'),
+            'Content-Type' => 'application/json'
+        ])->post($url, $postData);
 
-            $response = curl_exec($ch);
-
-            if ($response === false) {
-                throw new \Exception(curl_error($ch));
-            }
-
-            $data = json_decode($response, false);
-            $text = $data->output[0]->content[0]->text;
-        } catch (\Exception $e) {
-            Log::error('Error prompting GPT: ' . $e->getMessage());
-            $text = '';
-        } finally {
-            curl_close($ch);
+        if ($response->successful()) {
+            $data = $response->json();
+            $text = $data['output'][0]['content'][0]['text'];
             return $text;
+        } else {
+            Log::error('error in openai');
+            Log::error($response->body());
+            return 'error';
         }
     }
 }

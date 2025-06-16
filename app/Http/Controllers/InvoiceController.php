@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ScanInvoiceInWeb;
 use App\Models\Role;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Services\InvoiceStore;
 use App\Services\InvoiceUpdate;
 use Illuminate\Http\Request;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +26,10 @@ class InvoiceController extends Controller
     {
         Gate::authorize('viewAny', Transaction::class);
         $user = $request->user();
-        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+        $accId = getAccountantId($user);
+        $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
+            return getClients($user);
+        });
         $invoices = Transaction::with('client')
             ->whereHas('client', function ($query) use ($accId) {
                 $query->where('accountant_id', $accId);
@@ -34,6 +40,7 @@ class InvoiceController extends Controller
 
         return view('invoices.index', [
             'invoices' => $invoices,
+            'clients' => $clients,
         ]);
     }
 
@@ -129,5 +136,24 @@ class InvoiceController extends Controller
         Storage::delete('invoices/' . $invoice->image);
         Transaction::destroy($invoice->id);
         return to_route('invoices.index');
+    }
+
+    public function scan(Request $request)
+    {
+        $request->validate([
+            'invoice' => ['required', File::image()->max(10000)],
+            'transaction_type' => 'required|in:sales,purchases',
+            'client' => 'required|uuid:4',
+        ]);
+
+        $client = User::find($request->client);
+        if (!$client)
+            abort(404);
+
+        $filename = time() . '_' . Str::uuid();
+        $request->file('invoice')->storeAs('temp/', $filename, 'public');
+
+        ScanInvoiceInWeb::dispatch($request->user(), $client, $filename, $request->transaction_type);
+        return redirect()->back()->with('status', 'Success');
     }
 }
