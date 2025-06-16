@@ -153,6 +153,9 @@ class TaskController extends Controller
 
         $task->status = $request->status;
         $task->save();
+
+        Cache::forget($request->user()->id . '-tasks');
+        Cache::forget($task->created_by . '-tasks');
         return Response::json([
             'message' => 'Successfully updated status'
         ]);
