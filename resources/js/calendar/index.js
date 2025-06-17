@@ -6,9 +6,9 @@ const taskForm = document.querySelector("#add-task-form");
 
 const statusIdxMap = { not_started: 0, in_progress: 1, completed: 2 };
 const bgColorMap = {
-    not_started: "red",
-    in_progress: "yellow",
-    completed: "green",
+    not_started: "#FF6D60",
+    in_progress: "#F7D060",
+    completed: "#98D8AA",
 };
 
 async function getTasks() {
@@ -159,4 +159,23 @@ function getDateDifference(d1, d2) {
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
+}
+
+// udpate task type categories
+
+const categorySelect = document.querySelector("select#category");
+let selected = categorySelect[categorySelect.selectedIndex].value;
+updateTypeOptions(selected);
+categorySelect.addEventListener("change", () => {
+    selected = categorySelect[categorySelect.selectedIndex].value;
+    updateTypeOptions(selected);
+});
+
+function updateTypeOptions(selected) {
+    const options = document.querySelectorAll("select#type option");
+    options.forEach((option) => {
+        if (option.classList.contains(`${selected}-option`))
+            option.classList.remove("d-none");
+        else option.classList.add("d-none");
+    });
 }

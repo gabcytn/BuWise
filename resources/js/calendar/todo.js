@@ -32,3 +32,186 @@ document.querySelectorAll("table td button").forEach((button) => {
         window.location.reload();
     });
 });
+
+fetchTasks();
+async function fetchTasks() {
+    const res = await fetch("/api/tasks");
+    const data = await res.json();
+    const tasks = data.tasks;
+    const allJournals = tasks.filter((task) => task.category === "journal");
+    const allInvoices = tasks.filter((task) => task.category === "invoice");
+    const allClients = tasks.filter((task) => task.category === "client");
+    const allStaffs = tasks.filter((task) => task.category === "staff");
+    const processedJournals = allJournals.filter(
+        (journal) => journal.status === "completed",
+    );
+    const processedInvoices = allInvoices.filter(
+        (invoice) => invoice.status === "completed",
+    );
+    const processedClients = allClients.filter(
+        (client) => client.status === "completed",
+    );
+    const processedStaffs = allClients.filter(
+        (client) => client.status === "completed",
+    );
+    populateInvoiceCharts(
+        processedInvoices.length,
+        allInvoices.length - processedInvoices.length,
+    );
+    populateJournalCharts(
+        processedJournals.length,
+        allJournals.length - processedJournals.length,
+    );
+    populateClientCharts(
+        processedClients.length,
+        allClients.length - processedClients.length,
+    );
+    populateStaffCharts(
+        processedStaffs.length,
+        allStaffs.length - processedStaffs.length,
+    );
+}
+
+const invoiceChart = document.querySelector("canvas#invoice-chart");
+const journalChart = document.querySelector("canvas#journal-chart");
+const clientChart = document.querySelector("canvas#client-chart");
+const staffChart = document.querySelector("canvas#staff-chart");
+
+function populateInvoiceCharts(invoicesLength, remainingLength) {
+    const data = {
+        labels: ["Complete", "Remaining"],
+        datasets: [
+            {
+                data: [invoicesLength, remainingLength],
+                backgroundColor: ["#1B80C3", "rgba(0, 0, 0, 0.2)"],
+            },
+        ],
+    };
+    const config = {
+        type: "doughnut",
+        data: data,
+    };
+
+    const myChart = new Chart(invoiceChart, config);
+
+    const title = invoiceChart.nextElementSibling.querySelector("h2");
+    const amount = invoiceChart.nextElementSibling.querySelector("h1");
+    const subtitle = invoiceChart.nextElementSibling.querySelector("p");
+    updateChartLabels(
+        title,
+        amount,
+        subtitle,
+        "Invoice",
+        invoicesLength,
+        remainingLength,
+        invoicesLength + remainingLength,
+    );
+}
+
+function populateJournalCharts(journalsLength, remainingLength) {
+    const data = {
+        labels: ["Complete", "Remaining"],
+        datasets: [
+            {
+                data: [journalsLength, remainingLength],
+                backgroundColor: ["#1B80C3", "rgba(0, 0, 0, 0.2)"],
+            },
+        ],
+    };
+    const config = {
+        type: "doughnut",
+        data: data,
+    };
+
+    const myChart = new Chart(journalChart, config);
+
+    const title = journalChart.nextElementSibling.querySelector("h2");
+    const amount = journalChart.nextElementSibling.querySelector("h1");
+    const subtitle = journalChart.nextElementSibling.querySelector("p");
+    updateChartLabels(
+        title,
+        amount,
+        subtitle,
+        "Journal",
+        journalsLength,
+        remainingLength,
+        journalsLength + remainingLength,
+    );
+}
+
+function populateClientCharts(clientsLength, remainingLength) {
+    const data = {
+        labels: ["Complete", "Remaining"],
+        datasets: [
+            {
+                data: [clientsLength, remainingLength],
+                backgroundColor: ["#1B80C3", "rgba(0, 0, 0, 0.2)"],
+            },
+        ],
+    };
+    const config = {
+        type: "doughnut",
+        data: data,
+    };
+
+    const myChart = new Chart(clientChart, config);
+
+    const title = clientChart.nextElementSibling.querySelector("h2");
+    const amount = clientChart.nextElementSibling.querySelector("h1");
+    const subtitle = clientChart.nextElementSibling.querySelector("p");
+    updateChartLabels(
+        title,
+        amount,
+        subtitle,
+        "Client",
+        clientsLength,
+        remainingLength,
+        clientsLength + remainingLength,
+    );
+}
+
+function populateStaffCharts(staffLength, remainingLength) {
+    const data = {
+        labels: ["Complete", "Remaining"],
+        datasets: [
+            {
+                data: [staffLength, remainingLength],
+                backgroundColor: ["#1B80C3", "rgba(0, 0, 0, 0.2)"],
+            },
+        ],
+    };
+    const config = {
+        type: "doughnut",
+        data: data,
+    };
+
+    const myChart = new Chart(staffChart, config);
+
+    const title = staffChart.nextElementSibling.querySelector("h2");
+    const amount = staffChart.nextElementSibling.querySelector("h1");
+    const subtitle = staffChart.nextElementSibling.querySelector("p");
+    updateChartLabels(
+        title,
+        amount,
+        subtitle,
+        "Staff",
+        staffLength,
+        remainingLength,
+        staffLength + remainingLength,
+    );
+}
+
+function updateChartLabels(
+    title,
+    amount,
+    subtitle,
+    titleContent,
+    amountContent,
+    remainingLength,
+    totalLength,
+) {
+    title.textContent = `Total ${titleContent} Processed`;
+    amount.textContent = amountContent;
+    amount.style.color = "#1B80C3";
+    subtitle.textContent = `${remainingLength} out of ${totalLength} total`;
+}

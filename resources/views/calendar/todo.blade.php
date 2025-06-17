@@ -7,21 +7,39 @@
         </div>
         <div class="charts-row">
             <div class="chart-container">
-                <canvas id=""></canvas>
-                <div class="chart-label"></div>
+                <canvas id="invoice-chart"></canvas>
+                <div class="chart-label">
+                    <h2></h2>
+                    <h1></h1>
+                    <p></p>
+                </div>
             </div>
             <div class="chart-container">
-                <canvas id=""></canvas>
-                <div class="chart-label"></div>
+                <canvas id="journal-chart"></canvas>
+                <div class="chart-label">
+                    <h2></h2>
+                    <h1></h1>
+                    <p></p>
+                </div>
             </div>
             <div class="chart-container">
-                <canvas id=""></canvas>
-                <div class="chart-label"></div>
+                <canvas id="client-chart"></canvas>
+                <div class="chart-label">
+                    <h2></h2>
+                    <h1></h1>
+                    <p></p>
+                </div>
             </div>
-            <div class="chart-container">
-                <canvas id=""></canvas>
-                <div class="chart-label"></div>
-            </div>
+            @if (in_array(request()->user()->role_id, [\App\Models\Role::ACCOUNTANT, \App\Models\Role::LIAISON]))
+                <div class="chart-container">
+                    <canvas id="staff-chart"></canvas>
+                    <div class="chart-label">
+                        <h2></h2>
+                        <h1></h1>
+                        <p></p>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="todo-body">
             <form class="filters-row">
@@ -58,6 +76,8 @@
                         <tr>
                             <th>Task Name</th>
                             <th>Description</th>
+                            <th>Category</th>
+                            <th>Category Description</th>
                             <th>Client</th>
                             <th>Priority</th>
                             <th>Due Date</th>
@@ -69,7 +89,10 @@
                         @foreach ($todo as $item)
                             <tr data-task-id="{{ $item->id }}" data-task-complete="false">
                                 <td>{{ $item->name }}</td>
-                                <td title="{{ $item->description }}">{{ truncate($item->description, 25) }}</td>
+                                <td title="{{ $item->description }}">{{ truncate($item->description) }}</td>
+                                <td>{{ ucfirst($item->category) }}</td>
+                                <td>{{ \Illuminate\Support\Str::of($item->category_description)->replace('_', ' ')->title() }}
+                                </td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
@@ -87,6 +110,8 @@
                         <tr>
                             <th>Task Name</th>
                             <th>Description</th>
+                            <th>Category</th>
+                            <th>Category Description</th>
                             <th>Client</th>
                             <th>Priority</th>
                             <th>Due Date</th>
@@ -98,7 +123,10 @@
                         @foreach ($upcoming as $item)
                             <tr data-task-id="{{ $item->id }}" data-task-complete="false">
                                 <td>{{ $item->name }}</td>
-                                <td title="{{ $item->description }}">{{ truncate($item->description, 25) }}</td>
+                                <td title="{{ $item->description }}">{{ truncate($item->description) }}</td>
+                                <td>{{ ucfirst($item->category) }}</td>
+                                <td>{{ \Illuminate\Support\Str::of($item->category_description)->replace('_', ' ')->title() }}
+                                </td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
@@ -116,6 +144,8 @@
                         <tr>
                             <th>Task Name</th>
                             <th>Description</th>
+                            <th>Category</th>
+                            <th>Category Description</th>
                             <th>Client</th>
                             <th>Priority</th>
                             <th>Due Date</th>
@@ -127,7 +157,10 @@
                         @foreach ($completed as $item)
                             <tr data-task-id="{{ $item->id }}" data-task-complete="true">
                                 <td>{{ $item->name }}</td>
-                                <td title="{{ $item->description }}">{{ truncate($item->description, 25) }}</td>
+                                <td title="{{ $item->description }}">{{ truncate($item->description) }}</td>
+                                <td>{{ ucfirst($item->category) }}</td>
+                                <td>{{ \Illuminate\Support\Str::of($item->category_description)->replace('_', ' ')->title() }}
+                                </td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
@@ -140,4 +173,5 @@
             </section>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </x-app-layout>

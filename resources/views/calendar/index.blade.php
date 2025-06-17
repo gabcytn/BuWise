@@ -42,6 +42,40 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="task-input row">
+                        <div class="col">
+                            <label for="category">Category</label>
+                            <select name="category" id="category" required>
+                                <option value="" selected disabled>Select Category</option>
+                                <option value="invoice">Invoice</option>
+                                <option value="journal">Journal Entry</option>
+                                <option value="client">Client Management</option>
+                                <option value="staff">Staff Management</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="type">Type</label>
+                            <select name="category_description" id="type" required>
+                                <option value="" selected disabled>Select Task Type</option>
+                                <option class="d-none invoice-option" value="manual_invoices">Manual Invoices</option>
+                                <option class="d-none invoice-option" value="digital_invoices">Digital Invoices</option>
+                                <option class="d-none journal-option" value="manual_entry">Manual Entry</option>
+                                <option class="d-none journal-option" value="csv_migration">CSV Migration</option>
+                                <option class="d-none client-option" value="create_client">Create Client Account
+                                </option>
+                                <option class="d-none client-option" value="update_client">Update Client Account
+                                </option>
+                                <option class="d-none client-option" value="suspend_client">Suspend Client Account
+                                </option>
+                                <option class="d-none client-option" value="delete_client">Delete Client Account
+                                </option>
+                                <option class="d-none staff-option" value="create_staff">Create Staff Account</option>
+                                <option class="d-none staff-option" value="update_staff">Update Staff Account</option>
+                                <option class="d-none staff-option" value="suspend_staff">Suspend Staff Account</option>
+                                <option class="d-none staff-option" value="delete_staff">Delete Staff Account</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="task-input">
                         <label for="description">Description</label>
                         <textarea rows="7" name="description" id="description" required></textarea>

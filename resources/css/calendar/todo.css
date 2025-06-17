@@ -18,11 +18,40 @@
 
 .charts-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
+    margin: 1rem 0;
 
-    .charts-container {
+    .chart-container {
+        flex: 1 1 300px;
+        min-width: 300px;
+        background-color: var(--clear-white);
+        padding: 1rem;
         box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
         border-radius: 0.375rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    canvas {
+        width: 8.5rem !important;
+        height: auto !important;
+    }
+
+    .chart-label {
+
+        h2 {
+            font-size: 0.9rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+        }
+
+        p {
+            font-size: 0.75rem;
+        }
     }
 }
 
