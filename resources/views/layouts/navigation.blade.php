@@ -163,8 +163,8 @@
                             Privacy Policy
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+                    <li class="{{ request()->routeIs('profile.edit') ? 'active-tab' : '' }}">
+                        <a href="{{ route('profile.edit') }}">
                             <i class="fas fa-cog"></i>
                             Settings
                         </a>

@@ -157,18 +157,18 @@ main {
     .nav-section a:hover,
     .nav-section li:hover>a {
         background-color: var(--off-white);
-        color: var(--main-blue) !important;
+        color: var(--soft-black) !important;
     }
 
 
     .active-tab {
         background-color: var(--off-white);
-        color: var(--main-blue) !important;
+        color: var(--soft-black) !important;
     }
 
     .active-tab a,
     .active-tab i {
-        color: var(--main-blue) !important;
+        color: var(--soft-black) !important;
     }
 
     .nav-section li+li {
