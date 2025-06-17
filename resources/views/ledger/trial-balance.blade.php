@@ -14,14 +14,22 @@
                 @endforeach
             </select>
             <select id="date-range-select" name="period" required>
-                <option value="all_time" {{ request()->query('start_date') ? '' : 'selected' }}>All time</option>
-                <option value="this_year" {{ request()->query('this_year') ? '' : 'selected' }}>This year</option>
-                <option value="this_month" {{ request()->query('this_month') ? '' : 'selected' }}>This month</option>
-                <option value="this_week" {{ request()->query('this_week') ? '' : 'selected' }}>This week</option>
-                <option value="last_week" {{ request()->query('last_week') ? '' : 'selected' }}>Last week</option>
-                <option value="last_month" {{ request()->query('last_month') ? '' : 'selected' }}>Last month</option>
-                <option value="last_month" {{ request()->query('last_month') ? '' : 'selected' }}>Last month</option>
-                <option value="custom" id="custom-option" {{ request()->query('start_date') ? 'selected' : '' }}>Custom
+                <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>All time
+                </option>
+                <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This year
+                </option>
+                <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>This
+                    month</option>
+                <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>This week
+                </option>
+                <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>Last week
+                </option>
+                <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last
+                    month</option>
+                <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last
+                    month</option>
+                <option value="custom" id="custom-option"
+                    {{ request()->query('period') === 'custom' ? 'selected' : '' }}>Custom
                 </option>
             </select>
             <input id="start_date" name="start_date" type="hidden" value="{{ request()->query('start_date') }}" />
