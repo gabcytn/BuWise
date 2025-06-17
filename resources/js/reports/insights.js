@@ -9,11 +9,9 @@ document
         e.preventDefault();
         const selectClient = document.querySelector("select[name='client']");
         const client = selectClient[selectClient.selectedIndex].value;
-        await getCashFlowData(client);
-        await getReceivablesData(client);
-        await getPayablesData(client);
-        await getPLData(client);
-        document
-            .querySelector(".insights-body.d-none")
-            .classList.remove("d-none");
+        getCashFlowData(client);
+        getReceivablesData(client);
+        getPayablesData(client);
+        getPLData(client);
+        document.querySelector(".insights-body").classList.remove("d-none");
     });

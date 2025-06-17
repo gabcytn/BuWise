@@ -73,6 +73,7 @@ function getMonthFromDate(dateStr) {
     return month;
 }
 
+let myChart;
 function start(revenues, expenses, net) {
     const data = {
         labels: [
@@ -123,5 +124,6 @@ function start(revenues, expenses, net) {
         },
     };
     const receivablesCanvas = document.querySelector("#pl-canvas");
-    const myChart = new Chart(receivablesCanvas, config);
+    if (myChart !== undefined) myChart.destroy();
+    myChart = new Chart(receivablesCanvas, config);
 }

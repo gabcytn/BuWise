@@ -30,6 +30,7 @@ export async function getPayablesData(clientId) {
     start(toPass);
 }
 
+let myChart;
 function start(entries) {
     const config = {
         type: "pie",
@@ -50,7 +51,8 @@ function start(entries) {
         },
     };
     const receivablesCanvas = document.querySelector("#payables-canvas");
-    const myChart = new Chart(receivablesCanvas, config);
+    if (myChart !== undefined) myChart.destroy();
+    myChart = new Chart(receivablesCanvas, config);
     createSummary(entries);
 }
 
