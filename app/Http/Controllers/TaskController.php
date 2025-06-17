@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\MarkedTaskAsComplete;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -156,6 +157,11 @@ class TaskController extends Controller
 
         $task->status = $request->status;
         $task->save();
+
+        if ($request->status === 'completed') {
+            $creator = $task->creator;
+            $creator->notify(new MarkedTaskAsComplete($creator, $request->user()));
+        }
 
         Cache::forget($request->user()->id . '-tasks');
         Cache::forget($task->created_by . '-tasks');
