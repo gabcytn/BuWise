@@ -57,7 +57,7 @@
                     <thead>
                         <tr>
                             <th>Task Name</th>
-                            <th>Assigned To</th>
+                            <th>Description</th>
                             <th>Client</th>
                             <th>Priority</th>
                             <th>Due Date</th>
@@ -69,7 +69,7 @@
                         @foreach ($todo as $item)
                             <tr data-task-id="{{ $item->id }}" data-task-complete="false">
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->user->name }}</td>
+                                <td title="{{ $item->description }}">{{ truncate($item->description, 25) }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
@@ -86,7 +86,7 @@
                     <thead>
                         <tr>
                             <th>Task Name</th>
-                            <th>Assigned To</th>
+                            <th>Description</th>
                             <th>Client</th>
                             <th>Priority</th>
                             <th>Due Date</th>
@@ -98,7 +98,7 @@
                         @foreach ($upcoming as $item)
                             <tr data-task-id="{{ $item->id }}" data-task-complete="false">
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->user->name }}</td>
+                                <td title="{{ $item->description }}">{{ truncate($item->description, 25) }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
@@ -115,7 +115,7 @@
                     <thead>
                         <tr>
                             <th>Task Name</th>
-                            <th>Assigned To</th>
+                            <th>Description</th>
                             <th>Client</th>
                             <th>Priority</th>
                             <th>Due Date</th>
@@ -127,7 +127,7 @@
                         @foreach ($completed as $item)
                             <tr data-task-id="{{ $item->id }}" data-task-complete="true">
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->user->name }}</td>
+                                <td title="{{ $item->description }}">{{ truncate($item->description, 25) }}</td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
                                 <td>{{ $item->end_date }}</td>
