@@ -117,8 +117,6 @@ class TaskController extends Controller
         $tasks = Task::where('assigned_to', '=', $user->id)->orderBy('end_date');
         if (array_key_exists('client', $filters) && $filters['client'])
             $tasks->where('client_id', '=', $filters['client']);
-        if (array_key_exists('staff', $filters) && $filters['staff'])
-            $tasks->where('', '=', $filters['staff']);
         if (array_key_exists('priority', $filters) && $filters['priority'])
             $tasks->where('priority', '=', $filters['priority']);
         if (array_key_exists('search', $filters) && $filters['search'])
@@ -133,14 +131,12 @@ class TaskController extends Controller
         $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
             return getClients($user);
         });
-        $staff = $user->staff;
 
         return view('calendar.todo', [
             'todo' => $todo,
             'upcoming' => $upcoming,
             'completed' => $completed,
             'clients' => $clients,
-            'staffs' => $staff,
         ]);
     }
 

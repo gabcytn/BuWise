@@ -39,18 +39,6 @@
                         @endforeach
                     </select>
                 </div>
-                @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
-                    <div class="select-container">
-                        <select name="staff">
-                            <option value="" selected>All Staff</option>
-                            @foreach ($staffs as $staff)
-                                <option value="{{ $client->id }}"
-                                    {{ request()->query('staff') === $staff->id ? 'selected' : '' }}>{{ $staff->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endif
                 <div class="select-container">
                     <select name="priority">
                         <option value="" selected>All Priority</option>
