@@ -50,19 +50,24 @@ class TaskController extends Controller
             'name' => 'required|string|max:150',
             'assigned_to' => 'required|uuid:4',
             'description' => 'required|string|max:255',
+            'category' => 'required|in:invoice,journal,client,staff',
+            'category_description' => 'required|in:manual_invoices,digital_invoices,manual_entry,csv_migration,create_client,update_client,suspend_client,delete_client,create_staff,update_staff,suspend_staff,delete_staff',
             'status' => 'required|in:not_started,in_progress,completed',
-            'client' => 'required|uuid:4',
+            'client' => 'nullable|uuid:4',
             'priority' => 'required|in:low,medium,high',
             'start_date' => [Rule::date()->format('Y-m-d')],
             'end_date' => [Rule::date()->format('Y-m-d')]
         ]);
 
         $assigned = User::find($request->assigned_to);
-        $client = User::find($request->client);
+        $client = null;
+        if ($request->client) {
+            $client = User::find($request->client);
+            if (!$client)
+                return $this->backWithErrors('Client not found');
+        }
         if (!$assigned)
             return $this->backWithErrors('Task assigned to is unknown');
-        else if (!$client)
-            return $this->backWithErrors('Client not found');
 
         Task::create([
             'name' => $request->name,
@@ -70,6 +75,8 @@ class TaskController extends Controller
             'assigned_to' => $assigned->id,
             'client_id' => $client ? $client->id : null,
             'description' => $request->description,
+            'category' => $request->category,
+            'category_description' => $request->category_description,
             'status' => $request->status,
             'priority' => $request->priority,
             'start_date' => $request->start_date,
@@ -154,6 +161,18 @@ class TaskController extends Controller
         Cache::forget($task->created_by . '-tasks');
         return Response::json([
             'message' => 'Successfully updated status'
+        ]);
+    }
+
+    public function assignedTasks(Request $request)
+    {
+        Gate::authorize('viewAny', Task::class);
+        $user = $request->user();
+        $tasks = Task::where('assigned_to', '=', $user->id)
+            ->get();
+
+        return Response::json([
+            'tasks' => $tasks,
         ]);
     }
 

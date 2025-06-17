@@ -13,6 +13,8 @@ class Task extends Model
         'assigned_to',
         'client_id',
         'description',
+        'category',
+        'category_description',
         'status',
         'priority',
         'start_date',
