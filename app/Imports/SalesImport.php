@@ -115,9 +115,6 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
 
     private function purchasesEntry(Collection $row)
     {
-        $row = $this->validateRow($row);
-        if (!$row)
-            return;
         $tr = $this->createTransaction($row);
         $tax_entry = LedgerEntry::create([
             'transaction_id' => $tr->id,
@@ -147,14 +144,15 @@ class SalesImport implements ToCollection, WithCalculatedFormulas
 
     private function createTransaction(Collection $row): Transaction
     {
+        Log::info('date for ' . $this->transaction_type . ' :' . $row[1]);
         return Transaction::create([
             'client_id' => $this->client_id,
             'created_by' => $this->creator_id,
-            'status' => $row['1'] < now()->startOfYear()->format('Y-m-d') ? 'archived' : 'approved',
+            'status' => $row[1] < now()->startOfYear()->format('Y-m-d') ? 'archived' : 'approved',
             'type' => 'journal',
             'kind' => $this->transaction_type,
             'amount' => $row[6],
-            'date' => $row['1'],
+            'date' => $row[1],
             'payment_method' => null,
             'description' => $row[2],
             'reference_no' => $row[0],
