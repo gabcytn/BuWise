@@ -174,7 +174,7 @@ class InvoiceStore
         foreach ($items as $item) {
             InvoiceLine::create([
                 'invoice_id' => $invoice->id,
-                'tax' => (int) $item['tax'],
+                'tax' => $item['tax'],
                 'item_name' => $item['item_name'],
                 'quantity' => $item['qty'],
                 'unit_price' => $item['unit_price'],
