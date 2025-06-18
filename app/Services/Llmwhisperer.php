@@ -13,7 +13,7 @@ class Llmwhisperer
     public function __construct(
         private string $filename
     ) {
-        $this->url = env('LLMWHISPERER_URL');
+        $this->url = config('app.ocr_url');
     }
 
     public function extract()
@@ -21,7 +21,7 @@ class Llmwhisperer
         $fileContents = Storage::disk('public')->get('temp/' . $this->filename);
 
         $response = Http::withHeaders([
-            'unstract-key' => env('LLMWHISPERER_APIKEY'),
+            'unstract-key' => config('app.ocr_api_key'),
             'Content-Type' => 'application/octet-stream',
         ])
             ->withBody($fileContents)
@@ -44,7 +44,7 @@ class Llmwhisperer
         $is_done = false;
         while (!$is_done) {
             $response = Http::withHeaders([
-                'unstract-key' => env('LLMWHISPERER_APIKEY'),
+                'unstract-key' => config('app.ocr_api_key'),
             ])
                 ->get($this->url . "/whisper-status?whisper_hash=$hash");
             $body = $response->json();
@@ -59,7 +59,7 @@ class Llmwhisperer
     private function retrieve($hash)
     {
         $response = Http::withHeaders([
-            'unstract-key' => env('LLMWHISPERER_APIKEY'),
+            'unstract-key' => config('app.ocr_api_key'),
         ])
             ->get($this->url . "/whisper-retrieve?whisper_hash=$hash");
         if ($response->successful()) {

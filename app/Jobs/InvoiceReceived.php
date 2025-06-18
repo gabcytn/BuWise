@@ -42,12 +42,12 @@ class InvoiceReceived implements ShouldQueue
                 'clientId' => $this->user->id,
             ]);
 
-            $ch = curl_init(env('RC_URL'));
+            $ch = curl_init(config('app.rc_url'));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Authorization: RC-WSKEY ' . env('RC_API_KEY')
+                'Authorization: RC-WSKEY ' . config('app.rc_api_key')
             ]);
 
             $response = curl_exec($ch);

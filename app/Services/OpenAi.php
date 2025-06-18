@@ -24,13 +24,13 @@ class OpenAi
 
     public function prompt(): string
     {
-        $url = env('OPEN_AI_URL');
+        $url = config('app.open_ai_url');
         $postData = [
-            'model' => env('OPEN_AI_MODEL'),
+            'model' => config('app.open_ai_model'),
             'input' => $this->input
         ];
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('OPEN_AI_KEY'),
+            'Authorization' => 'Bearer ' . config('app.open_ai_key'),
             'Content-Type' => 'application/json'
         ])->post($url, $postData);
 
