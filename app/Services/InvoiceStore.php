@@ -87,7 +87,7 @@ class InvoiceStore
         $invoice = Transaction::create([
             'client_id' => $request->client,
             'created_by' => $request->user()->id,
-            'status' => 'approved',
+            'status' => $this->request->boolean('pending') ? 'pending' : 'approved',
             'type' => 'invoice',
             'kind' => $request->transaction_type,
             'amount' => $this->amountTotal,

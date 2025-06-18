@@ -108,6 +108,9 @@ Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
     Route::get('/api/notifications', [NotificationController::class, 'notifications']);
     Route::resource('/notifications', NotificationController::class)->only(['destroy']);
 
+    Route::get('/bot/invoices/create', [BotController::class, 'index'])
+        ->name('bot-invoices.create');
+
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
             return to_route('dashboard');
@@ -115,10 +118,6 @@ Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
         return view('auth.enable-mfa');
     })->name('mfa.enable')->withoutMiddleware('enable.mfa');
 });
-
-Route::get('/bot/invoices/create', [BotController::class, 'index'])
-    ->middleware('auth')
-    ->name('bot-invoices.create');
 
 // allow email verification without signing in
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
