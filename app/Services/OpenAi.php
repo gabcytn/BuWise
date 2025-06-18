@@ -17,7 +17,8 @@ class OpenAi
                 $extractedText
                 \"\"\"
             EOD;
-        $base_prompt = new Prompt()->getPrompt();
+        $prompt = new Prompt();
+        $base_prompt = $prompt->getPrompt();
         $this->input = $base_prompt . $p;
     }
 

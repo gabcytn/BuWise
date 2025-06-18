@@ -33,7 +33,8 @@ class WorkingPaperController extends Controller
             foreach ($res as $value) {
                 $data[$value->month] = $value;
             }
-            $arr = new LedgerAccountController()->getOpeningBalanceForAudit($account->id, $client->id);
+            $helper = new LedgerAccountController();
+            $arr = $helper->getOpeningBalanceForAudit($account->id, $client->id);
             $totalDebits = $arr[0];
             $totalCredits = $arr[1];
             return view('reports.working-paper', [
