@@ -19,7 +19,8 @@ Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
         ->withoutMiddleware('auth:sanctum');
     Route::get('/invoices/failed', [MobileInvoiceController::class, 'failedInvoices']);
     Route::post('/invoices/failed/resent', [MobileInvoiceController::class, 'resentInvoice']);
-    Route::resource('/invoices', MobileInvoiceController::class);
+    Route::get('/invoices', [MobileInvoiceController::class, 'index']);
+    Route::post('/invoices', [MobileInvoiceController::class, 'store']);
 
     Route::get('/user', [AuthController::class, 'user']);
 
