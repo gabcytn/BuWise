@@ -15,6 +15,10 @@ Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
     Route::get('/cash-flow/{user?}', [InsightsController::class, 'cashFlow']);
     Route::get('/profit-and-loss/{user?}', [InsightsController::class, 'profitAndLoss']);
 
+    Route::post('/bot/invoices/processed', [MobileInvoiceController::class, 'callback'])
+        ->withoutMiddleware('auth:sanctum');
+    Route::get('/invoices/failed', [MobileInvoiceController::class, 'failedInvoices']);
+    Route::post('/invoices/failed/resent', [MobileInvoiceController::class, 'resentInvoice']);
     Route::resource('/invoices', MobileInvoiceController::class);
 
     Route::get('/user', [AuthController::class, 'user']);

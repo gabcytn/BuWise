@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\InvoiceReceived;
+use App\Models\FailedInvoice;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -61,9 +62,40 @@ class MobileInvoiceController extends Controller
         }
     }
 
-    private function temporarilyStoreToAws($file): string
+    public function callback(Request $request)
     {
-        $path = $file->store('invoices/', 's3');
-        return basename($path);
+        $request->validate([
+            'clientId' => 'required|uuid:4',
+            'filename' => 'required|string',
+        ]);
+
+        $failed_invoice = FailedInvoice::create([
+            'client_id' => $request->clientId,
+            'filename' => $request->filename,
+        ]);
+        // TODO: notify client
+    }
+
+    public function failedInvoices(Request $request)
+    {
+        $invoices = FailedInvoice::where('client_id', '=', $request->user()->id)->get();
+        foreach ($invoices as $invoice) {
+            $invoice->image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
+                Log::info('Requesting for new temp. url');
+                Storage::temporaryUrl('failed-invoices/' . $invoice->filename, now()->addWeek());
+            });
+        }
+
+        return Response::json([
+            'invoices' => $invoices,
+        ]);
+    }
+
+    public function resentInvoice(Request $request, FailedInvoice $invoice)
+    {
+        Storage::delete('failed-invoices/' . $invoice->filename);
+        Cache::forget($invoice->id . '-image');
+        $invoice->delete();
+        return response(null, 200);
     }
 }
