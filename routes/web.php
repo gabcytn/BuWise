@@ -102,7 +102,7 @@ Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
     Route::get('/tasks/todo', [TaskController::class, 'todo'])->name('tasks.todo');
     Route::post('/tasks/status/{task}', [TaskController::class, 'changeStatus']);
     Route::resource('/tasks', TaskController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::get('/api/tasks', [TaskController::class, 'tasks']);
+    Route::get('/api/tasks', [TaskController::class, 'assignedTasks']);
 
     // notifications
     Route::get('/api/notifications', [NotificationController::class, 'notifications']);
