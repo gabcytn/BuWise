@@ -28,17 +28,17 @@ class UserCreatedListener implements ShouldQueue
     {
         try {
             $accId = getAccountantId($event->creator);
+            $accountant = User::find($accId);
             if ($event->user->role_id === Role::CLIENT) {
-                $clients = getClients($accId);
+                $clients = getClients($accountant);
                 Cache::put("$accId-clients", $clients, 3600);
                 Log::info('Successfully updated clients cache');
             }
 
             // notify accountant that a client has been created
-            if ($event->creator->role_id === Role::LIAISON) {
-                $accountant = User::find($accId);
+            if ($event->creator->role_id === Role::LIAISON)
                 $accountant->notify(new LiaisonCreatedClient($accountant, $event->creator));
-            }
+
             $event->user->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::warning('Error handling event listener: ' . $e->getMessage());
