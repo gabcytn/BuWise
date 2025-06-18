@@ -36,6 +36,7 @@ class InvoiceReceived implements ShouldQueue
             $temp_url = Storage::temporaryUrl("invoices/$this->filename", now()->addMinutes(10));
 
             $postData = json_encode([
+                'filename' => $this->filename,
                 'image' => $temp_url,
                 'transactionType' => $this->transactionType,
                 'clientId' => $this->user->id,

@@ -58,6 +58,7 @@ dialog#add-task {
         flex-direction: column;
         gap: 0.15rem;
 
+
         #description {
             resize: none;
         }
@@ -72,6 +73,20 @@ dialog#add-task {
 
     .task-input+.task-input {
         margin-top: 0.5rem;
+    }
+
+    .task-input.row {
+        flex-direction: row;
+        gap: 0.5rem;
+
+        .col {
+            display: flex;
+            flex-direction: column;
+
+            select {
+                width: 9.75rem;
+            }
+        }
     }
 }
 

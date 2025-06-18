@@ -6,9 +6,9 @@ const taskForm = document.querySelector("#add-task-form");
 
 const statusIdxMap = { not_started: 0, in_progress: 1, completed: 2 };
 const bgColorMap = {
-    not_started: "red",
-    in_progress: "yellow",
-    completed: "green",
+    not_started: "#FF6D60",
+    in_progress: "#F7D060",
+    completed: "#98D8AA",
 };
 
 async function getTasks() {
@@ -70,9 +70,10 @@ async function start() {
         headerToolbar: {
             left: "prev,next today",
             center: "title",
-            right: "dayGridMonth,dayGridYear myCustomButton",
+            right: `dayGridMonth,dayGridYear${sessionStorage.getItem("role") === "Accountant" ? " myCustomButton" : ""}`,
         },
         select: function (info) {
+            if (sessionStorage.getItem("role") !== "Accountant") return;
             const s = info.startStr;
             const e = info.endStr;
             startDate.value = s;
@@ -110,63 +111,6 @@ function addEventListeners(calendar) {
         .addEventListener("click", () => {
             viewTaskDialog.close();
         });
-
-    taskForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        calendar.addEvent({
-            title: document.querySelector("#task-name").value,
-            start: startDate.value,
-            end: endDate.value,
-            allDay: true,
-            interactive: true,
-            display:
-                getDateDifference(startDate.value, endDate.value) > 1
-                    ? "block"
-                    : "list-item",
-        });
-        addTaskDialog.close();
-        // taskForm.reset();
-
-        postToServer();
-    });
-}
-const taskName = document.querySelector("#task-name");
-const assignSelect = document.querySelector("#assign");
-const description = document.querySelector("#description");
-const statusSelect = document.querySelector("#status");
-const clientSelect = document.querySelector("#client");
-const freqSelect = document.querySelector("#frequency");
-
-async function postToServer() {
-    try {
-        const res = await fetch("/tasks", {
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector(
-                    'meta[name="csrf-token"]',
-                ).content,
-                Accept: "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify({
-                name: taskName.value,
-                assignedTo: assignSelect[assignSelect.selectedIndex].value,
-                description: description.value,
-                status: statusSelect[statusSelect.selectedIndex].value,
-                client: clientSelect[clientSelect.selectedIndex].value,
-                frequency: freqSelect[freqSelect.selectedIndex].value,
-                startDate: startDate.value,
-                endDate: endDate.value,
-            }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(`Error status code of ${res.status}`);
-    } catch (e) {
-        if (e instanceof Error) {
-            console.error(e.message);
-            alert("Error saving task.\nPlease try again.");
-        }
-    }
 }
 
 function displayTasksOnSidebar(tasks) {
@@ -215,4 +159,23 @@ function getDateDifference(d1, d2) {
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
+}
+
+// udpate task type categories
+
+const categorySelect = document.querySelector("select#category");
+let selected = categorySelect[categorySelect.selectedIndex].value;
+updateTypeOptions(selected);
+categorySelect.addEventListener("change", () => {
+    selected = categorySelect[categorySelect.selectedIndex].value;
+    updateTypeOptions(selected);
+});
+
+function updateTypeOptions(selected) {
+    const options = document.querySelectorAll("select#type option");
+    options.forEach((option) => {
+        if (option.classList.contains(`${selected}-option`))
+            option.classList.remove("d-none");
+        else option.classList.add("d-none");
+    });
 }

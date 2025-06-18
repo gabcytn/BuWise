@@ -39,7 +39,6 @@ class JournalIndex
 
         try {
             $entries = $this->getFilteredEntries($user, $filter);
-
             return view('journal-entries.index', [
                 'clients' => $clients,
                 'entries' => $entries,
@@ -74,7 +73,6 @@ class JournalIndex
             ->groupBy('je.id', 'client.name', 'je.kind', 'je.description', 'je.date', 'creator.name');
 
         $query = $this->getOrderBy($query, $filter);
-
         return $query
             ->paginate(self::ITEMS_PER_PAGE)
             ->appends($filter);
@@ -85,7 +83,7 @@ class JournalIndex
      */
     private function buildBaseQuery(User $user)
     {
-        $accId = $user->role_id === Role::ACCOUNTANT ? $user->id : $user->accountant->id;
+        $accId = getAccountantId($user);
         $query = DB::table('transactions as je')
             ->join('users as client', 'client.id', '=', 'je.client_id')
             ->join('users as creator', 'creator.id', '=', 'je.created_by')

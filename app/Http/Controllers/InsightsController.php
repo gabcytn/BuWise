@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class InsightsController extends Controller
 {
@@ -26,8 +27,10 @@ class InsightsController extends Controller
         ]);
     }
 
-    public function cashFlow(User $user)
+    public function cashFlow(Request $request, ?User $user = null)
     {
+        if (!$user)
+            $user = User::find($request->user()->id);
         return $this->getData($user, [1, 2, 3, 4]);
     }
 
@@ -41,8 +44,10 @@ class InsightsController extends Controller
         return $this->getData($user, [17, 18, 19, 20, 21, 24, 26]);
     }
 
-    public function profitAndLoss(User $user)
+    public function profitAndLoss(Request $request, ?User $user = null)
     {
+        if (!$user)
+            $user = User::find($request->user()->id);
         $period = getStartAndEndDate('this_year');
         $data = DB::table('ledger_entries AS le')
             ->join('transactions AS tr', 'tr.id', '=', 'le.transaction_id')

@@ -95,19 +95,43 @@ class ScanInvoiceInWeb implements ShouldQueue
         $tax_total = 0;
         $net_total = 0;
         $purchases_total = 0;
+        // get net total w/o discount & tax
         foreach ($items as $item) {
             $unitPrice = round((float) $item['unitPrice'], 2);
-            $discount = round((float) $item['discount'], 2);
-
-            $tax = round((float) $item['tax'], 2);
             $qty = (int) $item['quantity'];
             $net = round($unitPrice * $qty, 2);
 
-            $discount_total += $discount * $qty;
-            $tax_total += $tax * $qty;
             $net_total += $net;
+        }
 
+        $whole_discount_percentage = 0.0;
+        $whole_tax_percentage = 0.0;
+        if ($data['discount'] > 0.0)
+            $whole_discount_percentage =
+                round($data['discount'], 2) / round($net_total, 2);
+        if ($data['tax'] > 0.0)
+            $whole_tax_percentage =
+                round($data['tax'], 2) / round($net_total - $data['discount'], 2);
+
+        foreach ($items as $item) {
+            $unitPrice = round((float) $item['unitPrice'], 2);
+            $discount = round((float) $item['discount'], 2);
+            $tax = round((float) $item['tax'], 2);
+
+            if ($whole_discount_percentage > 0.0) {
+                $discount += ($whole_discount_percentage * $unitPrice);
+                $item['discount'] = $discount;
+            }
             $discountedUnitPrice = $unitPrice - $discount;
+            if ($whole_tax_percentage > 0.0) {
+                $tax += ($whole_tax_percentage * $discountedUnitPrice);
+                $item['tax'] = $tax;
+            }
+
+            $qty = (int) $item['quantity'];
+            $tax_total += $tax * $qty;
+            $discount_total += $discount * $qty;
+
             $purchasesNet = round(($discountedUnitPrice + $tax) * $qty, 2);
             $purchases_total += $purchasesNet;
 
@@ -209,7 +233,7 @@ class ScanInvoiceInWeb implements ShouldQueue
         foreach ($items as $item) {
             InvoiceLine::create([
                 'invoice_id' => $invoice->id,
-                'tax' => (int) $item['tax'],
+                'tax' => $item['tax'],
                 'item_name' => $item['itemName'],
                 'quantity' => $item['quantity'],
                 'unit_price' => $item['unitPrice'],

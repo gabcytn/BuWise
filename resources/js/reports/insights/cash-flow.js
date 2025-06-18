@@ -62,9 +62,11 @@ function getMonthFromDate(dateStr) {
     return month;
 }
 
+let myChart;
 function start(months, inflows, outflows) {
     const cashFlowCanvas = document.querySelector("#cash-flow__body--canvas");
-    const myChart = new Chart(cashFlowCanvas, {
+    if (myChart !== undefined) myChart.destroy();
+    myChart = new Chart(cashFlowCanvas, {
         type: "bar",
         data: {
             labels: months,

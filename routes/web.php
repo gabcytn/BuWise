@@ -13,7 +13,6 @@ use App\Http\Controllers\ProfileInformationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\WorkingPaperController;
-use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
@@ -34,11 +33,12 @@ Route::get('/services', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
+})->middleware(['auth', 'verified', 'enable.mfa'])->name('dashboard');
 
-Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
+Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        $user = $request->user();
+        return User::with('role')->where('id', '=', $user->id)->first();
     });
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -99,24 +99,25 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
     Route::get('/profit-and-loss/{user}', [InsightsController::class, 'profitAndLoss']);
 
     // calendar
+    Route::get('/tasks/todo', [TaskController::class, 'todo'])->name('tasks.todo');
+    Route::post('/tasks/status/{task}', [TaskController::class, 'changeStatus']);
     Route::resource('/tasks', TaskController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::get('/api/tasks', [TaskController::class, 'tasks']);
+    Route::get('/api/tasks', [TaskController::class, 'assignedTasks']);
 
     // notifications
     Route::get('/api/notifications', [NotificationController::class, 'notifications']);
     Route::resource('/notifications', NotificationController::class)->only(['destroy']);
+
+    Route::get('/bot/invoices/create', [BotController::class, 'index'])
+        ->name('bot-invoices.create');
 
     Route::get('/enable-2fa', function (Request $request) {
         if ($request->user()->two_factor_confirmed_at && session('status') !== 'two-factor-authentication-confirmed') {
             return to_route('dashboard');
         }
         return view('auth.enable-mfa');
-    })->name('mfa.enable')->withoutMiddleware(EnableMFA::class);
+    })->name('mfa.enable')->withoutMiddleware('enable.mfa');
 });
-
-Route::get('/bot/invoices/create', [BotController::class, 'index'])
-    ->middleware('auth')
-    ->name('bot-invoices.create');
 
 // allow email verification without signing in
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {

@@ -1,5 +1,8 @@
 <x-app-layout>
     @vite(['resources/js/calendar/index.js', 'resources/css/calendar/index.css'])
+    @if ($errors->any())
+        <p>{{ $errors->first() }}</p>
+    @endif
     <div class="container">
         <div class="content-wrapper">
             <div class="content calendar">
@@ -27,17 +30,51 @@
                 <div class="form-left">
                     <div class="task-input">
                         <label for="task-name">Task Name</label>
-                        <input name="task_name" id="task-name" required />
+                        <input name="name" id="task-name" required />
                     </div>
                     <div class="task-input">
                         <label for="assign">Assign To</label>
-                        <select name="assign" id="assign" required>
+                        <select name="assigned_to" id="assign" required>
                             <option value="" selected disabled>Pick User to Assign</option>
                             <option value="{{ request()->user()->id }}">{{ request()->user()->name }}</option>
                             @foreach ($staff as $s)
                                 <option value="{{ $s->id }}">{{ $s->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="task-input row">
+                        <div class="col">
+                            <label for="category">Category</label>
+                            <select name="category" id="category" required>
+                                <option value="" selected disabled>Select Category</option>
+                                <option value="invoice">Invoice</option>
+                                <option value="journal">Journal Entry</option>
+                                <option value="client">Client Management</option>
+                                <option value="staff">Staff Management</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="type">Type</label>
+                            <select name="category_description" id="type" required>
+                                <option value="" selected disabled>Select Task Type</option>
+                                <option class="d-none invoice-option" value="manual_invoices">Manual Invoices</option>
+                                <option class="d-none invoice-option" value="digital_invoices">Digital Invoices</option>
+                                <option class="d-none journal-option" value="manual_entry">Manual Entry</option>
+                                <option class="d-none journal-option" value="csv_migration">CSV Migration</option>
+                                <option class="d-none client-option" value="create_client">Create Client Account
+                                </option>
+                                <option class="d-none client-option" value="update_client">Update Client Account
+                                </option>
+                                <option class="d-none client-option" value="suspend_client">Suspend Client Account
+                                </option>
+                                <option class="d-none client-option" value="delete_client">Delete Client Account
+                                </option>
+                                <option class="d-none staff-option" value="create_staff">Create Staff Account</option>
+                                <option class="d-none staff-option" value="update_staff">Update Staff Account</option>
+                                <option class="d-none staff-option" value="suspend_staff">Suspend Staff Account</option>
+                                <option class="d-none staff-option" value="delete_staff">Delete Staff Account</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="task-input">
                         <label for="description">Description</label>
@@ -64,14 +101,11 @@
                         </select>
                     </div>
                     <div class="task-input">
-                        <label for="frequency">Reminder Frequency</label>
-                        <select name="frequency" id="frequency" required>
-                            <option selected value="once">Once</option>
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                            <option value="quarterly">Quarterly</option>
-                            <option value="annually">Annually</option>
+                        <label for="priority">Priority</label>
+                        <select name="priority" id="priority" required>
+                            <option value="low">Low</option>
+                            <option selected value="medium">Medium</option>
+                            <option value="high">High</option>
                         </select>
                     </div>
                     <div class="task-input">
@@ -114,11 +148,13 @@
         <hr />
         <div class="form-wrapper button-container">
             <button type="submit" form="edit-task-form">Edit</button>
-            <form action="" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Delete</button>
-            </form>
+            @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
+                <form action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete</button>
+                </form>
+            @endif
             <button type="button">Cancel</button>
         </div>
     </dialog>

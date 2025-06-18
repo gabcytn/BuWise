@@ -44,7 +44,7 @@
                 </table>
                 <button type="button" class="btn add-row">Add row</button>
             </div>
-
+            <input type="checkbox" name="pending" />
             <button type="submit">Submit</button>
 
         </form>

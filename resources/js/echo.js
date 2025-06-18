@@ -31,6 +31,7 @@ async function fetchUserDetails() {
 
     const data = await res.json();
     sessionStorage.setItem("id", data.id);
+    sessionStorage.setItem("role", data.role.name);
 }
 
 async function startup() {
@@ -65,6 +66,7 @@ function addItemInNotificationPanel(notif) {
     const parentContainer = document.createElement("div");
     parentContainer.className = "notification-item";
     parentContainer.dataset.id = notif.id;
+    parentContainer.title = notif.description;
 
     const icon = document.createElement("i");
     icon.className = "fa-solid fa-user-check notification-icon";

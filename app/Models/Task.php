@@ -13,8 +13,10 @@ class Task extends Model
         'assigned_to',
         'client_id',
         'description',
+        'category',
+        'category_description',
         'status',
-        'frequency',
+        'priority',
         'start_date',
         'end_date',
     ];
@@ -26,6 +28,11 @@ class Task extends Model
 
     public function toClient(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client');
+        return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

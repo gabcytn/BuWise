@@ -19,12 +19,6 @@
                     <p id="account-role">{{ ucfirst(request()->user()->role->name) }}</p>
                 </div>
                 <i class="fa-solid fa-circle-chevron-down"></i>
-                <div class="popover d-none">
-                    <ul>
-                        <li id="profile">Profile</li>
-                        <li id="logout">Logout</li>
-                    </ul>
-                </div>
             </div>
             <i class="fa-solid fa-bell" id="notifToggle"></i>
         </div>
