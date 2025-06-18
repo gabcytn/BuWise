@@ -13,7 +13,6 @@ use App\Http\Controllers\ProfileInformationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\WorkingPaperController;
-use App\Http\Middleware\EnableMFA;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
@@ -34,9 +33,9 @@ Route::get('/services', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified', EnableMFA::class])->name('dashboard');
+})->middleware(['auth', 'verified', 'enable.mfa'])->name('dashboard');
 
-Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
+Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
     Route::get('/user', function (Request $request) {
         $user = $request->user();
         return User::with('role')->where('id', '=', $user->id)->first();
@@ -114,7 +113,7 @@ Route::middleware(['auth', 'verified', EnableMFA::class])->group(function () {
             return to_route('dashboard');
         }
         return view('auth.enable-mfa');
-    })->name('mfa.enable')->withoutMiddleware(EnableMFA::class);
+    })->name('mfa.enable')->withoutMiddleware('enable.mfa');
 });
 
 Route::get('/bot/invoices/create', [BotController::class, 'index'])
