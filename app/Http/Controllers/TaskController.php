@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TaskCreated;
 use App\Models\Task;
 use App\Models\User;
 use App\Notifications\MarkedTaskAsComplete;
@@ -70,7 +71,7 @@ class TaskController extends Controller
         if (!$assigned)
             return $this->backWithErrors('Task assigned to is unknown');
 
-        Task::create([
+        $task = Task::create([
             'name' => $request->name,
             'created_by' => $request->user()->id,
             'assigned_to' => $assigned->id,
@@ -85,6 +86,7 @@ class TaskController extends Controller
         ]);
 
         Cache::forget($request->user()->id . '-tasks');
+        TaskCreated::dispatch($task);
 
         // TODO: schedule task reminders
 
