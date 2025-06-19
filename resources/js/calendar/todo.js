@@ -51,8 +51,8 @@ async function fetchTasks() {
     const processedClients = allClients.filter(
         (client) => client.status === "completed",
     );
-    const processedStaffs = allClients.filter(
-        (client) => client.status === "completed",
+    const processedStaffs = allStaffs.filter(
+        (staff) => staff.status === "completed",
     );
     populateInvoiceCharts(
         processedInvoices.length,
@@ -213,5 +213,5 @@ function updateChartLabels(
     title.textContent = `Total ${titleContent} Processed`;
     amount.textContent = amountContent;
     amount.style.color = "#1B80C3";
-    subtitle.textContent = `${remainingLength} out of ${totalLength} total`;
+    subtitle.textContent = `${remainingLength} out of ${totalLength} remaining`;
 }
