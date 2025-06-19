@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
 
@@ -36,9 +37,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified', 'enable.mfa'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
-    Route::get('/user', function (Request $request) {
+    Route::get('/user/details', function (Request $request) {
         $user = $request->user();
-        return User::with('role')->where('id', '=', $user->id)->first();
+        return Cache::remember($user->id . '-details', 3600, function () use ($user) {
+            return User::with('role')->find($user->id);
+        });
     });
     Route::get('/dashboard', function () {
         return view('dashboard');
