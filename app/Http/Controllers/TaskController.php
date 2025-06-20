@@ -101,6 +101,8 @@ class TaskController extends Controller
             'status' => 'required|in:not_started,in_progress,completed',
         ]);
 
+        if ($task->status !== $request->status)
+            $task->completed_at = Carbon::now()->format('Y-m-d');
         $task->description = $request->description;
         $task->status = $request->status;
         $task->save();
@@ -158,6 +160,7 @@ class TaskController extends Controller
         ]);
 
         $task->status = $request->status;
+        $task->completed_at = Carbon::now()->format('Y-m-d');
         $task->save();
 
         if ($request->status === 'completed') {
