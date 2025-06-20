@@ -1,41 +1,8 @@
-const clientsChart = document.querySelector("canvas#clients-chart");
 const tasksChart = document.querySelector("canvas#tasks-chart");
 const journalsChart = document.querySelector("canvas#journals-chart");
 
-doughnutChart();
 lineChart();
 barChart();
-function doughnutChart() {
-    const data = {
-        labels: ["Red", "Blue", "Yellow"],
-        datasets: [
-            {
-                label: "My First Dataset",
-                data: [300, 50, 100],
-                backgroundColor: [
-                    "rgb(255, 99, 132)",
-                    "rgb(54, 162, 235)",
-                    "rgb(255, 205, 86)",
-                ],
-                hoverOffset: 4,
-            },
-        ],
-    };
-
-    const config = {
-        type: "doughnut",
-        data: data,
-        options: {
-            plugins: {
-                legend: {
-                    position: "bottom",
-                },
-            },
-        },
-    };
-
-    new Chart(clientsChart, config);
-}
 
 function lineChart() {
     const labels = [

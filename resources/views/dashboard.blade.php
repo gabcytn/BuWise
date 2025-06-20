@@ -112,5 +112,30 @@
 
         <!-- Chart.js Library -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const clientsChart = document.querySelector("canvas#clients-chart");
+            const arr = @json($client_types);
+            const data = {
+                labels: Object.keys(arr),
+                datasets: [{
+                    data: Object.values(arr),
+                    hoverOffset: 4,
+                }, ],
+            };
+
+            const config = {
+                type: "doughnut",
+                data: data,
+                options: {
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                        },
+                    },
+                },
+            };
+
+            new Chart(clientsChart, config);
+        </script>
 
 </x-app-layout>
