@@ -41,7 +41,7 @@ class OpenAi
         } else {
             Log::error('error in openai');
             Log::error($response->body());
-            return 'error';
+            return json_encode(['error' => 'Error in requesting OpenAI API']);
         }
     }
 }

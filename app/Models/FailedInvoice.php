@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FailedInvoice extends Model
 {
-    protected $table = [
+    protected $fillable = [
         'client_id',
         'filename',
     ];

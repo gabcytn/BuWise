@@ -16,7 +16,7 @@ class Llmwhisperer
         $this->url = config('app.ocr_url');
     }
 
-    public function extract()
+    public function extract(): string
     {
         $fileContents = Storage::disk('public')->get('temp/' . $this->filename);
 
@@ -36,20 +36,25 @@ class Llmwhisperer
             $error = $response->body();
             Log::info('Error response');
             Log::info($error);
+            return '';
         }
     }
 
     private function poll($hash)
     {
-        $is_done = false;
-        while (!$is_done) {
+        while (true) {
             $response = Http::withHeaders([
                 'unstract-key' => config('app.ocr_api_key'),
             ])
                 ->get($this->url . "/whisper-status?whisper_hash=$hash");
             $body = $response->json();
-            $is_done = $body['status'] === 'processed';
-            if (!$is_done)
+            $status = $body['status'];
+            Log::info($status);
+            if ($status === 'error')
+                return '';
+            else if ($status === 'processed')
+                break;
+            else
                 sleep(3);
         }
 
@@ -62,13 +67,19 @@ class Llmwhisperer
             'unstract-key' => config('app.ocr_api_key'),
         ])
             ->get($this->url . "/whisper-retrieve?whisper_hash=$hash");
-        if ($response->successful()) {
-            $body = $response->json();
-            $text = $body['result_text'];
-            return $text;
-        } else {
-            Log::info($response->body());
+        if (!$response->successful() || !$response->json()) {
+            Log::error('/whisper-retrieve is not successful/no JSON');
+            Log::error($response->body());
             return '';
         }
+
+        $body = $response->json();
+        if (!array_key_exists('result_text', $body)) {
+            Log::error('response does not have a result_text key');
+            return '';
+        }
+
+        $text = $body['result_text'];
+        return $text;
     }
 }
