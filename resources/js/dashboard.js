@@ -4,37 +4,27 @@ const journalsChart = document.querySelector("canvas#journals-chart");
 lineChart();
 barChart();
 
-function lineChart() {
-    const labels = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-    ];
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                label: "Dataset 1",
-                data: [65, 59, 80, 81, 56, 55, 40],
-            },
-            {
-                label: "Dataset 2",
-                data: [70, 80, 76, 67, 90, 95, 60],
-            },
-            {
-                label: "Dataset 3",
-                data: [17, 80, 95, 20, 56, 65, 70],
-            },
-        ],
+async function lineChart() {
+    const res = await fetch("/dashboard/charts/tasks", {
+        headers: {
+            Accept: "application/json",
+        },
+    });
+    const data = await res.json();
+    const roles = Object.keys(data).filter((item) => item !== "months");
+    const dataset = {
+        labels: data.months,
+        datasets: Object.values(data).map((item, idx) => {
+            return {
+                label: roles[idx],
+                data: item,
+            };
+        }),
     };
 
     const config = {
         type: "line",
-        data: data,
+        data: dataset,
         options: {
             responsive: true,
             stacked: false,

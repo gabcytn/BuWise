@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -51,5 +52,36 @@ class DashboardController extends Controller
         }
 
         return $count_map;
+    }
+
+    public function getTasks(Request $request)
+    {
+        $user = $request->user();
+        $accountant_id = getAccountantId($user);
+        $tasks = Task::with('user')
+            ->where('created_by', '=', $accountant_id)
+            ->whereBetween('completed_at', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
+            ->orderBy('completed_at')
+            ->get();
+        $months = [];
+        foreach ($tasks as $task) {
+            if ($task->status !== 'completed')
+                continue;
+            $month = Carbon::createFromDate($task->completed_at)->format('M');
+            if (!in_array($month, $months))
+                $months[] = $month;
+        }
+        $data_map = ['months' => $months];
+        foreach ($tasks as $task) {
+            if ($task->status !== 'completed')
+                continue;
+            $role_name = $task->user->role->name;
+            $month = Carbon::createFromDate($task->completed_at)->format('M');
+            if (!array_key_exists($role_name, $data_map))
+                $data_map[$role_name] = array_fill(0, count($months), 0);
+            $idx = array_search($month, $months);
+            $data_map[$role_name][$idx] += 1;
+        }
+        return $data_map;
     }
 }
