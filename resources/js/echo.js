@@ -53,7 +53,7 @@ async function startup() {
     }
     window.Echo.private(`App.Models.User.${USER_ID}`).notification((notif) => {
         const oldList = JSON.parse(sessionStorage.getItem("notifications"));
-        oldList.push(notif);
+        oldList.unshift(notif);
         sessionStorage.setItem("notifications", JSON.stringify(oldList));
         addItemInNotificationPanel(notif);
         document.querySelector("#notificationPanel").classList.remove("d-none");
