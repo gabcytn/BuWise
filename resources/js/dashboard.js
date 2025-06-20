@@ -14,12 +14,14 @@ async function lineChart() {
     const roles = Object.keys(data).filter((item) => item !== "months");
     const dataset = {
         labels: data.months,
-        datasets: Object.values(data).map((item, idx) => {
-            return {
-                label: roles[idx],
-                data: item,
-            };
-        }),
+        datasets: Object.values(data)
+            .filter((item) => typeof item[0] === "number")
+            .map((item, idx) => {
+                return {
+                    label: roles[idx],
+                    data: item,
+                };
+            }),
     };
 
     const config = {
@@ -42,7 +44,6 @@ async function lineChart() {
 async function barChart() {
     const res = await fetch("/dashboard/charts/journals");
     const data = await res.json();
-    console.log(data);
     const labels = data.labels;
     const dataset = {
         labels: labels,

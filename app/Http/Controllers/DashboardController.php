@@ -17,6 +17,7 @@ class DashboardController extends Controller
         $user = $request->user();
         $accId = getAccountantId($user);
         $tasks = Task::where('assigned_to', '=', $user->id)
+            ->where('status', '!=', 'completed')
             ->orderBy('end_date')
             ->get();
         $related = User::where('accountant_id', '=', $accId)->get();
@@ -92,6 +93,7 @@ class DashboardController extends Controller
         $transactions = Transaction::where('created_by', '=', $user->id)
             ->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
             ->where('type', '=', 'journal')
+            ->orderBy('date')
             ->get();
         $months = [];
         foreach ($transactions as $transaction) {
