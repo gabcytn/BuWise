@@ -25,6 +25,6 @@ class TaskCreated implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->task->user->notify(new NewTask($this->task));
+        $this->task->user->notify(new NewTask($this->task->assigned_to, $this->task->created_by));
     }
 }
