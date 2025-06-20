@@ -8,7 +8,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 
 class DashboardController extends Controller
 {
@@ -83,5 +83,32 @@ class DashboardController extends Controller
             $data_map[$role_name][$idx] += 1;
         }
         return $data_map;
+    }
+
+    public function getJournals(Request $request)
+    {
+        $user = $request->user();
+        $accountant_id = getAccountantId($user);
+        $transactions = Transaction::where('created_by', '=', $user->id)
+            ->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
+            ->where('type', '=', 'journal')
+            ->get();
+        $months = [];
+        foreach ($transactions as $transaction) {
+            $month = Carbon::createFromDate($transaction->date)->format('M');
+            if (!in_array($month, $months))
+                $months[] = $month;
+        }
+        $data = array_fill(0, count($months), 0);
+        foreach ($transactions as $transaction) {
+            $month = Carbon::createFromDate($transaction->date)->format('M');
+            $idx = array_search($month, $months);
+            $data[$idx] += 1;
+        }
+
+        return Response::json([
+            'labels' => $months,
+            'values' => $data,
+        ]);
     }
 }

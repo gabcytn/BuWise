@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/charts/tasks', [DashboardController::class, 'getTasks']);
+    Route::get('/dashboard/charts/journals', [DashboardController::class, 'getJournals']);
 
     Route::get('/profile', function (Request $request) {
         return view('profile.edit', [
