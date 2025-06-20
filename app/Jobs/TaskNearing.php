@@ -27,9 +27,9 @@ class TaskNearing implements ShouldQueue
      */
     public function handle(): void
     {
-        $start_of_week = Carbon::now()->startOfWeek(Carbon::SUNDAY);
-        $end_of_week = Carbon::now()->endOfWeek(Carbon::SATURDAY);
-        $tasks = Task::whereBetween('end_date', [$start_of_week, $end_of_week])
+        $start = Carbon::now()->format('Y-m-d');
+        $end = Carbon::now()->addWeek()->format('Y-m-d');
+        $tasks = Task::whereBetween('end_date', [$start, $end])
             ->where('status', '!=', 'completed')
             ->get();
 
