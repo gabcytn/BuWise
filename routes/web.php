@@ -3,6 +3,7 @@
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\InvoiceController;
@@ -32,10 +33,6 @@ Route::get('/services', function () {
     return view('services');
 })->name('services');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'enable.mfa'])->name('dashboard');
-
 Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
     Route::get('/user/details', function (Request $request) {
         $user = $request->user();
@@ -43,9 +40,7 @@ Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
             return User::with('role')->find($user->id);
         });
     });
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', function (Request $request) {
         return view('profile.edit', [

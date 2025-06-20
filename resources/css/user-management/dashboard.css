@@ -93,6 +93,11 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.grid-child-1 {
+    display: grid;
+    justify-content: center;
+}
+
 .grid-child-3 {
     grid-row: span 3;
 }
@@ -109,8 +114,8 @@
 }
 
 .pie-chart {
-    display: flex;
-    justify-content: center;
+    /* display: flex; */
+    /* justify-content: center; */
 
     #clients-chart {
         width: 15rem !important;

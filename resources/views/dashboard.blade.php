@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-details">
                     <h3>Total Active Clients</h3>
-                    <p>30</p>
+                    <p>{{ $clients_count }}</p>
                 </div>
             </div>
             <!-- Card 2 -->
@@ -35,7 +35,7 @@
                 </div>
                 <div class="card-details">
                     <h3>Invoices Uploaded</h3>
-                    <p>30</p>
+                    <p>{{ $invoices_count }}</p>
                 </div>
             </div>
             <!-- Card 3 -->
@@ -45,7 +45,7 @@
                 </div>
                 <div class="card-details">
                     <h3>Total Entries</h3>
-                    <p>30</p>
+                    <p>{{ $journals_count }}</p>
                 </div>
             </div>
             <!-- Card 4 -->
@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-details">
                     <h3>Total Active Staff</h3>
-                    <p>30</p>
+                    <p>{{ $staff_count }}</p>
                 </div>
             </div>
         </section>
@@ -86,70 +86,17 @@
                 <div class="tasks-header">
                     <h3>To Do List</h3>
                 </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">BIR Form 2550M</div>
-                        <div class="task-meta">Due: October Report</div>
-                        <div class="task-assigned">Assigned to Layne</div>
+                @foreach ($tasks as $item)
+                    <div class="task-item">
+                        <div class="task-checkbox"></div>
+                        <div class="task-content">
+                            <div class="task-title">{{ $item->name }}</div>
+                            <div class="task-meta">Due:
+                                {{ \Carbon\Carbon::createFromDate($item->end_date)->format('M d Y') }}</div>
+                            <div class="task-assigned">Created by {{ $item->creator->name }}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-checkbox"></div>
-                    <div class="task-content">
-                        <div class="task-title">PSFU Invoice</div>
-                        <div class="task-meta">Due: September Period</div>
-                        <div class="task-assigned">Assigned to Chris</div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <!-- Bar chart -->
             <div class="chart-card grid-child-4">
