@@ -92,7 +92,7 @@
                 <div class="search-input" style="position: relative;">
                     <img src="{{ asset('images/magnify.png') }}" alt="Search" class="search-icon"
                         style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); height: 16px;">
-                    <input type="search" name="search" placeholder="Search Invoices..." style="padding-left: 30px;" />
+                    <input type="search" name="search" placeholder="Search Invoice No." style="padding-left: 30px;" />
                 </div>
                 <button type="submit">Run</button>
             </form>
