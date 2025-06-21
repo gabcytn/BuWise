@@ -127,7 +127,7 @@ Route::middleware(['auth', 'verified', 'enable.mfa', 'onboarding'])->group(funct
             return to_route('dashboard');
         }
         return view('auth.enable-mfa');
-    })->name('mfa.enable')->withoutMiddleware('enable.mfa');
+    })->name('mfa.enable')->withoutMiddleware(['enable.mfa', 'onboarding']);
 });
 
 // allow email verification without signing in
