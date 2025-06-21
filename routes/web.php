@@ -42,6 +42,11 @@ Route::middleware(['auth', 'verified', 'enable.mfa', 'onboarding'])->group(funct
         });
     });
 
+    Route::delete('/user', function (Request $request) {
+        $request->user()->delete();
+        return to_route('login');
+    })->name('user.delete');
+
     Route::resource('/organizations', OrganizationController::class)
         ->withoutMiddleware('onboarding')
         ->only(['create', 'store']);

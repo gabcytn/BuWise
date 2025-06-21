@@ -103,6 +103,45 @@ hr {
     color: rgba(0, 0, 0, 0.2);
 }
 
+.privacy-section {
+    display: grid;
+
+    .privacy-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .privacy-row+.privacy-row {
+        margin-top: 1rem;
+    }
+
+    .privacy-row__text {
+        h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        p {
+            font-size: 0.85rem;
+            color: var(--grey);
+        }
+    }
+
+    button {
+        width: 8.5rem;
+    }
+
+    #update-password {
+        background-color: var(--main-blue);
+    }
+
+    #disable-two-factor,
+    #delete-account {
+        background-color: #CA3A3A;
+    }
+}
+
 @media (min-width: 800px) {
     .profile-section form button {
         width: max-content;
