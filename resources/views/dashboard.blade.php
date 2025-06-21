@@ -12,7 +12,7 @@
                 <h2 class="dashboard-title">
                     Welcome, {{ Auth::user()->name }}!
                 </h2>
-                <p class="dashboard-role">{{ Auth::user()->role->name }} of <em>Organizatioon</em></p>
+                <p class="dashboard-role">{{ $role }} of {{ $organization }}</p>
             </div>
         </div>
 

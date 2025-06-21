@@ -38,21 +38,32 @@
                 </div>
                 <div class="input-box">
                     <label for="organization-name">Organization Name<span>*</span></label>
-                    <input required type="text" name="name" id="organization-name" />
+                    <input required type="text" name="name" id="organization-name"
+                        value="{{ old('name', '') }}" />
                     <p><i class="fa-solid fa-circle-info"></i>Organization names help us to store your firm’s data and
                         manage your employees better. Your
                         clients are also automatically part of your organization if they download <a
                             href="#">BuWise Mobile.</a></p>
+                    @error('name')
+                        <p style="color: #CA3A3A">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="input-box">
                     <label for="organization-address">Organization Address<span>*</span></label>
-                    <input required type="text" name="address" id="organization-address" />
+                    <input required type="text" name="address" id="organization-address"
+                        value="{{ old('address', '') }}" />
+                    @error('address')
+                        <p style="color: #CA3A3A">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="input-box">
                     <label for="organization-logo">Organization Logo<span>*</span></label>
                     <input required type="file" name="logo" id="organization-logo" />
                     <p><i class="fa-solid fa-circle-info"></i>Upload your organization logo to identify your firm
                         better.</p>
+                    @error('logo')
+                        <p style="color: #CA3A3A">{{ $message }}</p>
+                    @enderror
                 </div>
             </form>
             <hr />
