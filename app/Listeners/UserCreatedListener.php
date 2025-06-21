@@ -27,7 +27,10 @@ class UserCreatedListener implements ShouldQueue
     public function handle(UserCreated $event): void
     {
         try {
-            $accId = getAccountantId($event->creator);
+            $creator = User::find($event->user->created_by);
+            if (!$creator)
+                throw new \Exception('Creator of user is non-existent');
+            $accId = getAccountantId($creator);
             $accountant = User::find($accId);
             if ($event->user->role_id === Role::CLIENT) {
                 $clients = getClients($accountant);
@@ -36,8 +39,8 @@ class UserCreatedListener implements ShouldQueue
             }
 
             // notify accountant that a client has been created
-            if ($event->creator->role_id === Role::LIAISON)
-                $accountant->notify(new LiaisonCreatedClient($accountant, $event->creator));
+            if ($creator->role_id === Role::LIAISON)
+                $accountant->notify(new LiaisonCreatedClient($accountant, $creator));
 
             $event->user->sendEmailVerificationNotification();
         } catch (\Exception $e) {

@@ -87,10 +87,12 @@ class StaffController extends Controller
         $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
 
+        $current_user = $request->user();
         $staff = User::create([
             'name' => $name,
             'email' => $validated['email'],
-            'accountant_id' => $request->user()->id,
+            'accountant_id' => $current_user,
+            'created_by' => $current_user,
             'role_id' => (int) $validated['staff_type'],
             'password' => Hash::make($validated['password']),
             'profile_img' => $filename,
@@ -100,9 +102,6 @@ class StaffController extends Controller
             'user_id' => $staff->id,
             'organization_id' => $organization->id,
         ]);
-        UserCreated::dispatch($request->user(), $staff);
-
-        // $request->user()->staff()->attach($staff->id);
 
         return to_route('staff.index');
     }

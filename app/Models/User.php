@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Events\UserCreated;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'accountant_id',
+        'created_by',
         'tin',
         'phone_number',
         'client_type',
@@ -39,6 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_img',
         'onboarded'
     ];
+
+    protected $dispatchesEvents = [
+        'created' => UserCreated::class,
+    ];
+]
 
     /**
      * The attributes that should be hidden for serialization.

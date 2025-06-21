@@ -90,13 +90,11 @@ class ClientController extends Controller
         $filename = $this->storeImageToLocal($request, $validated['name']);
 
         $currentUser = $request->user();
-        if ($currentUser->role_id === Role::ACCOUNTANT)
-            $accountantId = $currentUser->id;
-        else
-            $accountantId = $currentUser->accountant->id;
+        $accountantId = getAccountantId($currentUser);
 
         $client = User::create([
             'accountant_id' => $accountantId,
+            'created_by' => $request->user()->id,
             'role_id' => Role::CLIENT,
             'email' => $validated['email'],
             'phone_number' => $validated['phone_number'],
@@ -112,9 +110,7 @@ class ClientController extends Controller
             'user_id' => $client->id,
             'organization_id' => $organization->id,
         ]);
-        UserCreated::dispatch($request->user(), $client);
 
-        // return Storage::disk("s3")->response("images/" . basename($path));
         return redirect()->back();
     }
 
