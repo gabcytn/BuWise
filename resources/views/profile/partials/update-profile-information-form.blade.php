@@ -1,39 +1,82 @@
 <section class="profile-section">
-    <header>
-        <h2>Profile Information</h2>
-        <p>Update your account's profile information.</p>
-    </header>
-
-    <form method="post" action="{{ route('profile.update') }}" enctype='multipart/form-data'>
-        @csrf
-        @method('PUT')
-
-        <div>
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus
-                autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" />
+    @if ($errors->any())
+        <p>{{ $errors->first() }}</p>
+    @endif
+    <div class="profile-section__wrapper">
+        <div class="profile-section__header">
+            <h2>Account Details</h2>
         </div>
+    </div>
+    <hr />
+    @php
+        $profileImg = $user->profile_img;
+        if ($profileImg) {
+            $url = asset('storage/profiles/' . $profileImg);
+        } else {
+            $url = 'https://placehold.co/40';
+        }
+    @endphp
+    <div class="profile-section__wrapper">
+        <form id="profile-form" method="post" action="{{ route('profile.update') }}" enctype='multipart/form-data'>
+            @csrf
+            @method('PUT')
+            <div class="file-row">
+                <div>
+                    <img src="{{ $url }}" alt="User Profile Picture" />
+                </div>
+                <div>
+                    <input id="profile_img" name="profile_img" type="file" />
+                    <p for="profile_img"><i class="fa-solid fa-circle-info"></i>File must be a "jpg", "png", or
+                        "svg", and less than 5mb</p>
+                    <x-input-error :messages="$errors->get('profile_img')" />
+                </div>
+            </div>
+            <div class="details-row">
+                <div class="details-box">
+                    <label for="name">Name</label>
+                    <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}"
+                        required />
+                    <x-input-error :messages="$errors->get('name')" />
+                </div>
+                <div class="details-box">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}"
+                        required />
+                    <x-input-error :messages="$errors->get('email')" />
+                </div>
+                <div class="details-box">
+                    <label for="gender">Gender</label>
+                    <select required name="gender" id="gender">
+                        <option {{ !$user->gender ? 'selected' : '' }} value="" disabled>Choose a gender</option>
+                        <option {{ $user->gender === 'm' ? 'selected' : '' }} value="m">Male</option>
+                        <option {{ $user->gender === 'f' ? 'selected' : '' }} value="f">Female</option>
+                        <option {{ $user->gender === 'n' ? 'selected' : '' }} value="n">Prefer not to say</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('gender')" />
+                </div>
+                <div class="details-box">
+                    <label for="organization-name">Organization Name</label>
+                    <input id="organization-name" name="organization_name" type="text"
+                        value="{{ old('organization_name', $user->organization->name) }}" required
+                        {{ $user->role_id !== \App\Models\Role::ACCOUNTANT ? 'disabled' : '' }} />
+                    <x-input-error :messages="$errors->get('organization_name')" />
+                </div>
+                <div class="details-box">
+                    <label for="organization-address">Organization Address</label>
+                    <input id="organization-address" name="organization_address" type="text"
+                        value="{{ old('organization_address', $user->organization->address) }}" required
+                        {{ $user->role_id !== \App\Models\Role::ACCOUNTANT ? 'disabled' : '' }} />
+                    <x-input-error :messages="$errors->get('organization_address')" />
+                </div>
+            </div>
 
-        <div>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required
-                autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" />
+        </form>
+    </div>
+    <hr />
+    <div class="profile-section__wrapper">
+        <div class="profile-section__bottom">
+            <button type="submit" form="profile-form">Save Changes</button>
+            <input type="reset" form="profile-form" />
         </div>
-
-        <div>
-            <label for="profile_img">Profile Picture</label>
-            <input id="profile_img" name="profile_img" type="file"
-                style="background-color: var(--clear-white); border: 1px solid var(--grey);" />
-            <x-input-error :messages="$errors->get('profile_img')" />
-        </div>
-
-        <div>
-            <button type="submit" style="background-color: var(--green);">Save</button>
-            @if (session('status') === 'profile-updated')
-                <p>Saved.</p>
-            @endif
-        </div>
-    </form>
+    </div>
 </section>

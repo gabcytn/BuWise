@@ -34,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone_number',
         'client_type',
         'password',
+        'gender',
         'role_id',
         'profile_img',
         'onboarded'
