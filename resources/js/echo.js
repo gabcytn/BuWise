@@ -16,10 +16,6 @@ window.Echo = new Echo({
     enabledTransports: ["ws", "wss"],
 });
 
-window.Echo.channel("task.1").listen("NotificationReminders", (e) => {
-    console.log(e.task);
-});
-
 startup();
 
 let USER_ID;
