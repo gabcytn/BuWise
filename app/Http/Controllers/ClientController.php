@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\UserCreated;
+use App\Models\OrganizationMember;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -86,10 +87,6 @@ class ClientController extends Controller
             'profile_img' => ['required', File::image()->max(5000)],
         ]);
 
-        // Upload to AWS:
-        // $filename = $this->storeImageToAws($request);
-
-        // Upload to Local:
         $filename = $this->storeImageToLocal($request, $validated['name']);
 
         $currentUser = $request->user();
@@ -110,6 +107,11 @@ class ClientController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
+        $organization = $request->user()->organization;
+        OrganizationMember::create([
+            'user_id' => $client->id,
+            'organization_id' => $organization->id,
+        ]);
         UserCreated::dispatch($request->user(), $client);
 
         // return Storage::disk("s3")->response("images/" . basename($path));

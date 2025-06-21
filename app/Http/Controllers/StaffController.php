@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\UserCreated;
+use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -92,6 +94,11 @@ class StaffController extends Controller
             'role_id' => (int) $validated['staff_type'],
             'password' => Hash::make($validated['password']),
             'profile_img' => $filename,
+        ]);
+        $organization = $request->user()->organization;
+        OrganizationMember::create([
+            'user_id' => $staff->id,
+            'organization_id' => $organization->id,
         ]);
         UserCreated::dispatch($request->user(), $staff);
 

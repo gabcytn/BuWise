@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -34,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role_id',
         'profile_img',
+        'onboarded'
     ];
 
     /**
@@ -113,5 +116,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function ledgerAccounts(): HasMany
     {
         return $this->hasMany(LedgerAccount::class);
+    }
+
+    public function organization(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Organization::class,
+            OrganizationMember::class,
+            'user_id',  // Foreign key on OrganizationMember table...
+            'id',  // Foreign key on Organization table...
+            'id',  // Local key on User table...
+            'organization_id'  // Local key on OrganizationMember table...
+        );
     }
 }

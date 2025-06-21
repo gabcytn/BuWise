@@ -10,6 +10,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProfileInformationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
@@ -33,13 +34,18 @@ Route::get('/services', function () {
     return view('services');
 })->name('services');
 
-Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
+Route::middleware(['auth', 'verified', 'enable.mfa', 'onboarding'])->group(function () {
     Route::get('/user/details', function (Request $request) {
         $user = $request->user();
         return Cache::remember($user->id . '-details', 3600, function () use ($user) {
             return User::with('role')->find($user->id);
         });
     });
+
+    Route::resource('/organizations', OrganizationController::class)
+        ->withoutMiddleware('onboarding')
+        ->only(['create', 'store']);
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/charts/tasks', [DashboardController::class, 'getTasks']);
     Route::get('/dashboard/charts/journals', [DashboardController::class, 'getJournals']);
