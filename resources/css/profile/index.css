@@ -136,6 +136,10 @@ hr {
         background-color: var(--main-blue);
     }
 
+    #logout {
+        background-color: #db6e00;
+    }
+
     #disable-two-factor,
     #delete-account {
         background-color: #CA3A3A;

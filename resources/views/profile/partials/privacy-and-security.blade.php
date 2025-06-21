@@ -1,4 +1,7 @@
 @vite(['resources/js/profile/partials.js', 'resources/css/profile/password-dialog.css'])
+<form action="/logout" method="POST" id="logout-form">
+    @csrf
+</form>
 <section class="profile-section">
     <div class="profile-section__wrapper">
         <h1>Privacy and Security</h1>
@@ -13,6 +16,15 @@
             </div>
             <div class="privacy-row__button">
                 <button id="update-password">Update Password</button>
+            </div>
+        </div>
+        <div class="privacy-row">
+            <div class="privacy-row__text">
+                <h3>Logout</h3>
+                <p>Logout of your session on this device.</p>
+            </div>
+            <div class="privacy-row__button">
+                <button type="submit" form="logout-form" id="logout">Logout</button>
             </div>
         </div>
         <div class="privacy-row">
