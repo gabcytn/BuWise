@@ -136,8 +136,8 @@ class TaskController extends Controller
         $tasks = $tasks->get();
 
         $completed = $tasks->where('status', '=', 'completed');
-        $upcoming = $tasks->where('end_date', '>', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
-        $todo = $tasks->where('end_date', '<=', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
+        $upcoming = $tasks->where('end_date', '>', Carbon::now()->addWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
+        $todo = $tasks->where('end_date', '<=', Carbon::now()->addWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
 
         $accId = getAccountantId($user);
         $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
