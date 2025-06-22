@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckUserSuspendedStatus;
 use App\Http\Middleware\EnableMFA;
 use App\Http\Middleware\Onboarding;
 use App\Http\Middleware\VerifyApiKey;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'verify.api' => VerifyApiKey::class,
             'enable.mfa' => EnableMFA::class,
             'onboarding' => Onboarding::class,
+            'suspended' => CheckUserSuspendedStatus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
