@@ -1,131 +1,219 @@
-.container {
-    max-width: 1000px;
-    width: 90%;
-    margin: 0 auto;
+.d-block {
+    display: block !important;
 }
 
+/* Layout wrapper */
+.container {
+    font-family: 'Segoe UI', sans-serif;
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Title & Subtitle */
 #page-title {
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2d3d;
+    margin-bottom: 0.25rem;
 }
 
 #page-subtitle {
+    font-size: 0.9rem;
+    color: #66788a;
     margin-bottom: 1.5rem;
-    font-size: 0.85rem;
 }
 
+/* Headers layout */
 .headers {
     display: flex;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.header-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
     align-items: center;
 }
 
-.filter-group {
-    display: flex;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    background-color: var(--clear-white);
-    flex: 1;
-}
-
-.filter-button {
-    padding: 3px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background-color: var(--off-white);
-}
-
-.filter-divider {
-    width: 1px;
-    background-color: var(--grey);
-}
-
-.type-select {
-    padding: 3px 12px;
-    border: none;
-    color: #6c7987;
-    font-size: 0.85rem;
-    flex: 1;
+/* Period and status select styles */
+.period-select,
+.status-select {
+    padding: 0.45rem 2.5rem 0.45rem 2.8rem;
+    background-color: white;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 180px;
+    background-repeat: no-repeat;
+    background-position: left 12px center, right 12px center;
+    background-size: 18px 18px, 14px 14px;
     appearance: none;
-    background-color: var(--off-white);
     cursor: pointer;
 }
 
-.refresh-button {
-    padding: 3px 12px;
+/* Filter Toggle Button */
+.filter-toggle {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: var(--off-white);
-    border: none;
-}
-
-.headers-child.search-box {
-    position: relative;
-    flex: 2;
-}
-
-.search-box input {
-    background-color: var(--off-white);
-    width: 100%;
-    padding: 0.15rem 0.5rem;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 0.5rem;
-    font-size: 0.85rem;
-}
-
-.headers-child.button-box {
-    margin: 0 auto;
-}
-
-#open-dialog-btn {
-    background-color: var(--main-blue);
-    color: var(--off-white);
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    border: none;
-    outline: none;
+    gap: 0.5rem;
+    background: #f0f4f8;
+    border: 1px solid #cbd5e0;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
     cursor: pointer;
-    transition: opacity 0.25s;
 }
 
-#open-dialog-btn:hover {
-    opacity: 0.85;
+/* Dropdown menu container */
+.filter-dropdown {
+    position: relative;
 }
 
-@media (min-width: 514px) {
-    .headers {
-        gap: 0rem;
-        justify-content: space-between;
-    }
-
-
-    .headers-first-child {}
-
-    .headers-child.button-box {
-        margin-left: auto;
-        margin-right: 0;
-    }
-
-    #open-dialog-btn {
-        width: 100%;
-    }
-
-    .headers-child.search-box {
-        /* position: relative; */
-        flex: 1;
-    }
-
-    .filter-group {
-        /* background-color: var(--clear-white); */
-        flex: 1;
-    }
-
-    .delete-item-dialog button:hover {
-        opacity: 0.85;
-    }
+.filter-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem;
+    min-width: 180px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 999;
 }
+
+.filter-dropdown:hover .filter-menu {
+    display: block;
+}
+
+/* Search box */
+#search-form input {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 180px;
+    background-color: white;
+}
+
+/* Add client button */
+.new-client-button button {
+    background-color: #1B80C3;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.new-client-button button:hover {
+    opacity: 0.9;
+}
+
+/* Table Layout (Optional for Later) */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.client-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
+}
+
+.client-table thead {
+    background-color: #1B80C3;
+    color: white;
+}
+
+.client-table th,
+.client-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+/* Status badges */
+.status {
+    padding: 0.4rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 70px;
+}
+
+.status.active {
+    background-color: #e6f4ea;
+    color: #27ae60;
+}
+
+.status.inactive {
+    background-color: #fff4e5;
+    color: #f39c12;
+}
+
+.status.suspended {
+    background-color: #fce4e4;
+    color: #c0392b;
+}
+.filter-menu {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    width: 100px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.filter-menu label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #374151; /* gray-700 */
+}
+
+.filter-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filter-menu ul li {
+    margin-bottom: 0.5rem;
+}
+
+.filter-menu ul li a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1f2937; /* gray-800 */
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.filter-menu ul li a:hover {
+    background-color: #1B80C3; /* blue hover */
+    color: white;
+}
+
+.filter-menu ul li a.active {
+    background-color: #1B80C3; /* blue-700 */
+    color: white;
+}
+
