@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransactionDeleted;
 use App\Jobs\ParseExcelUpload;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
@@ -119,7 +120,7 @@ class JournalEntryController extends Controller
             foreach ($journalEntry->ledger_entries as $data) {
                 $arr[] = $data;
             }
-
+            TransactionDeleted::dispatch($journalEntry->client_id, $journalEntry->date);
             Transaction::destroy($journalEntry->id);
         } catch (\Exception $e) {
             Log::emergency('Exception while destroying a journal entry');

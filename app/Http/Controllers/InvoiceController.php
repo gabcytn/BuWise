@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TransactionDeleted;
 use App\Jobs\ScanInvoiceInWeb;
 use App\Models\Role;
 use App\Models\Transaction;
@@ -155,6 +156,7 @@ class InvoiceController extends Controller
     public function destroy(Transaction $invoice)
     {
         Storage::delete('invoices/' . $invoice->image);
+        TransactionDeleted::dispatch($invoice->client_id, $invoice->date);
         Transaction::destroy($invoice->id);
         return to_route('invoices.index');
     }
