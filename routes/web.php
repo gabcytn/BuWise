@@ -34,7 +34,7 @@ Route::get('/services', function () {
     return view('services');
 })->name('services');
 
-Route::middleware(['auth', 'verified', 'enable.mfa', 'onboarding'])->group(function () {
+Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])->group(function () {
     Route::get('/user/details', function (Request $request) {
         $user = $request->user();
         return Cache::remember($user->id . '-details', 3600, function () use ($user) {
@@ -46,6 +46,12 @@ Route::middleware(['auth', 'verified', 'enable.mfa', 'onboarding'])->group(funct
         $request->user()->delete();
         return to_route('login');
     })->name('user.delete');
+
+    Route::get('/suspended', function (Request $request) {
+        if ($request->user()->suspended)
+            return 'Your account has been suspended. If this is a mistake, please contact your accountant';
+        return to_route('dashboard');
+    })->name('suspended')->withoutMiddleware('suspended');
 
     Route::resource('/organizations', OrganizationController::class)
         ->withoutMiddleware('onboarding')
