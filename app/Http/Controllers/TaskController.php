@@ -34,12 +34,10 @@ class TaskController extends Controller
     {
         Gate::authorize('viewAny', Task::class);
         $user = $request->user();
-        $tasks = Cache::remember($user->id . '-tasks', 3600, function () use ($user) {
-            return Task::where('assigned_to', '=', $user->id)
-                ->orWhere('created_by', '=', $user->id)
-                ->orderBy('start_date')
-                ->get();
-        });
+        $tasks = Task::where('assigned_to', '=', $user->id)
+            ->orWhere('created_by', '=', $user->id)
+            ->orderBy('start_date')
+            ->get();
         return Response::json([
             'tasks' => $tasks,
         ]);
@@ -85,7 +83,6 @@ class TaskController extends Controller
             'end_date' => $request->end_date,
         ]);
 
-        Cache::forget($request->user()->id . '-tasks');
         TaskCreated::dispatch($task);
 
         // TODO: schedule task reminders
@@ -107,8 +104,6 @@ class TaskController extends Controller
         $task->status = $request->status;
         $task->save();
 
-        Cache::forget($request->user()->id . '-tasks');
-
         return redirect()->back()->with('status', 'Successfully updated task');
     }
 
@@ -116,7 +111,6 @@ class TaskController extends Controller
     {
         Gate::authorize('delete', $task);
         $task->delete();
-        Cache::forget($request->user()->id . '-tasks');
         return redirect()->back()->with('status', 'Successfully deleted task');
     }
 
@@ -168,8 +162,6 @@ class TaskController extends Controller
             $creator->notify(new MarkedTaskAsComplete($creator, $request->user()));
         }
 
-        Cache::forget($request->user()->id . '-tasks');
-        Cache::forget($task->created_by . '-tasks');
         return Response::json([
             'message' => 'Successfully updated status'
         ]);
