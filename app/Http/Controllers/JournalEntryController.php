@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\JournalEntryCreated;
 use App\Jobs\ParseExcelUpload;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
 use App\Models\Role;
-use App\Models\Tax;
 use App\Models\Transaction;
 use App\Services\JournalIndex;
 use App\Services\JournalShow;
@@ -17,12 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
-use DateTime;
 
 class JournalEntryController extends Controller
 {
-    private const ITEMS_PER_PAGE = 6;
-
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Contracts\View\View
@@ -125,9 +120,6 @@ class JournalEntryController extends Controller
                 $arr[] = $data;
             }
 
-            // update coa cache
-            // JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
-
             Transaction::destroy($journalEntry->id);
         } catch (\Exception $e) {
             Log::emergency('Exception while destroying a journal entry');
@@ -151,8 +143,6 @@ class JournalEntryController extends Controller
             $arr[] = $data;
         }
 
-        // update coa cache
-        JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
         return redirect()->back()->with(['status' => 'Journal approved!']);
     }
 
@@ -170,8 +160,6 @@ class JournalEntryController extends Controller
             $arr[] = $data;
         }
 
-        // update coa cache
-        JournalEntryCreated::dispatch($journalEntry->client_id, $arr);
         return redirect()->back()->with(['status' => 'Journal rejected!']);
     }
 
