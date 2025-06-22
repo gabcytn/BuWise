@@ -44,9 +44,8 @@ async function lineChart() {
 async function barChart() {
     const res = await fetch("/dashboard/charts/journals");
     const data = await res.json();
-    const labels = data.labels;
     const dataset = {
-        labels: labels,
+        labels: data.labels,
         datasets: [
             {
                 data: data.values,
@@ -61,6 +60,11 @@ async function barChart() {
             scales: {
                 y: {
                     beginAtZero: true,
+                },
+            },
+            plugins: {
+                legend: {
+                    display: false,
                 },
             },
         },
