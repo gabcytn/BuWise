@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\UserCreated;
+use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -85,17 +87,21 @@ class StaffController extends Controller
         $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
 
+        $current_user = $request->user();
         $staff = User::create([
             'name' => $name,
             'email' => $validated['email'],
-            'accountant_id' => $request->user()->id,
+            'accountant_id' => $current_user,
+            'created_by' => $current_user,
             'role_id' => (int) $validated['staff_type'],
             'password' => Hash::make($validated['password']),
             'profile_img' => $filename,
         ]);
-        UserCreated::dispatch($request->user(), $staff);
-
-        // $request->user()->staff()->attach($staff->id);
+        $organization = $request->user()->organization;
+        OrganizationMember::create([
+            'user_id' => $staff->id,
+            'organization_id' => $organization->id,
+        ]);
 
         return to_route('staff.index');
     }

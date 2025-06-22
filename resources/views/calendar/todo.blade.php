@@ -148,7 +148,7 @@
                             <th>Category Description</th>
                             <th>Client</th>
                             <th>Priority</th>
-                            <th>Due Date</th>
+                            <th>Completed At</th>
                             <th>Created By</th>
                             <th>Action</th>
                         </tr>
@@ -163,7 +163,7 @@
                                 </td>
                                 <td>{{ $item->toClient?->name }}</td>
                                 <td>{{ ucfirst($item->priority) }}</td>
-                                <td>{{ $item->end_date }}</td>
+                                <td>{{ $item->completed_at }}</td>
                                 <td>{{ $item->creator->name }}</td>
                                 <td><button>Mark Incomplete</button></td>
                             </tr>

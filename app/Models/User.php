@@ -4,11 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Events\UserCreated;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -28,12 +31,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'accountant_id',
+        'created_by',
         'tin',
         'phone_number',
         'client_type',
         'password',
+        'gender',
         'role_id',
         'profile_img',
+        'onboarded'
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => UserCreated::class,
     ];
 
     /**
@@ -113,5 +123,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function ledgerAccounts(): HasMany
     {
         return $this->hasMany(LedgerAccount::class);
+    }
+
+    public function organization(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Organization::class,
+            OrganizationMember::class,
+            'user_id',  // Foreign key on OrganizationMember table...
+            'id',  // Foreign key on Organization table...
+            'id',  // Local key on User table...
+            'organization_id'  // Local key on OrganizationMember table...
+        );
     }
 }

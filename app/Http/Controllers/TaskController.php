@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\TaskCreated;
 use App\Models\Task;
 use App\Models\User;
 use App\Notifications\MarkedTaskAsComplete;
@@ -33,12 +34,10 @@ class TaskController extends Controller
     {
         Gate::authorize('viewAny', Task::class);
         $user = $request->user();
-        $tasks = Cache::remember($user->id . '-tasks', 3600, function () use ($user) {
-            return Task::where('assigned_to', '=', $user->id)
-                ->orWhere('created_by', '=', $user->id)
-                ->orderBy('start_date')
-                ->get();
-        });
+        $tasks = Task::where('assigned_to', '=', $user->id)
+            ->orWhere('created_by', '=', $user->id)
+            ->orderBy('start_date')
+            ->get();
         return Response::json([
             'tasks' => $tasks,
         ]);
@@ -70,7 +69,7 @@ class TaskController extends Controller
         if (!$assigned)
             return $this->backWithErrors('Task assigned to is unknown');
 
-        Task::create([
+        $task = Task::create([
             'name' => $request->name,
             'created_by' => $request->user()->id,
             'assigned_to' => $assigned->id,
@@ -84,7 +83,7 @@ class TaskController extends Controller
             'end_date' => $request->end_date,
         ]);
 
-        Cache::forget($request->user()->id . '-tasks');
+        TaskCreated::dispatch($task);
 
         // TODO: schedule task reminders
 
@@ -99,11 +98,11 @@ class TaskController extends Controller
             'status' => 'required|in:not_started,in_progress,completed',
         ]);
 
+        if ($task->status !== $request->status)
+            $task->completed_at = Carbon::now()->format('Y-m-d');
         $task->description = $request->description;
         $task->status = $request->status;
         $task->save();
-
-        Cache::forget($request->user()->id . '-tasks');
 
         return redirect()->back()->with('status', 'Successfully updated task');
     }
@@ -112,7 +111,6 @@ class TaskController extends Controller
     {
         Gate::authorize('delete', $task);
         $task->delete();
-        Cache::forget($request->user()->id . '-tasks');
         return redirect()->back()->with('status', 'Successfully deleted task');
     }
 
@@ -132,8 +130,8 @@ class TaskController extends Controller
         $tasks = $tasks->get();
 
         $completed = $tasks->where('status', '=', 'completed');
-        $upcoming = $tasks->where('end_date', '>', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
-        $todo = $tasks->where('end_date', '<=', Carbon::now()->endOfWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
+        $upcoming = $tasks->where('end_date', '>', Carbon::now()->addWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
+        $todo = $tasks->where('end_date', '<=', Carbon::now()->addWeek()->format('Y-m-d'))->where('status', '!=', 'completed');
 
         $accId = getAccountantId($user);
         $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
@@ -156,6 +154,7 @@ class TaskController extends Controller
         ]);
 
         $task->status = $request->status;
+        $task->completed_at = Carbon::now()->format('Y-m-d');
         $task->save();
 
         if ($request->status === 'completed') {
@@ -163,8 +162,6 @@ class TaskController extends Controller
             $creator->notify(new MarkedTaskAsComplete($creator, $request->user()));
         }
 
-        Cache::forget($request->user()->id . '-tasks');
-        Cache::forget($task->created_by . '-tasks');
         return Response::json([
             'message' => 'Successfully updated status'
         ]);

@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Services\InvoiceStore;
 use App\Services\InvoiceUpdate;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -30,13 +31,33 @@ class InvoiceController extends Controller
         $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
             return getClients($user);
         });
+        $filters = $request->only(['search', 'client', 'status', 'period']);
+        if (!array_key_exists('status', $filters))
+            $filters['status'] = 'all';
+        if (!array_key_exists('client', $filters))
+            $filters['client'] = 'all';
+        if (!array_key_exists('search', $filters))
+            $filters['search'] = null;
+        if (!array_key_exists('period', $filters))
+            $filters['period'] = 'all_time';
         $invoices = Transaction::with('client')
             ->whereHas('client', function ($query) use ($accId) {
                 $query->where('accountant_id', $accId);
-            })
+            });
+        if ($filters['status'] !== 'all')
+            $invoices = $invoices->where('status', '=', $filters['status']);
+        if ($filters['client'] !== 'all')
+            $invoices = $invoices->where('client_id', '=', $filters['client']);
+        if ($filters['search'])
+            $invoices = $invoices->where('reference_no', '=', $filters['search']);
+        if ($filters['period'] === 'this_year')
+            $invoices = $invoices->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()]);
+
+        $invoices = $invoices
             ->where('type', '=', 'invoice')
             ->orderBy('id', 'DESC')
-            ->paginate(6);
+            ->paginate(6)
+            ->appends($filters);
 
         return view('invoices.index', [
             'invoices' => $invoices,

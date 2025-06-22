@@ -13,6 +13,7 @@
     margin-bottom: 0.5rem;
     padding: 2rem 0 0.5rem 2rem;
     font-size: 1.85rem;
+    font-weight: 500;
 }
 
 hr {
@@ -29,11 +30,20 @@ hr {
     width: 100%;
 }
 
-table,
+table {
+    border-collapse: collapse;
+}
+
 th,
 td {
     border: 1px solid var(--off-white);
-    border-collapse: collapse;
+}
+
+th:last-child,
+td:last-child {
+    background-color: var(--clear-white);
+    border: none !important;
+    border-collapse: separate;
 }
 
 .row {
@@ -100,13 +110,28 @@ input {
 }
 
 .add-row-btn {
-    background-color: var(--green);
-    color: var(--off-white);
+    background-color: #c1ddf0;
+    color: var(--soft-black);
     margin-top: 1rem;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+
+    i {
+        margin: 0;
+        padding: 0;
+        color: var(--main-blue);
+        font-size: 1rem;
+    }
+}
+
+.add-row-btn:hover {
+    opacity: 0.85;
 }
 
 .delete-btn {
@@ -114,7 +139,16 @@ input {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.25rem;
+    margin-left: 0.125rem;
+}
+
+.totals-row {
+    font-size: 0.9rem;
+
+    td div {
+        padding: 0.5rem 0;
+    }
 }
 
 .submit-btn {

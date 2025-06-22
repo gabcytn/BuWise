@@ -67,30 +67,42 @@
 
         <!-- Invoice Table + Toolbar -->
         <div class="invoice-container">
-            <div class="invoice-toolbar">
-                <select style="background-image: url('/images/byicon.png'), url('/images/menudown.png');">
-                    <option>Period: All Time</option>
+            <form class="invoice-toolbar">
+                <select name="period"
+                    style="background-image: url('/images/byicon.png'), url('/images/menudown.png');">
+                    <option value="all_time">All Time</option>
+                    <option value="this_year">This Year</option>
                 </select>
-                <select style="background-image: url('/images/filterbyicon.png'), url('/images/menudown.png');">
-                    <option>Filter by: Status</option>
+                <select name="status"
+                    style="background-image: url('/images/filterbyicon.png'), url('/images/menudown.png');">
+                    <option value="all" selected>All Status</option>
+                    <option value="approved">Approved</option>
+                    <option value="pending">Pending</option>
+                    <option value="rejected">Rejected</option>
                 </select>
-                <select style="background-image: url('/images/allclientsicon.png'), url('/images/menudown.png');">
-                    <option>Select Client</option>
+                <select name="client"
+                    style="background-image: url('/images/allclientsicon.png'), url('/images/menudown.png');">
+                    <option value="all">All Clients</option>
+                    @foreach ($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->name }}</option>
+                    @endforeach
                 </select>
 
                 <!-- Search Input with Icon Inside -->
                 <div class="search-input" style="position: relative;">
                     <img src="{{ asset('images/magnify.png') }}" alt="Search" class="search-icon"
                         style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); height: 16px;">
-                    <input type="text" placeholder="Search Invoices..." style="padding-left: 30px;" />
+                    <input type="search" name="search" placeholder="Search Invoice No." style="padding-left: 30px;" />
                 </div>
-            </div>
+                <button type="submit">Run</button>
+            </form>
 
             @if (count($invoices) > 0)
                 <table class="invoice-table">
                     <thead>
                         <tr>
                             <th>Invoice Number</th>
+                            <th>Client</th>
                             <th>Billing Date</th>
                             <th>Transaction Type</th>
                             <th>Amount</th>
@@ -103,6 +115,7 @@
                         @foreach ($invoices as $invoice)
                             <tr>
                                 <td>{{ $invoice->reference_no }}</td>
+                                <td>{{ $invoice->client->name }}</td>
                                 <td>{{ $invoice->date }}</td>
                                 <td>{{ ucfirst($invoice->kind) }}</td>
                                 <td>{{ number_format($invoice->amount, 2) }}</td>

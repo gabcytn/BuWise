@@ -17,19 +17,20 @@ class OpenAi
                 $extractedText
                 \"\"\"
             EOD;
-        $base_prompt = new Prompt()->getPrompt();
+        $prompt = new Prompt();
+        $base_prompt = $prompt->getPrompt();
         $this->input = $base_prompt . $p;
     }
 
     public function prompt(): string
     {
-        $url = env('OPEN_AI_URL');
+        $url = config('app.open_ai_url');
         $postData = [
-            'model' => env('OPEN_AI_MODEL'),
+            'model' => config('app.open_ai_model'),
             'input' => $this->input
         ];
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('OPEN_AI_KEY'),
+            'Authorization' => 'Bearer ' . config('app.open_ai_key'),
             'Content-Type' => 'application/json'
         ])->post($url, $postData);
 
@@ -40,7 +41,7 @@ class OpenAi
         } else {
             Log::error('error in openai');
             Log::error($response->body());
-            return 'error';
+            return json_encode(['error' => 'Error in requesting OpenAI API']);
         }
     }
 }

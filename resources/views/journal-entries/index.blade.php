@@ -75,7 +75,7 @@
                 </div>
                 <div class="select-container__right">
                     <div class="search-container">
-                        <input type="search" placeholder="Search ID" name="search"
+                        <input type="search" placeholder="Search Reference No." name="search"
                             value="{{ request()->query('search') }}" />
                     </div>
                     <div class="run-filter-container">

@@ -19,7 +19,6 @@ class UserCreated
      * Create a new event instance.
      */
     public function __construct(
-        public User $creator,
         public User $user,
     ) {
         //

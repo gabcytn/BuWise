@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Events\JournalEntryCreated;
 use App\Models\LedgerEntry;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
@@ -64,9 +63,6 @@ class JournalStore
             }
 
             DB::commit();
-
-            // update cache
-            // JournalEntryCreated::dispatch($journalEntry->client_id, $ledgerEntries);
 
             return redirect()
                 ->route('journal-entries.create')

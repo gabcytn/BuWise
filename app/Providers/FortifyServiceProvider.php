@@ -10,7 +10,6 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -51,8 +50,6 @@ class FortifyServiceProvider extends ServiceProvider
                 $user &&
                 Hash::check($request->password, $user->password)
             ) {
-                $clients = getClients($user);
-                Cache::set($user->id . '-clients', $clients, 3600);
                 return $user;
             }
         });

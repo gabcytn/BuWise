@@ -30,12 +30,7 @@
     <div class="notifications-header">
         <span>Notifications</span>
     </div>
-    <div class="notifications-list" id="notifList">
-        <div class="notification-item">
-            <p><strong>New Message:</strong> Your profile has been updated successfully.</p>
-            <small>Just now</small>
-        </div>
-    </div>
+    <div class="notifications-list" id="notifList"></div>
 </div>
 
 <dialog class="confirm-logout-dialog">

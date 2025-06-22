@@ -34,14 +34,15 @@ class BalanceSheetController extends Controller
         if (!$selected_client)
             abort(404);
         $period = getStartAndEndDate($request->period);
-        $data = Cache::remember(
-            $selected_client->id . '-balance-sheet-' . $request->period,
-            300,
-            function () use ($selected_client, $period) {
+        if ($request->period === 'this_year') {
+            // cache this year's balance sheet
+            $data = Cache::remember($selected_client->id . '-balance-sheet', 300, function () use ($selected_client, $period) {
                 Log::info('Calculating new balance sheet (web)...');
                 return $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
-            }
-        );
+            });
+        } else {
+            $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+        }
         $structuredData = $this->structureData($data);
         $equityFromIncomeStatement = $structuredData['net-profit-and-loss'];
         return view('reports.balance-sheet', [

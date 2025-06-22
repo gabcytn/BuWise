@@ -81,7 +81,7 @@
 
                 <div class="button-container">
                     <button type="button" class="add-row-btn">
-                        Add New Row
+                        <i class="fa-solid fa-plus"></i>Add New Row
                     </button>
                 </div>
             </form>

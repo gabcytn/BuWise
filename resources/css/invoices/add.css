@@ -1,33 +1,28 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f7f9fc;
-}
-
 .invoice-container {
-    background: white;
-    padding: 30px;
-    margin: 30px auto;
-    max-width: 1200px;
+    background-color: var(--clear-white);
+    padding: 1.75rem;
+    margin: 2rem auto;
+    max-width: 1500px;
+    width: 90%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .page-header {
-    margin-bottom: 30px;
+    margin-bottom: 1.85rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .page-title {
-    font-size: 28px;
-    font-weight: 600;
-    color: #2a2e3f;
+    font-size: 1.65rem;
+    font-weight: 500;
 }
 
 .page-header select {
-    width: 250px;
-    padding: 10px;
+    /* width: 250px; */
+    padding: 0.65rem 1rem;
     border-radius: 6px;
     border: 1px solid #ccc;
     background-color: #fff;
@@ -35,10 +30,10 @@ body {
 
 
 .invoice-form {
+    margin-bottom: 1.85rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-bottom: 30px;
+    gap: 1rem;
 }
 
 .form-section.left .image-placeholder {
@@ -48,26 +43,25 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #999;
     background-color: #f8f8f8;
     border-radius: 10px;
 }
 
 .form-section.right {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .form-row {
+    flex: 1 1 200px;
     display: flex;
     flex-direction: column;
 }
 
 .form-row label {
     font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 6px;
+    font-size: 0.8rem;
 }
 
 .form-row input,
@@ -76,26 +70,49 @@ body {
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    background-color: #fff;
+    background-color: var(--clear-white);
+}
+
+.table-wrapper {
+    overflow-x: scroll;
+    margin-bottom: 1.85rem;
 }
 
 .invoice-items-table {
+    border-radius: 0.65rem;
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
-    margin-top: 10px;
+    /* font-size: 14px; */
 }
 
 .invoice-items-table thead {
-    background-color: #1B80C3;
+    background-color: var(--main-blue);
     color: white;
 }
 
-.invoice-items-table th,
+.invoice-items-table th {
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+}
+
 .invoice-items-table td {
-    border: 1px solid #dee2e6;
-    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0;
     text-align: center;
+}
+
+.invoice-items-table tbody td:last-child {
+    border: none;
+
+    button {
+        background: none;
+        border: none;
+        outline: none;
+        color: red;
+        font-size: 1rem;
+        margin-left: 0.25rem;
+        cursor: pointer;
+    }
 }
 
 .invoice-items-table tfoot td {
@@ -103,19 +120,25 @@ body {
     background-color: #f1f1f1;
 }
 
+.invoice-items-table tfoot td:last-child,
+.invoice-items-table td:nth-child(6) {
+    font-size: 0.85rem;
+}
+
 .invoice-items-table input,
 .invoice-items-table select {
     padding: 6px;
-    font-size: 14px;
+    width: 10rem;
+    font-size: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 .actions {
+    /* padding: 1.75rem; */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
 }
 
 .btn {
@@ -156,4 +179,52 @@ body {
     color: green;
     font-size: 0.85rem;
     margin: 0.5rem;
+}
+
+@media (max-width: 1173px) {
+    .invoice-form {
+        grid-template-columns: 1fr;
+    }
+
+    .invoice-items-table th {
+        font-size: 0.75rem;
+        padding: 0.25rem 0;
+    }
+
+    .invoice-items-table td {
+        text-align: center;
+    }
+
+    .invoice-items-table tbody td:last-child {
+        border: none;
+
+        button {
+            background: none;
+            border: none;
+            outline: none;
+            color: red;
+            font-size: 1rem;
+            margin-left: 0.25rem;
+            cursor: pointer;
+        }
+    }
+
+    .invoice-items-table tfoot td {
+        font-weight: bold;
+        background-color: #f1f1f1;
+    }
+
+    .invoice-items-table tfoot td:last-child,
+    .invoice-items-table td:nth-child(6) {
+        font-size: 0.85rem;
+    }
+
+    .invoice-items-table input,
+    .invoice-items-table select {
+        padding: 6px;
+        width: 7.5rem;
+        font-size: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 }

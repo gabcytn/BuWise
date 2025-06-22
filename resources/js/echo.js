@@ -16,26 +16,23 @@ window.Echo = new Echo({
     enabledTransports: ["ws", "wss"],
 });
 
-window.Echo.channel("task.1").listen("NotificationReminders", (e) => {
-    console.log(e.task);
-});
-
 startup();
 
+let USER_ID;
 async function fetchUserDetails() {
-    const res = await fetch("/user", {
+    const res = await fetch("/user/details", {
         headers: {
             Accept: "application/json",
         },
     });
 
     const data = await res.json();
-    sessionStorage.setItem("id", data.id);
+    USER_ID = data.id;
     sessionStorage.setItem("role", data.role.name);
 }
 
 async function startup() {
-    if (!sessionStorage.getItem("id")) await fetchUserDetails();
+    await fetchUserDetails();
     let notifs;
     if (!sessionStorage.getItem("notifications")) {
         const res = await fetch("/api/notifications");
@@ -50,11 +47,9 @@ async function startup() {
             addItemInNotificationPanel(notif);
         });
     }
-    window.Echo.private(
-        `App.Models.User.${sessionStorage.getItem("id")}`,
-    ).notification((notif) => {
+    window.Echo.private(`App.Models.User.${USER_ID}`).notification((notif) => {
         const oldList = JSON.parse(sessionStorage.getItem("notifications"));
-        oldList.push(notif);
+        oldList.unshift(notif);
         sessionStorage.setItem("notifications", JSON.stringify(oldList));
         addItemInNotificationPanel(notif);
         document.querySelector("#notificationPanel").classList.remove("d-none");

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\FailedInvoice;
 use App\Models\InvoiceLine;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
@@ -12,7 +13,6 @@ use App\Services\Llmwhisperer;
 use App\Services\OpenAi;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -46,12 +46,17 @@ class ScanInvoiceInWeb implements ShouldQueue
         $helper = new Llmwhisperer($this->filename);
         $output_text = $helper->extract();
         if ($output_text === '') {
-            // TODO: handle error
             Log::error('LLMWhisperer returned an empty string');
+            $this->createFailedInvoice();
             return;
         }
 
         $json_text = $this->structureTexts($output_text);
+        if (array_key_exists('error', $json_text) || $json_text['confidenceLevel'] <= 5) {
+            $this->createFailedInvoice();
+            Log::error('OpenAI has error in json/low confidence level');
+            return;
+        }
 
         try {
             DB::beginTransaction();
@@ -240,5 +245,16 @@ class ScanInvoiceInWeb implements ShouldQueue
                 'discount' => $item['discount']
             ]);
         }
+    }
+
+    private function createFailedInvoice()
+    {
+        FailedInvoice::create([
+            'client_id' => $this->client->id,
+            'filename' => $this->filename,
+        ]);
+
+        // NOTE: notifies web only
+        ScanFailed::dispatch($this->accountant);
     }
 }

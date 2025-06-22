@@ -169,7 +169,7 @@ class JournalIndex
         }
         $query->whereBetween('je.date', [$start, $end]);
         if ($search)
-            $query->where('je.id', '=', $search);
+            $query->where('je.reference_no', '=', $search);
 
         return $query;
     }

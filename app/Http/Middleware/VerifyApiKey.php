@@ -16,7 +16,7 @@ class VerifyApiKey
     public function handle(Request $request, Closure $next): Response
     {
         $request_api_key = $request->header('X-API-KEY');
-        $api_key = env('MOBILE_API_KEY');
+        $api_key = config('app.api_key');
         if ($request_api_key !== $api_key)
             return response()->json([
                 'message' => 'Invalid API Key',

@@ -3,12 +3,14 @@
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProfileInformationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
@@ -17,6 +19,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
 
@@ -31,18 +34,26 @@ Route::get('/services', function () {
     return view('services');
 })->name('services');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'enable.mfa'])->name('dashboard');
-
-Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
-    Route::get('/user', function (Request $request) {
+Route::middleware(['auth', 'verified', 'enable.mfa', 'onboarding'])->group(function () {
+    Route::get('/user/details', function (Request $request) {
         $user = $request->user();
-        return User::with('role')->where('id', '=', $user->id)->first();
+        return Cache::remember($user->id . '-details', 3600, function () use ($user) {
+            return User::with('role')->find($user->id);
+        });
     });
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+
+    Route::delete('/user', function (Request $request) {
+        $request->user()->delete();
+        return to_route('login');
+    })->name('user.delete');
+
+    Route::resource('/organizations', OrganizationController::class)
+        ->withoutMiddleware('onboarding')
+        ->only(['create', 'store']);
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/charts/tasks', [DashboardController::class, 'getTasks']);
+    Route::get('/dashboard/charts/journals', [DashboardController::class, 'getJournals']);
 
     Route::get('/profile', function (Request $request) {
         return view('profile.edit', [
@@ -116,7 +127,7 @@ Route::middleware(['auth', 'verified', 'enable.mfa'])->group(function () {
             return to_route('dashboard');
         }
         return view('auth.enable-mfa');
-    })->name('mfa.enable')->withoutMiddleware('enable.mfa');
+    })->name('mfa.enable')->withoutMiddleware(['enable.mfa', 'onboarding']);
 });
 
 // allow email verification without signing in

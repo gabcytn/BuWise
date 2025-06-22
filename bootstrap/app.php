@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnableMFA;
+use App\Http\Middleware\Onboarding;
 use App\Http\Middleware\VerifyApiKey;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verify.api' => VerifyApiKey::class,
             'enable.mfa' => EnableMFA::class,
+            'onboarding' => Onboarding::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
