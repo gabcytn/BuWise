@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\TransactionCreated;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,10 @@ class Transaction extends Model
         'description',
         'reference_no',
         'image',
+    ];
+
+    protected $dispatchesEvents = [
+        'saved' => TransactionCreated::class,
     ];
 
     public function client(): BelongsTo
