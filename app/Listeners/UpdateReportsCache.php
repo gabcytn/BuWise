@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class UpdateReportsCache
+class UpdateReportsCache implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -24,6 +24,7 @@ class UpdateReportsCache
      */
     public function handle(TransactionCreated $event): void
     {
+        // TODO: re-update the cache instead of forgetting
         $transaction = $event->transaction;
         $start_year = Carbon::now()->startOfYear()->format('Y-m-d');
         $end_year = Carbon::now()->endOfYear()->format('Y-m-d');
