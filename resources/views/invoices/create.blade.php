@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Add Invoice</title>
-    @vite(['resources/css/invoices/add.css', 'resources/js/invoices/create.js'])
-</head>
-
 <x-app-layout>
-    <input class="d-none" id="discount" type="number" placeholder="20" step="0.01" />
+    @vite(['resources/css/invoices/add.css', 'resources/js/invoices/create.js'])
 
     <form class="invoice-container" method="POST" action="{{ route('invoices.store') }}" enctype="multipart/form-data">
         @csrf
-
         <div class="page-header">
             <h2 class="page-title">Add Invoice</h2>
             <select name="client" required>
@@ -84,27 +74,29 @@
             <p class="status-text">{{ session('status') }}</p>
         @endif
 
-        <table class="invoice-items-table">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Less: Discount</th>
-                    <th>Tax (per qty)</th>
-                    <th>Total Amount</th>
-                </tr>
-            </thead>
-            <tbody id="table-body">
-                <!-- JS will append rows here -->
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5"><strong>Total</strong></td>
-                    <td id="total-sum">0.00</td>
-                </tr>
-            </tfoot>
-        </table>
+        <div class="table-wrapper">
+            <table class="invoice-items-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Less: Discount</th>
+                        <th>Tax (per qty)</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- JS will append rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5"><strong>Total</strong></td>
+                        <td id="total-sum">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
 
         <div class="actions">
             <button type="button" class="btn add-row">+ Add New Row</button>
