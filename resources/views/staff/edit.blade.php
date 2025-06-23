@@ -16,16 +16,15 @@
         <input id="last-name" name="last_name" type="text" required value="{{ $lastName }}">
         <label for="email">Email</label>
         <input id="email" name="email" type="email" required value="{{ $staff->email }}">
-        <label for="staff-type>">Staff Type</label>
-        <select id="staff-type" name="staff_type" required>
+        <label for="role">Staff Type</label><br />
+        <select id="role" name="staff_type" required>
             <option disabled>Choose Role</option>
             <option value="2" {{ $staff->role_id === '2' ? 'selected' : '' }}>Liaison Officer</option>
             <option value="3" {{ $staff->role_id === '3' ? 'selected' : '' }}>Clerk</option>
-        </select>
+        </select><br />
         <label for="password">Password</label>
         <input id="password" name="password" type="password" />
         <button type="submit">Submit</button>
-        <a href="{{ url()->previous() }}">Cancel</a>
         @if ($errors->any())
             <div>
                 <ul>

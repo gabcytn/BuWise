@@ -27,7 +27,6 @@
                     <a class="dropdown-import d-none" href="#">
                         Import Excel
                     </a>
-                    <button type="button" id="vertical-ellipsis">&#8942;</button>
                 @endif
             </div>
         </form>

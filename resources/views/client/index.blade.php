@@ -61,10 +61,12 @@
 </x-user-management>
 
 <dialog class="delete-item-dialog">
-    <h3 style="text-align: center; margin: 1rem 0;">Confirm Delete</h3>
+    <h3>Confirm Delete</h3>
     <form action="#" method="POST">
         @csrf
         @method('DELETE')
+        <h4>Are you sure you want to delete this item?</h4>
+        <p>This action is irreversible</p>
         <button style="margin-right: 0.25rem;" type="submit">Delete</button>
         <button style="margin-left: 0.25rem;" type="button">Cancel</button>
     </form>

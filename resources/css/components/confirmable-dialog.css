@@ -2,38 +2,48 @@
     border: none;
     border-radius: 10px;
     margin: auto;
+    max-width: 550px;
+    width: 95%;
 }
 
 .confirmable-dialog__title {
-    text-align: center;
-    margin: 1rem 0;
+    padding: 1rem 2rem;
+    background-color: var(--main-blue);
+    color: var(--off-white);
 }
 
-.confirmable-dialog .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 0.25rem;
-    border-top: 1px solid var(--grey);
-    padding: 1.75rem;
+.confirmable-dialog .confirmable-content {
+    padding: 1rem 2rem;
+
+    h4 {
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 0.75rem;
+        color: var(--grey);
+    }
 }
 
 
-.confirmable-dialog .buttons button {
+.confirmable-dialog .confirmable-content button {
     min-width: 5rem;
     padding: 0.75rem 1rem;
     border-radius: 5px;
     border: none;
     outline: none;
     cursor: pointer;
-    transition: 0.25s opacity;
+    transition: 0.15s opacity;
 }
 
-.confirmable-dialog .buttons button:hover {
+.confirmable-dialog .confirmable-content button:hover {
     opacity: 0.85;
 }
 
 .affirm-button {
     background-color: var(--main-blue);
+    margin-top: 1.5rem;
 }
 
 .deny-button {

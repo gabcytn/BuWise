@@ -5,16 +5,17 @@ dialog {
 }
 
 dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-dialog h2 {
-    padding: 2.25rem 0 1.75rem 1.75rem;
+#user-dialog-title {
+    background-color: var(--main-blue);
+    color: var(--off-white);
+    padding: 1rem 2rem;
 }
 
-dialog form {
+#user-dialog-form {
     display: flex;
-    border-top: 1px solid var(--grey);
     padding: 1.75rem;
 }
 
@@ -40,6 +41,22 @@ dialog form {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+
+    button:hover {
+        opacity: 0.85;
+    }
+}
+
+select#staff-type {
+    padding: 0.5rem;
+    background-color: var(--clear-white);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 0.175rem;
+    outline: none;
+}
+
+select#staff-type:hover {
+    border: 1px solid rgba(0, 0, 0, 0.75);
 }
 
 dialog input {
@@ -78,5 +95,40 @@ dialog button[type="button"] {
 
     .d-flex {
         flex-direction: column;
+    }
+}
+
+/* confirm delete dialogs */
+.delete-item-dialog {
+    max-width: 550px;
+    width: 95%;
+
+    h3 {
+        padding: 1rem 2rem;
+        background-color: var(--main-blue);
+        color: var(--off-white);
+    }
+
+    form {
+        padding: 1rem 2rem;
+
+        h4 {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        p {
+            font-size: 0.75rem;
+            color: var(--grey);
+        }
+
+        button {
+            margin-top: 1.5rem;
+            transition: opacity 0.15s;
+        }
+
+        button:hover {
+            opacity: 0.85
+        }
     }
 }
