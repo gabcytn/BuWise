@@ -17,7 +17,7 @@ use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
-    private static int $itemsPerPage = 5;
+    private const ITEMS_PER_PAGE = 5;
 
     /**
      * Display a listing of the resource.
@@ -34,39 +34,32 @@ class ClientController extends Controller
         else
             $clients = $user->accountant->clients();
 
-        $search = $request->query('search');
-        $filter = $request->query('filter');
+        $filters = [
+            'search' => $request->input('search', null),
+            'filter' => $request->input('filter', null),
+            'period' => $request->input('period', null),
+        ];
 
-        if ($search != null)
-            $clients = $clients
-                ->where('name', 'like', "$search%")
-                ->paginate(ClientController::$itemsPerPage)
-                ->appends([
-                    'search' => $search
-                ]);
-        else if ($filter != null) {
-            switch ($filter) {
+        if ($filters['search'])
+            $clients = $clients->whereLike('name', '%' . $filters['search'] . '%');
+        if ($filters['filter']) {
+            switch ($filters['filter']) {
                 case 'name':
-                    $clients = $clients
-                        ->orderBy('name')
-                        ->paginate(ClientController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'name'
-                        ]);
+                    $clients = $clients->orderBy('name');
                     break;
                 case 'date':
-                    $clients = $clients
-                        ->orderByRaw('created_at DESC')
-                        ->paginate(ClientController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'date'
-                        ]);
+                    $clients = $clients->orderByDesc('created_at');
                     break;
                 default:
                     break;
             }
-        } else
-            $clients = $clients->paginate(ClientController::$itemsPerPage);
+        }
+        if ($filters['period']) {
+            $period = getStartAndEndDate($filters['period']);
+            $clients = $clients->whereBetween('created_at', [$period[0], $period[1]]);
+        }
+
+        $clients = $clients->paginate(self::ITEMS_PER_PAGE)->appends($filters);
 
         return view('client.index', ['clients' => $clients]);
     }

@@ -17,7 +17,7 @@ use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
-    private static int $itemsPerPage = 5;
+    private const ITEMS_PER_PAGE = 5;
 
     /**
      * Display a listing of the resource.
@@ -29,39 +29,32 @@ class StaffController extends Controller
         $user = $request->user();
         $staff = $user->staff();
 
-        $search = $request->query('search');
-        $filter = $request->query('filter');
+        $filters = [
+            'search' => $request->input('search', null),
+            'filter' => $request->input('filter', null),
+            'period' => $request->input('period', null),
+        ];
 
-        if ($search != null)
-            $staff = $staff
-                ->where('name', 'like', "$search%")
-                ->paginate(StaffController::$itemsPerPage)
-                ->appends([
-                    'search' => $search
-                ]);
-        else if ($filter != null) {
-            switch ($filter) {
+        if ($filters['search'])
+            $staff = $staff->whereLike('name', '%' . $filters['search'] . '%');
+        if ($filters['filter']) {
+            switch ($filters['filter']) {
                 case 'name':
-                    $staff = $staff
-                        ->orderBy('name')
-                        ->paginate(StaffController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'name'
-                        ]);
+                    $staff = $staff->orderBy('name');
                     break;
                 case 'date':
-                    $staff = $staff
-                        ->orderByRaw('created_at DESC')
-                        ->paginate(StaffController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'date'
-                        ]);
+                    $staff = $staff->orderByDesc('created_at');
                     break;
                 default:
                     break;
             }
-        } else
-            $staff = $staff->paginate(StaffController::$itemsPerPage);
+        }
+        if ($filters['period']) {
+            $period = getStartAndEndDate($filters['period']);
+            $staff = $staff->whereBetween('created_at', [$period[0], $period[1]]);
+        }
+
+        $staff = $staff->paginate(self::ITEMS_PER_PAGE)->appends($filters);
 
         return view('staff.index', ['staffs' => $staff]);
     }
@@ -87,7 +80,7 @@ class StaffController extends Controller
         $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
 
-        $current_user = $request->user();
+        $current_user = $request->user()->id;
         $staff = User::create([
             'name' => $name,
             'email' => $validated['email'],
