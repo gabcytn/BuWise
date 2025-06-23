@@ -93,7 +93,7 @@
                                 <p>{{ $entry->client_name }}</p>
                             </td>
                             <td>
-                                <p>{{ $entry->transaction_type }}</p>
+                                <p>{{ ucfirst($entry->transaction_type) }}</p>
                             </td>
                             <td>
                                 <p>{{ truncate($entry->description) }}</p>
