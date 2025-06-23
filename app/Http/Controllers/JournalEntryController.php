@@ -85,7 +85,6 @@ class JournalEntryController extends Controller
     public function edit(Request $request, Transaction $journalEntry)
     {
         Gate::authorize('update', $journalEntry);
-        $user = $request->user();
         $accounts = LedgerAccount::all();
 
         $ledgerEntries = LedgerEntry::where('transaction_id', $journalEntry->id)->get();
@@ -114,8 +113,6 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('delete', $journalEntry);
         try {
-            Cache::delete('journal-' . $journalEntry->id);
-
             $arr = [];
             foreach ($journalEntry->ledger_entries as $data) {
                 $arr[] = $data;

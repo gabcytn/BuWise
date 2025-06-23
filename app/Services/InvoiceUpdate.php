@@ -7,7 +7,6 @@ use App\Models\LedgerEntry;
 use App\Models\Transaction;
 use App\Services\InvoiceStore;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -128,8 +127,6 @@ class InvoiceUpdate
         $debit_entry->amount = $this->net - $this->discount_total;
         $debit_entry->account_id = InvoiceStore::ACCOUNT_LOOKUP[$this->request->payment_method];
         $debit_entry->save();
-
-        Cache::forget('journal-' . $invoice->id);
     }
 
     private function ledgerEntryForPurchases($entries, Transaction $invoice)
@@ -163,7 +160,5 @@ class InvoiceUpdate
         $credit_entry->amount = $this->purchases_net;
         $credit_entry->account_id = InvoiceStore::ACCOUNT_LOOKUP[$this->request->payment_method];
         $credit_entry->save();
-
-        Cache::forget('journal-' . $invoice->id);
     }
 }

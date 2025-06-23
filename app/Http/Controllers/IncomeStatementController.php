@@ -37,16 +37,17 @@ class IncomeStatementController extends Controller
         $period = getStartAndEndDate($request->period);
         if ($request->period === 'this_year') {
             // cache this year's income statement
-            $data = Cache::remember($selected_client->id . '-income-statement', 300, function () use ($selected_client, $period) {
+            $structured_data = Cache::remember($selected_client->id . '-income-statement', 300, function () use ($selected_client, $period) {
                 Log::info('Calculating new income statement (web)');
-                return $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                return $this->structureData($data);
             });
         } else {
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+            $structured_data = $this->structureData($data);
         }
-        $structuredData = $this->structureData($data);
-        $revenues = $structuredData['revenues'];
-        $expenses = $structuredData['expenses'];
+        $revenues = $structured_data['revenues'];
+        $expenses = $structured_data['expenses'];
 
         return view('reports.income-statement', [
             'has_data' => true,

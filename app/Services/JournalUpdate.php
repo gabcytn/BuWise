@@ -6,7 +6,6 @@ use App\Models\LedgerEntry;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -46,8 +45,6 @@ class JournalUpdate
             DB::beginTransaction();
             $ledger_entries_for_cache = $this->dbTransaction($journalLines);
             DB::commit();
-
-            Cache::forget('journal-' . $journalEntry->id);
 
             return redirect()
                 ->route('journal-entries.show', $journalEntry)
