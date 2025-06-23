@@ -181,7 +181,8 @@
 }
 
 #csv-dialog {
-    padding: 0;
+    max-width: 550px;
+    width: 95%;
 
     h2 {
         background-color: var(--main-blue);
@@ -191,22 +192,33 @@
 
     form {
         display: block;
-        padding: 0;
+        padding: 1rem 2rem;
     }
 
     .dialog-select-container {
         display: flex;
+        flex-direction: column;
         gap: 1rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-        padding: 1.75rem;
+
+        input,
+        select {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--clear-white);
+        }
+
+        input:hover,
+        select:hover {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
 
         select {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem;
+            appearance: none;
         }
     }
 
     .dialog-button-container {
-        padding: 1.15rem 1.75rem;
+        margin-top: 1.5rem;
         display: flex;
         justify-content: flex-start;
         gap: 1rem;

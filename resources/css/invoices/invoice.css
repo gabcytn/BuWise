@@ -270,3 +270,52 @@
     outline: none !important;
     box-shadow: none !important;
 }
+
+/* upload invoice dialog */
+
+dialog#scan-invoice-dialog {
+    max-width: 550px;
+    width: 95%;
+
+    h2 {
+        padding: 1rem 2rem;
+        background-color: var(--main-blue);
+        color: var(--off-white);
+    }
+
+    form {
+        padding: 1rem 2rem;
+
+        div {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+        }
+
+        input,
+        select {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: var(--clear-white);
+        }
+
+        input:hover,
+        select:hover {
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        select {
+            padding: 0.5rem;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .buttons-container {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+        }
+    }
+}

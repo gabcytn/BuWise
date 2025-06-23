@@ -13,7 +13,7 @@
             <form action="{{ route('invoices.scan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div>
-                    <input type="file" name="invoice" /><br />
+                    <input type="file" name="invoice" required />
                     <select name="transaction_type" required>
                         <option value="" selected disabled>Choose Transaction Type</option>
                         <option value="sales">Sales</option>
@@ -25,6 +25,8 @@
                             <option value="{{ $client->id }}">{{ $client->name }}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="buttons-container">
                     <button type="submit">Scan</button>
                     <button type="button">Cancel</button>
                 </div>
