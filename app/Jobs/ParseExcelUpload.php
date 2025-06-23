@@ -32,6 +32,6 @@ class ParseExcelUpload implements ShouldQueue
             Storage::disk('public')->path('csv/' . $this->filename)
         );
 
-        // Storage::disk('public')->delete('csv/' . $this->filename);
+        Storage::disk('public')->delete('csv/' . $this->filename);
     }
 }
