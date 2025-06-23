@@ -76,7 +76,7 @@ class ScanInvoiceInWeb implements ShouldQueue
             DB::commit();
             $fileContents = Storage::disk('public')->get('temp/' . $this->filename);
             Storage::disk('s3')->put('invoices/' . $this->filename, $fileContents);
-            Storage::disk('public')->delete('invoices/' . $this->filename);
+            Storage::disk('public')->delete('temp/' . $this->filename);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
