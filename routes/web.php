@@ -78,6 +78,12 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     Route::resource('/staff', StaffController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
 
+    Route::post('/suspend/{user}', function (User $user) {
+        $user->suspended = !$user->suspended;
+        $user->save();
+        return back();
+    })->name('user.suspend');
+
     // journal entries
     Route::get('/journal-entries/archives', [JournalEntryController::class, 'archives'])->name('journal-entries.archives');
     Route::resource('/journal-entries', JournalEntryController::class);

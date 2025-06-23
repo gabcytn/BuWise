@@ -18,12 +18,12 @@
         <input id="email" name="email" type="email" required value="{{ $staff->email }}">
         <label for="staff-type>">Staff Type</label>
         <select id="staff-type" name="staff_type" required>
-            <option selected disabled>Choose Role</option>
-            <option value="2">Liaison Officer</option>
-            <option value="3">Clerk</option>
+            <option disabled>Choose Role</option>
+            <option value="2" {{ $staff->role_id === '2' ? 'selected' : '' }}>Liaison Officer</option>
+            <option value="3" {{ $staff->role_id === '3' ? 'selected' : '' }}>Clerk</option>
         </select>
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" required />
+        <input id="password" name="password" type="password" />
         <button type="submit">Submit</button>
         <a href="{{ url()->previous() }}">Cancel</a>
         @if ($errors->any())

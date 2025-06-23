@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserCreated;
+use App\Models\OrganizationMember;
 use App\Models\Role;
 use App\Models\User;
 use App\Notifications\LiaisonCreatedClient;
@@ -37,6 +38,13 @@ class UserCreatedListener implements ShouldQueue
                 Cache::put("$accId-clients", $clients, 3600);
                 Log::info('Successfully updated clients cache');
             }
+
+            $organization = $creator->organization;
+            OrganizationMember::create([
+                'user_id' => $event->user->id,
+                'organization_id' => $organization->id,
+            ]);
+            Log::info('Successfully created new member of organization');
 
             // notify accountant that a client has been created
             if ($creator->role_id === Role::LIAISON)
