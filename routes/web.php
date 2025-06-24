@@ -23,6 +23,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
 
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('');
+Route::get('/contact', function () {
+    return view('contact');
+})->name('');
 Route::get('/', function () {
     return view('welcome');
 })->name('home');

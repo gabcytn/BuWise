@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'LBJ Services') }}</title>
 
-    @vite(['resources/css/welcome.css'])
+    @vite(['resources/css/contact.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,13 +13,6 @@
 </head>
 <body>
 
-<!-- Top Bar -->
-<div class="top-bar">
-    <div class="container">
-        <span>📧 bu.wise@email.com</span>
-        <span>📞 +63 209 637 810</span>
-    </div>
-</div>
 
 <!-- Navigation -->
 <nav class="navbar">
@@ -67,104 +60,81 @@
 <div class="overlay" id="overlay"></div>
 
 <!-- Hero Section -->
-<section class="hero" style="background: url('/images/woman.png') center center / cover no-repeat; height: 96vh; position: relative;">
+<section class="hero" style="background: url('/images/aboutbg.png') center center / cover no-repeat; height: 60vh; position: relative;">
     <div class="container hero-grid" style="position: relative; z-index: 1;">
         <div class="hero-text">
-            <h1>Automate for <span class="blue">Accuracy</span> and <span class="blue">Optimize</span> for Growth</h1>
-            <p style="color: #1F3649;">
-                Accelerate your firm's growth. BuWise utilizes Robotic Process Automation to automate repetitive tasks and streamline your operations.
-            </p>
+            <h1>Contact Us </h1>
+           
             <div class="hero-buttons">
-                <a href="{{ route('about') }}" class="btn btn-primary">Learn More</a>
-                <a href="/contact" class="btn btn-outline">Get in Touch</a>
+                <a href="{{ route('home') }}" class="btn btn-primary">Home</a>
+                <a href="{{ route('about') }}" class="btn btn-outline">Learn More</a>
+
             </div>
         </div>
     </div>
 </section>
 
-<!-- Services Section -->
-<section class="services">
-    <div class="container">
-        <h2 class="section-title">Our Services</h2>
-        <p class="section-subtitle">Our innovative approach quickly accelerates your accounting workflows.</p>
-        
-        <div class="services-grid">
-            <div class="service-box">
-                <div class="service-icon">
-                    <i class="mdi mdi-file-document-multiple"></i>
-                </div>
-                <h3>Automated Invoice Management</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
-            </div>
-            <div class="service-box">
-                <div class="service-icon">
-                    <i class="mdi mdi-database-import"></i>
-                </div>
-                <h3>Seamless Data Migration</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
-            </div>
-            <div class="service-box">
-                <div class="service-icon">
-                    <i class="mdi mdi-robot"></i>
-                </div>
-                <h3>RPA Integration</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
-            </div>
-        </div>
-
-        <a href="{{ route('services') }}" class="btn-secondary">
-            See All Services <i class="mdi mdi-arrow-right"></i>
-        </a>
-    </div>
-</section>
-
-<!-- Clients Submit Invoices -->
-<section class="clients-submit">
-    <div class="container dual-section">
-        <div class="circle-wrap phone-wrap">
-            <div class="circle-bg phone-circle"></div>
-            <img src="/images/mobile-ui.png" class="device phone" alt="Phone UI" />
-        </div>
-        <div class="section-text">
-            <h2>Let your clients submit <span class="highlight">invoices</span> online</h2>
-            <p>Empower your clients with the ability to send invoices directly through a secure online portal. This streamlines your workflow, eliminates paperwork, and reduces errors in manual entries.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s, offering a placeholder for meaningful content in layouts and design previews.
-
-</p>
-        </div>
-    </div>
-</section>
-
-<!-- Client Reports -->
-<section class="client-reports">
-    <div class="container dual-section reverse">
-        <div class="circle-wrap monitor-wrap">
-            <div class="circle-bg monitor-circle"></div>
-            <img src="/images/monitor-ui.png" class="device monitor" alt="Monitor UI" />
-        </div>
-        <div class="section-text">
-            <h2>View <span class="highlight">client reports</span> and analyze your <span class="highlight">data</span></h2>
-            <p>Empower your clients with the ability to send invoices directly through a secure online portal. This streamlines your workflow, eliminates paperwork, and reduces errors in manual entries.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s, offering a placeholder for meaningful content in layouts and design previews.
-
-</p>
-        </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="cta-section">
-    <div class="cta-container">
-        <p class="cta-heading">GET STARTED</p>
-        <h2 class="cta-title">Be an Accountant</h2>
-        <p class="cta-description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry...
-        </p>
-              <a href="/register" class="cta-button">Sign up as an Accountant <span class="arrow">→</span>
+<section class="contact-section">
+    <div class="container contact-grid">
+        <!-- Left Contact Info -->
+        <div class="contact-info">
+            <h2>Get In Touch</h2>
+            <p>Want to know more about BuWise? Enter your details in the message box or contact us through the details below to learn more about our product and how it can transform your everyday bookkeeping operations.</p>
             
-        </a>
+            <div class="info-item">
+                <i class="mdi mdi-phone"></i>
+                <div>
+                    <strong>Phone</strong>
+                    <p>+63 920 637 810</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="mdi mdi-email"></i>
+                <div>
+                    <strong>Email</strong>
+                    <p>buwise@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="mdi mdi-map-marker"></i>
+                <div>
+                    <strong>Address</strong>
+                    <p>1072 Blumennrit St. Sampaloc Manila</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="mdi mdi-facebook"></i>
+                <div>
+                    <strong>Facebook</strong>
+                    <p>facebook.com/buwise</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Contact Form -->
+        <div class="contact-form">
+            <form>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter Full Name" required>
+
+                <label for="email">Email</label>
+                <div class="input-icon">
+                    <i class="mdi mdi-email-outline"></i>
+                    <input type="email" id="email" placeholder="name@domain.com" required>
+                </div>
+
+                <label for="message">Message</label>
+                <textarea id="message" placeholder="Message" required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
     </div>
 </section>
+
 
 
 <!-- Footer -->
