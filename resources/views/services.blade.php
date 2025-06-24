@@ -1,156 +1,246 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-@vite(['resources/css/services.css'])
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ config('app.name', 'LBJ Services') }}</title>
-  <link rel="stylesheet" href="{{ asset('css/services.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'LBJ Services') }}</title>
+
+    @vite(['resources/css/services.css'])
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Top Bar -->
-  <header>
-    <div class="top-bar">
-      📧 lbjservices@yahoo.com | 📞 +63 209 637 810
-    </div>
+
 
 <!-- Navigation -->
-<nav>
-  <div class="logo">
-    <img src="{{ asset('images/logo.png') }}" alt="LBJ Services Logo" height="40">
-  </div>
+<nav class="navbar">
+    <div class="container nav-wrapper">
+        <img src="/images/buwiselogo.png" alt="BuWise Logo" class="logo">
 
-  <div class="burger" id="burger">
-    &#9776;
-  </div>
+        <!-- Hamburger Button (mobile only) -->
+        <button class="hamburger" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
 
-  <ul class="nav-links" id="navLinks">
-    <li><a href="{{ route('home') }}">Home</a></li>
-    <li><a href="{{ route('about') }}">About us</a></li>
-    <li><a href="{{ route('services') }}">Services</a></li>
+        <!-- Desktop Menu -->
+        <ul class="nav-menu">
+            <li><a href="{{ route('home') }}">Home</a></li>
+            <li><a href="{{ route('about') }}">About Us</a></li>
+            <li><a href="{{ route('services') }}">Services</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+        </ul>
+    <a href="/register" class="btn-signin desktop-signin">Sign In</a>
 
-    @auth
-  <li><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-@else
-  <li class="nav-auth-buttons">
-    <a href="/register" class="register-btn">Register</a>
-    <a href="/login" class="login-btn">Log In</a>
-  </li>
-@endauth
-  </ul>
+    </div>
 </nav>
-  </header>
-  <!-- Hero Section -->
-  <section class="hero" style="background: url('{{ asset('images/hero.jpg') }}') center/cover no-repeat;">
-    <div class="overlay">
-      <p>COMPANY OFFERS</p>
-      <h1>
-        <span class="highlight"><strong>SERVICES</strong></span> 
-      </h1>
-      <p>
-        At LBJ Bookkeeping and Accounting Services, we are committed to providing accurate, efficient, and transparent financial management solutions to businesses across the Philippines.
-      </p>
-      <div class="hero-buttons">
-        <a href="#about" class="btn">Learn More</a>
-      </div>
-    </div>
-  </section>
 
-  <section class="logo">
-    <img src="{{ asset('images/logo2.png') }}" alt="LBJ Services Logo" height="40">
-  </section>
-  
-  
-  <!-- Services Section -->
-  <section id="services" class="services-section">
-      <h2 class="section-title">Start your business with us</h2>
-      <p class="section-subtitle">Our automation-driven approach allows us to provide real-time financial insights, transparent reporting, and compliance-focused solutions.</p>
-      <div class="services-grid">
-          <div class="service-card">
-              <img src="{{ asset('images/services1.png') }}" alt="Service 1">
-              <h3>Business Registration & Compliance</h3>
-              <p>From securing tax IDs to setting up mandatory government contributions, we handle the paperwork.</p>
-          </div>
-          <div class="service-card">
-              <img src="{{ asset('images/services2.png') }}" alt="Service 2">
-              <h3>Bookkeeping & Financial Management</h3>
-              <p>We provide real-time reports to help you make informed decisions aligned with standards.</p>
-          </div>
-          <div class="service-card">
-              <img src="{{ asset('images/services3.png') }}" alt="Service 3">
-              <h3>Payroll & Tax Compliance</h3>
-              <p>We manage payroll, taxes, and filings to ensure employees are paid correctly and on time.</p>
-          </div>
-      </div>
-  </section>
-  
-  <section class="rpa-section centered-rpa">
-    <div class="rpa-content">
-      <div class="rpa-text">
-        <h2><strong>Using the Power of RPA to </strong>
-          <strong>Automate our Workflows</strong></h2>
-  
-        <p>
-          At LBJ Bookkeeping and Accounting Services, we integrate Robotic Process Automation (RPA) to streamline and optimize our financial processes, ensuring accuracy, efficiency, and compliance. By leveraging automation, we reduce manual tasks, minimize human error, and provide real-time financial insights to our clients.
-        </p>
-  
-        <div class="rpa-highlight">
-          <img src="{{ asset('images/roboticon.png') }}" alt="Robot Icon" class="rpa-icon">
-          <strong>Experience RPA in real-time and automate the bookkeeping experience!</strong>
+<!-- Side Navigation (for mobile) -->
+<div class="side-nav" id="side-nav">
+    <div class="side-nav-header">
+        <img src="/images/buwiselogo.png" alt="BuWise Logo">
+        <button class="close-btn" id="close-btn">&times;</button>
+    </div>
+    <ul class="side-nav-menu">
+        <li><a href="{{ route('home') }}">Home</a></li>
+        <li><a href="{{ route('about') }}">About Us</a></li>
+        <li><a href="{{ route('services') }}">Services</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+    </ul>
+        <a href="/register" class="btn-signin mobile-signin">Sign In</a>
+
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Hero Section -->
+<section class="hero" style="background: url('/images/aboutbg.png') center center / cover no-repeat; height: 60vh; position: relative;">
+    <div class="container hero-grid" style="position: relative; z-index: 1;">
+        <div class="hero-text">
+            <h1>Our <span class="blue">Services</span> </h1>
+           
+            <div class="hero-buttons">
+                <a href="{{ route('about') }}" class="btn btn-primary">Learn More</a>
+                <a href="/contact" class="btn btn-outline">Get in Touch</a>
+            </div>
         </div>
-  
-        <p>
-          We help businesses focus on growth and success while we handle the complexities of financial management. Download the BuWise app now!
-        </p>
-      </div>
     </div>
-  
-    <div class="rpa-image">
-      <img src="{{ asset('images/rpa.png') }}" alt="RPA Automation">
-    </div>
-  </section>
-  
-  
-  <!-- Include Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- Contact Section -->
-<section class="contact-section">
-  <div class="container">
-    <div class="contact-form">
-      <form>
-        <input type="text" placeholder="Your Company Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Your Message" required></textarea>
-        <button type="submit" class="btn-submit">Submit</button>
-      </form>
-    </div>
-    <div class="contact-info">
-      <h3>Be A Client</h3>
-      <p>
-        Interested in our services? Contact us to become a client of LBJ Services today.
-        Fill up the form or contact our respective company details.
-      </p>
-      <ul>
-        <li><i class="fas fa-phone"></i> <strong>Call Us:</strong> +63 209 637 810</li>
-        <li><i class="fas fa-envelope"></i> <strong>Email Us:</strong> lbjservices@gmail.com</li>
-        <li><i class="fas fa-globe"></i> <strong>Website:</strong> lbjservices.com</li>
-        <li><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> 1072 Blumemtritt St., Manila</li>
-      </ul>
-    </div>
-  </div>
 </section>
 
-<script>
-  document.getElementById('burger').addEventListener('click', function () {
-    document.getElementById('navLinks').classList.toggle('show');
-  });
-</script>
+<!-- Services Section -->
+<section class="services">
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Our innovative approach quickly accelerates your accounting workflows.</p>
+        
+        <div class="services-grid">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-file-document-multiple"></i>
+                </div>
+                <h3>Automated Invoice Management</h3>
+                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-database-import"></i>
+                </div>
+                <h3>Seamless Data Migration</h3>
+                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-robot"></i>
+                </div>
+                <h3>RPA Integration</h3>
+                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+            </div>
+       </div>
+       
+<div class="services-grid">
+  <div class="service-box">
+    <div class="service-icon">
+      <i class="mdi mdi-file-chart-outline"></i> <!-- 📄 Automated Journal Entries -->
+    </div>
+    <h3>Automated Journal Entries</h3>
+    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+  </div>
+  
+  <div class="service-box">
+    <div class="service-icon">
+      <i class="mdi mdi-account-group-outline"></i> <!-- 👥 Efficient Staff Management -->
+    </div>
+    <h3>Efficient Staff Management</h3>
+    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+  </div>
+  
+  <div class="service-box">
+    <div class="service-icon">
+      <i class="mdi mdi-file-chart"></i> <!-- 📊 Quick Report Generation -->
+    </div>
+    <h3>Quick Report Generation</h3>
+    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+  </div>
+</div>
+
+<div class="services-grid">
+  <div class="service-box">
+    <div class="service-icon">
+      <i class="mdi mdi-account-tie-outline"></i> <!-- 👨‍💼 Streamlined Client Management -->
+    </div>
+    <h3>Streamlined Client Management</h3>
+    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+  </div>
+  
+  <div class="service-box">
+    <div class="service-icon">
+      <i class="mdi mdi-cellphone-cog"></i> <!-- 📱 BuWise Mobile -->
+    </div>
+    <h3>BuWise Mobile</h3>
+    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+  </div>
+  
+  <div class="service-box">
+    <div class="service-icon">
+      <i class="mdi mdi-clipboard-check-outline"></i> <!-- ✅ Improved Task Management -->
+    </div>
+    <h3>Improved Task Management</h3>
+    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+  </div>
+</div>
+
+    </div>
+</section>
+
+
+
+
 <!-- Footer -->
 <footer class="footer">
-  <div class="container">
-    <p>LBJ Bookkeeping and Accounting Services | No. 1062 Blumemtritt St., Brgy 513, Sampaloc, Manila | Copyright 2020–2026</p>
-  </div>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img src="/images/whitebuwise.png" alt="BuWise Logo" class="footer-img">
+        </div>
+        <ul class="footer-links">
+            <li><a href="{{ route('home') }}">HOME</a></li>
+            <li><a href="{{ route('about') }}">ABOUT US</a></li>
+            <li><a href="{{ route('services') }}">SERVICES</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="{{ route('register') }}">SIGN UP</a></li>
+            <li><a href="{{ route('login') }}">LOGIN</a></li>
+        </ul>
+        <div class="footer-socials">
+            <a href="#" aria-label="Facebook"><i class="mdi mdi-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="mdi mdi-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="mdi mdi-instagram"></i></a>
+            <a href="#" aria-label="GitHub"><i class="mdi mdi-github"></i></a>
+        </div>
+    </div>
 </footer>
+
+</body>
+</html>
+
+<!-- Scripts -->
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const sideNav = document.getElementById('side-nav');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('close-btn');
+
+    hamburger.addEventListener('click', () => {
+        sideNav.classList.add('active');
+        overlay.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        sideNav.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', () => {
+        sideNav.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+</script>
+
+<script>
+    let lastScrollTop = 0;
+    const topBar = document.querySelector('.top-bar');
+
+    window.addEventListener('scroll', function () {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            topBar.classList.add('show');
+        } else {
+            topBar.classList.remove('show');
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+</script>
+
+<script>
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (currentScroll > lastScrollTop) {
+            navbar.classList.add('navbar-hide');
+        } else {
+            navbar.classList.remove('navbar-hide');
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    });
+</script>
