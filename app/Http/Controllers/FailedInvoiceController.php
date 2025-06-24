@@ -27,9 +27,9 @@ class FailedInvoiceController extends Controller
             'order_by' => $request->order_by
         ];
 
-        if (!$filters['client'])
+        if ($filters['client'])
             $failed_invoices = $failed_invoices->where('client_id', '=', $filters['client']);
-        if (!$filters['order_by']) {
+        if ($filters['order_by']) {
             switch ($filters['order_by']) {
                 case 'date':
                     $failed_invoices = $failed_invoices->orderBy('created_at');
