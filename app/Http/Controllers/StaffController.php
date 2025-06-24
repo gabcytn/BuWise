@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserCreated;
-use App\Models\Organization;
-use App\Models\OrganizationMember;
 use App\Models\User;
+use App\Services\UserControllerHelper;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
-    private static int $itemsPerPage = 5;
+    private $helper;
+
+    public function __construct()
+    {
+        $this->helper = new UserControllerHelper('staff');
+    }
 
     /**
      * Display a listing of the resource.
@@ -25,45 +27,7 @@ class StaffController extends Controller
     public function index(Request $request)
     {
         Gate::authorize('viewAnyStaff', User::class);
-
-        $user = $request->user();
-        $staff = $user->staff();
-
-        $search = $request->query('search');
-        $filter = $request->query('filter');
-
-        if ($search != null)
-            $staff = $staff
-                ->where('name', 'like', "$search%")
-                ->paginate(StaffController::$itemsPerPage)
-                ->appends([
-                    'search' => $search
-                ]);
-        else if ($filter != null) {
-            switch ($filter) {
-                case 'name':
-                    $staff = $staff
-                        ->orderBy('name')
-                        ->paginate(StaffController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'name'
-                        ]);
-                    break;
-                case 'date':
-                    $staff = $staff
-                        ->orderByRaw('created_at DESC')
-                        ->paginate(StaffController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'date'
-                        ]);
-                    break;
-                default:
-                    break;
-            }
-        } else
-            $staff = $staff->paginate(StaffController::$itemsPerPage);
-
-        return view('staff.index', ['staffs' => $staff]);
+        return $this->helper->index($request);
     }
 
     /**
@@ -76,19 +40,16 @@ class StaffController extends Controller
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
             'email' => 'required|string|lowercase|max:255|email|unique:' . User::class,
-            'staff_type' => 'required',
+            'staff_type' => 'required|in:2,3',
             'password' => ['required', Password::min(8)],
             'profile_img' => ['required', File::image()->max(5000)]
         ]);
 
         $name = $validated['first_name'] . ' ' . $validated['last_name'];
+        $filename = $this->helper->storeImageToPublic($name, $request->file('profile_img'));
 
-        $file = $request->file('profile_img');
-        $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
-
-        $current_user = $request->user();
-        $staff = User::create([
+        $current_user = $request->user()->id;
+        User::create([
             'name' => $name,
             'email' => $validated['email'],
             'accountant_id' => $current_user,
@@ -96,11 +57,6 @@ class StaffController extends Controller
             'role_id' => (int) $validated['staff_type'],
             'password' => Hash::make($validated['password']),
             'profile_img' => $filename,
-        ]);
-        $organization = $request->user()->organization;
-        OrganizationMember::create([
-            'user_id' => $staff->id,
-            'organization_id' => $organization->id,
         ]);
 
         return to_route('staff.index');
@@ -125,8 +81,8 @@ class StaffController extends Controller
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
             'email' => ['required', 'string', 'lowercase', 'max:255', 'email', Rule::unique('users')->ignore($staff->id)],
-            'staff_type' => 'required',
-            'password' => [Password::min(8)],
+            'staff_type' => 'required|in:2,3',
+            'password' => ['nullable', Password::min(8)],
             'profile_img' => [File::image()->max(5000)]
         ]);
 
@@ -141,9 +97,8 @@ class StaffController extends Controller
 
         $file = $request->file('profile_img');
         if ($file !== null) {
-            $this->deleteOldImage($staff);
-            $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
+            $this->helper->deleteProfilePicture($staff);
+            $filename = $this->helper->storeImageToPublic($name, $file);
             $data['profile_img'] = $filename;
         }
 
@@ -158,15 +113,9 @@ class StaffController extends Controller
     {
         Gate::authorize('deleteStaff', $staff);
 
-        $this->deleteOldImage($staff);
+        $this->helper->deleteProfilePicture($staff);
         User::destroy($staff->id);
 
         return to_route('staff.index');
-    }
-
-    private function deleteOldImage(User $user): void
-    {
-        $path = $user->profile_img;
-        Storage::disk('public')->delete('profiles/' . $path);
     }
 }

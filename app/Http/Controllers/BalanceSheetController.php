@@ -36,25 +36,25 @@ class BalanceSheetController extends Controller
         $period = getStartAndEndDate($request->period);
         if ($request->period === 'this_year') {
             // cache this year's balance sheet
-            $data = Cache::remember($selected_client->id . '-balance-sheet', 300, function () use ($selected_client, $period) {
+            $structured_data = Cache::remember($selected_client->id . '-balance-sheet', 300, function () use ($selected_client, $period) {
                 Log::info('Calculating new balance sheet (web)...');
-                return $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                return $this->structureData($data);
             });
         } else {
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+            $structured_data = $this->structureData($data);
         }
-        $structuredData = $this->structureData($data);
-        $equityFromIncomeStatement = $structuredData['net-profit-and-loss'];
         return view('reports.balance-sheet', [
             'has_data' => true,
             'clients' => $clients,
             'selected_client' => $selected_client,
             'start_date' => $period[0]->format('d F Y'),
             'end_date' => $period[1]->format('d F Y'),
-            'assets' => $structuredData['assets'],
-            'liabilities' => $structuredData['liabilities'],
-            'equities' => $structuredData['equities'],
-            'equity_from_income_statement' => $equityFromIncomeStatement,
+            'assets' => $structured_data['assets'],
+            'liabilities' => $structured_data['liabilities'],
+            'equities' => $structured_data['equities'],
+            'equity_from_income_statement' => $structured_data['net-profit-and-loss'],
         ]);
     }
 

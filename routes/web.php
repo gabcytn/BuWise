@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StaffController;
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -77,6 +78,12 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     // staff related routes
     Route::resource('/staff', StaffController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy']);
+
+    Route::post('/suspend/{user}', function (User $user) {
+        $user->suspended = !$user->suspended;
+        $user->save();
+        return back();
+    })->name('user.suspend');
 
     // journal entries
     Route::get('/journal-entries/archives', [JournalEntryController::class, 'archives'])->name('journal-entries.archives');
@@ -135,6 +142,49 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
         return view('auth.enable-mfa');
     })->name('mfa.enable')->withoutMiddleware(['enable.mfa', 'onboarding']);
 });
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy.policy');
+
+// Public Pages
+Route::get('/contact', function () {
+    return view('contact-us'); // contact-us.blade.php
+})->name('contact');
+
+// Default register route (Laravel Breeze/Fortify/etc.)
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+
+// Custom accountant registration route
+Route::get('/register/accountant', function () {
+    return view('auth.register-accountant');
+})->name('accountant.register');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy'); // privacy-policy.blade.php
+})->name('privacy.policy');
+
+// Accountant Registration Page
+Route::get('/register/accountant', function () {
+    return view('auth.register-accountant');
+})->name('accountant.register');
+// Default registration
+Route::get('/register', function () {
+    return view('auth.register'); // or Fortify/Breeze view
+})->name('register');
+
+// Custom accountant registration
+Route::get('/register/accountant', function () {
+    return view('auth.register-accountant');
+})->name('accountant.register');
+
+
 
 // allow email verification without signing in
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {

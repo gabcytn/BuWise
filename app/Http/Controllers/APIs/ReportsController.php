@@ -18,7 +18,7 @@ class ReportsController extends Controller
         $clientId = $request->user()->id;
         $period = getStartAndEndDate($request->period);
         $data = Cache::remember("api-$clientId-reports-" . $request->period, 300, function () use ($clientId, $period) {
-            Log::info('calculating new reports');
+            Log::info('calculating new api reports');
             return $this->getReportsData($clientId, $period[0], $period[1]);
         });
 
@@ -54,7 +54,7 @@ class ReportsController extends Controller
         $clientId = $request->user()->id;
         $period = getStartAndEndDate($request->period);
         $data = Cache::remember("api-$clientId-reports-" . $request->period, 300, function () use ($clientId, $period) {
-            Log::info('calculating new reports');
+            Log::info('calculating new api reports');
             return $this->getReportsData($clientId, $period[0], $period[1]);
         });
         $assets = [];

@@ -3,7 +3,7 @@ const closeDeleteItemDialogButton = document.querySelector(
     ".delete-item-dialog button[type='button']",
 );
 const deleteItemForm = document.querySelector(".delete-item-dialog form");
-document.querySelectorAll(".action-column form").forEach((item) => {
+document.querySelectorAll("#delete-form").forEach((item) => {
     item.addEventListener("submit", (e) => {
         e.preventDefault();
 

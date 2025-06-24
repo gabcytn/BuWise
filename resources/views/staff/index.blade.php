@@ -3,9 +3,9 @@
     @php
         $headers = ['Profile', 'First Name', 'Last Name', 'Type', 'Email', 'Action'];
     @endphp
-    @if (count($staffs) > 0)
+    @if (count($users) > 0)
         <x-table-management :headers=$headers>
-            @foreach ($staffs as $staff)
+            @foreach ($users as $staff)
                 @php
                     $firstName = $staff->name;
                     [$firstName, $lastName] = explode(' ', $staff->name, 2);
@@ -21,11 +21,11 @@
                     <td>{{ $staff->email }}</td>
                     <td class="action-column">
                         <div>
-                            <a href="{{ route('staff.edit', $staff) }}">
+                            <a title="Edit" href="{{ route('staff.edit', $staff) }}">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
-                            <form action="{{ route('staff.destroy', $staff) }}">
-                                <button type="submit"
+                            <form id="delete-form" action="{{ route('staff.destroy', $staff) }}">
+                                <button title="Delete" type="submit"
                                     style="background-color: transparent; border: none; outline: none;">
                                     <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
                                 </button>
@@ -35,7 +35,7 @@
                 </tr>
             @endforeach
         </x-table-management>
-        {{ $staffs->links() }}
+        {{ $users->links() }}
     @else
         <h2 style="text-align: center;">No staff</h2>
     @endif

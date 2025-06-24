@@ -1,22 +1,15 @@
-@vite(['resources/js/client/index.js',"resources/css/client/index.js", 'resources/js/user-management/index.js'])
+@vite(['resources/js/client/index.js', 'resources/js/user-management/index.js'])
 @php
-    $headers = ['Logo', 'Company Name', 'Business Type', 'TIN', 'Email', 'Phone', 'Action'];
+    $headers = ['Logo', 'Company Name', 'Business Type', 'TIN', 'Email', 'Phone', 'Status', 'Action'];
 @endphp
 <x-user-management title="Client Management" subtitle="Manage and access client records" buttonText="Add Company">
-    @if (count($clients) > 0)
+    @if (count($users) > 0)
         <x-table-management :headers=$headers>
-            @foreach ($clients as $key => $client)
+            @foreach ($users as $key => $client)
                 <tr data-row-number="{{ $key }}" class="striped">
                     <td id="td-item-img"><img class="item-img"
                             src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" />
                     </td>
-                    @php
-                        // $imageUrl = \Illuminate\Support\Facades\Storage::temporaryUrl(
-                        // 'profile-images/' . $client->profile_img,
-                        // now()->addMinutes(5),
-                        // );
-                    @endphp
-                    <!-- <td id="td-item-img"><img class="item-img" src="imageUrl" alt="Profile Image"></td> -->
                     <td>
                         <p>{{ $client->name }}</p>
                     </td>
@@ -32,13 +25,23 @@
                     <td>
                         <p>{{ $client->phone_number }}</p>
                     </td>
+                    <td class="{{ $client->suspended ? 'suspended' : 'active' }}">
+                        <p>{{ $client->suspended ? 'Suspended' : 'Active' }}</p>
+                    </td>
                     <td class="action-column">
                         <div>
-                            <a href="{{ route('clients.edit', $client) }}">
+                            <a title="Edit" href="{{ route('clients.edit', $client) }}">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
-                            <form action="{{ route('clients.destroy', $client) }}">
-                                <button type="submit"
+                            <form action="{{ route('user.suspend', $client) }}" method="POST">
+                                @csrf
+                                <button title="{{ $client->suspended ? 'Unsuspend' : 'Suspend' }}" type="submit"
+                                    style="background-color: transparent; border: none; outline: none;">
+                                    <i class="fa-solid fa-ban" style="color: #ff0000; cursor: pointer"></i>
+                                </button>
+                            </form>
+                            <form id="delete-form" action="{{ route('clients.destroy', $client) }}">
+                                <button title="Delete" type="submit"
                                     style="background-color: transparent; border: none; outline: none;">
                                     <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
                                 </button>
@@ -48,7 +51,7 @@
                 </tr>
             @endforeach
         </x-table-management>
-        {{ $clients->links() }}
+        {{ $users->links() }}
     @else
         <h2 style="text-align: center;">No clients</h2>
     @endif
@@ -58,10 +61,12 @@
 </x-user-management>
 
 <dialog class="delete-item-dialog">
-    <h3 style="text-align: center; margin: 1rem 0;">Confirm Delete</h3>
+    <h3>Confirm Delete</h3>
     <form action="#" method="POST">
         @csrf
         @method('DELETE')
+        <h4>Are you sure you want to delete this item?</h4>
+        <p>This action is irreversible</p>
         <button style="margin-right: 0.25rem;" type="submit">Delete</button>
         <button style="margin-left: 0.25rem;" type="button">Cancel</button>
     </form>

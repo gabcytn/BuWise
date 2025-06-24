@@ -27,7 +27,6 @@
                     <a class="dropdown-import d-none" href="#">
                         Import Excel
                     </a>
-                    <button type="button" id="vertical-ellipsis">&#8942;</button>
                 @endif
             </div>
         </form>
@@ -94,7 +93,7 @@
                                 <p>{{ $entry->client_name }}</p>
                             </td>
                             <td>
-                                <p>{{ $entry->transaction_type }}</p>
+                                <p>{{ ucfirst($entry->transaction_type) }}</p>
                             </td>
                             <td>
                                 <p>{{ truncate($entry->description) }}</p>

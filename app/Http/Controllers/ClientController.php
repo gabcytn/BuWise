@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserCreated;
-use App\Models\OrganizationMember;
+use App\Events\ClientDeleted;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\UserControllerHelper;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
-    private static int $itemsPerPage = 5;
+    private $helper;
+
+    public function __construct()
+    {
+        $this->helper = new UserControllerHelper('client');
+    }
 
     /**
      * Display a listing of the resource.
@@ -25,50 +29,7 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         Gate::authorize('viewAnyClient', User::class);
-
-        $user = $request->user();
-        $roleId = $user->role_id;
-
-        if ($roleId === Role::ACCOUNTANT)
-            $clients = $user->clients();
-        else
-            $clients = $user->accountant->clients();
-
-        $search = $request->query('search');
-        $filter = $request->query('filter');
-
-        if ($search != null)
-            $clients = $clients
-                ->where('name', 'like', "$search%")
-                ->paginate(ClientController::$itemsPerPage)
-                ->appends([
-                    'search' => $search
-                ]);
-        else if ($filter != null) {
-            switch ($filter) {
-                case 'name':
-                    $clients = $clients
-                        ->orderBy('name')
-                        ->paginate(ClientController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'name'
-                        ]);
-                    break;
-                case 'date':
-                    $clients = $clients
-                        ->orderByRaw('created_at DESC')
-                        ->paginate(ClientController::$itemsPerPage)
-                        ->appends([
-                            'filter' => 'date'
-                        ]);
-                    break;
-                default:
-                    break;
-            }
-        } else
-            $clients = $clients->paginate(ClientController::$itemsPerPage);
-
-        return view('client.index', ['clients' => $clients]);
+        return $this->helper->index($request);
     }
 
     /**
@@ -87,12 +48,13 @@ class ClientController extends Controller
             'profile_img' => ['required', File::image()->max(5000)],
         ]);
 
-        $filename = $this->storeImageToLocal($request, $validated['name']);
+        $filename =
+            $this->helper->storeImageToPublic($request->name, $request->file('profile_img'));
 
         $currentUser = $request->user();
         $accountantId = getAccountantId($currentUser);
 
-        $client = User::create([
+        User::create([
             'accountant_id' => $accountantId,
             'created_by' => $request->user()->id,
             'role_id' => Role::CLIENT,
@@ -103,12 +65,6 @@ class ClientController extends Controller
             'name' => $validated['name'],
             'profile_img' => $filename,
             'password' => Hash::make($validated['password']),
-        ]);
-
-        $organization = $request->user()->organization;
-        OrganizationMember::create([
-            'user_id' => $client->id,
-            'organization_id' => $organization->id,
         ]);
 
         return redirect()->back();
@@ -152,9 +108,8 @@ class ClientController extends Controller
 
         $file = $request->file('profile_img');
         if ($file !== null) {
-            $this->deleteOldImage($client);
-            $filename = $validated['name'] . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
+            $this->helper->deleteProfilePicture($client);
+            $filename = $this->helper->storeImageToPublic($request->name, $file);
             $data['profile_img'] = $filename;
         }
 
@@ -169,31 +124,14 @@ class ClientController extends Controller
     {
         Gate::authorize('deleteClient', $client);
 
-        $this->deleteOldImage($client);
+        $accountant_id = $client->accountant_id;
+
+        $this->helper->deleteProfilePicture($client);
         User::destroy($client->id);
 
+        // update clients cache
+        ClientDeleted::dispatch($accountant_id);
+
         return to_route('clients.index');
-    }
-
-    private function deleteOldImage(User $user): void
-    {
-        $path = $user->profile_img;
-        Storage::disk('public')->delete('profiles/' . $path);
-        // Storage::delete('profile-images/' . $user->profile_img);
-    }
-
-    private function storeImageToAws(Request $request)
-    {
-        $path = $request->file('profile_img')->store('profile-images', 's3');
-        return basename($path);
-    }
-
-    private function storeImageToLocal(Request $request, $name): string
-    {
-        $file = $request->file('profile_img');
-        $filename = $name . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-        Storage::disk('public')->put("profiles/{$filename}", file_get_contents($file));
-
-        return $filename;
     }
 }
