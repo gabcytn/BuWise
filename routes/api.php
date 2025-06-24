@@ -5,6 +5,10 @@ use App\Http\Controllers\APIs\MobileInvoiceController;
 use App\Http\Controllers\APIs\ReportsController;
 use App\Http\Controllers\APIs\TasksController;
 use App\Http\Controllers\InsightsController;
+use App\Models\Role;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -17,6 +21,22 @@ Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
 
     Route::post('/bot/invoices/processed', [MobileInvoiceController::class, 'callback'])
         ->withoutMiddleware('auth:sanctum');
+    Route::get('/bookkeeper/clients', function (Request $request) {
+        $user = $request->user();
+        if ($user->role_id === Role::CLIENT)
+            return Response::json([
+                'message' => 'You are unauthorized to access this resource',
+            ], 403);
+        $accountant_id = getAccountantId($user);
+        $clients = Cache::remember("$accountant_id-clients", 3600, function () use ($user) {
+            return getClients($user);
+        });
+
+        return Response::json([
+            'clients' => $clients->count(),
+        ]);
+    });
+
     Route::get('/invoices/failed', [MobileInvoiceController::class, 'failedInvoices']);
     Route::post('/invoices/failed/resent', [MobileInvoiceController::class, 'resentInvoice']);
     Route::get('/invoices', [MobileInvoiceController::class, 'index']);
