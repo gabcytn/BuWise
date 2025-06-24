@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 
 Route::middleware(['verify.api', 'throttle:6,1'])->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
@@ -55,4 +56,7 @@ Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
 
     Route::get('/income-statement', [ReportsController::class, 'incomeStatement']);
     Route::get('/balance-sheet', [ReportsController::class, 'balanceSheet']);
+
+    Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
+        ->middleware('throttle:1,1');
 });
