@@ -37,7 +37,12 @@ Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
         });
 
         return Response::json([
-            'clients' => $clients->count(),
+            'clients' => $clients->map(function ($client) {
+                return [
+                    'name' => $client->name,
+                    'category' => $client->client_type,
+                ];
+            }),
         ]);
     });
 
