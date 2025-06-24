@@ -11,16 +11,20 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::put('/user/password', [AuthController::class, 'updatePassword']);
+Route::middleware(['verify.api', 'throttle:6,1'])->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::put('/user/password', [AuthController::class, 'updatePassword']);
+
+    // invoices might be processed at bulk and might be blocked by rate limiter
+    Route::post('/bot/invoices/processed', [MobileInvoiceController::class, 'callback'])
+        ->withoutMiddleware('throttle:6,1');
+});
 
 Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
     Route::get('/client-tasks', [TasksController::class, 'index']);
     Route::get('/cash-flow/{user?}', [InsightsController::class, 'cashFlow']);
     Route::get('/profit-and-loss/{user?}', [InsightsController::class, 'profitAndLoss']);
 
-    Route::post('/bot/invoices/processed', [MobileInvoiceController::class, 'callback'])
-        ->withoutMiddleware('auth:sanctum');
     Route::get('/bookkeeper/clients', function (Request $request) {
         $user = $request->user();
         if ($user->role_id === Role::CLIENT)
