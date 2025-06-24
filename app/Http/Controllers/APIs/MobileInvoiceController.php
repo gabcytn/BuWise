@@ -48,8 +48,7 @@ class MobileInvoiceController extends Controller
             $transactionType = $request->transaction_type;
             $filename = time() . '_' . Str::uuid();
 
-            // temporarily store image locally for invoice parser access.
-            Storage::disk('public')->put("invoices/$filename", file_get_contents($file));
+            Storage::disk('public')->put("temp/$filename", file_get_contents($file));
             InvoiceReceived::dispatch($filename, $transactionType, $request->user());
 
             return Response::json([
@@ -67,7 +66,14 @@ class MobileInvoiceController extends Controller
         $request->validate([
             'clientId' => 'required|uuid:4',
             'filename' => 'required|string',
+            'status' => 'required|in:success,fail',
         ]);
+
+        // only delete temp invoice if it succeeds
+        if ($request->status === 'success') {
+            Storage::disk('public')->delete('temp/' . $request->status);
+            return;
+        }
 
         $failed_invoice = FailedInvoice::create([
             'client_id' => $request->clientId,
@@ -80,10 +86,7 @@ class MobileInvoiceController extends Controller
     {
         $invoices = FailedInvoice::where('client_id', '=', $request->user()->id)->get();
         foreach ($invoices as $invoice) {
-            $invoice->image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
-                Log::info('Requesting for new temp. url');
-                Storage::temporaryUrl('failed-invoices/' . $invoice->filename, now()->addWeek());
-            });
+            $invoice->image = asset('temp/' . $invoice->filename);
         }
 
         return Response::json([
@@ -93,7 +96,7 @@ class MobileInvoiceController extends Controller
 
     public function resentInvoice(Request $request, FailedInvoice $invoice)
     {
-        Storage::delete('failed-invoices/' . $invoice->filename);
+        Storage::delete('temp/' . $invoice->filename);
         Cache::forget($invoice->id . '-image');
         $invoice->delete();
         return response(null, 200);

@@ -5,6 +5,8 @@ namespace App\Jobs;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,36 +32,25 @@ class InvoiceReceived implements ShouldQueue
     {
         Log::info('Parsing invoice...');
         try {
-            $file = Storage::disk('public')->get("invoices/$this->filename");
-            Storage::put("invoices/$this->filename", $file);
-
-            $temp_url = Storage::temporaryUrl("invoices/$this->filename", now()->addMinutes(10));
-
-            $postData = json_encode([
+            $image_url = url('storage/temp/' . $this->filename);
+            $postData = [
                 'filename' => $this->filename,
-                'image' => $temp_url,
+                'image' => $image_url,
                 'transactionType' => $this->transactionType,
                 'clientId' => $this->user->id,
-            ]);
+            ];
 
-            $ch = curl_init(config('app.rc_url'));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Authorization: RC-WSKEY ' . config('app.rc_api_key')
-            ]);
+            $res = Http::withHeader('Authorization', 'RC-WSKEY ' . config('app.rc_api_key'))
+                ->post(config('app.rc_url'), $postData);
 
-            $response = curl_exec($ch);
-
-            if ($response === false) {
-                Log::info('Failed request: ' . curl_error($ch));
+            if ($res->failed()) {
+                $res->throw();
             } else {
-                $data = json_decode($response, true);
-                Log::info('Successful request: ' . json_encode($data));
+                Log::info('Successful request: ' . $res->body());
             }
-
-            curl_close($ch);
+        } catch (RequestException $e) {
+            Log::alert('Request to RC Control Room Failed: ' . $e->getMessage());
+            Log::alert(truncate($e->getTraceAsString(), 200));
         } catch (\Exception $e) {
             Log::alert('Error in invoice listener: ' . $e->getMessage());
         }

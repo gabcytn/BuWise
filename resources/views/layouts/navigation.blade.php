@@ -45,12 +45,24 @@
             <div class="nav-section">
                 <p>Transactions</p>
                 <div class="nav-section__item">
-                    <li
-                        class="{{ in_array($routeName, ['invoices.index', 'invoices.create', 'invoices.show']) ? 'active-tab' : '' }}">
-                        <a href="{{ route('invoices.index') }}">
+                    <li class="">
+                        <a href="#"
+                            class="nav-dropdown {{ in_array($routeName, ['invoices.index', 'invoices.create', 'invoices.show']) ? 'active-tab' : '' }}">
                             <i class="fa-solid fa-file-invoice"></i>
                             Invoice
                         </a>
+                        <ul class="dropdown-list">
+                            <li class="d-none">
+                                <a href="{{ route('invoices.index') }}" style="font-size: 0.75rem;">
+                                    Successful
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="{{ route('failed.index') }}" style="font-size: 0.75rem;">
+                                    Failed
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="">
                         <a href="#"

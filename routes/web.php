@@ -4,6 +4,7 @@ use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FailedInvoiceController;
 use App\Http\Controllers\IncomeStatementController;
 use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\InvoiceController;
@@ -110,6 +111,9 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
         ->name('ledger.trial-balance');
     Route::post('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'setInitialBalance'])
         ->name('ledger.coa.update_initial');
+
+    Route::resource('/invoices/failed', FailedInvoiceController::class)
+        ->only(['index', 'destroy']);
 
     // invoice routes
     Route::post('/invoices/scan', [InvoiceController::class, 'scan'])->name('invoices.scan');
