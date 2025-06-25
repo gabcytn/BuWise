@@ -53,9 +53,6 @@
                 <input type="search" id="account-search" placeholder="Search Accounts.." />
             </div>
         </form>
-        @if ($errors->any())
-            <p style="color: red;">{{ $errors->first() }}</p>
-        @endif
         <div class="coa-table-wrapper">
             <table class="coa-table">
                 <thead>

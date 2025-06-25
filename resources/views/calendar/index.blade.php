@@ -1,8 +1,5 @@
 <x-app-layout>
     @vite(['resources/js/calendar/index.js', 'resources/css/calendar/index.css'])
-    @if ($errors->any())
-        <p>{{ $errors->first() }}</p>
-    @endif
     <div class="container">
         <div class="content-wrapper">
             <div class="content calendar">

@@ -1,9 +1,6 @@
 <x-app-layout>
     @vite('resources/js/invoices/create.js')
     <div style="max-width: 1500px; width: 90%; margin: 2rem auto;">
-        @if ($errors->any())
-            <p id="error-message" style="color: red;">{{ $errors->first() }}</p>
-        @endif
         <form action="{{ route('invoices.store') }}" method="POST" style="display: grid; gap: 1rem;"
             enctype="multipart/form-data">
             @csrf

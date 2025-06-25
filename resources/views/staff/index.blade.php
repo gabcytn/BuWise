@@ -39,9 +39,6 @@
     @else
         <h2 style="text-align: center;">No staff</h2>
     @endif
-    @if ($errors->any())
-        <p style="color: red;">{{ $errors->first() }}</p>
-    @endif
 </x-user-management>
 
 <dialog class="delete-item-dialog">

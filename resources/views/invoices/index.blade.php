@@ -2,12 +2,6 @@
     @vite(['resources/css/invoices/invoice.css', 'resources/js/invoices/index.js'])
 
     <div class="dashboard-wrapper">
-        @if (session('status'))
-            <p style="color: red">{{ session('status') }}</p>
-        @endif
-        @if ($errors->any())
-            <p style="color: red">{{ $errors->first() }}</p>
-        @endif
         <dialog id="scan-invoice-dialog">
             <h2>Scan an Invoice</h2>
             <form action="{{ route('invoices.scan') }}" method="POST" enctype="multipart/form-data">

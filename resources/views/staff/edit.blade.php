@@ -25,14 +25,5 @@
         <label for="password">Password</label>
         <input id="password" name="password" type="password" />
         <button type="submit">Submit</button>
-        @if ($errors->any())
-            <div>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
     </form>
 </x-app-layout>

@@ -85,9 +85,6 @@
                     </button>
                 </div>
             </form>
-            @if (session('status'))
-                <p style="color: var(--green);">{{ session('status') }}</p>
-            @endif
         </div>
         <hr />
 

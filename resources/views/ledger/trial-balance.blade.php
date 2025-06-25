@@ -53,9 +53,6 @@
         @elseif(request()->query('client') && count($data) == 0)
             <h2 style="text-align: center;">This client has no transaction yet.</h2>
         @endif
-        @if ($errors->any())
-            <p style="color: red; font-size: 0.85rem; margin: 0.5rem 0;">{{ $errors->first() }}</p>
-        @endif
     </div>
     <dialog id="set-custom-date-range-dialog">
         <h2>Choose starting and ending date</h2>

@@ -88,9 +88,6 @@
                     </tr>
                 </tfoot>
             </x-table-management>
-            @if ($errors->any())
-                <p style="color: red;">{{ $errors->first() }}</p>
-            @endif
         </div>
         <hr />
         <div class="p-3 button-container">

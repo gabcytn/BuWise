@@ -21,9 +21,5 @@
             <label for="password">Password</label>
             <input id="password" type="password" name="password" placeholder="Password" />
             <button type="submit">Submit</button>
-
-            @if ($errors->any())
-                <p>{{ $errors->first() }}</p>
-            @endif
     </form>
 </x-app-layout>

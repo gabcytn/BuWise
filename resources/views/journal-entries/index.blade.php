@@ -130,9 +130,6 @@
                         </tr>
                     @endforeach
                 </x-table-management>
-                @if ($errors->any())
-                    <p style="color: red; font-size: 0.85rem;">{{ $errors->first() }}</p>
-                @endif
                 {{ $entries->links() }}
             @endif
         </div>
