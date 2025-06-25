@@ -162,7 +162,8 @@ function updateTotals() {
     } else {
         submitButton.disabled = true;
         if (totalCredits > 0 || totalDebits > 0) {
-            balanceWarning.style.display = "inline";
+            balanceWarning.style.display = "block";
+            balanceWarning.style.marginTop = "1rem";
             document.querySelector(".totals-row").style.color = "red";
         } else {
             // when both debits & credits are set to 0
