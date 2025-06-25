@@ -124,15 +124,7 @@
                     </p>
                 </div>
 
-                @if (session('status'))
-                    <p style="color: var(--green);">{{ session('status') }}</p>
-                @endif
-                @if ($errors->any())
-                    <p style="color: red;">{{ $errors->first() }}</p>
-                @endif
-
             </form>
         </div>
-    </div>
     </div>
 </x-app-layout>

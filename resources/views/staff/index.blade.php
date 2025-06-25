@@ -1,7 +1,7 @@
 @vite(['resources/js/staff/index.js'])
 <x-user-management title="Staff Management" subtitle="Manage your bookkeeping staff" buttonText="Add Staff">
     @php
-        $headers = ['Profile', 'First Name', 'Last Name', 'Type', 'Email', 'Action'];
+        $headers = ['Profile', 'First Name', 'Last Name', 'Type', 'Email', 'Status', 'Action'];
     @endphp
     @if (count($users) > 0)
         <x-table-management :headers=$headers>
@@ -19,11 +19,21 @@
                     <td>{{ $lastName }}</td>
                     <td>{{ $staff->role->name }}</td>
                     <td>{{ $staff->email }}</td>
+                    <td class="{{ $staff->suspended ? 'suspended' : 'active' }}">
+                        <p>{{ $staff->suspended ? 'Suspended' : 'Active' }}</p>
+                    </td>
                     <td class="action-column">
                         <div>
                             <a title="Edit" href="{{ route('staff.edit', $staff) }}">
                                 <i class="fa-regular fa-pen-to-square"></i>
                             </a>
+                            <form action="{{ route('user.suspend', $staff) }}" method="POST">
+                                @csrf
+                                <button title="{{ $staff->suspended ? 'Unsuspend' : 'Suspend' }}" type="submit"
+                                    style="background-color: transparent; border: none; outline: none;">
+                                    <i class="fa-solid fa-ban" style="color: #ff0000; cursor: pointer"></i>
+                                </button>
+                            </form>
                             <form id="delete-form" action="{{ route('staff.destroy', $staff) }}">
                                 <button title="Delete" type="submit"
                                     style="background-color: transparent; border: none; outline: none;">
@@ -38,9 +48,6 @@
         {{ $users->links() }}
     @else
         <h2 style="text-align: center;">No staff</h2>
-    @endif
-    @if ($errors->any())
-        <p style="color: red;">{{ $errors->first() }}</p>
     @endif
 </x-user-management>
 

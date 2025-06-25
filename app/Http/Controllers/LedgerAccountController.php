@@ -176,13 +176,27 @@ class LedgerAccountController extends Controller
             'account_description' => 'nullable|string|max:255',
         ]);
 
+        $user = $request->user();
+        $accountant_id = getAccountantId($user);
+
         if (!str_starts_with($request->account_code, $request->account_type))
             return redirect()->back()->withErrors(['error' => 'Account code prefix is incorrect']);
+
+        $account = LedgerAccount::where('code', '=', $request->account_code)
+            ->where(function ($query) use ($accountant_id) {
+                $query
+                    ->where('accountant_id', '=', $accountant_id)
+                    ->orWhere('accountant_id', '=', null);
+            })
+            ->first();
+
+        if ($account)
+            return redirect()->back()->withErrors(['error' => 'This account code already exists']);
 
         LedgerAccount::create([
             'code' => $request->account_code,
             'account_group_id' => $request->account_type,
-            'accountant_id' => $request->user()->id,
+            'accountant_id' => $accountant_id,
             'name' => $request->account_name
         ]);
 

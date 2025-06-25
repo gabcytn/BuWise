@@ -52,7 +52,9 @@ async function startup() {
         oldList.unshift(notif);
         sessionStorage.setItem("notifications", JSON.stringify(oldList));
         addItemInNotificationPanel(notif, true);
-        document.querySelector("#banner").classList.remove("d-none");
+        document
+            .querySelector("#notification-banner")
+            .classList.remove("d-none");
         console.log("RECEIVED HERE!!!");
     });
 }

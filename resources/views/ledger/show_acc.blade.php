@@ -15,14 +15,23 @@
                 <div class="custom-select-wrapper">
                     <label for="date-range-select">Period:
                         <select required name="period" id="date-range-select">
-                            <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This year</option>
-                            <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>This month</option>
-                            <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>This week</option>
-                            <option value="last_week" {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>Last week</option>
-                            <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last month</option>
-                            <option value="last_year" {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>Last year</option>
-                            <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>All time</option>
-                            <option id="custom-option" value="custom" {{ request()->query('start') && request()->query('end') ? 'selected' : '' }}>Custom</option>
+                            <option value="this_year"
+                                {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This year</option>
+                            <option value="this_month"
+                                {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>This month</option>
+                            <option value="this_week"
+                                {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>This week</option>
+                            <option value="last_week"
+                                {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>Last week</option>
+                            <option value="last_month"
+                                {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last month</option>
+                            <option value="last_year"
+                                {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>Last year</option>
+                            <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>
+                                All time</option>
+                            <option id="custom-option" value="custom"
+                                {{ request()->query('start') && request()->query('end') ? 'selected' : '' }}>Custom
+                            </option>
                         </select>
                         <img src="{{ asset('images/menudown.png') }}" alt="▼" class="dropdown-icon">
                     </label>
@@ -74,28 +83,24 @@
             </tr>
         </x-table-management>
 
-        @if ($errors->any())
-            <p style="color: red; font-size: 0.85rem;">{{ $errors->first() }}</p>
-        @endif
-
         <button type="button" id="back-button">Go Back</button>
     </div>
 
-<dialog id="set-custom-date-range-dialog">
-    <div class="dialog-container">
-        <div class="dialog-header">Custom Date</div>
-        <h2>Choose starting and ending date</h2>
-        <form id="date-range-form">
-            <div class="date-input-wrapper">
-                <input type="date" name="start" id="start" required />
-                <input type="date" name="end" id="end" required />
-            </div>
-            <div class="submit-btn-wrapper">
-                <button type="submit">Run</button>
-                <button type="button">Cancel</button>
-            </div>
-        </form>
-    </div>
-</dialog>
+    <dialog id="set-custom-date-range-dialog">
+        <div class="dialog-container">
+            <div class="dialog-header">Custom Date</div>
+            <h2>Choose starting and ending date</h2>
+            <form id="date-range-form">
+                <div class="date-input-wrapper">
+                    <input type="date" name="start" id="start" required />
+                    <input type="date" name="end" id="end" required />
+                </div>
+                <div class="submit-btn-wrapper">
+                    <button type="submit">Run</button>
+                    <button type="button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 
 </x-app-layout>

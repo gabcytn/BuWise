@@ -67,13 +67,6 @@
             </div>
         </div>
 
-        @if ($errors->any())
-            <p class="error-text">{{ $errors->first() }}</p>
-        @endif
-        @if (session('status'))
-            <p class="status-text">{{ session('status') }}</p>
-        @endif
-
         <div class="table-wrapper">
             <table class="invoice-items-table">
                 <thead>

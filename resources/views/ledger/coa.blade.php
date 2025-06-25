@@ -1,5 +1,5 @@
 @php
-    $headers = ['ACCOUNT CODE', 'ACCOUNT NAME', 'ACCOUNT TYPE'];
+    $headers = ['ACCOUNT CODE', 'ACCOUNT NAME', 'ACCOUNT TYPE', 'ACTION'];
 @endphp
 @vite(['resources/js/ledger/coa.js', 'resources/css/ledger/coa.css'])
 
@@ -53,9 +53,6 @@
                 <input type="search" id="account-search" placeholder="Search Accounts.." />
             </div>
         </form>
-        @if ($errors->any())
-            <p style="color: red;">{{ $errors->first() }}</p>
-        @endif
         <div class="coa-table-wrapper">
             <table class="coa-table">
                 <thead>
@@ -71,6 +68,11 @@
                             <td>{{ $account->code }}</td>
                             <td>{{ $account->name }}</td>
                             <td>{{ ucfirst($account->accountGroup->name) }}</td>
+                            <td>
+                                @if ($account->accountant_id)
+                                    <i class="fa-solid fa-trash"></i>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
