@@ -1,11 +1,14 @@
 .header-container {
-    background-color: #ffffff; /* dark accountant blue */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* subtle shadow below */
-    
+    background-color: #ffffff;
+    /* dark accountant blue */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    /* subtle shadow below */
+
 }
 
 .header-sm {
-    background-color: #ffffff; /* dark accountant blue */
+    background-color: #ffffff;
+    /* dark accountant blue */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,28 +43,9 @@
     display: none !important;
 }
 
-.popover {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    background-color: var(--clear-white);
-    border-radius: 5px;
-    z-index: 10;
-}
-
-.popover ul li {
-    list-style-type: none;
-    padding: 0.5rem;
-    color: var(--soft-black);
-}
-
-.popover ul li:hover {
-    background-color: var(--off-white);
-}
-
 #notifToggle {
-    color: #1B80C3; /* Accountant blue */
+    color: #1B80C3;
+    /* Accountant blue */
 }
 
 /* Static Notification Styles */
@@ -69,13 +53,15 @@
     background-color: #ffffff;
     padding: 1rem;
     border-bottom: 1px solid #e0e0e0;
-    color: #2B3C56; /* Name color */
+    color: #2B3C56;
+    /* Name color */
 }
 
 .notification-item p {
     margin: 0;
     font-size: 0.95rem;
-    color: #1B80C3; /* Message text color */
+    color: #1B80C3;
+    /* Message text color */
 }
 
 .notification-item small {
@@ -83,6 +69,26 @@
     margin-top: 0.25rem;
     font-size: 0.75rem;
     color: #999999;
+}
+
+.notification-banner {
+    max-width: 1500px;
+    width: 95%;
+    margin: 0.5rem auto 0;
+    background-color: var(--green);
+    color: var(--off-white);
+    padding: 1rem;
+    border-radius: 0.375rem;
+
+    .banner-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .fa-xmark {
+            cursor: pointer;
+        }
+    }
 }
 
 @media (min-width: 800px) {
@@ -97,15 +103,18 @@
 
     #account-name {
         font-size: 0.9rem;
-        color: #2B3C56; /* Name text in details */
+        color: #2B3C56;
+        /* Name text in details */
     }
 
     #account-role {
         font-size: 0.8rem;
-        color: #1B80C3; /* Role text in details */
+        color: #1B80C3;
+        /* Role text in details */
     }
 
     .fa-solid.fa-bell {
-        color: #1B80C3; /* Bell icon color */
+        color: #1B80C3;
+        /* Bell icon color */
     }
 }

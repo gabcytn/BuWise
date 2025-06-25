@@ -33,22 +33,19 @@
     <div class="notifications-list" id="notifList"></div>
 </div>
 
-<dialog class="confirm-logout-dialog">
-    <h3 style="text-align: center; margin: 1rem 0;">Confirm Logout</h3>
-    <form action="/logout" method="POST">
-        @csrf
-        <button style="margin-right: 0.25rem;" type="submit">Logout</button>
-        <button style="margin-left: 0.25rem;" type="button">Cancel</button>
-    </form>
-</dialog>
+<div class="d-none notification-banner" id="banner">
+    <div class="banner-content">
+        <p>You have received a notification.</p>
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+</div>
 
 <script>
     document.getElementById('notifToggle').addEventListener('click', () => {
         document.getElementById('notificationPanel').classList.toggle('d-none');
     });
 
-    function toggleDropdown() {
-        const dropdown = document.getElementById('notifDropdown');
-        dropdown.classList.toggle('active');
-    }
+    document.querySelector("#banner .fa-xmark").addEventListener("click", (e) => {
+        document.querySelector("#banner").classList.add("d-none");
+    });
 </script>
