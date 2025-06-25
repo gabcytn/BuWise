@@ -222,6 +222,46 @@ body, html {
 /* -----------------------
    RESPONSIVE BREAKPOINTS
 -------------------------- */
+@media (max-width: 768px) {
+    .nav-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo {
+        transform: none;
+        margin-bottom: 10px;
+    }
+
+    .nav-text {
+        transform: none;
+        margin: 0;
+    }
+
+    .register-page {
+        flex-direction: column;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .right-section {
+        padding: 3rem 1.5rem;
+    }
+
+    .left-section {
+        padding-bottom: 1rem;
+    }
+}
+@media (max-width: 768px) {
+    /* ... other responsive styles ... */
+
+    .subtitle {
+        text-align: center;
+    }
+}
+
 
 /* Tablet: 1024px and down */
 @media (max-width: 1024px) {
