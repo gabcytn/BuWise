@@ -62,6 +62,30 @@ form.addEventListener("submit", (e) => {
     }
 })
 
+const strengthCheck = document.getElementById("strength-check");
+const lengthCheck = document.getElementById("length-check");
+const comboCheck = document.getElementById("combo-check");
+
+password.addEventListener("input", () => {
+    const val = password.value;
+    const score = zxcvbn(val).score;
+
+    updateCriteria(lengthCheck, val.length >= 8);
+    updateCriteria(comboCheck, /[A-Za-z]/.test(val) && (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val)));
+    updateCriteria(strengthCheck, score >= 3); // Strong = score 3 or 4
+});
+
+function updateCriteria(element, passed) {
+    const icon = element.querySelector("i");
+    icon.className = passed ? "fas fa-check icon-check" : "fas fa-times icon-x";
+}
+confirmPassword.addEventListener("input", () => {
+    if (confirmPassword.value !== password.value && confirmPassword.value !== "") {
+        confirmFeedback.textContent = "Passwords do not match";
+    } else {
+        confirmFeedback.textContent = "";
+    }
+});
 
 // Password toggle functionality
 document.querySelectorAll(".toggle-password").forEach((icon) => {
