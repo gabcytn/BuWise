@@ -35,13 +35,13 @@
 
         <!-- Desktop Menu -->
         <ul class="nav-menu">
-            <li><a href="{{ route('home') }}">Home</a></li>
+<li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
             <li><a href="{{ route('about') }}">About Us</a></li>
             <li><a href="{{ route('services') }}">Services</a></li>
             <li><a href="/privacy">Privacy Policy</a></li>
             <li><a href="/contact">Contact Us</a></li>
         </ul>
-    <a href="/register" class="btn-signin desktop-signin">Sign In</a>
+    <a href="/login" class="btn-signin desktop-signin">Sign In</a>
 
     </div>
 </nav>
@@ -53,13 +53,13 @@
         <button class="close-btn" id="close-btn">&times;</button>
     </div>
     <ul class="side-nav-menu">
-        <li><a href="{{ route('home') }}">Home</a></li>
+<li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
         <li><a href="{{ route('about') }}">About Us</a></li>
         <li><a href="{{ route('services') }}">Services</a></li>
         <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/contact">Contact Us</a></li>
     </ul>
-        <a href="/register" class="btn-signin mobile-signin">Sign In</a>
+        <a href="/login" class="btn-signin mobile-signin">Sign In</a>
 
 </div>
 
@@ -72,7 +72,7 @@
         <div class="hero-text">
             <h1>Automate for <span class="blue">Accuracy</span> and <span class="blue">Optimize</span> for Growth</h1>
             <p style="color: #1F3649;">
-                Accelerate your firm's growth. BuWise utilizes Robotic Process Automation to automate repetitive tasks and streamline your operations.
+                Accelerate your firm's growth. BuWise utilizes  <span class="blue"> Robotic Process Automation </span> to automate repetitive tasks and streamline your operations.
             </p>
             <div class="hero-buttons">
                 <a href="{{ route('about') }}" class="btn btn-primary">Learn More</a>
@@ -94,21 +94,21 @@
                     <i class="mdi mdi-file-document-multiple"></i>
                 </div>
                 <h3>Automated Invoice Management</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+                <p>Enables users to upload and view invoice details in real time. This automation ensures 100% accuracy when mapping invoices to accounts and entering their details, significantly simplifying the process.</p>
             </div>
             <div class="service-box">
                 <div class="service-icon">
                     <i class="mdi mdi-database-import"></i>
                 </div>
                 <h3>Seamless Data Migration</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+                <p>Lets you upload journal entries from Excel to the system using RPA, significantly reducing manual effort and potential errors. This automation ensures your financial records are updated quickly and accurately.</p>
             </div>
             <div class="service-box">
                 <div class="service-icon">
                     <i class="mdi mdi-robot"></i>
                 </div>
                 <h3>RPA Integration</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+                <p>Enhances your firm's operational efficiency by automating repetitive, rule-based tasks. Reduces manual errors, processing times, and frees up your team to focus on higher-value and strategic activities.</p>
             </div>
         </div>
 
@@ -127,10 +127,7 @@
         </div>
         <div class="section-text">
             <h2>Let your clients submit <span class="highlight">invoices</span> online</h2>
-            <p>Empower your clients with the ability to send invoices directly through a secure online portal. This streamlines your workflow, eliminates paperwork, and reduces errors in manual entries.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s, offering a placeholder for meaningful content in layouts and design previews.
-
-</p>
+            <p>Buwise Mobile empowers your clients with a convenient portal to their financial data, allowing them to effortlessly upload invoices, view personalized schedules, and generate essential reports. This self-service functionality not only improves transparency and client satisfaction but also reduces administrative burden on your firm. Specifically, within the mobile app, clients can easily capture photos of invoices or upload existing files, track the real-time status of their submissions, and access their financial reports on demand, fostering seamless collaboration and faster turnaround times.</p>
         </div>
     </div>
 </section>
@@ -144,10 +141,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. It ha
         </div>
         <div class="section-text">
             <h2>View <span class="highlight">client reports</span> and analyze your <span class="highlight">data</span></h2>
-            <p>Empower your clients with the ability to send invoices directly through a secure online portal. This streamlines your workflow, eliminates paperwork, and reduces errors in manual entries.
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. It has been the industry's standard dummy text ever since the 1500s, offering a placeholder for meaningful content in layouts and design previews.
-
-</p>
+            <p>Buwise offers an all-in-one platform designed to streamline financial operations for accounting firms and their clients. It automates invoice management and journal entries through RPA, ensuring 100% accuracy and real-time updates. The system allows for efficient staff and task management, with the ability to limit user capabilities to specific bookkeeping tasks for enhanced security. Accountants can easily manage client accounts, adding new ones and editing details, while also centralizing all client information. Buwise quickly generates comprehensive financial reports like P&L, Balance Sheets, and Cash Flow Statements, enabling deep data analysis for informed decision-making.</p>
         </div>
     </div>
 </section>
@@ -158,7 +152,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. It ha
         <p class="cta-heading">GET STARTED</p>
         <h2 class="cta-title">Be an Accountant</h2>
         <p class="cta-description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
         </p>
               <a href="/register" class="cta-button">Sign up as an Accountant <span class="arrow">→</span>
             
@@ -174,11 +168,11 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. It ha
             <img src="/images/whitebuwise.png" alt="BuWise Logo" class="footer-img">
         </div>
         <ul class="footer-links">
-            <li><a href="{{ route('home') }}">HOME</a></li>
+<li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
             <li><a href="{{ route('services') }}">SERVICES</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
-            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/privacy">PRIVACY POLICY</a></li>
+            <li><a href="/contact">CONTACT US</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>
         </ul>
