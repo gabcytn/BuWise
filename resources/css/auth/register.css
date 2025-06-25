@@ -2,7 +2,7 @@
 body, html {
     height: 100%;
     margin: 0;
-    font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
     background: #fff;
 }
 
@@ -180,6 +180,13 @@ body, html {
 .input-box .icon {
     margin-right: 10px; /* add spacing between icon and input text */
 }
+.toggle-password {
+    color: #adb5bd;
+    font-size: 1rem;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
 
 .password-criteria {
     margin-top: 0.75rem;
@@ -321,49 +328,66 @@ body, html {
 }
 
 @media (max-width: 768px) {
-    .navbar {
-        padding: 15px 0;
-    }
-
-    .register-page {
-        padding-top: 80px;
-    }
-
-    .left-section,
-    .right-section {
-        padding: 1.5rem;
-    }
-
-    .left-section .illustration.hero-img {
-        max-width: 90%;
-    }
-
-    .title {
-        font-size: 26px;
-    }
-
-    .subtitle {
-        font-size: 13px;
-    }
-
-    .input-box {
-        padding: 0.65rem 0.85rem;
-    }
-
-    .btn-primary {
-        font-size: 0.95rem;
-        padding: 0.75rem;
-    }
-
-    .checkbox-group {
-        font-size: 0.8rem;
-    }
-
-    .nav-text {
-        font-size: 0.8rem;
+    .nav-wrapper {
+        flex-direction: column;
+        text-align: center;
     }
 
     .logo {
-        height: 50px;
+        transform: none;
+        margin-bottom: 10px;
+    }
+
+    .nav-text {
+        transform: none;
+        margin: 0;
+    }
+
+    .register-page {
+        flex-direction: column;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .right-section {
+        padding: 3rem 1.5rem;
+    }
+
+    .left-section {
+        padding-bottom: 1rem;
     }
 }
+
+@media (max-width: 768px) {
+  .nav-wrapper {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .nav-text {
+    flex-direction: column;
+    font-size: 0.85rem;
+    gap: 4px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    height: 50px;
+  }
+
+  .nav-text {
+    font-size: 0.8rem;
+  }
+}
+
