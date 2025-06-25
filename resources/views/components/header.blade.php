@@ -1,4 +1,4 @@
-@vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css', 'resources/css/components/notifs.css', 'resources/js/echo.js'])
+@vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css', 'resources/css/components/notifs.css'])
 
 <div class="header-container">
     <header class="header-sm">
@@ -33,19 +33,9 @@
     <div class="notifications-list" id="notifList"></div>
 </div>
 
-<div class="d-none notification-banner" id="banner">
-    <div class="banner-content">
-        <p>You have received a notification.</p>
-        <i class="fa-solid fa-xmark"></i>
-    </div>
-</div>
 
 <script>
     document.getElementById('notifToggle').addEventListener('click', () => {
         document.getElementById('notificationPanel').classList.toggle('d-none');
-    });
-
-    document.querySelector("#banner .fa-xmark").addEventListener("click", (e) => {
-        document.querySelector("#banner").classList.add("d-none");
     });
 </script>
