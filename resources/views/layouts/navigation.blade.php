@@ -1,8 +1,14 @@
 @php
     use App\Models\Role;
+    use Illuminate\Support\Facades\Cache;
 
-    $roleId = request()->user()->role_id;
+    $user = request()->user();
+    $roleId = $user->role_id;
     $routeName = request()->route()->getName();
+
+    $organization = Cache::rememberForever($user->id . '-organization', function () use ($user) {
+        return $user->organization;
+    });
 @endphp
 @vite('resources/js/components/nav.js')
 <nav class="nav-sm hidden">
@@ -184,5 +190,12 @@
                 </div>
             </div>
         </ul>
+    </div>
+    <div id="client-info">
+        <img src="{{ asset('storage/organizations/' . $organization->logo) }}" alt="Client Image" />
+        <div>
+            <h4 title="{{ $organization->name }}">{{ truncate($organization->name, 16) }}</h4>
+            <p title="{{ $organization->address }}">{{ truncate($organization->address, 16) }}</p>
+        </div>
     </div>
 </nav>
