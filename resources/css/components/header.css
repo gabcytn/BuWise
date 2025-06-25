@@ -1,8 +1,11 @@
 .header-container {
-    background-color: #ffffff; /* dark accountant blue */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* subtle shadow below */
-    
+    background-color: #ffffff; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+    position: sticky;
+    top: 0;
+    z-index: 999;
 }
+
 
 .header-sm {
     background-color: #ffffff; /* dark accountant blue */
