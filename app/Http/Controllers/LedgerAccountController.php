@@ -183,8 +183,11 @@ class LedgerAccountController extends Controller
             return redirect()->back()->withErrors(['error' => 'Account code prefix is incorrect']);
 
         $account = LedgerAccount::where('code', '=', $request->account_code)
-            ->where('accountant_id', '=', $accountant_id)
-            ->orWhere('accountant_id', '=', null)
+            ->where(function ($query) use ($accountant_id) {
+                $query
+                    ->where('accountant_id', '=', $accountant_id)
+                    ->orWhere('accountant_id', '=', null);
+            })
             ->first();
 
         if ($account)
