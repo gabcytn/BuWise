@@ -58,7 +58,7 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
         if ($request->user()->suspended)
             return 'Your account has been suspended. If this is a mistake, please contact your accountant';
         return to_route('dashboard');
-    })->name('suspended')->withoutMiddleware('suspended');
+    })->name('web.suspended')->withoutMiddleware('suspended');
 
     Route::resource('/organizations', OrganizationController::class)
         ->withoutMiddleware('onboarding')

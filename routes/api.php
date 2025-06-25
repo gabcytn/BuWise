@@ -21,7 +21,7 @@ Route::middleware(['verify.api', 'throttle:6,1'])->group(function () {
         ->withoutMiddleware('throttle:6,1');
 });
 
-Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
+Route::middleware(['verify.api', 'auth:sanctum', 'suspended'])->group(function () {
     Route::get('/client-tasks', [TasksController::class, 'index']);
     Route::get('/cash-flow/{user?}', [InsightsController::class, 'cashFlow']);
     Route::get('/profit-and-loss/{user?}', [InsightsController::class, 'profitAndLoss']);
@@ -59,4 +59,12 @@ Route::middleware(['verify.api', 'auth:sanctum'])->group(function () {
 
     Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
         ->middleware('throttle:1,1');
+
+    Route::get('/user/suspended', function (Request $request) {
+        if (!$request->user()->suspended)
+            return response(null, 404);
+        return Response::json([
+            'message' => 'Your account has been suspended by your accountant',
+        ], 403);
+    })->name('api.suspended')->withoutMiddleware('suspended');
 });
