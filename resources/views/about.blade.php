@@ -80,19 +80,28 @@
 <!-- Clients Submit Invoices -->
 
 <section class="clients-submit">
-    <div class="container dual-section">
-        <div class="circle-wrap phone-wrap">
-            <div class="circle-bg phone-circle"></div>
-            <img src="/images/rpa 1.png" class="device phone" alt="Phone UI" />
-        </div>
-        
-        <div class="section-text">
-            <h2>What is <span class="highlight">Robotic Process Automation </span> ?</h2>
-            <p>Robotic Process Automation (RPA) is an innovative technology that automates manual, recurring processes. Unlike a physical robot in industry, RPA does not use machines, but so-called software bots. They do not perform physical work but control digital processes by imitating work steps on a user interface. Like human employees, RPA bots log into various applications and systems and can then perform rule-based routine operations.
-</p> <p>At <span class="highlight"> BuWise </span> we go beyond traditional methods, integrating RPA to fundamentally streamline and optimize your financial processes. This isn't just about speed; it's about ensuring unparalleled accuracy, boosting overall efficiency, and guaranteeing robust compliance with every transaction. By strategically leveraging automation, we significantly reduce manual tasks, virtually eliminating human error from repetitive workflows.</p>
-        </div>
+  <div class="container">
+    <h2 class="section-title">WHO WE ARE</h2>
+    <h1 class="section-subtitle">
+  The first <span style="color:#1b80c3;">Bookkeeping System</span> with RPA Integration
+</h1>
+
+  </div>
+
+  <div class="container dual-section">
+    <div class="circle-wrap phone-wrap">
+      <div class="circle-bg phone-circle"></div>
+      <img src="/images/rpa 1.png" class="device phone" alt="Phone UI" />
     </div>
+
+    <div class="section-text">
+      <h2>What is <span class="highlight">Robotic Process Automation </span> ?</h2>
+      <p>Robotic Process Automation (RPA) is an innovative technology that automates manual, recurring processes. Unlike a physical robot in industry, RPA does not use machines, but so-called software bots...</p>
+      <p>At <span class="highlight">BuWise</span> we go beyond traditional methods...</p>
+    </div>
+  </div>
 </section>
+
 
 <!-- Client Reports -->
 <section class="client-reports">

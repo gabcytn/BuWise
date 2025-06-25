@@ -3,6 +3,8 @@
     width: 95%;
     margin: 2rem auto;
     background-color: var(--clear-white);
+    border-radius: 0.375rem;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pad {
@@ -11,7 +13,7 @@
 
 #page-title {
     margin-bottom: 0.5rem;
-    padding: 2rem 0 0.5rem 2rem;
+    padding: 1.15rem 0 0.5rem 2rem;
     font-size: 1.85rem;
     font-weight: 500;
 }
@@ -22,7 +24,6 @@ hr {
 
 .table-wrapper {
     overflow: scroll;
-    border-radius: 0.65rem;
 }
 
 #journalTable {
@@ -32,11 +33,21 @@ hr {
 
 table {
     border-collapse: collapse;
+
+    thead {
+        th:first-child {
+            border-top-left-radius: 5px;
+        }
+
+        th:nth-child(4) {
+            border-top-right-radius: 5px;
+        }
+    }
 }
 
-th,
 td {
-    border: 1px solid var(--off-white);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.25rem 1rem;
 }
 
 th:last-child,
@@ -44,6 +55,7 @@ td:last-child {
     background-color: var(--clear-white);
     border: none !important;
     border-collapse: separate;
+    padding: 0;
 }
 
 .row {
@@ -73,15 +85,15 @@ th {
 
 #journalTable select,
 #journalTable input {
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
     outline: none;
-    border-radius: 0rem;
+    font-size: 0.75rem;
 }
 
 #journalTable select:focus,
 #journalTable input:focus {
     border: 1px solid var(--main-blue);
-    outline: none;
 }
 
 select,
@@ -151,55 +163,63 @@ input {
     }
 }
 
-.submit-btn {
-    background-color: var(--main-blue);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
 
 .button-container {
     display: flex;
-    flex-direction: column;
     gap: 0.5rem;
+
+    button {
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .submit-btn {
+        background-color: var(--main-blue);
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    #cancel-button {
+        background-color: var(--grey);
+        transition: opacity 0.25s;
+    }
+
+    #cancel-button:hover {
+        opacity: 0.85
+    }
 }
 
 .button-container.outside {
-    flex-direction: row;
-    padding: 2rem;
+    display: block;
+    padding: 1.5rem 2rem;
+
+    .buttons-row {
+        display: flex;
+        gap: 1rem;
+    }
+
+    button {
+        color: var(--off-white);
+    }
 }
 
-#cancel-button {
-    background-color: var(--grey);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: opacity 0.25s;
-}
-
-#cancel-button:hover {
-    opacity: 0.85
-}
-
-.submit-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+hr {
+    color: rgba(0, 0, 0, 0.2);
 }
 
 @media (min-width: 800px) {
     .button-container button {
         width: 12rem;
         font-size: 0.85rem;
+        padding: 0.75rem 0;
     }
 
     th {
-        padding: 0.5rem 0;
+        padding: 0.75rem 0;
         font-size: 1rem;
     }
 

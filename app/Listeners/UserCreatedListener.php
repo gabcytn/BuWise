@@ -28,12 +28,13 @@ class UserCreatedListener implements ShouldQueue
     public function handle(UserCreated $event): void
     {
         try {
-            $creator = User::find($event->user->created_by);
+            $user_created = $event->user;
+            $creator = User::find($user_created->created_by);
             if (!$creator)
                 throw new \Exception('Creator of user is non-existent');
             $accId = getAccountantId($creator);
             $accountant = User::find($accId);
-            if ($event->user->role_id === Role::CLIENT) {
+            if ($user_created->role_id === Role::CLIENT) {
                 $clients = getClients($accountant);
                 Cache::put("$accId-clients", $clients, 3600);
                 Log::info('Successfully updated clients cache');
@@ -41,16 +42,19 @@ class UserCreatedListener implements ShouldQueue
 
             $organization = $creator->organization;
             OrganizationMember::create([
-                'user_id' => $event->user->id,
+                'user_id' => $user_created->id,
                 'organization_id' => $organization->id,
             ]);
-            Log::info('Successfully created new member of organization');
+
+            $user_created->onboarded = true;
+            $user_created->save();
+            Log::info('Successfully created new member of organization and marked as onboarded');
 
             // notify accountant that a client has been created
             if ($creator->role_id === Role::LIAISON)
                 $accountant->notify(new LiaisonCreatedClient($accountant, $creator));
 
-            $event->user->sendEmailVerificationNotification();
+            $user_created->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::warning('Error handling event listener: ' . $e->getMessage());
         }

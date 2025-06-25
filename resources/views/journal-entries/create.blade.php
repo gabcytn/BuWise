@@ -92,9 +92,11 @@
         <hr />
 
         <div class="button-container outside">
-            <button form="journalForm" type="submit" class="submit-btn" id="submitButton" disabled>Submit Journal
-                Entry</button>
-            <button type="button" id="cancel-button">Cancel</button>
+            <div class="buttons-row">
+                <button form="journalForm" type="submit" class="submit-btn" id="submitButton" disabled>Submit Journal
+                    Entry</button>
+                <button type="button" id="cancel-button">Cancel</button> <br />
+            </div>
             <p id="balanceWarning" style="color: red; display: none;">
                 Debits and credits must be equal before submitting.
             </p>

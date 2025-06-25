@@ -51,12 +51,13 @@ async function startup() {
         const oldList = JSON.parse(sessionStorage.getItem("notifications"));
         oldList.unshift(notif);
         sessionStorage.setItem("notifications", JSON.stringify(oldList));
-        addItemInNotificationPanel(notif);
-        document.querySelector("#notificationPanel").classList.remove("d-none");
+        addItemInNotificationPanel(notif, true);
+        document.querySelector("#banner").classList.remove("d-none");
+        console.log("RECEIVED HERE!!!");
     });
 }
 
-function addItemInNotificationPanel(notif) {
+function addItemInNotificationPanel(notif, isNew = false) {
     const notifList = document.querySelector("#notifList");
     const parentContainer = document.createElement("div");
     parentContainer.className = "notification-item";
@@ -106,5 +107,9 @@ function addItemInNotificationPanel(notif) {
     parentContainer.appendChild(notifContent);
     parentContainer.appendChild(span);
 
+    if (isNew) {
+        notifList.prepend(parentContainer);
+        return;
+    }
     notifList.appendChild(parentContainer);
 }

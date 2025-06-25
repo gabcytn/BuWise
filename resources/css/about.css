@@ -766,6 +766,32 @@ overflow-x: hidden; /* disables horizontal scrolling */
   right: -300px;
   transform: translate(0, 0);
 }
+.section-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #1b80c3;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  font-size: 28px;
+  color: #1f3649;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 60px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 768px) {
+  .section-subtitle {
+    margin-bottom: 0;
+  }
+}
+
 
 
 
@@ -825,13 +851,16 @@ overflow-x: hidden; /* disables horizontal scrolling */
     bottom: 25px;
     left: 130px; 
  }
+.section-subtitle .blue {
+  color: #1b80c3 !important;
+}
 
+
+@media (max-width: 768px) {
   .circle-bg.phone-circle {
-    width: 330px;
-    height: 330px;
-    top: 40px;
-    left: 25px;
+    display: none !important;
   }
+}
 
   .device {
     max-width: 240px;
