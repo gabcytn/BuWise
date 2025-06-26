@@ -1,7 +1,55 @@
 .container {
-    max-width: 1000px;
-    width: 90%;
-    margin: 0 auto;
+    max-width: 1500px;
+    width: 95%;
+    margin: 2rem auto;
+}
+
+.main-content {
+    background-color: var(--clear-white);
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    border-radius: 0.25rem;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+
+    #report-form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .form-select {
+            width: 50%;
+            display: flex;
+            gap: 1rem;
+
+            select {
+                flex-grow: 1;
+                padding: 0.375rem;
+                background-color: var(--off-white);
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                border-radius: 0.25rem;
+                outline: none;
+            }
+
+            select:hover {
+                border: 1px solid rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        button {
+            background-color: var(--main-blue);
+            padding: 0.75rem 1rem;
+            color: var(--off-white);
+            border-radius: 0.25rem;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+    }
 }
 
 #set-custom-date-range-dialog h2 {
