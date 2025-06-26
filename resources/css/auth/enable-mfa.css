@@ -72,6 +72,7 @@ body, html {
 }
 
 /* INPUT */
+/* INPUT */
 .verify-input {
     padding: 10px 14px;
     font-size: 14px;
@@ -81,7 +82,16 @@ body, html {
     border-radius: 6px;
     margin-bottom: 16px;
     text-align: center;
+    transition: border-color 0.3s ease;
 }
+
+.verify-input:hover,
+.verify-input:focus {
+    border: 2.5px solid #1B80C3; /* Blue */
+    outline: none;
+}
+
+
 
 /* BUTTON STYLES */
 .verify-btn {

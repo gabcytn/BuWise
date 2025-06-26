@@ -170,7 +170,7 @@ body, html {
 }
 .icon,
 .toggle-password {
-    color: #adb5bd;
+    color: #1B80C3;
     font-size: 1rem;
 }
 .input-box .toggle-password {
@@ -181,7 +181,7 @@ body, html {
     margin-right: 10px; /* add spacing between icon and input text */
 }
 .toggle-password {
-    color: #adb5bd;
+    color: #1B80C3;
     font-size: 1rem;
     margin-left: 10px;
     cursor: pointer;
