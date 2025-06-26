@@ -67,7 +67,7 @@ class ClientController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('status', 'Successfully created a client.');
     }
 
     /**
@@ -114,7 +114,7 @@ class ClientController extends Controller
         }
 
         $client->update($data);
-        return to_route('clients.index');
+        return to_route('clients.index')->with('status', 'Successfully updated client details.');
     }
 
     /**

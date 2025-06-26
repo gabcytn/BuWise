@@ -59,7 +59,7 @@ class StaffController extends Controller
             'profile_img' => $filename,
         ]);
 
-        return to_route('staff.index');
+        return to_route('staff.index')->with('status', 'Successfully created client.');
     }
 
     /**
@@ -103,7 +103,7 @@ class StaffController extends Controller
         }
 
         $staff->update($data);
-        return to_route('staff.index');
+        return to_route('staff.index')->with('status', 'Successfully updated staff details.');
     }
 
     /**
