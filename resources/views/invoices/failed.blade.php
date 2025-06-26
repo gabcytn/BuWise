@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Failed Invoices">
     @vite(['resources/css/invoices/failed.css', 'resources/js/invoices/failed.js'])
     <div class="container">
         <div class="page-header">
@@ -17,9 +17,9 @@
                         </option>
                     </select>
                     <select name="client">
+                        <option value="" {{ !request()->query('client') ? 'selected' : '' }} disabled>Select a
+                            Client</option>
                         @foreach ($clients as $client)
-                            <option value="" {{ !request()->query('client') ? 'selected' : '' }} disabled>Select a
-                                Client</option>
                             <option {{ request()->query('client') === $client->id ? 'selected' : '' }}
                                 value="{{ $client->id }}">{{ $client->name }}</option>
                         @endforeach

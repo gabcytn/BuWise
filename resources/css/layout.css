@@ -130,6 +130,10 @@ main {
     height: 40px;
 }
 
+#route-title {
+    display: none;
+}
+
 @media (min-width: 800px) {
 
     .fa-circle-chevron-down {
@@ -204,7 +208,12 @@ main {
     }
 
     .fa-bars {
-        opacity: 0;
+        display: none;
         pointer-events: none;
+    }
+
+    #route-title {
+        display: inline-block;
+        color: var(--main-blue);
     }
 }

@@ -1,5 +1,5 @@
 @vite(['resources/css/reports/insights.css', 'resources/js/reports/insights.js'])
-<x-app-layout>
+<x-app-layout title="Insights">
     <div class="container">
         <div class="insights-header">
             <div class="insights-header__left">

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Journals">
     @php
         $headers = ['Account ID', 'Account Name', 'Account Group Name', 'Notes', 'Debit', 'Credit'];
         $journalStatus = $journalEntry->status;

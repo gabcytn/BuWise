@@ -4,7 +4,7 @@
         return number_format(abs($account->debit - $account->credit), 2);
     }
 @endphp
-<x-app-layout>
+<x-app-layout title="Reports">
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/income-statement.js'])
 
     <div class="container">
@@ -15,7 +15,8 @@
             <div class="p-3 report-header">
                 <div class="report-header__left">
                     <select class="select" name="period">
-                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This
+                        <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
+                            This
                             Year</option>
                         <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
                             This Month</option>

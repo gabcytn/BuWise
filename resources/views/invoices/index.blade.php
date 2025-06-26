@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Invoices">
     @vite(['resources/css/invoices/invoice.css', 'resources/js/invoices/index.js'])
 
     <div class="dashboard-wrapper">

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Reports">
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/working-paper.js'])
     <div class="container">
         <h2 id="page-title">Working Paper</h2>

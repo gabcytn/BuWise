@@ -16,7 +16,7 @@
         return number_format($total, 2);
     }
 @endphp
-<x-app-layout>
+<x-app-layout title="Invoices">
     @vite('resources/css/invoices/show.css')
     <div class="container">
         <div class="p-3 invoice-header">

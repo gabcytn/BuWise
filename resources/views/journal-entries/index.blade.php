@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Journals">
     @php
         $headers = [
             'Reference No.',

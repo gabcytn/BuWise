@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Dashboard">
     @vite(['resources/css/user-management/dashboard.css', 'resources/js/dashboard.js'])
 
     <div class="container">

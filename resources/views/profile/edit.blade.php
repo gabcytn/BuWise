@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Settings">
     @vite('resources/css/profile/index.css')
     <div class="container">
         @include('profile.partials.update-profile-information-form')

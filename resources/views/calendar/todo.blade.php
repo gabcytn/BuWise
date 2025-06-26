@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Todo">
     @vite(['resources/css/calendar/todo.css', 'resources/js/calendar/todo.js'])
     <div class="container">
         <div class="page-header">

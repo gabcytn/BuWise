@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Invoices">
     @vite(['resources/css/invoices/add.css', 'resources/js/invoices/create.js'])
 
     <form class="invoice-container" method="POST" action="{{ route('invoices.store') }}" enctype="multipart/form-data">

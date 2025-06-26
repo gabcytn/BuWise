@@ -4,7 +4,7 @@
         return number_format(abs($account->debit - $account->credit), 2);
     }
 @endphp
-<x-app-layout>
+<x-app-layout title="Reports">
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/balance-sheet.js'])
     <div class="container">
         <h2 id="page-title">Balance Sheet</h2>

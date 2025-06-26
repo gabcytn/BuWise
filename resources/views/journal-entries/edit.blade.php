@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Journals">
     @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/edit.js'])
     <select id="select-clone" required class="d-none">
         <option value="" selected disabled>Select an account</option>

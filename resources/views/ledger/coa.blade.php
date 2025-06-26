@@ -3,7 +3,7 @@
 @endphp
 @vite(['resources/js/ledger/coa.js', 'resources/css/ledger/coa.css'])
 
-<x-app-layout>
+<x-app-layout title="Ledger">
     <div class="coa-page-header">
         <div class="left">
             <h2>All Accounts</h2>

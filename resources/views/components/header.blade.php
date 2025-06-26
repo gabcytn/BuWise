@@ -1,8 +1,10 @@
 @vite(['resources/css/dialog/dialog.css', 'resources/css/components/header.css', 'resources/css/components/notifs.css'])
 
+@props(['title'])
 <div class="header-container">
     <header class="header-sm">
         <i class="fa-solid fa-bars"></i>
+        <h1 id="route-title">{{ $title }}</h1>
         <div class="header-side">
             <div class="header-side__account" style="cursor: pointer;">
                 @php

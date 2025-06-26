@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Journals">
     @vite(['resources/css/journal-entries/create.css', 'resources/js/journal-entries/create.js'])
     <div class="container">
         <h2 id="page-title">Add Entry</h2>

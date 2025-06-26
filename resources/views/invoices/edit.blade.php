@@ -1,7 +1,7 @@
 @php
     $headers = ['Item', 'Quantity', 'Unit Price', 'Less: Discount', 'Tax', 'Total Amount (₱)'];
 @endphp
-<x-app-layout>
+<x-app-layout title="Invoices">
     @vite(['resources/css/invoices/show.css', 'resources/js/invoices/edit.js'])
     <form class="container" action="{{ route('invoices.update', $invoice) }}" method="POST">
         @csrf

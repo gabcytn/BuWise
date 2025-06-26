@@ -4,7 +4,7 @@
     @include('layouts.navigation')
 
     <section class="main-section">
-        @include('components.header')
+        @include('components.header', ['title' => $title])
         <!-- Page Content -->
         <main>
             <div class="d-none banner" id="notification-banner">

@@ -2,7 +2,7 @@
     $headers = ['Account ID', 'Account Name', 'Debit', 'Credit'];
 @endphp
 @vite(['resources/css/ledger/trialBalance.css', 'resources/js/ledger/trialBalance.js'])
-<x-app-layout>
+<x-app-layout title="Ledger">
     <div class="container">
         <h2>Trial Balance</h2>
         <form action="" method="GET" id="report-form">

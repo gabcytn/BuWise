@@ -4,7 +4,7 @@
 
 @vite(['resources/css/ledger/showAcc.css', 'resources/js/ledger/showAcc.js'])
 
-<x-app-layout>
+<x-app-layout title="Ledger">
     <div class="container">
         <div class="title-row">
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
