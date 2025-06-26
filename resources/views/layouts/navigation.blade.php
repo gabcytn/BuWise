@@ -175,15 +175,9 @@
             <div class="nav-section">
                 <p>Policies</p>
                 <div class="nav-section__item">
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-shield-alt"></i>
-                            Privacy Policy
-                        </a>
-                    </li>
                     <li class="{{ request()->routeIs('profile.edit') ? 'active-tab' : '' }}">
                         <a href="{{ route('profile.edit') }}">
-                            <i class="fas fa-cog"></i>
+                            <i class="fa-solid fa-cog"></i>
                             Settings
                         </a>
                     </li>
