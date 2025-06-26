@@ -48,16 +48,6 @@
                     </div>
                 </div>
 
-                <!-- Extra Right Buttons -->
-                <div class="right" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <button class="more-btn" aria-label="More options">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1f2d3d">
-                            <circle cx="12" cy="5" r="2" />
-                            <circle cx="12" cy="12" r="2" />
-                            <circle cx="12" cy="19" r="2" />
-                        </svg>
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -90,7 +80,7 @@
                         style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); height: 16px;">
                     <input type="search" name="search" placeholder="Search Invoice No." style="padding-left: 30px;" />
                 </div>
-                <button type="submit">Run</button>
+                <button id="run-button" type="submit">Run</button>
             </form>
 
             @if (count($invoices) > 0)

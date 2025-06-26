@@ -4,14 +4,15 @@
 
 /* Layout container */
 .dashboard-wrapper {
-    font-family: 'Segoe UI', sans-serif;
+    max-width: 1500px;
+    width: 95%;
+    margin: 0 auto;
 }
 
 /* Header Row (Title + Button) */
 .invoice-header-row {
-    max-width: 1200px;
-    margin: 2rem auto 1rem;
-    padding: 0 2rem;
+    margin: 2rem 0;
+    /* padding: 0 2rem; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -102,24 +103,20 @@
     opacity: 0.6;
 }
 
-.more-btn {
-    background: #f0f4f8;
-    border: 1px solid #cbd5e0;
-    padding: 0.4rem;
-    border-radius: 6px;
+#run-button {
+    padding: 0.5rem 1.25rem;
+    background-color: var(--main-blue);
+    color: var(--off-white);
+    border: none;
+    border-radius: 0.15rem;
+    outline: none;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
+    transition: opacity 0.15s;
 }
 
-.more-btn .btn-icon {
-    width: 16px;
-    height: 16px;
+#run-button:hover {
+    opacity: 0.85;
 }
-
 
 /* New Invoice Button */
 .btn-new-invoice {
@@ -176,12 +173,11 @@
 
 /* Invoice container */
 .invoice-container {
-    max-width: 1400px;
     margin: 0 auto 2rem;
     padding: 2rem;
-    background: #fff;
+    background-color: var(--clear-white);
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Table */
