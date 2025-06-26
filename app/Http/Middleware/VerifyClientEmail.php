@@ -18,6 +18,11 @@ class VerifyClientEmail
     {
         $email = $request->email;
         $user = User::where('email', '=', $email)->first();
+        if (!$user)
+            return response()->json([
+                'message' => 'Your email does not match any records.',
+            ]);
+
         if ($user->email_verified_at !== null)
             return $next($request);
 
