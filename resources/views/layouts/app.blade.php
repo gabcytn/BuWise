@@ -13,12 +13,12 @@
                     <i class="fa-solid fa-xmark"></i>
                 </div>
             </div>
-            @if ($errors->any())
+            @if ($errors->any() || $errors->updatePassword->any())
                 <div class="banner" id="error-banner">
                     <div class="banner-content">
                         <div class="banner-texts">
                             <h3>Error!</h3>
-                            <p>{{ $errors->first() }}</p>
+                            <p>{{ $errors->first() ?: $errors->updatePassword->first() }}</p>
                         </div>
                         <i class="fa-solid fa-xmark"></i>
                     </div>
