@@ -40,43 +40,9 @@ form.addEventListener("submit", (e) => {
 
 // Recovery Code
 
-const openRecoveryCode = document.querySelector(".bottom-text a");
-const recoveryCodeInput = document.querySelector(".bottom-text form");
+const openRecoveryCode = document.querySelector("#resend-link");
+const recoveryCodeInput = document.querySelector(".recovery-code");
 
 openRecoveryCode.addEventListener("click", () => {
     recoveryCodeInput.classList.toggle("d-none");
 });
-const resendLink = document.getElementById("resend-link");
-
-if (resendLink) {
-    let countdown = null;
-
-    const startResendTimer = () => {
-        let seconds = 30;
-        resendLink.textContent = `Resend available in ${seconds}s`;
-        resendLink.style.pointerEvents = "none";
-        resendLink.style.opacity = "0.6";
-
-        countdown = setInterval(() => {
-            seconds--;
-            resendLink.textContent = `Resend available in ${seconds}s`;
-
-            if (seconds <= 0) {
-                clearInterval(countdown);
-                resendLink.textContent = "Click to resend";
-                resendLink.style.pointerEvents = "auto";
-                resendLink.style.opacity = "1";
-            }
-        }, 1000);
-    };
-
-    resendLink.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        alert("A new OTP has been sent to your email.");
-
-        startResendTimer();
-    });
-
-    startResendTimer();
-}

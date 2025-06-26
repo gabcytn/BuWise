@@ -27,7 +27,7 @@
                 <h2 class="title">Enter <span>One–Time Password (OTP)</span></h2>
 
                 @php
-                    $email = old('email') ?? session('email') ?? (auth()->user()->email ?? null);
+                    $email = old('email') ?? (session('email') ?? (auth()->user()->email ?? null));
                 @endphp
 
                 @if ($email)
@@ -37,7 +37,7 @@
                 @endif
 
                 <!-- OTP Form -->
-                <form method="POST" action="/two-factor-challenge">
+                <form method="POST" action="/two-factor-challenge" id="two-factor-form">
                     @csrf
                     <div class="otp-inputs">
                         <input type="text" maxlength="1" class="otp-input" required />
@@ -49,39 +49,31 @@
                     </div>
 
                     @if ($errors->any())
-        <p class="error-msg">{{ $errors->first() }}</p>
-    @endif
+                        <p class="error-msg">{{ $errors->first() }}</p>
+                    @endif
 
-    <!-- Move this here -->
-   <div class="bottom-text resend">
-    <p>Didn’t get a code? <a href="#" id="resend-link">Click to resend in 30s</a></p>
-</div>
+                    <!-- Move this here -->
+                    <div class="bottom-text resend">
+                        <p>Lost your mobile phone? <a href="#" id="resend-link">Login with a recovery code</a></p>
+                    </div>
 
 
-    <input type="hidden" name="code" />
+                    <input type="hidden" name="code" />
 
-    <button type="submit" class="btn-primary">{{ __('Verify') }}</button>
-</form>
-
-                <!-- Cancel Button -->
-                <form method="POST" action="/logout" id="form-cancel">
-                    @csrf
-                    <button type="submit" class="btn-primary"
-                        style="margin-top: 1rem; background-color: transparent; border: 1px solid #fff; color: #fff;">Cancel</button>
+                    <button type="submit" class="btn-primary">{{ __('Verify') }}</button>
                 </form>
 
                 <!-- Recovery Code Section -->
-                <div class="bottom-text">
-                    <form method="POST" action="/two-factor-challenge" class="recovery-form" style="display: none;">
+                <div class="recovery-code d-none">
+                    <form method="POST" action="/two-factor-challenge" class="recovery-form">
                         @csrf
                         <input name="recovery_code" placeholder="Enter recovery code" />
-                        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Submit Recovery Code</button>
                     </form>
                 </div>
 
-               
-                </div>
+
             </div>
         </div>
+    </div>
     </div>
 </x-root-layout>
