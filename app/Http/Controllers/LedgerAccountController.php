@@ -169,6 +169,7 @@ class LedgerAccountController extends Controller
 
     public function createAccount(Request $request)
     {
+        Gate::authorize('createAccount', LedgerAccount::class);
         $request->validate([
             'account_type' => 'required|in:1,2,3,4,5',
             'account_code' => 'required|numeric',
@@ -201,5 +202,13 @@ class LedgerAccountController extends Controller
         ]);
 
         return redirect()->back()->with(['status' => 'Account created successfully!']);
+    }
+
+    public function deleteAccount(LedgerAccount $ledgerAccount)
+    {
+        Gate::authorize('deleteAccount', $ledgerAccount);
+        $ledgerAccount->delete();
+
+        return redirect()->back()->with('status', 'Successfully deleted account.');
     }
 }
