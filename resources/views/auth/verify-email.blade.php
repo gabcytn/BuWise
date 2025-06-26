@@ -1,29 +1,37 @@
 <x-root-layout>
     @vite('resources/css/auth/verify-email.css')
 
-    <div class="container">
-        <img src="{{ asset('images/Buwiselogo.png') }}" alt="BuWise Logo" class="logo" />
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <img src="/images/buwiselogo.png" alt="BuWise Logo" class="logo">
+        </div>
+    </nav>
 
-        <h1 class="title">Successful!</h1>
+    <div class="verify-wrapper">
+        <img src="/images/hero-verification.png" alt="Illustration" class="verify-illustration" />
 
-        <p id="greeting">
-            {{ __('Thanks for signing up! Before getting started, please verify your email address by clicking on the link we just emailed to you.') }}
+        <h1 class="verify-title">You’ve created your account!</h1>
+
+        <p class="verify-message">
+            Thanks for signing up! Before getting started, please verify your email address by clicking on the link we just emailed to you. Check your spam folder if it's not visible.
         </p>
 
         <form method="POST" action="{{ route('verification.send') }}">
             @csrf
-            <button type="submit" id="verify-button">{{ __('Resend Verification Email') }}</button>
+            <button type="submit" class="verify-btn green">{{ __('Resend Verification Email') }}</button>
         </form>
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" id="logout-button">{{ __('Log Out') }}</button>
+            <button type="submit" class="verify-btn gray">{{ __('Log Out') }}</button>
         </form>
 
         @if (session('status') == 'verification-link-sent')
-            <p id="session-status">
+            <p class="session-status">
                 {{ __('A new verification link has been sent to the email address you provided during registration.') }}
             </p>
         @endif
+
+        <p class="footer-text">© 2025, Buwise Inc. All Rights Reserved.</p>
     </div>
 </x-root-layout>

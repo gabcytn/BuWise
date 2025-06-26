@@ -1,26 +1,39 @@
 <x-root-layout>
     @vite('resources/css/auth/forgot-password.css')
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet">
 
-    <img src="{{ asset('images/Buwiselogo.png') }}" alt="BuWise Logo" class="logo" />
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <img src="/images/buwiselogo.png" alt="BuWise Logo" class="logo">
+        </div>
+    </nav>
 
-    <h2 class="title">Forgot Password</h2>
-    <p class="description">Enter your email to reset your password</p>
-    <form action="/forgot-password" method="POST">
-        @csrf
-        <input type="email" name="email" placeholder="accountant@domain.com" required>
-        <button type="submit" class="primary-button">Send</button>
-        <button type="button" class="logout-button">Go Back</button>
-    </form>
-    @if (session('status'))
-        <p id="session-status">{{ session('status') }}</p>
-    @endif
-    @if ($errors->any())
-        <p style="color: red; font-size: 14px;">{{ $errors->first() }}</p>
-    @endif
+    <!-- Main Content -->
+    <div class="forgot-wrapper">
+        <h2 class="title">Forgot <span class="highlight">Password</span></h2>
+        <p class="description">Enter your email address to receive a password reset link.</p>
+        <div class="input-group">
+    <label for="email" class="input-label">Email Address</label>
 
-    <script>
-        document.querySelector("button.logout-button").addEventListener("click", () => {
-            window.location.href = window.history.back();
-        });
-    </script>
+        <form action="/forgot-password" method="POST" class="forgot-form">
+            @csrf
+            
+<div class="input-icon-wrapper">
+    <i class="mdi mdi-email-outline"></i>
+    <input type="email" name="email" class="input-field" placeholder="accountant@domain.com" required>
+</div>
+
+            <button type="submit" class="btn primary">Send Reset Link</button>
+            <button type="button" class="btn secondary" onclick="history.back()">Go Back</button>
+        </form>
+
+        @if (session('status'))
+            <p class="session-status">{{ session('status') }}</p>
+        @endif
+
+        @if ($errors->any())
+            <p class="error-message">{{ $errors->first() }}</p>
+        @endif
+    </div>
 </x-root-layout>
