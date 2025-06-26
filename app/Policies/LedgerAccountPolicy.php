@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\LedgerAccount;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -36,5 +37,18 @@ class LedgerAccountPolicy
     public function trialBalance(User $user)
     {
         return $this->chartOfAccounts($user);
+    }
+
+    public function createAccount(User $user)
+    {
+        return $this->chartOfAccounts($user);
+    }
+
+    public function deleteAccount(User $user, LedgerAccount $ledgerAccount)
+    {
+        $creator = $ledgerAccount->accountant_id;
+        $accoountant_id = getAccountantId($user);
+
+        return $creator === $accoountant_id;
     }
 }

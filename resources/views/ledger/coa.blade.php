@@ -68,9 +68,15 @@
                             <td>{{ $account->code }}</td>
                             <td>{{ $account->name }}</td>
                             <td>{{ ucfirst($account->accountGroup->name) }}</td>
-                            <td>
+                            <td class="action-column">
                                 @if ($account->accountant_id)
-                                    <i class="fa-solid fa-trash"></i>
+                                    <form action="{{ route('ledger.delete-account', $account) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submi"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                @else
+                                    <button type="button"><i class="fa-solid fa-lock"></i></button>
                                 @endif
                             </td>
                         </tr>

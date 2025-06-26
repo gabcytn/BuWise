@@ -204,11 +204,25 @@
 
  .ledger-account {
      cursor: pointer;
-     transition: background 0.2s ease-in-out;
  }
 
  .ledger-account:hover {
      background-color: #f4f7fa;
+ }
+
+ .action-column button {
+     background: none;
+     border: none;
+     outline: none;
+
+     .fa-lock {
+         color: var(--dark-blue-secondary);
+     }
+
+     .fa-trash {
+         color: #CA3A3C;
+         cursor: pointer;
+     }
  }
 
  /* dialog */

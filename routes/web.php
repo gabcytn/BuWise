@@ -105,12 +105,12 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
         ->name('ledger.coa');
     Route::post('/ledger/chart-of-accounts', [LedgerAccountController::class, 'createAccount'])
         ->name('ledger.create-account');
+    Route::delete('/ledger/chart-of-accounts/{ledgerAccount}', [LedgerAccountController::class, 'deleteAccount'])
+        ->name('ledger.delete-account');
     Route::get('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'showAccount'])
         ->name('ledger.coa.show');
     Route::get('/ledger/trial-balance', [TrialBalanceController::class, 'index'])
         ->name('ledger.trial-balance');
-    Route::post('/ledger/chart-of-accounts/{ledgerAccount}/{user}', [LedgerAccountController::class, 'setInitialBalance'])
-        ->name('ledger.coa.update_initial');
 
     Route::resource('/invoices/failed', FailedInvoiceController::class)
         ->only(['index', 'destroy']);
