@@ -612,15 +612,15 @@ overflow-x: hidden; /* disables horizontal scrolling */
   align-items: center;
   text-align: center;
   gap: 30px;
-  overflow-x: hidden; /* prevents internal scroll if child elements overflow */
+  overflow-x: hidden; 
 }
 
 
 .footer-logo img {
-   height: 150px;     /* Adjust height as needed */
-  width: auto;      /* Maintains original aspect ratio */
-  max-width: 200%;  /* Prevents overflow on smaller screens */
-  display: block;   /* Optional: removes extra space below image */
+   height: 150px;     
+  width: auto;      
+  max-width: 200%;  
+  display: block;   
 
 }
 

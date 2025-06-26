@@ -172,13 +172,13 @@ body, html {
 .input-box .icon {
     margin-right: 10px;
     font-size: 1.1rem;
-    color: #adb5bd;
+    color: #1B80C3;
 }
 
 .input-box .toggle-password {
     margin-left: 10px;
     font-size: 1.1rem;
-    color: #adb5bd;
+    color: #1B80C3;
     cursor: pointer;
 }
 
