@@ -32,9 +32,9 @@
             <li><a href="{{ route('about') }}">About Us</a></li>
             <li><a href="{{ route('services') }}">Services</a></li>
             <li><a href="/privacy">Privacy Policy</a></li>
-            <li><a href="/contact">Contact Us</a></li>
+<li><a href="/contact" style="color: #279CE9;">Contact Us</a></li>
         </ul>
-    <a href="/register" class="btn-signin desktop-signin">Sign In</a>
+    <a href="/login" class="btn-signin desktop-signin">Sign In</a>
 
     </div>
 </nav>
@@ -50,9 +50,9 @@
         <li><a href="{{ route('about') }}">About Us</a></li>
         <li><a href="{{ route('services') }}">Services</a></li>
         <li><a href="/privacy">Privacy Policy</a></li>
-        <li><a href="/contact">Contact Us</a></li>
+<li><a href="/contact" style="color: #279CE9;">Contact Us</a></li>
     </ul>
-        <a href="/register" class="btn-signin mobile-signin">Sign In</a>
+        <a href="/login" class="btn-signin mobile-signin">Sign In</a>
 
 </div>
 
@@ -147,8 +147,8 @@
             <li><a href="{{ route('home') }}">HOME</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
             <li><a href="{{ route('services') }}">SERVICES</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
-            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/privacy">PRIVACY POLICY</a></li>
+<li><a href="/contact" style="color: #279CE9;">CONTACT US</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>
         </ul>

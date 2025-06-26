@@ -1,116 +1,158 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
-
+/* Simplified and matched to UI in image */
 body, html {
     height: 100%;
-    background-color: #1879ca; /* blue background behind right section */
+    margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #fff;
 }
 
-/* Layout wrapper */
+.navbar {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    padding: 20px 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    transition: top 0.3s ease;
+    position: fixed;
+}
+
+.navbar-hide {
+    top: -100px;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    height: 70px;
+    transform: translateX(-138px); /* move it left */
+}
+
+.nav-text {
+    font-size: 0.9rem;
+    color: #333;
+    margin-right: 10px;
+    transform: translateX(173px); /* move it right */
+}
+
+.nav-text span {
+    margin-right: 8px;
+}
+
+.signin-link {
+    color: #1879ca;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.signin-link:hover {
+    text-decoration: underline;
+}
+
 .register-page {
     display: flex;
+    flex-direction: row-reverse; /* 🔁 Switch left and right */
     height: 100vh;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding-top: 120px;
 }
 
-/* Container to create spacing between sections */
-.section-wrapper {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* Left Section */
 .left-section {
-    width: 50%;
-    background-color: #ffffff;
-    border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px;
+    width: 60%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 2;
     padding: 2rem;
 }
 
 .left-section .logo {
-    width: 180px;
+    width: 150px;
     margin-bottom: 2rem;
 }
 
-.left-section .illustration {
-    max-width: 500px;
+.left-section .illustration.hero-img {
     width: 100%;
+    max-width: 700px;
     height: auto;
-    margin: 0 auto;
-    display: block;
-    margin-top: auto;
-    margin-bottom: auto;
 }
 
-/* Right Section */
 .right-section {
     width: 50%;
-    background-color: #1879ca;
-    color: #ffffff;
+    padding: 9rem;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 3rem;
-    position: relative;
-    z-index: 1;
+    align-items: center;
+    background-color: #fff;
 }
 
-/* Form and elements */
 .form-card {
+    max-width: 500px;
     width: 100%;
-    max-width: 400px;
 }
 
 .title {
-    font-size: 2.2rem;
+    font-size: 39px;
     font-weight: 600;
-    margin-bottom: 0.3rem;
-    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #1c1c1c;
 }
 
-.title span {
-    font-weight: 800;
+.title .blue {
+    color: #1879ca;
 }
 
 .subtitle {
-    font-size: 0.95rem;
-    color: #cde5fa;
+    font-size: 15px;
+    color: #6c757d;
+    margin-bottom: 0;
+    text-align: center !important;
+}
+
+.subtitle + .subtitle {
+    margin-top: 0;
     margin-bottom: 2rem;
 }
 
 .input-group {
-    margin-bottom: 1.3rem;
+    margin-top: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.input-group:first-of-type {
+    margin-top: 3rem;
 }
 
 .input-group label {
-    font-size: 0.9rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
     display: block;
-    color: #ffffff;
+    margin-bottom: 0.4rem;
+    color: #1c1c1c;
+    font-weight: 500;
 }
 
+/* Box for email/password input with icon */
 .input-box {
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid #ffffff;
-    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
     padding: 0.75rem 1rem;
-    backdrop-filter: blur(8px);
+    background: #fff;
+    transition: border 0.2s ease;
+}
+
+.input-box:hover {
+    border: 2px solid #1B80C3;
 }
 
 .input-box input {
@@ -118,84 +160,173 @@ body, html {
     border: none;
     outline: none;
     font-size: 1rem;
-    background-color: transparent;
-    color: #ffffff;
+    background: transparent;
+    color: #212529;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.input-box input::placeholder {
+    color: #adb5bd;
 }
 
 .input-box .icon {
-    margin-right: 0.7rem;
-    color: #ffffff;
+    margin-right: 10px;
+    font-size: 1.1rem;
+    color: #adb5bd;
 }
 
 .input-box .toggle-password {
-    margin-left: 0.7rem;
+    margin-left: 10px;
+    font-size: 1.1rem;
+    color: #adb5bd;
     cursor: pointer;
-    color: #ffffff;
 }
 
-/* Form footer: remember me + forgot password */
-.form-footer {
+/* Remember & Forgot Password */
+.form-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.3rem;
-    height: 2.2rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    color: #1c1c1c;
 }
 
-.checkbox-group {
+.form-options .remember {
     display: flex;
     align-items: center;
-    font-size: 0.85rem;
-    color: #ffffff;
+    gap: 6px;
 }
 
-.checkbox-group input {
-    margin-right: 0.5rem;
+.form-options .forgot {
+    color: #1879ca;
+    font-weight: 500;
+    text-decoration: none;
 }
 
-.forgot-password a {
-    font-size: 0.85rem;
-    color: #ffffff;
+.form-options .forgot:hover {
     text-decoration: underline;
-    cursor: pointer;
-    height: 100%;
-    display: flex;
-    align-items: center;
 }
 
-/* Button */
-.btn-primary {
+/* Submit Button */
+button.btn-primary {
     width: 100%;
     padding: 0.9rem;
-    background-color: #ffffff;
-    color: #1879ca;
+    background-color: #1879ca;
+    color: #fff;
     border: none;
     font-size: 1rem;
     font-weight: 600;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
-    background-color: #f0f0f0;
+button.btn-primary:hover {
+    background-color: #125a8d;
 }
 
-.bottom-text {
-    font-size: 0.85rem;
-    text-align: center;
-    margin-top: 1.2rem;
-}
-
-.bottom-text a {
-    color: #ffffff;
-    font-weight: 600;
-    text-decoration: underline;
-}
-
+/* Error Message */
 .error-msg {
-    color: #ffdddd;
+    color: red;
     font-size: 0.8rem;
+    margin-top: 0.25rem;
     text-align: center;
-    margin-top: 0.5rem;
+}
+/* -----------------------------------
+   Responsive Media Queries
+----------------------------------- */
+@media (max-width: 1024px) {
+    .register-page {
+        flex-direction: column; /* ⬅️ Hero image now appears above form */
+        height: auto;
+        padding-top: 100px;
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        padding: 2rem;
+    }
+
+    .right-section {
+        padding: 4rem 2rem;
+    }
+
+    .title {
+        font-size: 32px;
+    }
+
+    .input-box input {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-wrapper {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo {
+        transform: none;
+        margin-bottom: 10px;
+    }
+
+    .nav-text {
+        transform: none;
+        margin: 0;
+    }
+
+    .register-page {
+        flex-direction: column;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .right-section {
+        padding: 3rem 1.5rem;
+    }
+
+    .left-section {
+        padding-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .right-section {
+        padding: 2rem 1rem;
+    }
+
+    .left-section {
+        padding: 1rem 1rem 0;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .input-box {
+        padding: 0.6rem 0.9rem;
+    }
+
+    .input-box input {
+        font-size: 0.9rem;
+    }
+
+    button.btn-primary {
+        font-size: 0.95rem;
+    }
 }

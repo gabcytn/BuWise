@@ -30,11 +30,11 @@
         <ul class="nav-menu">
             <li><a href="{{ route('home') }}">Home</a></li>
             <li><a href="{{ route('about') }}">About Us</a></li>
-            <li><a href="{{ route('services') }}">Services</a></li>
+<li><a href="{{ route('services') }}" style="color: #279CE9;">Services</a></li>
             <li><a href="/privacy">Privacy Policy</a></li>
             <li><a href="/contact">Contact Us</a></li>
         </ul>
-    <a href="/register" class="btn-signin desktop-signin">Sign In</a>
+    <a href="/login" class="btn-signin desktop-signin">Sign In</a>
 
     </div>
 </nav>
@@ -48,11 +48,11 @@
     <ul class="side-nav-menu">
         <li><a href="{{ route('home') }}">Home</a></li>
         <li><a href="{{ route('about') }}">About Us</a></li>
-        <li><a href="{{ route('services') }}">Services</a></li>
+<li><a href="{{ route('services') }}" style="color: #279CE9;">Services</a></li>
         <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/contact">Contact Us</a></li>
     </ul>
-        <a href="/register" class="btn-signin mobile-signin">Sign In</a>
+        <a href="/login" class="btn-signin mobile-signin">Sign In</a>
 
 </div>
 
@@ -85,73 +85,73 @@
                     <i class="mdi mdi-file-document-multiple"></i>
                 </div>
                 <h3>Automated Invoice Management</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+                <p>Enables users to upload and view invoice details in real time. This automation ensures 100% accuracy when mapping invoices to accounts and entering their details, significantly simplifying the process.</p>
             </div>
             <div class="service-box">
                 <div class="service-icon">
                     <i class="mdi mdi-database-import"></i>
                 </div>
                 <h3>Seamless Data Migration</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+                <p>Lets you upload journal entries from Excel to the system using RPA, significantly reducing manual effort and potential errors. This automation ensures your financial records are updated quickly and accurately.</p>
             </div>
             <div class="service-box">
                 <div class="service-icon">
                     <i class="mdi mdi-robot"></i>
                 </div>
                 <h3>RPA Integration</h3>
-                <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+                <p>Enhances your firm's operational efficiency by automating repetitive, rule-based tasks. Reduces manual errors, processing times, and frees up your team to focus on higher-value and strategic activities.</p>
             </div>
        </div>
        
 <div class="services-grid">
   <div class="service-box">
     <div class="service-icon">
-      <i class="mdi mdi-file-chart-outline"></i> <!-- 📄 Automated Journal Entries -->
+      <i class="mdi mdi-file-chart-outline"></i> 
     </div>
     <h3>Automated Journal Entries</h3>
-    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+    <p>Leverages RPA to upload journal entries directly from Excel into the system. This process eliminates manual data entry, ensuring accuracy, consistency, and significantly reducing the time for bookkeeping.</p>
   </div>
   
   <div class="service-box">
     <div class="service-icon">
-      <i class="mdi mdi-account-group-outline"></i> <!-- 👥 Efficient Staff Management -->
+      <i class="mdi mdi-account-group-outline"></i> 
     </div>
     <h3>Efficient Staff Management</h3>
-    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+    <p>Efficiently manage your team by adding staff and assigning tasks, while precisely limiting their capabilities to only essential bookkeeping functions. This ensures streamlined operations and enhanced security.</p>
   </div>
   
   <div class="service-box">
     <div class="service-icon">
-      <i class="mdi mdi-file-chart"></i> <!-- 📊 Quick Report Generation -->
+      <i class="mdi mdi-file-chart"></i>
     </div>
     <h3>Quick Report Generation</h3>
-    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+    <p>Generates comprehensive reports from financial data, providing  instant insights into your client’s performance. This includes essential statements like Income Statements (P&L), Balance Sheets, and Cash Flow Statements.</p>
   </div>
 </div>
 
 <div class="services-grid">
   <div class="service-box">
     <div class="service-icon">
-      <i class="mdi mdi-account-tie-outline"></i> <!-- 👨‍💼 Streamlined Client Management -->
+      <i class="mdi mdi-account-tie-outline"></i> 
     </div>
     <h3>Streamlined Client Management</h3>
-    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+    <p>Allows accountants to manage their clients by adding new accounts, editing account details, and centralizing all client information in one secure location  for stronger client relationships.</p>
   </div>
   
   <div class="service-box">
     <div class="service-icon">
-      <i class="mdi mdi-cellphone-cog"></i> <!-- 📱 BuWise Mobile -->
+      <i class="mdi mdi-cellphone-cog"></i> 
     </div>
     <h3>BuWise Mobile</h3>
-    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+    <p>Empowers your clients with a convenient portal to their financial data, allowing them to effortlessly upload invoices, view personalized schedules, and generate essential reports. </p>
   </div>
   
   <div class="service-box">
     <div class="service-icon">
-      <i class="mdi mdi-clipboard-check-outline"></i> <!-- ✅ Improved Task Management -->
+      <i class="mdi mdi-clipboard-check-outline"></i> 
     </div>
     <h3>Improved Task Management</h3>
-    <p>Lorem ipsum is simply dummy text of the printing and typesetting industry...</p>
+    <p>Allows users to manage and track their tasks by providing a centralized platform where they can create, assign, prioritize, and monitor the progress of various activities. </p>
   </div>
 </div>
 
@@ -170,9 +170,9 @@
         <ul class="footer-links">
             <li><a href="{{ route('home') }}">HOME</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
-            <li><a href="{{ route('services') }}">SERVICES</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
-            <li><a href="/contact">Contact Us</a></li>
+<li><a href="{{ route('services') }}" style="color: #279CE9;">SERVICES</a></li>
+            <li><a href="/privacy">PRIVACY POLICY</a></li>
+            <li><a href="/contact">CONTACT US</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>
         </ul>

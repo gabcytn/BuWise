@@ -1,4 +1,5 @@
 @vite(['resources/js/profile/partials.js', 'resources/css/profile/password-dialog.css'])
+
 <form action="/logout" method="POST" id="logout-form">
     @csrf
 </form>
