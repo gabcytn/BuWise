@@ -4,8 +4,11 @@ const clientSelect = document.querySelector(".client-select");
 
 // Handle account row clicks
 ledgerAccounts.forEach((account) => {
-    account.addEventListener("click", () => {
+    account.addEventListener("click", (e) => {
         const accountCode = account.dataset.accountCode;
+        if (e.target.classList.contains(".fa-solid")) {
+            return;
+        }
 
         if (clientSelect.value === "") {
             mainForm.reportValidity();
@@ -16,7 +19,6 @@ ledgerAccounts.forEach((account) => {
     });
 });
 
-// ✅ Fix: Attach the search event to the input field, not the image
 document.querySelector("#account-search").addEventListener("input", (e) => {
     const searchText = e.target.value.toLowerCase();
 
@@ -73,4 +75,38 @@ document.querySelector(".type-select").addEventListener("change", (e) => {
             ledgerAccounts[i].style.display = "";
         else ledgerAccounts[i].style.display = "none";
     }
+});
+
+let FORM_SELECTED;
+
+const deleteDialog = document.querySelector("dialog#delete-account");
+document.querySelectorAll(".action-column form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        FORM_SELECTED = form;
+        deleteDialog.showModal();
+    });
+});
+
+const confirmDeleteButton = deleteDialog.querySelector("button[type='submit']");
+deleteDialog
+    .querySelector("input#confirmation")
+    .addEventListener("input", (e) => {
+        const v = e.target.value;
+        if (v === "permanently delete") {
+            confirmDeleteButton.disabled = false;
+        } else {
+            confirmDeleteButton.disabled = true;
+        }
+    });
+
+deleteDialog
+    .querySelector("button[type='button']")
+    .addEventListener("click", () => {
+        deleteDialog.close();
+    });
+
+deleteDialog.querySelector("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    FORM_SELECTED.submit();
 });

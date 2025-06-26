@@ -291,3 +291,46 @@
          }
      }
  }
+
+ #delete-account {
+     max-width: 550px;
+     width: 95%;
+
+     h3 {
+         background-color: var(--main-blue);
+         color: var(--off-white);
+         padding: 1rem 2rem;
+     }
+
+     .contents {
+         padding: 1rem 2rem;
+
+         h4 {
+             font-size: 1.25rem;
+         }
+
+         p {
+             font-size: 0.85rem;
+             color: var(--grey);
+         }
+     }
+
+     .form-wrapper {
+         display: flex;
+         flex-direction: column;
+         margin: 0.75rem 0;
+
+         label {
+             font-size: 0.9rem;
+         }
+     }
+
+     button:disabled {
+         opacity: 0.5;
+         cursor: not-allowed;
+     }
+
+     button:hover:not(:disabled) {
+         opacity: 0.85;
+     }
+ }
