@@ -121,4 +121,20 @@
             </div>
         </form>
     </dialog>
+    <dialog id="delete-account">
+        <h3>Confirm Deletion</h3>
+        <div class="contents">
+            <h4>Are you sure you want to delete this account?</h4>
+            <p>All transactions related to this account will be lost.</p>
+            <p>This action is irreversible.</p>
+            <form class="form-wrapper" id="delete-acc-form">
+                <label for="confirmation">Type "permanently delete" to confirm</label>
+                <input id="confirmation" type="text" placeholder="permanently delete" />
+            </form>
+            <div class="buttons-row">
+                <button disabled form="delete-acc-form" type="submit">Delete</button>
+                <button form="delete-acc-form" type="button">Cancel</button>
+            </div>
+        </div>
+    </dialog>
 </x-app-layout>
