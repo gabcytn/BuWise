@@ -15,7 +15,7 @@
     <div>
         <div class="nav-brand">
             <img src="{{ asset('images/nav-logo.png') }}" alt="Company Logo" id="nav-logo" />
-            <h3 id="app-name">{{ config('app.name') }}</h3>
+            <a href="/" id="app-name">{{ config('app.name') }}</a>
         </div>
         <ul class="nav-list">
             <div class="nav-section">
