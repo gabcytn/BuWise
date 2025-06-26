@@ -5,11 +5,13 @@ use App\Http\Controllers\APIs\MobileInvoiceController;
 use App\Http\Controllers\APIs\ReportsController;
 use App\Http\Controllers\APIs\TasksController;
 use App\Http\Controllers\InsightsController;
+use App\Http\Middleware\VerifyClientEmail;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 
 Route::middleware(['verify.api', 'throttle:6,1'])->group(function () {
@@ -19,6 +21,8 @@ Route::middleware(['verify.api', 'throttle:6,1'])->group(function () {
     // invoices might be processed at bulk and might be blocked by rate limiter
     Route::post('/bot/invoices/processed', [MobileInvoiceController::class, 'callback'])
         ->withoutMiddleware('throttle:6,1');
+    Route::post('/user/reset-password', [PasswordResetLinkController::class, 'store'])
+        ->middleware(VerifyClientEmail::class);
 });
 
 Route::middleware(['verify.api', 'auth:sanctum', 'suspended'])->group(function () {
