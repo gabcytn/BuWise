@@ -9,7 +9,7 @@
         <div class="container nav-wrapper">
             <img src="/images/buwiselogo.png" alt="BuWise Logo" class="logo">
             <div class="nav-text">
-                <span>Already have a BuWise account?</span>
+                <span>Want to be an Accountant?</span>
                 <a href="/register" class="signin-link">SIGN UP</a>
             </div>
         </div>

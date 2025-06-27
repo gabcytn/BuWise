@@ -214,6 +214,40 @@ html {
     color: #125a8d;
 }
 
+/* Recovery Code Section */
+.recovery-code {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #1B80C3;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.recovery-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recovery-form input[name="recovery_code"] {
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.recovery-form input[name="recovery_code"]:focus {
+    outline: none;
+    border-color: #1B80C3;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 2.1);
+}
 
 /* Fade-in animation */
 @keyframes fadeIn {
