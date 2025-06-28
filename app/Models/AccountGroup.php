@@ -12,6 +12,14 @@ class AccountGroup extends Model
     public const REVENUE = 4;
     public const EXPENSES = 5;
 
+    public const LOOKUP = [
+        'asset' => 1,
+        'liability' => 2,
+        'equity' => 3,
+        'revenue' => 4,
+        'expense' => 5,
+    ];
+
     public const IS_TEMPORARY = [
         AccountGroup::ASSETS => false,
         AccountGroup::LIABILITIES => false,

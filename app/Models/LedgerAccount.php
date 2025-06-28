@@ -29,6 +29,7 @@ class LedgerAccount extends Model
     protected $fillable = [
         'code',
         'account_group_id',
+        'type',
         'accountant_id',
         'name',
     ];

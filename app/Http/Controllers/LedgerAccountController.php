@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class LedgerAccountController extends Controller
@@ -32,11 +34,16 @@ class LedgerAccountController extends Controller
             ->orderBy('code')
             ->get();
         $accountGroups = AccountGroup::all();
+        $accountTypes = [];
+        foreach (LedgerAccount::TYPES as $type) {
+            $accountTypes[] = $type;
+        }
 
         return view('ledger.coa', [
             'clients' => $clients,
             'accounts' => $accounts,
             'accountGroups' => $accountGroups,
+            'accountTypes' => $accountTypes,
         ]);
     }
 
@@ -171,7 +178,7 @@ class LedgerAccountController extends Controller
     {
         Gate::authorize('createAccount', LedgerAccount::class);
         $request->validate([
-            'account_type' => 'required|in:1,2,3,4,5',
+            'account_type' => 'required|in:asset,cash,receivable,payable,liability,equity,revenue,expense',
             'account_code' => 'required|numeric',
             'account_name' => 'required|string|max:100',
             'account_description' => 'nullable|string|max:255',
@@ -180,7 +187,7 @@ class LedgerAccountController extends Controller
         $user = $request->user();
         $accountant_id = getAccountantId($user);
 
-        if (!str_starts_with($request->account_code, $request->account_type))
+        if (!str_starts_with($request->account_code, strval($this->getAccountGroup($request->account_type))))
             return redirect()->back()->withErrors(['error' => 'Account code prefix is incorrect']);
 
         $account = LedgerAccount::where('code', '=', $request->account_code)
@@ -196,12 +203,29 @@ class LedgerAccountController extends Controller
 
         LedgerAccount::create([
             'code' => $request->account_code,
-            'account_group_id' => $request->account_type,
+            'account_group_id' => $this->getAccountGroup($request->account_type),
+            'type' => in_array($request->account_type, LedgerAccount::TYPES) ? $request->account_type : null,
             'accountant_id' => $accountant_id,
             'name' => $request->account_name
         ]);
 
         return redirect()->back()->with(['status' => 'Account created successfully!']);
+    }
+
+    private function getAccountGroup($account_type): int
+    {
+        switch ($account_type) {
+            case 'cash':
+            case 'receivable':
+                return 1;
+                break;
+            case 'payable':
+                return 2;
+                break;
+            default:
+                return AccountGroup::LOOKUP[$account_type];
+                break;
+        }
     }
 
     public function deleteAccount(LedgerAccount $ledgerAccount)

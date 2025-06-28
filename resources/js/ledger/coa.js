@@ -55,7 +55,13 @@ accountCode.addEventListener("input", validateAccountCodePrefix);
 accountType.addEventListener("change", validateAccountCodePrefix);
 
 function validateAccountCodePrefix() {
-    const accountTypeValue = accountType[accountType.selectedIndex].value;
+    const accountTypeValue = getAccountTypePrefix(
+        accountType[accountType.selectedIndex].value,
+    );
+    if (accountTypeValue === "0") {
+        alert("Invalid account type value!");
+        return;
+    }
     if (
         accountCode.value &&
         accountTypeValue &&
@@ -63,6 +69,26 @@ function validateAccountCodePrefix() {
     ) {
         alert(`Account Code should start with a ${accountTypeValue}`);
         accountCode.value = "";
+    }
+}
+
+function getAccountTypePrefix(type) {
+    switch (type) {
+        case "asset":
+        case "cash":
+        case "receivable":
+            return "1";
+        case "liability":
+        case "payable":
+            return "2";
+        case "equity":
+            return "3";
+        case "revenue":
+            return "4";
+        case "expense":
+            return "5";
+        default:
+            return "0";
     }
 }
 

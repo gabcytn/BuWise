@@ -95,8 +95,13 @@
                         <label for="account-type">Account Type</label>
                         <select name="account_type" id="account-type" required>
                             <option value="" selected disabled>Select a Type</option>
-                            @foreach ($accountGroups as $accountGroup)
-                                <option value="{{ $accountGroup->id }}">{{ $accountGroup->name }}</option>
+                            @foreach ($accountTypes as $type)
+                                <option value="{{ $type }}">{{ ucfirst($type) }}</option>
+                            @endforeach
+                            @foreach ($accountGroups as $group)
+                                <option value="{{ \Illuminate\Support\Str::of($group->name)->lower()->singular() }}">
+                                    {{ $group->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
