@@ -1,5 +1,5 @@
 @php
-    $headers = ['Account ID', 'Account Name', 'Debit', 'Credit'];
+    $headers = ['Account Code', 'Account Name', 'Debit', 'Credit'];
 @endphp
 @vite(['resources/css/ledger/trialBalance.css', 'resources/js/ledger/trialBalance.js'])
 <x-app-layout title="Ledger">
