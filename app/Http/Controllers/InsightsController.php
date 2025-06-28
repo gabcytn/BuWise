@@ -78,7 +78,7 @@ class InsightsController extends Controller
             ->join('users', 'users.id', '=', 'tr.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->join('account_groups AS acc_group', 'acc_group.id', '=', 'acc.account_group_id')
-            ->where('le.type', '=', $account_type)
+            ->where('acc.type', '=', $account_type)
             ->where('users.id', '=', $user->id)
             ->whereBetween('tr.date', [$period[0], $period[1]])
             ->select(
