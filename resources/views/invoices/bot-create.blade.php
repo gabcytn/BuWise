@@ -1,4 +1,3 @@
-<x-app-layout>
     @vite('resources/js/invoices/create.js')
     <div style="max-width: 1500px; width: 90%; margin: 2rem auto;">
         <form action="{{ route('invoices.store') }}" method="POST" style="display: grid; gap: 1rem;"
@@ -46,4 +45,3 @@
 
         </form>
     </div>
-</x-app-layout>
