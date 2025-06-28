@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class InsightsController extends Controller
 {
@@ -31,17 +30,17 @@ class InsightsController extends Controller
     {
         if (!$user)
             $user = User::find($request->user()->id);
-        return $this->getData($user, [1, 2, 3, 4]);
+        return $this->getData($user, 'cash');
     }
 
     public function receivables(User $user)
     {
-        return $this->getData($user, [5, 6]);
+        return $this->getData($user, 'receivable');
     }
 
     public function payables(User $user)
     {
-        return $this->getData($user, [17, 18, 19, 20, 21, 24, 26]);
+        return $this->getData($user, 'payable');
     }
 
     public function profitAndLoss(Request $request, ?User $user = null)
@@ -71,7 +70,7 @@ class InsightsController extends Controller
         return json_decode(json_encode($data));
     }
 
-    private function getData(User $user, array $accountIds)
+    private function getData(User $user, string $account_type)
     {
         $period = getStartAndEndDate('this_year');
         $data = DB::table('ledger_entries AS le')
@@ -79,7 +78,7 @@ class InsightsController extends Controller
             ->join('users', 'users.id', '=', 'tr.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->join('account_groups AS acc_group', 'acc_group.id', '=', 'acc.account_group_id')
-            ->whereIn('le.account_id', $accountIds)
+            ->where('le.type', '=', $account_type)
             ->where('users.id', '=', $user->id)
             ->whereBetween('tr.date', [$period[0], $period[1]])
             ->select(
