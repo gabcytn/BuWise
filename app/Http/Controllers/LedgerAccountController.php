@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AccountGroup;
 use App\Models\LedgerAccount;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -231,8 +232,26 @@ class LedgerAccountController extends Controller
     public function deleteAccount(LedgerAccount $ledgerAccount)
     {
         Gate::authorize('deleteAccount', $ledgerAccount);
-        $ledgerAccount->delete();
-
-        return redirect()->back()->with('status', 'Successfully deleted account.');
+        try {
+            DB::beginTransaction();
+            $transactions = DB::table('transactions AS tr')
+                ->join('ledger_entries AS le', 'le.transaction_id', '=', 'tr.id')
+                ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
+                ->select('tr.id')
+                ->get();
+            $ids = [];
+            foreach ($transactions as $transaction)
+                $ids[] = $transaction->id;
+            Transaction::destroy($ids);
+            $ledgerAccount->delete();
+            DB::commit();
+            return redirect()->back()->with('status', 'Successfully deleted account.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error deleting ledger account');
+            Log::error($e->getMessage());
+            Log::error(truncate($e->getTraceAsString(), 200));
+            return redirect()->back()->withErrors(['error' => 'Failed to delete account.']);
+        }
     }
 }
