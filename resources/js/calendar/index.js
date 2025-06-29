@@ -117,7 +117,24 @@ function displayTasksOnSidebar(tasks) {
     const ul = document.querySelector(".aside ul");
     tasks.forEach((task) => {
         const li = document.createElement("li");
-        li.textContent = `${task.name}: ${task.start_date}`;
+        const taskTitle = document.createElement("p");
+        taskTitle.classList.add("task-title");
+        taskTitle.textContent = task.name;
+        const taskDue = document.createElement("p");
+        taskDue.classList.add("task-due");
+
+        const dateOptions = { day: "2-digit", year: "numeric", month: "short" };
+        const date = new Date(task.end_date).toLocaleDateString(
+            "en-US",
+            dateOptions,
+        );
+        taskDue.textContent = `Due date: ${date}`;
+        const taskAssigned = document.createElement("p");
+        taskAssigned.classList.add("task-assigned");
+        taskAssigned.textContent = task.creator.name;
+        li.appendChild(taskTitle);
+        li.appendChild(taskDue);
+        li.appendChild(taskAssigned);
         ul.appendChild(li);
     });
 }

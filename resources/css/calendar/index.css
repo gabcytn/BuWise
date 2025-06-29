@@ -31,6 +31,32 @@
     }
 }
 
+.content.task-list {
+    li {
+        .task-title {
+            color: var(--soft-black);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px
+        }
+
+        .task-due {
+            color: var(--subtitle);
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .task-assigned {
+            color: var(--main-blue);
+            font-size: 12px;
+        }
+    }
+
+    li+li {
+        margin-top: 1rem;
+    }
+}
+
 dialog#add-task {
     h2 {
         padding: 1rem 2rem;
