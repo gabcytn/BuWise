@@ -30,14 +30,11 @@ dialog.querySelector("form").addEventListener("submit", (e) => {
 });
 
 async function deleteItem(itemId) {
-    const res = await fetch(`/invoices/failed/${itemId}`, {
+    await fetch(`/invoices/failed/${itemId}`, {
         method: "DELETE",
         headers: {
             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
                 .content,
         },
     });
-
-    console.log(res.status);
-    console.log(await res.json());
 }

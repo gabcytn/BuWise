@@ -11,8 +11,11 @@ function submitForm() {
     form.submit();
 }
 
-document.querySelectorAll("table td button").forEach((button) => {
-    button.addEventListener("click", async () => {
+const completed = document.querySelector(".todo-table.completed tbody");
+const upcoming = document.querySelector(".todo-table.upcoming tbody");
+const current = document.querySelector(".todo-table.content tbody");
+document.querySelectorAll("input[type='checkbox']").forEach((button) => {
+    button.addEventListener("change", async () => {
         const id = button.parentElement.parentElement.dataset.taskId;
         const isComplete =
             button.parentElement.parentElement.dataset.taskComplete === "true";
@@ -29,9 +32,23 @@ document.querySelectorAll("table td button").forEach((button) => {
                 status: isComplete ? "not_started" : "completed",
             }),
         });
-        window.location.reload();
+        appendToAppropriateTable(button);
     });
 });
+
+function appendToAppropriateTable(button) {
+    const isComplete =
+        button.parentElement.parentElement.dataset.taskComplete === "true";
+    const row = button.parentElement.parentElement;
+    row.remove();
+    if (isComplete) {
+        current.appendChild(row);
+        row.dataset.taskComplete = "false";
+    } else {
+        completed.appendChild(row);
+        row.dataset.taskComplete = "true";
+    }
+}
 
 fetchTasks();
 async function fetchTasks() {
@@ -215,3 +232,10 @@ function updateChartLabels(
     amount.style.color = "#1B80C3";
     subtitle.textContent = `${remainingLength} out of ${totalLength} remaining`;
 }
+
+document.querySelectorAll("td:nth-child(7)").forEach((item) => {
+    const textContent = item.textContent;
+    const dateOptions = { month: "short", year: "numeric", day: "2-digit" };
+    const date = new Date(textContent).toLocaleDateString("en-US", dateOptions);
+    item.textContent = date;
+});

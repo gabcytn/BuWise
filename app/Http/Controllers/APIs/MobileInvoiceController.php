@@ -17,9 +17,11 @@ use Illuminate\Validation\Rules\File;
 
 class MobileInvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
         $invoices = Transaction::where('type', '=', 'invoice')
+            ->where('client_id', '=', $user->id)
             ->orderBy('id', 'DESC')
             ->get();
 

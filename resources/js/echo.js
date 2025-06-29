@@ -55,7 +55,6 @@ async function startup() {
         document
             .querySelector("#notification-banner")
             .classList.remove("d-none");
-        console.log("RECEIVED HERE!!!");
     });
 }
 

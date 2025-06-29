@@ -77,15 +77,15 @@
                     <div class="pl-texts">
                         <div class="summary-card pl-revenue">
                             <h6 class="card-label">Total Revenue</h6>
-                            <p class="card-value">10,007.99</p>
+                            <p class="card-value"></p>
                         </div>
                         <div class="summary-card pl-expenses">
                             <h6 class="card-label">Total Expenses</h6>
-                            <p class="card-value">8971.05</p>
+                            <p class="card-value"></p>
                         </div>
                         <div class="summary-card pl-profit">
                             <h6 class="card-label">Profit</h6>
-                            <p class="card-value">8971.05</p>
+                            <p class="card-value"></p>
                         </div>
                     </div>
                 </div>
@@ -106,11 +106,11 @@
                     <div class="cash-flow__body--texts">
                         <div class="inflows summary-card">
                             <h6 class="card-label">Inflows</h6>
-                            <p class="card-value">10,007.99</p>
+                            <p class="card-value"></p>
                         </div>
                         <div class="outflows summary-card">
                             <h6 class="card-label">Outflows</h6>
-                            <p class="card-value">8971.05</p>
+                            <p class="card-value"></p>
                         </div>
                     </div>
                 </div>

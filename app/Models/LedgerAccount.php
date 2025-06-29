@@ -20,9 +20,16 @@ class LedgerAccount extends Model
     public const SALES_DISCOUNT = 32;
     public const GENERAL_EXPENSE = 36;
 
+    public const TYPES = [
+        'cash',
+        'receivable',
+        'payable',
+    ];
+
     protected $fillable = [
         'code',
         'account_group_id',
+        'type',
         'accountant_id',
         'name',
     ];

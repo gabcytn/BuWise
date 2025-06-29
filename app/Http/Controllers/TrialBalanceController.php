@@ -71,7 +71,7 @@ class TrialBalanceController extends Controller
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
             ->orderBy('acc.id')
             ->select(
-                'acc.id AS acc_id',
+                'acc.code AS acc_id',
                 'acc.name AS acc_name',
                 'acc.account_group_id AS acc_group_id',
                 DB::raw("SUM(CASE WHEN le.entry_type = 'debit' THEN le.amount ELSE 0 END) AS debit"),

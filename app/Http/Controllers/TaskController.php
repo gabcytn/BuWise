@@ -171,7 +171,8 @@ class TaskController extends Controller
     {
         Gate::authorize('viewAny', Task::class);
         $user = $request->user();
-        $tasks = Task::where('assigned_to', '=', $user->id)
+        $tasks = Task::with('creator')
+            ->where('assigned_to', '=', $user->id)
             ->get();
 
         return Response::json([
