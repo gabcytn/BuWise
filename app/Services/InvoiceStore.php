@@ -185,6 +185,7 @@ class InvoiceStore
 
     private function ledgerEntryForSales(Transaction $invoice)
     {
+        $withholding_tax = $this->request->withholding_tax ?: 0.0;
         if ($this->taxTotal > 0) {
             $taxEntry = LedgerEntry::create([
                 'transaction_id' => $invoice->id,
@@ -202,6 +203,17 @@ class InvoiceStore
                 'amount' => $this->discountTotal,
             ]);
         }
+        if ($withholding_tax > 0.0) {
+            $withholding_tax_account = LedgerAccount::where('code', '=', 106)
+                ->where('name', '=', 'Withholding Tax Receivable')
+                ->first();
+            LedgerEntry::create([
+                'transaction_id' => $invoice->id,
+                'account_id' => $withholding_tax_account->id,
+                'entry_type' => 'debit',
+                'amount' => $withholding_tax,
+            ]);
+        }
         LedgerEntry::insert([
             [
                 'transaction_id' => $invoice->id,
@@ -215,7 +227,7 @@ class InvoiceStore
                 'account_id' => self::ACCOUNT_LOOKUP[$this->request->payment_method],
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => null,
-                'amount' => $this->amountTotal - $this->discountTotal,
+                'amount' => $this->amountTotal - $this->discountTotal - $withholding_tax,
             ]
         ]);
     }
