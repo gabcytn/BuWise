@@ -122,7 +122,7 @@
                         <tbody>
                             @foreach ($upcoming as $item)
                                 <tr data-task-id="{{ $item->id }}" data-task-complete="false">
-                                    <td>{{ $item->name }}</td>
+                                    <td><input type="checkbox" />{{ $item->name }}</td>
                                     <td title="{{ $item->description }}">{{ truncate($item->description) }}</td>
                                     <td>{{ ucfirst($item->category) }}</td>
                                     <td>{{ \Illuminate\Support\Str::of($item->category_description)->replace('_', ' ')->title() }}
@@ -156,7 +156,7 @@
                         <tbody>
                             @foreach ($completed as $item)
                                 <tr data-task-id="{{ $item->id }}" data-task-complete="true">
-                                    <td>{{ $item->name }}</td>
+                                    <td><input type="checkbox" checked />{{ $item->name }}</td>
                                     <td title="{{ $item->description }}">{{ truncate($item->description) }}</td>
                                     <td>{{ ucfirst($item->category) }}</td>
                                     <td>{{ \Illuminate\Support\Str::of($item->category_description)->replace('_', ' ')->title() }}
