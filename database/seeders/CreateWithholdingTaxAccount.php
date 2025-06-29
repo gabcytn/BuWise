@@ -28,7 +28,7 @@ class CreateWithholdingTaxAccount extends Seeder
             'code' => 106,
             'account_group_id' => AccountGroup::ASSETS,
             'type' => 'receivable',
-            'name' => 'Withholding Tax Payable',
+            'name' => 'Withholding Tax Receivable',
         ]);
     }
 }
