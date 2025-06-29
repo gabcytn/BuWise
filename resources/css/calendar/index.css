@@ -32,6 +32,10 @@
 }
 
 .content.task-list {
+    ul {
+        list-style-type: circle;
+    }
+
     li {
         .task-title {
             color: var(--soft-black);

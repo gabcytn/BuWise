@@ -86,17 +86,18 @@
                 <div class="tasks-header">
                     <h3>To Do List</h3>
                 </div>
-                @foreach ($tasks as $item)
-                    <div class="task-item">
-                        <div class="task-checkbox"></div>
-                        <div class="task-content">
-                            <div class="task-title">{{ $item->name }}</div>
-                            <div class="task-meta">Due:
-                                {{ \Carbon\Carbon::createFromDate($item->end_date)->format('M d Y') }}</div>
-                            <div class="task-assigned">Created by {{ $item->creator->name }}</div>
-                        </div>
-                    </div>
-                @endforeach
+                <ul class="tasks-list">
+                    @foreach ($tasks as $item)
+                        <li class="task-item">
+                            <div class="task-content">
+                                <div class="task-title">{{ $item->name }}</div>
+                                <div class="task-meta">Due:
+                                    {{ \Carbon\Carbon::createFromDate($item->end_date)->format('M d Y') }}</div>
+                                <div class="task-assigned">Created by {{ $item->creator->name }}</div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
             <!-- Bar chart -->
             <div class="chart-card grid-child-4">

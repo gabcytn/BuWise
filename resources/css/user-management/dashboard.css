@@ -162,8 +162,12 @@
     font-size: 18px;
 }
 
+.tasks-list {
+    list-style-type: circle;
+    padding-inline-start: 20px;
+}
+
 .task-item {
-    display: flex;
     align-items: flex-start;
     padding: 15px 0;
     border-bottom: 1px solid #f7fafc;
