@@ -31,8 +31,8 @@
         <ul class="nav-menu">
             <li><a href="{{ route('home') }}">Home</a></li>
 <li><a href="{{ route('about') }}" style="color: #279CE9;">About Us</a></li>
-            <li><a href="{{ route('services') }}">Services</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="{{ route('services') }}">Features</a></li>
+            <li><a href="/privacy">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
         </ul>
     <a href="/login" class="btn-signin desktop-signin">Sign In</a>
@@ -49,8 +49,8 @@
     <ul class="side-nav-menu">
         <li><a href="{{ route('home') }}">Home</a></li>
 <li><a href="{{ route('about') }}" style="color: #279CE9;">About Us</a></li>
-        <li><a href="{{ route('services') }}">Services</a></li>
-        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="{{ route('services') }}">Features</a></li>
+        <li><a href="/privacy">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
     </ul>
         <a href="/login" class="btn-signin mobile-signin">Sign In</a>
@@ -65,10 +65,10 @@
 <section class="hero" style="background: url('/images/aboutbg.png') center center / cover no-repeat; height: 60vh; position: relative;">
     <div class="container hero-grid" style="position: relative; z-index: 1;">
         <div class="hero-text">
-            <h1>About <span class="blue">BuWise</span> </h1>
+            <h1>About BuWise</h1>
            
             <div class="hero-buttons">
-                <a href="{{ route('services') }}" class="btn btn-primary">Our Services</a>
+                <a href="{{ route('services') }}" class="btn btn-primary">Features</a>
                 <a href="/contact" class="btn btn-outline">Get in Touch</a>
             </div>
         </div>
@@ -112,10 +112,9 @@
         </div>
         <div class="section-text">
             <h2>How does <span class="highlight">BuWise</span>  improve Bookkeeping?<span class="highlight">data</span></h2>
-            <p>BuWise is able to improve your Bookkeeping process by doing the following: First, we automate your invoice management. Simply upload an invoice, and our software bots will instantly scan its details and create a complete journal entry, including the correct account names and groups. Next, we meticulously check and verify these entries to ensure unparalleled accuracy before they're posted. After being processed as a Journal Entry, Ledger Entry, it will now generate a Report. And you didn’t even have to lift a finger! 
-
-</p> <p> Our bookkeeping management system is completely free to try! Sign up as an Accountant now to manage your firm and optimize your bookkeeping process now. </p>
-              <a href="/register" class="cta-button">Sign up as an Accountant <span class="arrow">→</span>
+            <p>BuWise is able to improve your Bookkeeping process by doing the following: First, we automate your invoice management. Simply upload an invoice, and our software bots will instantly scan its details and create a complete journal entry, including the correct account names and groups. Next, we meticulously check and verify these entries to ensure unparalleled accuracy before they're posted. After being processed as a Journal Entry, Ledger Entry, it will now generate a Report. 
+            </p>              
+            <a href="/register" class="cta-button">Sign up as an Accountant <span class="arrow">→</span>
             
         </a>
 
@@ -124,7 +123,17 @@
     </div>
 </section>
 
-
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-container">
+        <p class="cta-heading">GET STARTED</p>
+        <h2 class="cta-title">Be an Accountant</h2>
+        <p class="cta-description">
+            Create your account and instantly step into your role as an accountant. Our platform empowers you to form your organization and manage your entire accounting firm with unparalleled ease. Beyond effortlessly adding clients and setting up staff accounts, you'll conquer all your key bookkeeping tasks in one centralized, intuitive platform. What's more, our system automates repetitive tasks like data entry and reconciliation, freeing up valuable time. We also provide seamless data migration for your Excel files, ensuring a smooth transition. And with robust security measures built-in, your sensitive financial data is always protected. </p>
+              <a href="/register" class="cta-button">Sign up as an Accountant <span class="arrow">→</span>
+        </a>
+    </div>
+</section>
 
 <!-- Footer -->
 <footer class="footer">
@@ -135,8 +144,8 @@
         <ul class="footer-links">
             <li><a href="{{ route('home') }}">HOME</a></li>
 <li><a href="{{ route('about') }}" style="color: #279CE9;">ABOUT US</a></li>
-            <li><a href="{{ route('services') }}">SERVICES</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="{{ route('services') }}">FEATURES</a></li>
+            <li><a href="/privacy">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>

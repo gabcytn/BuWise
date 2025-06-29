@@ -187,6 +187,147 @@ overflow-x: hidden; /* disables horizontal scrolling */
     white-space: pre;
   }
 }
+/* about */
+.about-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 60px;
+  flex-wrap: wrap;
+}
+
+.about-content {
+  flex: 1 1 500px;
+  max-width: 600px;
+  padding-left: 60px; /* ← can adjust value */
+
+}
+
+.about-content h5 {
+  color: #1b80c3;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.about-content h2 {
+  font-size: 40px;
+  color: #1F3649;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.about-content h2 span {
+  color: #1F3649;
+}
+
+.about-content p {
+  color: #5a5a5a;
+  font-size: 20px;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.about-buttons .btn {
+  margin-right: 10px;
+  padding: 12px 28px;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: 2px solid transparent;
+}
+
+/* Contact us button */
+.about-buttons .btn-primary {
+  background-color: #1b80c3;
+  color: white;
+  border: 2px solid #1b80c3;
+}
+
+.about-buttons .btn-primary:hover {
+  background-color: white;
+  color: #1b80c3;
+}
+
+/* Learn More button */
+.about-buttons .btn-outline {
+  background-color: transparent;
+  color: #1b80c3;
+  border: 2px solid #1b80c3;
+}
+
+.about-buttons .btn-outline:hover {
+  background-color: #1b80c3;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #1b80c3;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #166aa3;
+}
+
+.btn-outline {
+  border: 2px solid #1b80c3;
+  color: #1b80c3;
+}
+
+.btn-outline:hover {
+  background-color: #1b80c3;
+  color: white;
+}
+
+.about-image-wrapper {
+  position: relative;
+  flex: 1 1 400px;
+  max-width: 800px;
+  margin-top: 30px;
+}
+
+.about-img {
+  width: 100%;
+  border-radius: 4px;
+  display: block;
+}
+
+.about-buttons .btn {
+  margin-right: 10px;
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: #1b80c3;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #166aa3;
+}
+
+.btn-outline {
+  border: 2px solid #1b80c3;
+  color: #1b80c3;
+  background-color: #1b80c3;
+}
+
+.btn-outline:hover {
+  background-color: #1b80c3;
+  color: white;
+}
+
 
 
 
@@ -366,93 +507,112 @@ overflow-x: hidden; /* disables horizontal scrolling */
   }
 }
 
-
-/* Hero Section */
-.hero {
-  background: url('/images/woman.png') center center / cover no-repeat;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 60px;
-  color: #1a1a1a;
+.hero-carousel {
   position: relative;
+  height: 96vh;
+  overflow: hidden;
 }
 
-.hero::before {
-  content: "";
+.carousel-slide {
   position: absolute;
   inset: 0;
-  background-color: rgba(27, 128, 195, 0.2);
-  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: white;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
 
-.hero-grid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  position: relative;
+.carousel-slide.active {
+  opacity: 1;
   z-index: 1;
 }
 
-.hero-text {
-  padding-right: 500px;
-  max-width: 580px;
-  flex: 1;
+
+
+.carousel-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  padding: 20px;
 }
 
-.hero-text h1 {
-  font-size: 45px;
-  line-height: 1.;
-  color: #1F3649;
+.carousel-content h1 {
+  font-size: 48px;
+  font-weight: bold;
   margin-bottom: 20px;
+  line-height: 1.2;
 }
 
-.hero-text .blue {
-  color: #1b80c3;
-}
-
-.hero-text p {
-  font-size: 20px;
+.carousel-content p {
+  font-size: 18px;
+  font-weight: 400;
   margin-bottom: 30px;
-  color: #1F3649;
-  font-weight: 500; /* medium boldness */
-
 }
 
 .hero-buttons .btn {
-  margin-right: 15px;
-  padding: 10px 20px;
+  margin: 0 10px;
+  padding: 12px 28px;
   font-weight: 600;
   border-radius: 4px;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   display: inline-block;
 }
 
+/* Our Services button */
 .btn-primary {
-  background-color: #1b80c3;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #166aa3;
-}
-
-.btn-outline {
-  border: 2px solid #1b80c3;
+  background-color: white;
   color: #1b80c3;
 }
 
-.btn-outline:hover {
+.btn-primary:hover {
   background-color: #1b80c3;
   color: white;
 }
 
-.hero-image img {
-  width: 600px;
-  max-width: 100%;
-  height: auto;
+/* Get In Touch button */
+.btn-outline {
+  background-color: transparent;
+  color: white;
+  border: 2px solid #ffffff;
+}
+
+.btn-outline:hover {
+  background-color: white;
+  color: #1b80c3;
+}
+.btn-outline {
+  /* existing styles */
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+
+/* Carousel controls */
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: white;
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.carousel-prev {
+  left: 20px;
+}
+
+.carousel-next {
+  right: 20px;
 }
 
 
@@ -483,6 +643,10 @@ overflow-x: hidden; /* disables horizontal scrolling */
   gap: 30px;
   justify-items: center;
 }
+.services {
+  background-color: #F2F2F2;
+}
+
 
 @media (max-width: 1024px) {
   .services-grid {
@@ -752,6 +916,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
 
 }
 
+
 .footer-container {
   width: 100%;
   max-width: 100%;
@@ -996,5 +1161,49 @@ overflow-x: hidden; /* disables horizontal scrolling */
   .device.monitor {
     max-width: 440px;
     
+  }
+}
+@media (max-width: 1024px) {
+  .about-section {
+    flex-direction: column;
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .about-content {
+    padding-left: 0;
+    max-width: 100%;
+  }
+
+  .about-content h2 {
+    font-size: 30px;
+  }
+
+  .about-content p {
+    font-size: 17px;
+  }
+
+  .about-buttons .btn {
+    margin-bottom: 15px;
+  }
+
+  .about-image-wrapper {
+    margin-top: 30px;
+    max-width: 100%;
+  }
+
+  .about-img {
+    width: 100%;
+  }
+}
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
   }
 }

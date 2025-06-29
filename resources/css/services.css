@@ -363,7 +363,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(27, 128, 195, 0.2);
+  background-color: rgba(27, 128, 195, 0.6);
   z-index: 0;
 }
 
@@ -417,22 +417,26 @@ overflow-x: hidden; /* disables horizontal scrolling */
 }
 
 .btn-primary {
-  background-color: #1b80c3;
-  color: white;
+  background-color: white;
+  color:#1b80c3;
 }
 
 .btn-primary:hover {
-  background-color: #166aa3;
+  background-color:#1b80c3 ;
+      color:white;
+
 }
 
 .btn-outline {
-  border: 2px solid #1b80c3;
-  color: #1b80c3;
+  border: 2px solid white;
+  color: white;
 }
 
 .btn-outline:hover {
   background-color: #1b80c3;
   color: white;
+    border: 2px solid #1b80c3;
+
 }
 
 .hero-image img {
