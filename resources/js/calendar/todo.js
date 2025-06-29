@@ -215,3 +215,10 @@ function updateChartLabels(
     amount.style.color = "#1B80C3";
     subtitle.textContent = `${remainingLength} out of ${totalLength} remaining`;
 }
+
+document.querySelectorAll("td:nth-child(7)").forEach((item) => {
+    const textContent = item.textContent;
+    const dateOptions = { month: "short", year: "numeric", day: "2-digit" };
+    const date = new Date(textContent).toLocaleDateString("en-US", dateOptions);
+    item.textContent = date;
+});

@@ -83,6 +83,19 @@ form.filters-row {
 }
 
 section.todo-table {
+    margin-bottom: 1rem;
+
+    caption {
+        text-align: left;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 0.5rem
+    }
+
+    .table-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+    }
 
     table {
         width: 100%;
@@ -91,16 +104,32 @@ section.todo-table {
 
     th,
     td {
+        font-size: 0.8rem;
         border: 1px solid rgba(0, 0, 0, 0.2);
-    }
-
-    th,
-    td {
-        padding: 0.375rem;
+        padding: 0.5rem 1rem;
         text-align: left;
     }
 
     thead tr {
         background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+        margin-right: 0.75rem;
+    }
+
+    tr:nth-of-type(2n) {
+        background-color: rgba(248, 248, 248, 1);
+    }
+
+    /* fixed td widths */
+    td:first-child,
+    th:first-child {
+        width: 15rem !important;
+    }
+
+    td:nth-of-type(1n),
+    th:nth-of-type(1n) {
+        width: 7.5rem;
     }
 }
