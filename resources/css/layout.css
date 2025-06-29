@@ -141,7 +141,7 @@ main {
     display: none;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 1000px) {
 
     .fa-circle-chevron-down {
         margin-top: 4px;
@@ -157,7 +157,7 @@ main {
         border-right: 3px solid var(--off-white);
         height: 100dvh;
         overflow: scroll;
-        min-width: 15rem;
+        min-width: 10rem;
         padding-top: 1rem;
     }
 
@@ -222,5 +222,11 @@ main {
     #route-title {
         display: inline-block;
         color: var(--main-blue);
+    }
+}
+
+@media (min-width: 1200px) {
+    .nav-sm {
+        min-width: 15rem;
     }
 }

@@ -17,19 +17,23 @@ closeDeleteItemDialogButton.addEventListener("click", () => {
     deleteItemDialog.close();
 });
 
-// FILTERS
-const selectElement = document.querySelector(".type-select");
-const resetFilter = document.querySelector(".refresh-button");
+const dialog = document.querySelectorAll("dialog");
+outsideDialogClicked(dialog);
 
-resetFilter.style.cursor = "pointer";
-resetFilter.addEventListener("click", () => {
-    const currentUrl = window.location.href;
-    window.location.href = currentUrl.split("?")[0];
-});
-
-selectElement.addEventListener("change", (e) => {
-    const selectedFilter =
-        selectElement.options[selectElement.selectedIndex].value;
-    const currentUrl = window.location.href.split("?")[0];
-    window.location.href = currentUrl + `?filter=${selectedFilter}`;
-});
+function outsideDialogClicked(dialogs) {
+    console.log(dialogs);
+    if (dialog.length < 1) return;
+    dialogs.forEach((dialog) => {
+        dialog.addEventListener("click", (e) => {
+            const dialogDimensions = dialog.getBoundingClientRect();
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+            ) {
+                dialog.close();
+            }
+        });
+    });
+}

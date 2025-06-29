@@ -44,5 +44,25 @@
                 e.target.parentNode.parentNode.classList.add("d-none");
             })
         });
+
+        const dialog = document.querySelectorAll("dialog");
+        outsideDialogClicked(dialog);
+
+        function outsideDialogClicked(dialogs) {
+            console.log(dialogs);
+            if (dialog.length < 1)
+                return;
+            dialogs.forEach(dialog => {
+                dialog.addEventListener("click", (e) => {
+                    const dialogDimensions = dialog.getBoundingClientRect();
+                    if (e.clientX < dialogDimensions.left ||
+                        e.clientX > dialogDimensions.right ||
+                        e.clientY < dialogDimensions.top ||
+                        e.clientY > dialogDimensions.bottom) {
+                        dialog.close();
+                    }
+                })
+            })
+        }
     </script>
 </x-root-layout>
