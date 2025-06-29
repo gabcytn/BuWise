@@ -30,8 +30,8 @@
         <ul class="nav-menu">
             <li><a href="{{ route('home') }}">Home</a></li>
             <li><a href="{{ route('about') }}">About Us</a></li>
-<li><a href="{{ route('services') }}" style="color: #279CE9;">Services</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
+<li><a href="{{ route('services') }}" style="color: #279CE9;">Features</a></li>
+            <li><a href="/privacy">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
         </ul>
     <a href="/login" class="btn-signin desktop-signin">Sign In</a>
@@ -48,8 +48,8 @@
     <ul class="side-nav-menu">
         <li><a href="{{ route('home') }}">Home</a></li>
         <li><a href="{{ route('about') }}">About Us</a></li>
-<li><a href="{{ route('services') }}" style="color: #279CE9;">Services</a></li>
-        <li><a href="/privacy">Privacy Policy</a></li>
+<li><a href="{{ route('services') }}" style="color: #279CE9;">Features</a></li>
+        <li><a href="/privacy">LBJ Services</a></li>
         <li><a href="/contact">Contact Us</a></li>
     </ul>
         <a href="/login" class="btn-signin mobile-signin">Sign In</a>
@@ -170,8 +170,8 @@
         <ul class="footer-links">
             <li><a href="{{ route('home') }}">HOME</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
-<li><a href="{{ route('services') }}" style="color: #279CE9;">SERVICES</a></li>
-            <li><a href="/privacy">PRIVACY POLICY</a></li>
+<li><a href="{{ route('services') }}" style="color: #279CE9;">FEATURES</a></li>
+            <li><a href="/privacy">LBJ SERVICES</a></li>
             <li><a href="/contact">CONTACT US</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>

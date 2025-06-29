@@ -13,13 +13,7 @@
 </head>
 <body>
 
-<!-- Top Bar -->
-<div class="top-bar">
-    <div class="container">
-        <span>📧 bu.wise@email.com</span>
-        <span>📞 +63 209 637 810</span>
-    </div>
-</div>
+
 
 <!-- Navigation -->
 <nav class="navbar">
@@ -37,8 +31,8 @@
         <ul class="nav-menu">
 <li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
             <li><a href="{{ route('about') }}">About Us</a></li>
-            <li><a href="{{ route('services') }}">Services</a></li>
-            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="{{ route('services') }}">Features</a></li>
+            <li><a href="/privacy">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
         </ul>
     <a href="/login" class="btn-signin desktop-signin">Sign In</a>
@@ -55,8 +49,8 @@
     <ul class="side-nav-menu">
 <li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
         <li><a href="{{ route('about') }}">About Us</a></li>
-        <li><a href="{{ route('services') }}">Services</a></li>
-        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="{{ route('services') }}">Features</a></li>
+        <li><a href="/privacy">LBJ Services</a></li>
         <li><a href="/contact">Contact Us</a></li>
     </ul>
         <a href="/login" class="btn-signin mobile-signin">Sign In</a>
@@ -67,20 +61,81 @@
 <div class="overlay" id="overlay"></div>
 
 <!-- Hero Section -->
-<section class="hero" style="background: url('/images/woman.png') center center / cover no-repeat; height: 96vh; position: relative;">
-    <div class="container hero-grid" style="position: relative; z-index: 1;">
-        <div class="hero-text">
-            <h1>Automate for <span class="blue">Accuracy</span> and <span class="blue">Optimize</span> for Growth</h1>
-            <p style="color: #1F3649;">
-                Accelerate your firm's growth. BuWise utilizes  <span class="blue"> Robotic Process Automation </span> to automate repetitive tasks and streamline your operations.
-            </p>
-            <div class="hero-buttons">
-                <a href="{{ route('about') }}" class="btn btn-primary">Learn More</a>
-                <a href="/contact" class="btn btn-outline">Get in Touch</a>
-            </div>
-        </div>
+<section class="hero-carousel">
+  <!-- Slide 1 -->
+  <div class="carousel-slide active" style="background-image: url('/images/1.png');">
+    <div class="carousel-content">
+      <h1>Having Problems with your <br>Bookkeeping?</h1>
+      <p>We provide quality bookkeeping and accounting services for all through BuWise. Our services utilize automation technology such as Robotic Process Automation (RPA) to streamline our operations.</p>
+      <div class="hero-buttons">
+        <a href="/privacy" class="btn btn-primary">LBJ Services</a>
+        <a href="/contact" class="btn btn-outline">Get in Touch →</a>
+      </div>
     </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="carousel-slide" style="background-image: url('/images/2.png');">
+    <div class="carousel-content">
+      <h1>Don’t know how to do your <br>Bookkeeping Reports?</h1>
+      <p>LBJ Services delivers insightful reports that make it easier to understand your company’s performance and take smarter next steps. These reports are also crucial for your auditing through the Bureau of Internal Revenue.</p>
+      <div class="hero-buttons">
+        <a href="/privacy" class="btn btn-primary">LBJ Services</a>
+        <a href="/contact" class="btn btn-outline">Get in Touch →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="carousel-slide" style="background-image: url('/images/3.png');">
+    <div class="carousel-content">
+      <h1>Having Trouble with your <br>Invoicing and Audit?</h1>
+      <p>LBJ Services simplifies invoice submission through a user-friendly mobile app and streamlines the generation of audit reports. This helps you meet deadlines more efficiently and ensures better compliance with BIR regulations.</p>
+      <div class="hero-buttons">
+        <a href="/privacy" class="btn btn-primary">LBJ Services</a>
+        <a href="/contact" class="btn btn-outline">Get in Touch →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="carousel-slide" style="background-image: url('/images/4.png');">
+    <div class="carousel-content">
+      <h1>Don’t know when your <br>BIR Forms are due?</h1>
+      <p>We value transparency and proactive communication. That’s why we keep you informed of your monthly, quarterly, and annual BIR reporting schedules—so you’re always prepared, never miss a deadline, and can focus more on running your business .</p>
+      <div class="hero-buttons">
+        <a href="/privacy" class="btn btn-primary">LBJ Services</a>
+        <a href="/contact" class="btn btn-outline">Get in Touch →</a>
+      </div>
+    </div>
+  </div>
+
+  <button class="carousel-prev">&#10094;</button>
+  <button class="carousel-next">&#10095;</button>
 </section>
+
+<!-- About us Section -->
+
+<section class="about-section">
+  <div class="about-content">
+    <h5>ABOUT US</h5>
+    <h2>Accounting by the Book,<br>Perform with Trust<span>.</span></h2>
+    <p>
+      Since our establishment in the early 2000s, LBJ Services has been a trusted provider of reliable external accounting and bookkeeping solutions for businesses of all sizes. With a strong commitment to accuracy, transparency, and client support, we help companies efficiently manage their finances, stay fully compliant with BIR regulations, and make well-informed financial decisions. Our goal has always been to simplify financial management so our clients can focus on growing their business with confidence.
+    </p>
+    <div class="about-buttons">
+      <a href="/contact" class="btn btn-primary">Contact us and be a client today!</a>
+      <a href="/about" class="btn btn-outline">Learn More →</a>
+    </div>
+  </div>
+  <div class="about-image-wrapper">
+    <img src="/images/aboutimg.png" alt="About Image" class="about-img">
+    <div class="about-buttons">
+    </div>
+  </div>
+</section>
+
+
 
 <!-- Services Section -->
 <section class="services">
@@ -134,14 +189,13 @@
 
 <!-- Client Reports -->
 <section class="client-reports">
-    <div class="container dual-section reverse">
-        <div class="circle-wrap monitor-wrap">
-            <div class="circle-bg monitor-circle"></div>
-            <img src="/images/monitor-ui.png" class="device monitor" alt="Monitor UI" />
-        </div>
+  <div class="container dual-section reverse">
+    <div class="monitor-wrap">
+      <img src="/images/2mobile.png" class="device monitor" alt="Monitor UI" />
+    </div>
         <div class="section-text">
-            <h2>View <span class="highlight">client reports</span> and analyze your <span class="highlight">data</span></h2>
-            <p>Buwise offers an all-in-one platform designed to streamline financial operations for accounting firms and their clients. It automates invoice management and journal entries through RPA, ensuring 100% accuracy and real-time updates. The system allows for efficient staff and task management, with the ability to limit user capabilities to specific bookkeeping tasks for enhanced security. Accountants can easily manage client accounts, adding new ones and editing details, while also centralizing all client information. Buwise quickly generates comprehensive financial reports like P&L, Balance Sheets, and Cash Flow Statements, enabling deep data analysis for informed decision-making.</p>
+            <h2>Generate realtime <span class="highlight">reports</span> in your mobile device <span class="highlight">data</span></h2>
+            <p>Our mobile app enables clients to generate real-time bookkeeping reports—such as Income Statements, Balance Sheets, and other key financial documents—directly from our centralized system. By providing instant access to accurate and up-to-date financial data, the app empowers business owners and managers to monitor performance trends, assess profitability, and ensure financial stability at any time. This level of insight supports better decision-making, improves operational efficiency, and helps businesses stay compliant with reporting standards and regulatory requirements.</p>
         </div>
     </div>
 </section>
@@ -169,7 +223,7 @@
 <li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
             <li><a href="{{ route('services') }}">SERVICES</a></li>
-            <li><a href="/privacy">PRIVACY POLICY</a></li>
+            <li><a href="/privacy">LBJ SERVICES</a></li>
             <li><a href="/contact">CONTACT US</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>
@@ -242,3 +296,38 @@
         lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
     });
 </script>
+<script>
+  let slides = document.querySelectorAll('.carousel-slide');
+  let currentIndex = 0;
+  let interval = 3000; // 5 seconds
+
+  const showSlide = (index) => {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+    });
+  };
+
+  const nextSlide = () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    showSlide(currentIndex);
+  };
+
+  document.querySelector('.carousel-next').addEventListener('click', () => {
+    nextSlide();
+    resetAutoSlide();
+  });
+
+  document.querySelector('.carousel-prev').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(currentIndex);
+    resetAutoSlide();
+  });
+
+  let autoSlide = setInterval(nextSlide, interval);
+
+  const resetAutoSlide = () => {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(nextSlide, interval);
+  };
+</script>
+
