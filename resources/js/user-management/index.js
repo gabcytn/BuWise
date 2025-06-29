@@ -21,7 +21,6 @@ const dialog = document.querySelectorAll("dialog");
 outsideDialogClicked(dialog);
 
 function outsideDialogClicked(dialogs) {
-    console.log(dialogs);
     if (dialog.length < 1) return;
     dialogs.forEach((dialog) => {
         dialog.addEventListener("click", (e) => {

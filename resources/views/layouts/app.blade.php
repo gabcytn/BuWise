@@ -49,7 +49,6 @@
         outsideDialogClicked(dialog);
 
         function outsideDialogClicked(dialogs) {
-            console.log(dialogs);
             if (dialog.length < 1)
                 return;
             dialogs.forEach(dialog => {

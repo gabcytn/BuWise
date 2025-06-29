@@ -1,7 +1,6 @@
 updateTotals();
 
 document.querySelectorAll("table input[type='number']").forEach((input) => {
-    console.log("what");
     input.addEventListener("input", updateTotals);
 });
 
