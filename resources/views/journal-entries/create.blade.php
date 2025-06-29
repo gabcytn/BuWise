@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="input-wrapper notes-wrapper">
-                    <label for="description">Notes (optional)</label>
+                    <label for="description">Notes</label>
                     <textarea id="description" name="description" rows="3" required>{{ old('description') }}</textarea>
                 </div>
                 <div class="table-wrapper">
