@@ -19,6 +19,7 @@ class InvoiceStore
     private float $taxTotal;
     private float $amountTotal;
     private float $purchasesTotal;
+    private float $withholdingTax;
 
     public const ACCOUNT_LOOKUP = [
         'cash' => LedgerAccount::CASH,
@@ -47,6 +48,7 @@ class InvoiceStore
             $this->taxTotal = $arr['taxTotal'];
             $this->amountTotal = $arr['amountTotal'];
             $this->purchasesTotal = $arr['purchasesTotal'];
+            $this->withholdingTax = $this->request->withholding_tax ?: 0.0;
             $invoice = $this->createInvoice($filename);
             $this->createInvoiceLines($arr['items'], $invoice);
 
@@ -91,6 +93,7 @@ class InvoiceStore
             'type' => 'invoice',
             'kind' => $request->transaction_type,
             'amount' => $this->amountTotal,
+            'withholding_tax' => $this->withholdingTax > 0.0 ? $this->withholdingTax : null,
             'date' => $request->issue_date,
             'payment_method' => $request->payment_method,
             'reference_no' => $request->invoice_number,
@@ -185,7 +188,6 @@ class InvoiceStore
 
     private function ledgerEntryForSales(Transaction $invoice)
     {
-        $withholding_tax = $this->request->withholding_tax ?: 0.0;
         if ($this->taxTotal > 0) {
             $taxEntry = LedgerEntry::create([
                 'transaction_id' => $invoice->id,
@@ -203,7 +205,7 @@ class InvoiceStore
                 'amount' => $this->discountTotal,
             ]);
         }
-        if ($withholding_tax > 0.0) {
+        if ($this->withholdingTax > 0.0) {
             $withholding_tax_account = LedgerAccount::where('code', '=', 106)
                 ->where('name', '=', 'Withholding Tax Receivable')
                 ->first();
@@ -211,7 +213,7 @@ class InvoiceStore
                 'transaction_id' => $invoice->id,
                 'account_id' => $withholding_tax_account->id,
                 'entry_type' => 'debit',
-                'amount' => $withholding_tax,
+                'amount' => $this->withholdingTax,
             ]);
         }
         LedgerEntry::insert([
@@ -227,7 +229,7 @@ class InvoiceStore
                 'account_id' => self::ACCOUNT_LOOKUP[$this->request->payment_method],
                 'entry_type' => 'debit',
                 'tax_ledger_entry_id' => null,
-                'amount' => $this->amountTotal - $this->discountTotal - $withholding_tax,
+                'amount' => $this->amountTotal - $this->discountTotal - $this->withholdingTax,
             ]
         ]);
     }
