@@ -15,6 +15,9 @@
                     <select class="select" name="period">
                         <option value="this_year" {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>
                             This Year</option>
+                        <option value="this_quarter"
+                            {{ request()->query('period') === 'this_quarter' ? 'selected' : '' }}>
+                            This Quarter</option>
                         <option value="this_month" {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>
                             This Month</option>
                         <option value="this_week" {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>
@@ -25,6 +28,9 @@
                             Last Week</option>
                         <option value="last_month" {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>
                             Last Month</option>
+                        <option value="last_quarter"
+                            {{ request()->query('period') === 'last_quarter' ? 'selected' : '' }}>
+                            Last Quarter</option>
                         <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>
                             All Time</option>
                     </select>
@@ -120,7 +126,7 @@
                                     @endforeach
                                     <tr class="clickable"
                                         data-redirect="{{ route('reports.income-statement', ['period' => request()->query('period'), 'client' => $selected_client->id]) }}">
-                                        <td class="account-name">Current Year's Earnings</td>
+                                        <td class="account-name">Current Period's Earnings</td>
                                         <td class="equities">{{ number_format($equity_from_income_statement, 2) }}</td>
                                     </tr>
                                     <tr class="total-row">
