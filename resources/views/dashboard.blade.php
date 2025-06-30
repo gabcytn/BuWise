@@ -68,6 +68,21 @@
                 </div>
                 <div class="pie-chart">
                     <canvas id="clients-chart"></canvas>
+                    @if (count($client_types) < 1)
+                        <div class="no-tasks-container">
+                            <i class="fa-solid fa-ban"></i>
+                            <h1>No clients yet</h1>
+                            @if (in_array(request()->user()->role_id, [\App\Models\Role::ACCOUNTANT, \App\Models\Role::LIAISON]))
+                                <form action="/clients">
+                                    <button type="submit">Add New Client</button>
+                                </form>
+                            @else
+                                <form action="/contact">
+                                    <button type="submit">Contact Accountant</button>
+                                </form>
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -86,18 +101,30 @@
                 <div class="tasks-header">
                     <h3>To Do List</h3>
                 </div>
-                <ul class="tasks-list">
-                    @foreach ($tasks as $item)
-                        <li class="task-item">
-                            <div class="task-content">
-                                <div class="task-title">{{ $item->name }}</div>
-                                <div class="task-meta">Due:
-                                    {{ \Carbon\Carbon::createFromDate($item->end_date)->format('M d Y') }}</div>
-                                <div class="task-assigned">Created by {{ $item->creator->name }}</div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+                @if (count($tasks) > 0)
+                    <ul class="tasks-list">
+                        @foreach ($tasks as $item)
+                            <li class="task-item">
+                                <div class="task-content">
+                                    <div class="task-title">{{ $item->name }}</div>
+                                    <div class="task-meta">Due:
+                                        {{ \Carbon\Carbon::createFromDate($item->end_date)->format('M d Y') }}</div>
+                                    <div class="task-assigned">Created by {{ $item->creator->name }}</div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="no-tasks-container">
+                        <i class="fa-solid fa-ban"></i>
+                        <h1>No tasks yet</h1>
+                        @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
+                            <form action="/tasks">
+                                <button type="submit">Add New Task</button>
+                            </form>
+                        @endif
+                    </div>
+                @endif
             </div>
             <!-- Bar chart -->
             <div class="chart-card grid-child-4">
@@ -116,6 +143,10 @@
         <script>
             const clientsChart = document.querySelector("canvas#clients-chart");
             const arr = @json($client_types);
+            if (arr.length < 1) {
+                clientsChart.style.display = "none";
+                throw new Error("Insufficient data")
+            };
             const data = {
                 labels: Object.keys(arr),
                 datasets: [{

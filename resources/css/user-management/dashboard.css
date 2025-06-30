@@ -92,10 +92,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.grid-child-1 {
-    display: grid;
-    justify-content: center;
-}
+/* .grid-child-1 { */
+/*     display: grid; */
+/*     justify-content: center; */
+/* } */
 
 .grid-child-3 {
     grid-row: span 3;
@@ -113,8 +113,9 @@
 }
 
 .pie-chart {
-    /* display: flex; */
-    /* justify-content: center; */
+    display: flex;
+    justify-content: center;
+    height: 100%;
 
     #clients-chart {
         width: 15rem !important;
@@ -132,6 +133,7 @@
 .line-chart {
     display: flex;
     justify-content: center;
+    height: 100%;
 }
 
 
@@ -160,6 +162,36 @@
 .tasks-header h3 {
     color: #2d3748;
     font-size: 18px;
+}
+
+.no-tasks-container {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+
+    h1 {
+        color: var(--grey);
+        font-size: 0.8rem;
+    }
+
+    form button {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+        background-color: var(--grey);
+        color: var(--off-white);
+        border: none;
+        border-radius: 0.25rem;
+        outline: none;
+        transition: opacity 0.15s;
+        cursor: pointer;
+    }
+
+    form button:hover {
+        opacity: 0.85;
+    }
 }
 
 .tasks-list {
@@ -217,6 +249,13 @@
     color: #2d3748;
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+.fa-solid.fa-ban {
+    /* margin-top: 1rem; */
+    font-size: 7.5rem;
+    color: var(--grey);
+    opacity: 0.5;
 }
 
 @media (max-width: 1305px) {
