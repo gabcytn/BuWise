@@ -63,6 +63,13 @@
                         <label for="description">Description</label>
                         <input id="description" value="{{ $invoice->description }}" name="description" />
                     </div>
+                    @if ($invoice->kind === 'sales')
+                        <div class="input-container">
+                            <label for="withholding-tax">Withholding Tax (optional)</label>
+                            <input id="withholding-tax" value="{{ $invoice->withholding_tax }}"
+                                name="withholding_tax" />
+                        </div>
+                    @endif
                 </div>
             </div>
             <x-table-management :headers=$headers>
