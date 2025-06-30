@@ -69,7 +69,7 @@ class TrialBalanceController extends Controller
                 });
             })
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
-            ->orderBy('acc.id')
+            ->orderBy('acc.code')
             ->select(
                 'acc.code AS acc_id',
                 'acc.name AS acc_name',
