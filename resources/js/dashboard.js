@@ -101,6 +101,8 @@ function noDataForLineChart() {
     div.appendChild(form);
 
     tasksChart.style.display = "none";
+    lineChartContainer.parentElement.style.display = "grid";
+    lineChartContainer.parentElement.style.justifyContent = "center";
     lineChartContainer.appendChild(div);
 }
 

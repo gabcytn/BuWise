@@ -92,10 +92,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* .grid-child-1 { */
-/*     display: grid; */
-/*     justify-content: center; */
-/* } */
+.grid-child-1 {
+    display: grid;
+    justify-content: center;
+}
 
 .grid-child-3 {
     grid-row: span 3;
@@ -112,15 +112,9 @@
     margin-bottom: 1rem;
 }
 
-.pie-chart {
-    display: flex;
-    justify-content: center;
-    height: 100%;
-
-    #clients-chart {
-        width: 15rem !important;
-        height: auto !important;
-    }
+canvas#clients-chart {
+    width: 15rem !important;
+    height: auto !important;
 }
 
 .chart-header h3 {
