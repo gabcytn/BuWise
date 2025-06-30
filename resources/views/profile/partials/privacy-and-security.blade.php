@@ -87,7 +87,7 @@
         @csrf
         @method('DELETE')
         <div>
-            <label for="disable">Type "disable" to Disable 2FA</label>
+            <label for="disable">Type "disable" to disable 2FA</label>
             <input type="text" id="disable" />
         </div>
     </form>
@@ -104,7 +104,7 @@
         @csrf
         @method('DELETE')
         <div>
-            <label for="delete">Type "delete" to Disable 2FA</label>
+            <label for="delete">Type "delete" to delete your account</label>
             <input type="text" id="delete" />
         </div>
     </form>

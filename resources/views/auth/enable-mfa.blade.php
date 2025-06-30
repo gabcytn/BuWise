@@ -18,7 +18,7 @@
         @if (!auth()->user()->two_factor_confirmed_at && !session('status'))
             <h1 class="verify-title">Enable <span style="color: #1B80C3;">Two Factor Authentication</span></h1>
             <p class="verify-message">
-                Thanks for signing up! Before getting started, please verify your email address by clicking on the link we just emailed to you. Check your spam folder if it's not visible.
+                Please enable your two-factor authentication to secure your data.
             </p>
             <form action="/user/two-factor-authentication" method="POST">
                 @csrf
