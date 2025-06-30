@@ -124,15 +124,13 @@ function updateTotals() {
             runningAmount = (parseFloat(runningAmount) + taxFloat).toFixed(2);
         }
 
-        const withholdingTaxFloat = parseFloat(withholdingTax.value || 0);
-        const finalAnswer = (
-            runningAmount * qtyFloat -
-            withholdingTaxFloat
-        ).toFixed(2);
+        const finalAnswer = (runningAmount * qtyFloat).toFixed(2);
         totalAmount.textContent = finalAnswer;
         sum += parseFloat(finalAnswer);
     });
 
+    const withholdingTaxFloat = parseFloat(withholdingTax.value || 0);
+    sum -= withholdingTaxFloat;
     document.querySelector("#total-sum").textContent = sum.toFixed(2);
 }
 
