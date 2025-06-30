@@ -146,6 +146,7 @@ class InvoiceController extends Controller
             'invoice_number' => ['required', 'numeric'],
             'payment_method' => ['required', 'string', 'in:cash,checkings,savings,petty_cash,receivable,payable'],
             'description' => ['nullable', 'string', 'max:255'],
+            'withholding_tax' => ['nullable', 'numeric'],
         ]);
         $helper = new InvoiceUpdate($request, $invoice);
         return $helper->update();

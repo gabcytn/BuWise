@@ -38,7 +38,7 @@
                     </div>
                     <div class="input-container">
                         <label for="transaction_type">Transaction Type</label>
-                        <select id="transaction_type">
+                        <select id="transaction_type" disabled>
                             <option>{{ ucfirst($invoice->kind) }}</option>
                         </select>
                     </div>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="input-container">
                         <label for="payment_method">Payment Method</label>
-                        <select id="payment_method">
+                        <select id="payment_method" disabled>
                             <option>{{ ucfirst($invoice->payment_method) }}</option>
                         </select>
                     </div>
@@ -56,6 +56,12 @@
                         <label for="description">Description</label>
                         <input disabled id="description" value="{{ $invoice->description }}" />
                     </div>
+                    @if ($invoice->kind === 'sales')
+                        <div class="input-container">
+                            <label for="withholding-tax">Withholding Tax</label>
+                            <input disabled id="withholding-tax" value="{{ $invoice->withholding_tax }}" />
+                        </div>
+                    @endif
                 </div>
             </div>
             <x-table-management :headers=$headers>

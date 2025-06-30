@@ -16,11 +16,14 @@ class InvoiceUpdate
     private float $discount_total;
     private float $net;
     private float $purchases_net;
+    private float $withholding_tax;
 
     public function __construct(
         private Request $request,
         private Transaction $invoice
-    ) {}
+    ) {
+        $this->withholding_tax = $request->withholding_tax;
+    }
 
     public function update()
     {
@@ -33,6 +36,7 @@ class InvoiceUpdate
             $invoice->reference_no = $request->invoice_number;
             $invoice->description = $request->description;
             $invoice->payment_method = $request->payment_method;
+            $invoice->withholding_tax = $request->withholding_tax;
 
             $helper = new InvoiceStore($request);
             $rowNumbers = $helper->getRowNumbers($request);
@@ -73,7 +77,7 @@ class InvoiceUpdate
             Log::info('Error updating invoice: ' . $e->getMessage());
             Log::info(truncate($e->getTraceAsString(), 500));
             DB::rollBack();
-            return redirect()->back()->withErrors('error', 'Failed to update');
+            return redirect()->back()->withErrors(['error' => 'Failed to update']);
         }
     }
 
@@ -115,6 +119,25 @@ class InvoiceUpdate
             // if discount entry exists and current discount is 0, delete previous
             $discount_entry->delete();
         }
+
+        $withholding_tax_account = LedgerAccount::where('code', '=', 106)->where('name', '=', 'Withholding Tax Receivable')->first();
+        $withholding_tax_entry = $entries->firstWhere('account_id', '=', $withholding_tax_account->id);
+        if ($withholding_tax_entry && $this->withholding_tax > 0.0) {
+            // if withholding entry exists and current withholding > 0, update existing entry
+            $withholding_tax_entry->amount = $this->withholding_tax;
+            $withholding_tax_entry->save();
+        } elseif (!$withholding_tax_entry && $this->withholding_tax > 0.0) {
+            // if withholding entry doesn't exist but current withholding > 0, create new entry
+            LedgerEntry::create([
+                'transaction_id' => $invoice->id,
+                'account_id' => $withholding_tax_account->id,
+                'entry_type' => 'debit',
+                'amount' => $this->withholding_tax,
+            ]);
+        } else if ($withholding_tax_entry && $this->withholding_tax === 0.0) {
+            // if withholding entry exists and current withholding is 0, delete previous
+            $withholding_tax_entry->delete();
+        }
         $sales_entry = $entries->firstWhere('account_id', '=', LedgerAccount::SALES);
         $sales_entry->amount = $this->net - $this->tax_total;
         $sales_entry->save();
@@ -124,7 +147,7 @@ class InvoiceUpdate
             LedgerAccount::OUTPUT_VAT_PAYABLE,
             LedgerAccount::SALES_DISCOUNT
         ])->first();
-        $debit_entry->amount = $this->net - $this->discount_total;
+        $debit_entry->amount = $this->net - $this->discount_total - $this->withholding_tax;
         $debit_entry->account_id = InvoiceStore::ACCOUNT_LOOKUP[$this->request->payment_method];
         $debit_entry->save();
     }
