@@ -72,29 +72,41 @@
                     @endif
                 </div>
             </div>
-            <x-table-management :headers=$headers>
-                @foreach ($invoice->invoice_lines as $key => $item)
-                    <tr class="invoice-item">
-                        <td><input value="{{ $item->item_name }}" name="{{ 'item_' . $key + 1 }}" required /></td>
-                        <td><input type="number" value="{{ $item->quantity }}" name="{{ 'qty_' . $key + 1 }}"
-                                required /></td>
-                        <td><input type="number" value="{{ $item->unit_price }}"
-                                name="{{ 'unit_price_' . $key + 1 }}" required />
-                        </td>
-                        <td><input type="number" value="{{ $item->discount ? $item->discount : 0 }}"
-                                name="{{ 'discount_' . $key + 1 }}" /></td>
-                        <td><input type="number" value="{{ $item->tax ? $item->tax : 0 }}"
-                                name="{{ 'tax_' . $key + 1 }}" /></td>
-                        <td id="{{ 'row-total-' . $key + 1 }}"></td>
-                    </tr>
-                @endforeach
-                <tfoot>
-                    <tr>
-                        <td colspan="5"><strong>Total</strong></td>
-                        <td id="overall-total"><strong>0.00</strong></td>
-                    </tr>
-                </tfoot>
-            </x-table-management>
+            <div class="table-wrapper">
+                <table id="invoice-lines">
+                    <thead>
+                        <tr>
+                            @foreach ($headers as $header)
+                                <th>{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($invoice->invoice_lines as $key => $item)
+                            <tr class="invoice-item">
+                                <td><input value="{{ $item->item_name }}" name="{{ 'item_' . $key + 1 }}" required />
+                                </td>
+                                <td><input type="number" value="{{ $item->quantity }}" name="{{ 'qty_' . $key + 1 }}"
+                                        required /></td>
+                                <td><input type="number" value="{{ $item->unit_price }}"
+                                        name="{{ 'unit_price_' . $key + 1 }}" required />
+                                </td>
+                                <td><input type="number" value="{{ $item->discount ? $item->discount : 0 }}"
+                                        name="{{ 'discount_' . $key + 1 }}" /></td>
+                                <td><input type="number" value="{{ $item->tax ? $item->tax : 0 }}"
+                                        name="{{ 'tax_' . $key + 1 }}" /></td>
+                                <td id="{{ 'row-total-' . $key + 1 }}"></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5"><strong>Total</strong></td>
+                            <td id="overall-total"><strong>0.00</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
         <hr />
         <div class="p-3 button-container">

@@ -21,7 +21,7 @@
     <div class="container">
         <div class="p-3 invoice-header">
             <h2>View Invoice</h2>
-            <select>
+            <select disabled>
                 <option>{{ $invoice->client->name }}</option>
             </select>
         </div>
@@ -64,18 +64,29 @@
                     @endif
                 </div>
             </div>
-            <x-table-management :headers=$headers>
-                @foreach ($invoice->invoice_lines as $item)
-                    <tr>
-                        <td>{{ $item->item_name }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ $item->unit_price }}</td>
-                        <td>{{ $item->discount ? $item->discount : '0' }}</td>
-                        <td>{{ $item->tax ? $item->tax : '0' }}</td>
-                        <td>{{ calculateTotal($item) }}</td>
-                    </tr>
-                @endforeach
-            </x-table-management>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            @foreach ($headers as $header)
+                                <th>{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($invoice->invoice_lines as $item)
+                            <tr>
+                                <td>{{ $item->item_name }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->unit_price }}</td>
+                                <td>{{ $item->discount ? $item->discount : '0' }}</td>
+                                <td>{{ $item->tax ? $item->tax : '0' }}</td>
+                                <td>{{ calculateTotal($item) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
         <hr />
         <div class="p-3 button-container">
@@ -87,4 +98,10 @@
             </form>
         </div>
     </div>
+    <script>
+        const invoiceImage = document.querySelector("img#invoice-image");
+        invoiceImage.addEventListener("click", () => {
+            window.open(invoiceImage.src, "_blank");
+        });
+    </script>
 </x-app-layout>
