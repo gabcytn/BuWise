@@ -531,7 +531,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
 .hero-text h1 {
   font-size: 45px;
   line-height: 1;
-  color: #1F3649;
+  color: white;
   margin-bottom: 20px;
   text-align: center;
 }

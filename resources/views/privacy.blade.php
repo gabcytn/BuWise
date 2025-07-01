@@ -35,8 +35,8 @@
         <ul class="nav-menu">
             <li><a href="{{ route('home') }}">Home</a></li>
             <li><a href="{{ route('about') }}">About Us</a></li>
-            <li><a href="{{ route('services') }}">Services</a></li>
-<li><a href="/privacy" style="color: #279CE9;">Privacy Policy</a></li>
+            <li><a href="{{ route('services') }}">Features</a></li>
+<li><a href="/privacy" style="color: #279CE9;">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
         </ul>
     <a href="/login" class="btn-signin desktop-signin">Sign In</a>
@@ -55,8 +55,8 @@
     <ul class="side-nav-menu">
         <li><a href="{{ route('home') }}">Home</a></li>
         <li><a href="{{ route('about') }}">About Us</a></li>
-        <li><a href="{{ route('services') }}">Services</a></li>
-<li><a href="/privacy" style="color: #279CE9;">Privacy Policy</a></li>
+        <li><a href="{{ route('services') }}">Features</a></li>
+<li><a href="/privacy" style="color: #279CE9;">LBJ Services</a></li>
             <li><a href="/contact">Contact Us</a></li>
     </ul>
         <a href="/login" class="btn-signin mobile-signin">Sign In</a>
@@ -70,12 +70,13 @@
 
 
 <!-- Hero Section -->
-<section class="hero" style="
+<section class="hero lbj-hero"
+ style="
   background: url('/images/LBJhero.png') center 70% no-repeat;
-  background-size: 700px;
+  background-size: 600px;
   height: 60vh;
   position: relative;
-">
+"> 
 </section>
 
 <!-- About us Section -->
@@ -104,36 +105,38 @@
 <!-- Services Section -->
 <section class="services">
     <div class="container">
-        <h2 class="section-title">Our Services</h2>
-        <p class="section-subtitle">Our innovative approach quickly accelerates your accounting workflows.</p>
-        
-        <div class="services-grid">
-            <div class="service-box">
-                <div class="service-icon">
-                    <i class="mdi mdi-file-document-multiple"></i>
-                </div>
-                <h3>Automated Invoice Management</h3>
-                <p>Enables users to upload and view invoice details in real time. This automation ensures 100% accuracy when mapping invoices to accounts and entering their details, significantly simplifying the process.</p>
-            </div>
-            <div class="service-box">
-                <div class="service-icon">
-                    <i class="mdi mdi-database-import"></i>
-                </div>
-                <h3>Seamless Data Migration</h3>
-                <p>Lets you upload journal entries from Excel to the system using RPA, significantly reducing manual effort and potential errors. This automation ensures your financial records are updated quickly and accurately.</p>
-            </div>
-            <div class="service-box">
-                <div class="service-icon">
-                    <i class="mdi mdi-robot"></i>
-                </div>
-                <h3>RPA Integration</h3>
-                <p>Enhances your firm's operational efficiency by automating repetitive, rule-based tasks. Reduces manual errors, processing times, and frees up your team to focus on higher-value and strategic activities.</p>
-            </div>
-        </div>
+        <h2 class="section-title">Our Goals</h2> 
+<p class="section-subtitle">Exceptional Service. Nationwide.</p>
+<p class="section-description">LBJ Services delivers high-quality bookkeeping and accounting services all throughout the country. </p>
 
-        <a href="{{ route('services') }}" class="btn-secondary">
-            See All Services <i class="mdi mdi-arrow-right"></i>
-        </a>
+<div class="services-grid">
+    <div class="service-box">
+        <div class="service-icon">
+            <i class="mdi mdi-eye-check-outline"></i> <!-- Vision -->
+        </div>
+        <h3>Our Vision</h3>
+        <p>To provide accurate, efficient, and technology-driven accounting and bookkeeping solutions that empower businesses to meet compliance requirements, make sound financial decisions, and achieve sustainable growth.</p>
+    </div>
+    <div class="service-box">
+        <div class="service-icon">
+            <i class="mdi mdi-target-account"></i> <!-- Mission -->
+        </div>
+        <h3>Our Mission</h3>
+        <p>To be the leading partner for outsourced accounting and financial services in the Philippines, recognized for our reliability, innovation, and commitment to helping clients thrive in a complex regulatory environment.</p>
+    </div>
+    <div class="service-box">
+        <div class="service-icon">
+            <i class="mdi mdi-handshake-outline"></i> <!-- Culture -->
+        </div>
+        <h3>Our Culture</h3>
+        <p>At LBJ Services, we foster a culture of integrity, transparency, and continuous improvement. We believe in building strong client relationships through proactive support, personalized service, and technology.</p>
+    </div>
+</div>
+
+<a href="{{ route('services') }}" class="btn-secondary">
+    See All Services <i class="mdi mdi-arrow-right"></i>
+</a>
+
     </div>
 </section>
 
@@ -158,7 +161,7 @@
         </div>
         <div class="team-card">
             <div class="team-image">
-                <img src="/images/profile.png" alt="Liezel Bernadino">
+                <img src="/images/profile2.png" alt="Liezel Bernadino">
             </div>
             <h3 class="team-name">Liezel Bernadino</h3>
             <p class="team-role">Liaison Officer</p>
@@ -182,6 +185,61 @@
         </div>
     </div>
 </section>
+<<!-- Services Section --> 
+<section class="services">
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">List of what we can offer to you</p>
+        
+        <div class="services-grid">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-book-open-page-variant"></i>
+                </div>
+                <h3>Accounting & Bookkeeping</h3>
+                <p>We handle end-to-end bookkeeping, including real-time financial reporting, general ledger maintenance, bank reconciliation, and the preparation of income statements, balance sheets, and cash flow reports.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-file-chart-outline"></i>
+                </div>
+                <h3>Tax Compliance & Reporting</h3>
+                <p>We ensure full BIR compliance by managing registrations, preparing and filing tax returns (VAT, income, withholding), and providing deadline reminders and strategic tax planning.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-cash-multiple"></i>
+                </div>
+                <h3>Payroll & Compensation Management</h3>
+                <p>We process accurate payroll, generate payslips, manage government contributions (SSS, PhilHealth, Pag-IBIG), and handle year-end tax compliance like BIR Form 2316.</p>
+            </div>
+        </div>
+        <div class="services-grid">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-shield-search"></i>
+                </div>
+                <h3>Audit Assistance</h3>
+                <p>We prepare audit-ready reports, support BIR and external audit processes, and review your financial records to ensure clean, compliant books.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-cellphone-cog"></i>
+                </div>
+                <h3>Digital & Mobile Services</h3>
+                <p>Our mobile app allows easy access to reports, invoice submissions, document uploads, and automated compliance notifications—all in real time.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="mdi mdi-briefcase-check-outline"></i>
+                </div>
+                <h3>Business Advisory</h3>
+                <p>We offer expert guidance in financial analysis, budgeting, forecasting, business registration or closure, and internal control improvements.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 
 <!-- Footer -->
@@ -191,10 +249,10 @@
             <img src="/images/whitebuwise.png" alt="BuWise Logo" class="footer-img">
         </div>
         <ul class="footer-links">
-<li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
+<li><a href="{{ route('home') }}">HOME</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
             <li><a href="{{ route('services') }}">SERVICES</a></li>
-            <li><a href="/privacy">LBJ SERVICES</a></li>
+            <li><a href="/privacy"style="color: #279CE9;">LBJ SERVICES</a></li>
             <li><a href="/contact">CONTACT US</a></li>
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>

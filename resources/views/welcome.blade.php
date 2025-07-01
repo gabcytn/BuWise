@@ -220,7 +220,7 @@
             <img src="/images/whitebuwise.png" alt="BuWise Logo" class="footer-img">
         </div>
         <ul class="footer-links">
-<li><a href="{{ route('home') }}" style="color: #279CE9;">Home</a></li>
+<li><a href="{{ route('home') }}" style="color: #279CE9;">HOME</a></li>
             <li><a href="{{ route('about') }}">ABOUT US</a></li>
             <li><a href="{{ route('services') }}">SERVICES</a></li>
             <li><a href="/privacy">LBJ SERVICES</a></li>

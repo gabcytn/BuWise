@@ -130,6 +130,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
     height: auto;
     padding: 4rem 1.5rem;
     text-align: center;
+    
   }
 
 
@@ -159,6 +160,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
     max-width: 280px;
     text-align: center;
   }
+  
 }
 
 
@@ -192,16 +194,6 @@ overflow-x: hidden; /* disables horizontal scrolling */
     white-space: pre;
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* Side Navigation */
@@ -530,7 +522,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
 .section-subtitle {
   font-size: 27px;
   font-weight: 700;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
   color: #1F3649;
 }
 
@@ -748,6 +740,13 @@ overflow-x: hidden; /* disables horizontal scrolling */
   color: #6b7280;
   line-height: 1.6;
 }
+.section-description {
+    font-size: 1rem; /* or use 14px */
+    color: #666;
+    margin-top: -10px;
+    margin-bottom: 50px;
+}
+
 
 
 /* See All Services Button */
@@ -1084,6 +1083,107 @@ overflow-x: hidden; /* disables horizontal scrolling */
   font-size: 20px;
   line-height: 1.7;
   color: #5a5a5a;
+}
+@media (max-width: 768px) {
+  .about-section {
+    flex-direction: column;
+    padding: 60px 20px; /* Less padding on smaller screens */
+  }
+
+  .about-image-wrapper {
+    order: 1; /* Image comes first */
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .about-content {
+    order: 2; /* Content follows image */
+    padding-left: 0;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .about-content h2 {
+    font-size: 30px;
+  }
+
+  .about-content p {
+    font-size: 16px;
+  }
+
+  .about-buttons {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .about-buttons .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.25rem;
+  }
+  p {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+
+  .team-grid {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+@media (max-width: 768px) {
+  .hero {
+    padding: 60px 20px;
+    flex-direction: column;
+    text-align: center;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    margin-top: 30px;
+  }
+}
+@media (max-width: 768px) {
+  .dual-section {
+    flex-direction: column;
+    padding: 60px 20px;
+    gap: 40px;
+  }
+
+  .section-text {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .section-text h2 {
+    font-size: 28px;
+  }
+
+  .section-text p {
+    font-size: 16px;
+  }
+
+  .dual-section img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 
