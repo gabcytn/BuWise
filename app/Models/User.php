@@ -147,4 +147,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ExpoToken::class, 'owner_id');
     }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
