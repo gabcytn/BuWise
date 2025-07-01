@@ -26,7 +26,7 @@
             <form method="POST" action="{{ route('login') }}" class="form-card" id="register-form">
                 @csrf
 
-                <h1 class="title">Welcome back to <span class="blue">BuWise!</span></h1>
+                <h1 class="title">Welcome to <span class="blue">BuWise!</span></h1>
                 <p class="subtitle">Please login to your account to access your</p>
                 <p class="subtitle">organization.</p>
 
