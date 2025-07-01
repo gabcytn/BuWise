@@ -111,13 +111,10 @@
             <img src="/images/monitor-ui.png" class="device monitor" alt="Monitor UI" />
         </div>
         <div class="section-text">
-            <h2>How does <span class="highlight">BuWise</span>  improve Bookkeeping?<span class="highlight">data</span></h2>
+            <h2>How does <span class="highlight">BuWise</span>  improve Bookkeeping?</span></h2>
             <p>BuWise is able to improve your Bookkeeping process by doing the following: First, we automate your invoice management. Simply upload an invoice, and our software bots will instantly scan its details and create a complete journal entry, including the correct account names and groups. Next, we meticulously check and verify these entries to ensure unparalleled accuracy before they're posted. After being processed as a Journal Entry, Ledger Entry, it will now generate a Report. 
             </p>              
-            <a href="/register" class="cta-button">Sign up as an Accountant <span class="arrow">→</span>
-            
-        </a>
-
+           
         </div>
         
     </div>

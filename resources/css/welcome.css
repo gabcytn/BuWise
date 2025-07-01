@@ -706,7 +706,20 @@ background: transparent;
   justify-items: center;
 }
 .services {
-  background-color: #F2F2F2;
+  background: linear-gradient(270deg, #8ED2FF, white, #8ED2FF);
+  background-size: 600% 600%;
+  animation: bgMove 10s ease infinite;
+}
+@keyframes bgMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 
