@@ -6,6 +6,8 @@ use App\Events\TransactionCreated;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class Transaction extends Model
 {
@@ -23,6 +25,14 @@ class Transaction extends Model
         'reference_no',
         'image',
     ];
+
+    protected static function booted()
+    {
+        static::updating(function ($model) {
+            $journal_id = $model->id;
+            Cache::put("journal-$journal_id-old", $model->getOriginal(), 300);
+        });
+    }
 
     protected $dispatchesEvents = [
         'saved' => TransactionCreated::class,

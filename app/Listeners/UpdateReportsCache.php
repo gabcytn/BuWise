@@ -24,29 +24,39 @@ class UpdateReportsCache implements ShouldQueue
      */
     public function handle(TransactionCreated $event): void
     {
-        // TODO: re-update the cache instead of forgetting
         try {
             $transaction = $event->transaction;
-            $start_year = Carbon::now()->startOfYear()->format('Y-m-d');
-            $end_year = Carbon::now()->endOfYear()->format('Y-m-d');
+            $start_year = Carbon::now()->startOfYear();
+            $end_year = Carbon::now()->endOfYear();
             $date = Carbon::parse($transaction->date);
+            $client_id = $transaction->client_id;
 
-            if (!$date->between($start_year, $end_year))
+            $old_data = Cache::get('journal-' . $transaction->id . '-old', null);
+            // if model is updated, old date's in this year, and new date's not in this year
+            if (
+                $old_data &&
+                Carbon::parse($old_data['date'])->between($start_year, $end_year) &&
+                ($date->lessThan($start_year) || $date->greaterThan($end_year))
+            ) {
+                Log::info('Updated from this year to outside this year');
+                $this->forgetCache($client_id, 'this_year');
+                $this->forgetCache($client_id, 'this_quarter');
+                Cache::forget('journal-' . $transaction->id . '-old');
                 return;
+            }
+
+            if (!$date->between($start_year, $end_year)) {
+                Log::info("Transaction created's date is not this year");
+                return;
+            }
 
             $start_quarter = Carbon::now()->startOfQuarter();
             $end_quarter = Carbon::now()->endOfQuarter();
 
-            $client_id = $transaction->client_id;
-            Log::info('Forgetting this year');
-            Cache::forget("$client_id-balance-sheet-this_year");
-            Cache::forget("$client_id-income-statement-this_year");
+            $this->forgetCache($client_id, 'this_year');
 
-            if ($date->between($start_quarter, $end_quarter)) {
-                Log::info('Forgetting this quarter');
-                Cache::forget("$client_id-balance-sheet-this_quarter");
-                Cache::forget("$client_id-income-statement-this_quarter");
-            }
+            if ($date->between($start_quarter, $end_quarter))
+                $this->forgetCache($client_id, 'this_quarter');
 
             Log::info('Successfully forgets reports cache');
         } catch (\Exception $e) {
@@ -54,5 +64,13 @@ class UpdateReportsCache implements ShouldQueue
             Log::error($e->getMessage());
             Log::error(truncate($e->getTraceAsString(), 200));
         }
+    }
+
+    private function forgetCache(string $client_id, string $period)
+    {
+        Log::info("Forgetting $period");
+        Cache::forget("$client_id-balance-sheet-$period");
+        Cache::forget("$client_id-income-statement-$period");
+        Cache::forget("api-$client_id-reports-$period");
     }
 }

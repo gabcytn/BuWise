@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\IncomeStatementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -17,10 +16,7 @@ class ReportsController extends Controller
         $this->validate($request);
         $clientId = $request->user()->id;
         $period = getStartAndEndDate($request->period);
-        $data = Cache::remember("api-$clientId-reports-" . $request->period, 300, function () use ($clientId, $period) {
-            Log::info('calculating new api reports');
-            return $this->getReportsData($clientId, $period[0], $period[1]);
-        });
+        $data = $this->getReportsDataHelper($period, $request->period, $clientId);
 
         $revenues = [];
         $expenses = [];
@@ -53,10 +49,8 @@ class ReportsController extends Controller
         $this->validate($request);
         $clientId = $request->user()->id;
         $period = getStartAndEndDate($request->period);
-        $data = Cache::remember("api-$clientId-reports-" . $request->period, 300, function () use ($clientId, $period) {
-            Log::info('calculating new api reports');
-            return $this->getReportsData($clientId, $period[0], $period[1]);
-        });
+        $data = $this->getReportsDataHelper($period, $request->period, $clientId);
+
         $assets = [];
         $liabilities = [];
         $equities = [];
@@ -124,10 +118,29 @@ class ReportsController extends Controller
             ->get();
     }
 
+    private function getReportsDataHelper(array $period, string $request_period, string $client_id)
+    {
+        switch ($request_period) {
+            case 'this_year':
+            case 'this_quarter':
+                $data = Cache::remember("api-$client_id-reports-" . $request_period, 300, function () use ($client_id, $period) {
+                    Log::info('calculating new api reports');
+                    return $this->getReportsData($client_id, $period[0], $period[1]);
+                });
+                break;
+            default:
+                Log::info('Calculating api reports (non-cache)');
+                $data = $this->getReportsData($client_id, $period[0], $period[1]);
+                break;
+        }
+
+        return $data;
+    }
+
     private function validate(Request $request)
     {
         $request->validate([
-            'period' => 'required|in:this_year,this_month,this_week,today,last_week,last_month,last_year,all_time',
+            'period' => 'required|in:this_year,this_quarter,this_month,this_week,today,last_week,last_month,last_quarter,last_year,all_time',
         ]);
     }
 }
