@@ -93,27 +93,21 @@ class DashboardController extends Controller
     public function getJournals(Request $request)
     {
         $user = $request->user();
-        $accountant_id = getAccountantId($user);
         $transactions = Transaction::where('created_by', '=', $user->id)
             ->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
             ->where('type', '=', 'journal')
             ->orderBy('date')
             ->get();
-        $months = [];
+
+        // fill up array of 0's, each index represents the month, (0 - 11)
+        $data = array_fill(0, 12, 0);
         foreach ($transactions as $transaction) {
-            $month = Carbon::createFromDate($transaction->date)->format('M');
-            if (!in_array($month, $months))
-                $months[] = $month;
-        }
-        $data = array_fill(0, count($months), 0);
-        foreach ($transactions as $transaction) {
-            $month = Carbon::createFromDate($transaction->date)->format('M');
-            $idx = array_search($month, $months);
-            $data[$idx] += 1;
+            // hence the minus 1
+            $month_idx = Carbon::createFromDate($transaction->date)->month - 1;
+            $data[$month_idx] += 1;
         }
 
         return Response::json([
-            'labels' => $months,
             'values' => $data,
         ]);
     }

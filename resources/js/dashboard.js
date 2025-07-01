@@ -1,3 +1,5 @@
+import { months } from "./reports/insights/cash-flow";
+
 const tasksChart = document.querySelector("canvas#tasks-chart");
 const journalsChart = document.querySelector("canvas#journals-chart");
 
@@ -48,12 +50,12 @@ async function lineChart() {
 async function barChart() {
     const res = await fetch("/dashboard/charts/journals");
     const data = await res.json();
-    if (data.labels.length < 1 && data.values.length < 1) {
+    if (data.values.length < 1) {
         noDataForBarChart();
         return;
     }
     const dataset = {
-        labels: data.labels,
+        labels: months,
         datasets: [
             {
                 data: data.values,

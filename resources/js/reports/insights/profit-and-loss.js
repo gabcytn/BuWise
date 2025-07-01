@@ -1,3 +1,5 @@
+import { months } from "./cash-flow";
+
 export async function getPLData(clientId) {
     const res = await fetch(`/profit-and-loss/${clientId}`);
     const data = await res.json();
@@ -76,20 +78,7 @@ function getMonthFromDate(dateStr) {
 let myChart;
 function start(revenues, expenses, net) {
     const data = {
-        labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ],
+        labels: months,
         datasets: [
             {
                 type: "line",

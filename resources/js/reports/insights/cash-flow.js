@@ -1,24 +1,23 @@
+export const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
 export async function getCashFlowData(clientId) {
     const res = await fetch(`/cash-flow/${clientId}`);
     const data = await res.json();
 
     let inflowsTotal = 0;
     let outflowsTotal = 0;
-
-    const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
 
     const inflows = new Array(12).fill(0);
     const outflows = new Array(12).fill(0);
