@@ -78,13 +78,27 @@ overflow-x: hidden; /* disables horizontal scrolling */
 }
 
 .contact-form {
-    background: #ffffff; /* Changed from #f6f6f6 to pure white */
-    padding: 40px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 600px;  /* Optional: control the form's width */
-    margin: 0 auto;    /* Center the form */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); /* Optional subtle shadow */
+  background: linear-gradient(270deg, #1B80C3, white, #1B80C3);
+  background-size: 600% 600%;
+  animation: bgMove 10s ease infinite;
+
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+@keyframes bgMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .contact-form form {
