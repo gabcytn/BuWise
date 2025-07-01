@@ -63,7 +63,7 @@
 <!-- Hero Section -->
 <section class="hero-carousel">
   <!-- Slide 1 -->
-  <div class="carousel-slide active" style="background-image: url('/images/1.png');">
+  <div class="carousel-slide active" style="background-image: url('/images/1.gif');">
     <div class="carousel-content">
       <h1>Having Problems with your <br>Bookkeeping?</h1>
       <p>We provide quality bookkeeping and accounting services for all through BuWise. Our services utilize automation technology such as Robotic Process Automation (RPA) to streamline our operations.</p>
@@ -75,7 +75,7 @@
   </div>
 
   <!-- Slide 2 -->
-  <div class="carousel-slide" style="background-image: url('/images/2.png');">
+  <div class="carousel-slide" style="background-image: url('/images/2.gif');">
     <div class="carousel-content">
       <h1>Don’t know how to do your <br>Bookkeeping Reports?</h1>
       <p>LBJ Services delivers insightful reports that make it easier to understand your company’s performance and take smarter next steps. These reports are also crucial for your auditing through the Bureau of Internal Revenue.</p>
@@ -87,7 +87,7 @@
   </div>
 
   <!-- Slide 3 -->
-  <div class="carousel-slide" style="background-image: url('/images/3.png');">
+  <div class="carousel-slide" style="background-image: url('/images/3.gif');">
     <div class="carousel-content">
       <h1>Having Trouble with your <br>Invoicing and Audit?</h1>
       <p>LBJ Services simplifies invoice submission through a user-friendly mobile app and streamlines the generation of audit reports. This helps you meet deadlines more efficiently and ensures better compliance with BIR regulations.</p>
@@ -99,7 +99,7 @@
   </div>
 
   <!-- Slide 4 -->
-  <div class="carousel-slide" style="background-image: url('/images/4.png');">
+  <div class="carousel-slide" style="background-image: url('/images/4.gif');">
     <div class="carousel-content">
       <h1>Don’t know when your <br>BIR Forms are due?</h1>
       <p>We value transparency and proactive communication. That’s why we keep you informed of your monthly, quarterly, and annual BIR reporting schedules—so you’re always prepared, never miss a deadline, and can focus more on running your business .</p>
@@ -140,7 +140,7 @@
 <!-- Services Section -->
 <section class="services">
     <div class="container">
-        <h2 class="section-title">Our Services</h2>
+        <h2 class="section-title">Our Features</h2>
         <p class="section-subtitle">Our innovative approach quickly accelerates your accounting workflows.</p>
         
         <div class="services-grid">
@@ -197,6 +197,10 @@
             <h2>Generate realtime <span class="highlight">reports</span> in your mobile device <span class="highlight">data</span></h2>
             <p>Our mobile app enables clients to generate real-time bookkeeping reports—such as Income Statements, Balance Sheets, and other key financial documents—directly from our centralized system. By providing instant access to accurate and up-to-date financial data, the app empowers business owners and managers to monitor performance trends, assess profitability, and ensure financial stability at any time. This level of insight supports better decision-making, improves operational efficiency, and helps businesses stay compliant with reporting standards and regulatory requirements.</p>
         </div>
+        <a href="/register" class="app-button">
+  DOWNLOAD THE ANDROID APP NOW <span class="arrow">→</span>
+</a>
+
     </div>
 </section>
 
