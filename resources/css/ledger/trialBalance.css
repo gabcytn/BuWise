@@ -75,3 +75,26 @@
 .submit-btn-wrapper button:hover {
     opacity: 0.9;
 }
+
+@media (max-width: 450px) {
+    #report-form {
+        flex-direction: column;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        flex-wrap: wrap !important;
+
+        .form-select {
+            display: block;
+            width: 100% !important;
+
+            select {
+                width: 100%;
+            }
+        }
+
+        button {
+            margin-top: 1rem;
+            width: 100%;
+        }
+    }
+}
