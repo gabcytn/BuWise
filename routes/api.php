@@ -45,6 +45,7 @@ Route::middleware(['verify.api', 'auth:sanctum', 'suspended'])->group(function (
         return Response::json([
             'clients' => $clients->map(function ($client) {
                 return [
+                    'id' => $client->id,
                     'name' => $client->name,
                     'category' => $client->client_type,
                 ];
