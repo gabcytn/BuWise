@@ -17,6 +17,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TrialBalanceController;
 use App\Http\Controllers\WorkingPaperController;
 use App\Models\User;
+use App\Notifications\ContactUsEmail;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -30,6 +31,17 @@ Route::get('/privacy', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('');
+Route::post('/contact', function (Request $request) {
+    $request->validate([
+        'full_name' => 'required|string',
+        'email' => 'required|email',
+        'message' => 'required|string',
+    ]);
+
+    $user = User::where('email', '=', 'cayetanogabriel03@outlook.com')->first();
+    $user->notify(new ContactUsEmail($request->full_name, $request->email, $request->message));
+    return redirect()->to('/contact');
+});
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
