@@ -65,6 +65,7 @@ class AuthController extends Controller
             ->where('users.id', '=', $request->user()->id)
             ->select(
                 'users.name',
+                'users.client_type AS clientType',
                 'roles.name AS userType',
                 'users.email'
             )

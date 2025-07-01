@@ -6,8 +6,10 @@ use App\Models\FailedInvoice;
 use App\Models\InvoiceLine;
 use App\Models\LedgerAccount;
 use App\Models\LedgerEntry;
+use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Notifications\NewSampleNotification;
 use App\Services\InvoiceStore;
 use App\Services\Llmwhisperer;
 use App\Services\OpenAi;
@@ -267,7 +269,10 @@ class ScanInvoiceInWeb implements ShouldQueue
             'filename' => $this->filename,
         ]);
 
-        // NOTE: notifies web only
-        ScanFailed::dispatch($this->accountant);
+        if ($this->client->role_id === Role::CLIENT) {
+            $this->client->notify(new NewSampleNotification($this->client));
+        } else {
+            ScanFailed::dispatch($this->accountant);
+        }
     }
 }

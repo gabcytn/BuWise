@@ -142,4 +142,14 @@ class User extends Authenticatable implements MustVerifyEmail
             'organization_id'  // Local key on OrganizationMember table...
         );
     }
+
+    public function expoTokens(): HasMany
+    {
+        return $this->hasMany(ExpoToken::class, 'owner_id');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

@@ -91,3 +91,16 @@ if (!function_exists('getStartAndEndDate')) {
         return [$start, $end];
     }
 }
+
+if (!function_exists('isAuthorized')) {
+    function isAuthorized(User $user)
+    {
+        switch ($user->role_id) {
+            case Role::BOT:
+            case Role::CLIENT:
+                return false;
+            default:
+                return true;
+        }
+    }
+}

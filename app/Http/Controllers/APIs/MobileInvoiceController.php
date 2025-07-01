@@ -42,7 +42,7 @@ class MobileInvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', Transaction::class);
+        // Gate::authorize('create', Transaction::class);
         $request->validate([
             'file' => ['required', File::image()->max(10000)],
             'transaction_type' => ['required', 'string', 'in:sales,purchases']

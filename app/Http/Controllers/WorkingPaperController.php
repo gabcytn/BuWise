@@ -14,6 +14,8 @@ class WorkingPaperController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        if (!isAuthorized($user))
+            abort(404);
         $months = [];
         for ($i = 1; $i <= 12; $i++) {
             $months[$i] = Carbon::create()->month($i)->format('F');

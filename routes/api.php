@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\APIs\AuthController;
 use App\Http\Controllers\APIs\MobileInvoiceController;
+use App\Http\Controllers\APIs\PushNotifController;
 use App\Http\Controllers\APIs\ReportsController;
 use App\Http\Controllers\APIs\TasksController;
 use App\Http\Controllers\InsightsController;
@@ -60,6 +61,9 @@ Route::middleware(['verify.api', 'auth:sanctum', 'suspended'])->group(function (
 
     Route::get('/income-statement', [ReportsController::class, 'incomeStatement']);
     Route::get('/balance-sheet', [ReportsController::class, 'balanceSheet']);
+
+    Route::post('/push-token', [PushNotifController::class, 'store']);
+    Route::get('/user/notifications', [PushNotifController::class, 'index']);
 
     Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
         ->middleware('throttle:1,1');

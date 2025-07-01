@@ -73,6 +73,8 @@ class InvoiceController extends Controller
     {
         Gate::authorize('create', Transaction::class);
         $user = $request->user();
+        if (!isAuthorized($user))
+            abort(404);
         $accId = getAccountantId($user);
         $clients = Cache::remember($accId . '-clients', 3600, function () use ($user) {
             return getClients($user);

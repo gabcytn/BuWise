@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\AccountGroup;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -14,6 +15,8 @@ class InsightsController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        if (!isAuthorized($user))
+            abort(404);
         $accId = getAccountantId($user);
         $clients = Cache::remember("$accId-clients", 3600, function () use ($user) {
             return getClients($user);

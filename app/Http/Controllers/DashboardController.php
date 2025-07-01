@@ -15,6 +15,8 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        if ($user->role_id === Role::BOT)
+            abort(404);
         $accId = getAccountantId($user);
         $tasks = Task::where('assigned_to', '=', $user->id)
             ->where('status', '!=', 'completed')

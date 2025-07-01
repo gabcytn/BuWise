@@ -39,6 +39,8 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('create', Transaction::class);
         $user = $request->user();
+        if (!isAuthorized($user))
+            abort(404);
         $clients = Cache::remember($user->id . '-clients', 3600, function () use ($user) {
             return getClients($user);
         });
