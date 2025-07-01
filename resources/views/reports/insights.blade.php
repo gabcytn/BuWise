@@ -22,11 +22,6 @@
                     <div class="p-3">
                         <div class="receivables-texts">
                             <h2>Total Receivables</h2>
-                            <select name="receivables-period">
-                                @foreach ($periods as $period)
-                                    <option value="{{ $period }}">{{ $period }}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="chart-container">
                             <canvas id="receivables-canvas"></canvas>
@@ -43,11 +38,6 @@
                     <div class="p-3">
                         <div class="payables-texts">
                             <h2>Total Payables</h2>
-                            <select name="payables-period">
-                                @foreach ($periods as $period)
-                                    <option value="{{ $period }}">{{ $period }}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="chart-container">
                             <canvas id="payables-canvas"></canvas>
@@ -64,11 +54,6 @@
             <div class="profit-and-loss">
                 <div class="pl-header">
                     <h2>Profit and Loss</h2>
-                    <select name="pl-period">
-                        @foreach ($periods as $period)
-                            <option value="{{ $period }}">{{ $period }}</option>
-                        @endforeach
-                    </select>
                 </div>
                 <div class="pl-body">
                     <div class="chart-container">
@@ -93,11 +78,6 @@
             <div class="cash-flow">
                 <div class="cash-flow__header">
                     <h3>Cash Flow</h3>
-                    <select name="cash-flow-period">
-                        @foreach ($periods as $period)
-                            <option value="{{ $period }}">{{ $period }}</option>
-                        @endforeach
-                    </select>
                 </div>
                 <div class="cash-flow__body">
                     <div class="chart-container">
