@@ -120,6 +120,7 @@ function addEventListeners(calendar) {
 function displayTasksOnSidebar(tasks) {
     const ul = document.querySelector(".aside ul");
     tasks.forEach((task) => {
+        if (task.status === "completed") return;
         const li = document.createElement("li");
         const taskTitle = document.createElement("p");
         taskTitle.classList.add("task-title");
