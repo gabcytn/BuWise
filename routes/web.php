@@ -69,8 +69,11 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     Route::get('/dashboard/charts/journals', [DashboardController::class, 'getJournals']);
 
     Route::get('/profile', function (Request $request) {
+        $user = $request->user();
+        if (!isAuthorized($user))
+            abort(404);
         return view('profile.edit', [
-            'user' => $request->user()
+            'user' => $user,
         ]);
     })->name('profile.edit');
 

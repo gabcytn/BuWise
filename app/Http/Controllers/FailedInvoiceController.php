@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FailedInvoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,6 +16,7 @@ class FailedInvoiceController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('viewAny', FailedInvoice::class);
         $user = $request->user();
         $failed_invoices = $user->failedInvoices();
         $accountant_id = getAccountantId($user);

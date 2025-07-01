@@ -54,9 +54,10 @@ class TransactionPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id !== Role::CLIENT || $user->role_id !== Role::BOT
-            ? Response::allow()
-            : Response::denyAsNotFound();
+        if ($user->role_id === Role::CLIENT)
+            return Response::denyAsNotFound();
+
+        return Response::allow();
     }
 
     /**

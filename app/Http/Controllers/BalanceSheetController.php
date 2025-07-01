@@ -14,6 +14,8 @@ class BalanceSheetController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        if (!isAuthorized($user))
+            abort(404);
         $accId = getAccountantId($user);
         $clients = Cache::remember($accId . '-clients', 3600, function () use ($user) {
             return getClients($user);
