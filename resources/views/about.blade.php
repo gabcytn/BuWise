@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'LBJ Services') }}</title>
-
+<link rel="icon" type="image/x-icon" href="{{ asset('images/nav-logo.png') }}" />
     @vite(['resources/css/about.css'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">

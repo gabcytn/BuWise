@@ -177,7 +177,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
 .side-nav {
   position: fixed;
   top: 0;
-  left: -320px;
+  left: -340px;
   width: 280px;
   height: 100%;
   background: linear-gradient(135deg, #ffffff 0%, #f7fbff 100%);
