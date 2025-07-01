@@ -78,7 +78,7 @@
     <div class="container contact-grid">
         <!-- Left Contact Info -->
         <div class="contact-info">
-            <h2>Get In Touch</h2>
+<h2>Get in touch and be our new <span style="color: #279CE9;">Clientele</span></h2>
             <p>Want to know more about BuWise? Enter your details in the message box or contact us through the details below to learn more about our product and how it can transform your everyday bookkeeping operations.</p>
             
             <div class="info-item">

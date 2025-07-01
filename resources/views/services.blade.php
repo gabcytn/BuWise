@@ -63,7 +63,7 @@
 <section class="hero" style="background: url('/images/aboutbg.png') center center / cover no-repeat; height: 60vh; position: relative;">
     <div class="container hero-grid" style="position: relative; z-index: 1;">
         <div class="hero-text">
-            <h1>Our <span class="blue">Services</span> </h1>
+            <h1>Our Features</span> </h1>
            
             <div class="hero-buttons">
                 <a href="{{ route('about') }}" class="btn btn-primary">Learn More</a>
@@ -76,7 +76,7 @@
 <!-- Services Section -->
 <section class="services">
     <div class="container">
-        <h2 class="section-title">Our Services</h2>
+        <h2 class="section-title">Our Features</h2>
         <p class="section-subtitle">Our innovative approach quickly accelerates your accounting workflows.</p>
         
         <div class="services-grid">
