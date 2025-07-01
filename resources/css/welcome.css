@@ -563,6 +563,57 @@ overflow-x: hidden; /* disables horizontal scrolling */
   transition: all 0.3s ease;
   display: inline-block;
 }
+.app-button {
+  position: absolute;
+  bottom: 40px;
+  left: 20%;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  background: linear-gradient(270deg, #1B80C3, white, #1B80C3); /* green animated bg */
+  background-size: 600% 600%;
+  animation: bgMove 6s ease infinite;
+
+  color: white;
+  padding: 16px 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.app-button:hover {
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.app-button:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+.app-button .arrow {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.app-button:hover .arrow {
+  transform: translateX(5px);
+}
+
+@keyframes bgMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
 /* Our Services button */
 .btn-primary {
@@ -598,7 +649,7 @@ overflow-x: hidden; /* disables horizontal scrolling */
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.3);
+background: transparent;
   border: none;
   color: white;
   font-size: 30px;
@@ -613,6 +664,17 @@ overflow-x: hidden; /* disables horizontal scrolling */
 
 .carousel-next {
   right: 20px;
+}
+.carousel-prev:hover,
+.carousel-next:hover {
+  background-color: transparent;
+    color: #1b80c3; /* optional: gives a nice contrast */
+}
+
+.carousel-prev:active,
+.carousel-next:active {
+  background-color:transparent;
+  transform: translateY(-50%) scale(0.95); /* subtle press effect */
 }
 
 
