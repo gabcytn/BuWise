@@ -33,7 +33,7 @@
                 @if ($email)
                     <p class="subtitle">We’ve sent a verification code to <a href="#">{{ $email }}</a></p>
                 @else
-                    <p class="subtitle">We’ve sent a verification code to your email</p>
+                    <p class="subtitle">Please open your authenticator application to view your verification code.</p>
                 @endif
 
                 <!-- OTP Form -->
