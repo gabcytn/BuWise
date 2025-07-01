@@ -20,7 +20,7 @@ class IncomeStatementController extends Controller
             return getClients($user);
         });
 
-        if (!$request->query('client') && !$request->query('period')) {
+        if (!$request->query('client') || !$request->query('period')) {
             return view('reports.income-statement', [
                 'has_data' => false,
                 'clients' => $clients,
@@ -29,19 +29,24 @@ class IncomeStatementController extends Controller
 
         $request->validate([
             'client' => 'required|uuid:4',
-            'period' => 'required|in:this_year,this_month,this_week,today,last_week,last_month,all_time',
+            'period' => 'required|in:this_year,this_quarter,this_month,this_week,today,last_week,last_month,last_quarter,all_time',
         ]);
         $selected_client = User::find($request->client);
         if (!$selected_client)
             abort(404);
         $period = getStartAndEndDate($request->period);
-        if ($request->period === 'this_year') {
+        $request_period = $request->period;
+        if ($request_period === 'this_year' || $request_period === 'this_quarter') {
             // cache this year's income statement
-            $structured_data = Cache::remember($selected_client->id . '-income-statement', 300, function () use ($selected_client, $period) {
-                Log::info('Calculating new income statement (web)');
-                $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
-                return $this->structureData($data);
-            });
+            $structured_data = Cache::remember(
+                $selected_client->id . "-income-statement-$request_period",
+                300,
+                function () use ($selected_client, $period, $request_period) {
+                    Log::info("Calculating new income statement (web): $request_period");
+                    $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                    return $this->structureData($data);
+                }
+            );
         } else {
             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
             $structured_data = $this->structureData($data);

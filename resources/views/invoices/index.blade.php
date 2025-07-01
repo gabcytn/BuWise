@@ -28,8 +28,7 @@
         </dialog>
 
         <!-- Header Row: Title + New Invoice Button + Extra Buttons -->
-        <div class="invoice-header-row"
-            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div class="invoice-header-row">
             <div class="invoice-header">
                 <h2>Invoice Management</h2>
                 <p>Efficiently handle your client’s invoices. View each invoice by clicking the corresponding row.</p>
@@ -84,60 +83,62 @@
             </form>
 
             @if (count($invoices) > 0)
-                <table class="invoice-table">
-                    <thead>
-                        <tr>
-                            <th>Invoice Number</th>
-                            <th>Client</th>
-                            <th>Billing Date</th>
-                            <th>Transaction Type</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Processed By</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($invoices as $invoice)
+                <div class="table-wrapper">
+                    <table class="invoice-table">
+                        <thead>
                             <tr>
-                                <td>{{ $invoice->reference_no }}</td>
-                                <td>{{ $invoice->client->name }}</td>
-                                <td>{{ $invoice->date }}</td>
-                                <td>{{ ucfirst($invoice->kind) }}</td>
-                                <td>{{ number_format($invoice->amount, 2) }}</td>
-                                <td>
-                                    <span class="status {{ strtolower($invoice->status) }}">
-                                        {{ ucfirst($invoice->status) }}
-                                    </span>
-                                </td>
-                                <td title="{{ $invoice->creator->name }}">{{ truncate($invoice->creator->name) }}
-                                </td>
-                                <td>
-                                    <a href="{{ route('invoices.show', $invoice->id) }}" class="action-view"
-                                        title="View">
-                                        <img src="{{ asset('images/viewicon.png') }}" alt="View" />
-                                    </a>
-                                    <a href="{{ route('invoices.edit', $invoice->id) }}" class="action-edit"
-                                        title="Edit">
-                                        <img src="{{ asset('images/editicon.png') }}" alt="Edit" />
-                                    </a>
-                                    <form method="POST" action="{{ route('invoices.destroy', $invoice->id) }}"
-                                        style="display:inline;" onsubmit="return confirm('Delete this invoice?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-delete" title="Delete">
-                                            <img src="{{ asset('images/deleteicon.png') }}" alt="Delete" />
-                                        </button>
-
-                                    </form>
-                                </td>
+                                <th>Invoice Number</th>
+                                <th>Client</th>
+                                <th>Billing Date</th>
+                                <th>Transaction Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Processed By</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($invoices as $invoice)
+                                <tr>
+                                    <td>{{ $invoice->reference_no }}</td>
+                                    <td>{{ $invoice->client->name }}</td>
+                                    <td>{{ $invoice->date }}</td>
+                                    <td>{{ ucfirst($invoice->kind) }}</td>
+                                    <td>{{ number_format($invoice->amount, 2) }}</td>
+                                    <td>
+                                        <span class="status {{ strtolower($invoice->status) }}">
+                                            {{ ucfirst($invoice->status) }}
+                                        </span>
+                                    </td>
+                                    <td title="{{ $invoice->creator->name }}">{{ truncate($invoice->creator->name) }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('invoices.show', $invoice->id) }}" class="action-view"
+                                            title="View">
+                                            <img src="{{ asset('images/viewicon.png') }}" alt="View" />
+                                        </a>
+                                        <a href="{{ route('invoices.edit', $invoice->id) }}" class="action-edit"
+                                            title="Edit">
+                                            <img src="{{ asset('images/editicon.png') }}" alt="Edit" />
+                                        </a>
+                                        <form method="POST" action="{{ route('invoices.destroy', $invoice->id) }}"
+                                            style="display:inline;" onsubmit="return confirm('Delete this invoice?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="action-delete" title="Delete">
+                                                <img src="{{ asset('images/deleteicon.png') }}" alt="Delete" />
+                                            </button>
+
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 {{ $invoices->links() }}
             @else
-                <h2>No invoices found.</h2>
+                <h2 style="text-align: center;">No invoices found.</h2>
             @endif
         </div>
     </div>

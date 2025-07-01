@@ -21,7 +21,7 @@ class DashboardController extends Controller
             ->orderBy('end_date')
             ->get();
         $related = User::where('accountant_id', '=', $accId)->get();
-        $clients = $related->where('role_id', '=', Role::CLIENT);
+        $clients = $related->where('role_id', '=', Role::CLIENT)->where('suspended', '=', 0);
         $client_types = $clients->map(function ($client) {
             return $client->client_type;
         })->toArray();

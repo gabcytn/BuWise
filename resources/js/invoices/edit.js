@@ -1,8 +1,10 @@
+const withholdingTax = document.querySelector("input#withholding-tax");
 updateTotals();
 
 document.querySelectorAll("table input[type='number']").forEach((input) => {
     input.addEventListener("input", updateTotals);
 });
+withholdingTax.addEventListener("input", updateTotals);
 
 function formatNumber(number, decimals) {
     return Number(number).toLocaleString("en-US", {
@@ -31,6 +33,10 @@ function updateTotals() {
         overall += runningAmount;
         rowTotal.textContent = formatNumber(runningAmount, 2);
     });
+    const withholdingTaxFloat = parseFloat(
+        parseFloat(withholdingTax.value || 0).toFixed(2),
+    );
+    overall -= withholdingTaxFloat;
 
     document.querySelector("#overall-total strong").textContent = formatNumber(
         overall,

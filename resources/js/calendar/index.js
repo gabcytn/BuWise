@@ -96,8 +96,12 @@ async function start() {
     });
     calendar.render();
     addEventListeners(calendar);
-    displayChartOnSidebar(tasks);
     displayTasksOnSidebar(tasks);
+    if (tasks.length < 1) {
+        displayNoDataChart();
+        return;
+    }
+    displayChartOnSidebar(tasks);
 }
 
 function addEventListeners(calendar) {
@@ -168,6 +172,24 @@ function displayChartOnSidebar(tasks) {
     };
     const tasksChart = document.querySelector("#chart");
     const myChart = new Chart(tasksChart, config);
+}
+
+function displayNoDataChart() {
+    const chartContainer = document.querySelector(".content.chart-container");
+    const tasksListContainer = document.querySelector(".content.task-list");
+    const div = document.createElement("div");
+    div.classList.add("no-tasks-container");
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-ban";
+    const h1 = document.createElement("h1");
+    h1.textContent = "No tasks yet";
+
+    div.appendChild(icon);
+    div.appendChild(h1);
+
+    document.querySelector("canvas#chart").style.display = "none";
+    chartContainer.appendChild(div);
+    tasksListContainer.appendChild(div.cloneNode(true));
 }
 
 function getDateDifference(d1, d2) {

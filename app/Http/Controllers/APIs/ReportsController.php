@@ -88,7 +88,7 @@ class ReportsController extends Controller
         $amount = abs($debit - $credit);
         $entryType = $debit > $credit ? 'DR' : 'CR';
         $equities[] = json_decode(json_encode([
-            'acc_name' => "Current Year's Earnings",
+            'acc_name' => "Current Period's Earnings",
             'acc_code' => '3xx',
             'acc_group' => 'Equity',
             'debit' => $debit,

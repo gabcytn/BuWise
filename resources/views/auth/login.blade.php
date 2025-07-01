@@ -35,19 +35,21 @@
                     <label for="email">Email Address</label>
                     <div class="input-box">
                         <i class="fas fa-envelope icon"></i>
-                        <input id="email" type="email" name="email" placeholder="name@domain.com" required>
+                        <input id="email" type="email" name="email" placeholder="name@domain.com" required
+                            value="{{ old('email') }}" />
                     </div>
                 </div>
 
                 <!-- Password -->
                 <div class="input-group">
-    <label for="password">Password</label>
-    <div class="input-box">
-        <i class="fas fa-lock icon"></i>
-        <input id="password" type="password" name="password" placeholder="Enter your password" required>
-        <i class="fas fa-eye toggle-password" data-target="password"></i>
-    </div>
-</div>
+                    <label for="password">Password</label>
+                    <div class="input-box">
+                        <i class="fas fa-lock icon"></i>
+                        <input id="password" type="password" name="password" placeholder="Enter your password"
+                            required>
+                        <i class="fas fa-eye toggle-password" data-target="password"></i>
+                    </div>
+                </div>
 
 
                 <!-- Options -->

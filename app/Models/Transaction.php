@@ -16,6 +16,7 @@ class Transaction extends Model
         'type',
         'kind',
         'amount',
+        'withholding_tax',
         'date',
         'payment_method',
         'description',

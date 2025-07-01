@@ -89,6 +89,9 @@ function addRow() {
     tableBody.appendChild(newRow);
 }
 
+const withholdingTax = document.querySelector("input#withholding-tax");
+withholdingTax.addEventListener("input", updateTotals);
+
 function updateTotals() {
     const rows = document.querySelectorAll("#table-body tr");
 
@@ -126,6 +129,8 @@ function updateTotals() {
         sum += parseFloat(finalAnswer);
     });
 
+    const withholdingTaxFloat = parseFloat(withholdingTax.value || 0);
+    sum -= withholdingTaxFloat;
     document.querySelector("#total-sum").textContent = sum.toFixed(2);
 }
 
@@ -145,9 +150,11 @@ function updatePaymentLabel() {
     switch (transactionTypeSelect[transactionTypeSelect.selectedIndex].value) {
         case "purchases":
             paymentMethodLabel.textContent = "Credit To";
+            withholdingTax.parentElement.style.display = "none";
             break;
         case "sales":
             paymentMethodLabel.textContent = "Debit To";
+            withholdingTax.parentElement.style.display = "";
             break;
         default:
             break;

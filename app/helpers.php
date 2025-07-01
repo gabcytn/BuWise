@@ -74,6 +74,14 @@ if (!function_exists('getStartAndEndDate')) {
                 $start = Carbon::now()->startOfDay();
                 $end = Carbon::now()->endOfDay();
                 break;
+            case 'this_quarter':
+                $start = Carbon::now()->startOfQuarter();
+                $end = Carbon::now()->endOfQuarter();
+                break;
+            case 'last_quarter':
+                $start = Carbon::now()->subQuarter()->startOfQuarter();
+                $end = Carbon::now()->subQuarter()->endOfQuarter();
+                break;
             default:
                 // this_year
                 $start = Carbon::now()->startOfYear();

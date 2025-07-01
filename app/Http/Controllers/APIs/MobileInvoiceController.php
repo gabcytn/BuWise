@@ -4,8 +4,10 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\InvoiceReceived;
+use App\Jobs\ScanInvoiceInWeb;
 use App\Models\FailedInvoice;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -51,7 +53,12 @@ class MobileInvoiceController extends Controller
             $filename = time() . '_' . Str::uuid();
 
             Storage::disk('public')->put("temp/$filename", file_get_contents($file));
-            InvoiceReceived::dispatch($filename, $transactionType, $request->user());
+            // InvoiceReceived::dispatch($filename, $transactionType, $request->user());
+
+            $client = $request->user();
+            $accountant_id = getAccountantId($client);
+            $accountant = User::find($accountant_id);
+            ScanInvoiceInWeb::dispatch($accountant, $client, $filename, $transactionType);
 
             return Response::json([
                 'message' => 'Successfully created invoice'
@@ -68,20 +75,14 @@ class MobileInvoiceController extends Controller
         $request->validate([
             'clientId' => 'required|uuid:4',
             'filename' => 'required|string',
-            'status' => 'required|in:success,fail',
         ]);
 
-        // only delete temp invoice if it succeeds
-        if ($request->status === 'success') {
-            Storage::disk('public')->delete('temp/' . $request->status);
-            return;
-        }
+        Storage::disk('public')->delete('temp/' . $request->filename);
 
-        $failed_invoice = FailedInvoice::create([
-            'client_id' => $request->clientId,
-            'filename' => $request->filename,
-        ]);
-        // TODO: notify client
+        // $failed_invoice = FailedInvoice::create([
+        //     'client_id' => $request->clientId,
+        //     'filename' => $request->filename,
+        // ]);
     }
 
     public function failedInvoices(Request $request)

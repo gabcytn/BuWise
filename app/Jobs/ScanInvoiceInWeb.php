@@ -52,36 +52,49 @@ class ScanInvoiceInWeb implements ShouldQueue
         }
 
         $json_text = $this->structureTexts($output_text);
-        if (array_key_exists('error', $json_text) || $json_text['confidenceLevel'] <= 5) {
+        if (isset($json_text['error'])) {
             $this->createFailedInvoice();
             Log::error('OpenAI has error in json/low confidence level');
             return;
         }
+        $json_text['clientId'] = $this->client->id;
+        $json_text['filename'] = $this->filename;
+        $json_text['transactionType'] = $this->transaction_type;
+        $json_text['imageUrl'] = url('storage/temp/' . $this->filename);
 
-        try {
-            DB::beginTransaction();
-            $items = $this->getItems($json_text);
-            $invoice = $this->createTransaction($json_text);
-            $this->createInvoiceLines($items, $invoice);
-            switch ($this->transaction_type) {
-                case 'sales':
-                    $this->ledgerEntryForSales($invoice, $json_text);
-                    break;
-                case 'purchases':
-                    $this->ledgerEntryForPurchases($invoice, $json_text);
-                    break;
-                default:
-                    break;
-            }
-            DB::commit();
-            $fileContents = Storage::disk('public')->get('temp/' . $this->filename);
-            Storage::disk('s3')->put('invoices/' . $this->filename, $fileContents);
-            Storage::disk('public')->delete('temp/' . $this->filename);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            Log::error(truncate($e->getTraceAsString(), 200));
-        }
+        TriggerRobocorpBot::dispatch($json_text);
+
+        // Do all automations in RPA (for defense purposes)
+        // if (array_key_exists('error', $json_text) || $json_text['confidenceLevel'] <= 5) {
+        //     $this->createFailedInvoice();
+        //     Log::error('OpenAI has error in json/low confidence level');
+        //     return;
+        // }
+
+        // try {
+        //     DB::beginTransaction();
+        //     $items = $this->getItems($json_text);
+        //     $invoice = $this->createTransaction($json_text);
+        //     $this->createInvoiceLines($items, $invoice);
+        //     switch ($this->transaction_type) {
+        //         case 'sales':
+        //             $this->ledgerEntryForSales($invoice, $json_text);
+        //             break;
+        //         case 'purchases':
+        //             $this->ledgerEntryForPurchases($invoice, $json_text);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     DB::commit();
+        //     $fileContents = Storage::disk('public')->get('temp/' . $this->filename);
+        //     Storage::disk('s3')->put('invoices/' . $this->filename, $fileContents);
+        //     Storage::disk('public')->delete('temp/' . $this->filename);
+        // } catch (\Exception $e) {
+        //     DB::rollBack();
+        //     Log::error($e->getMessage());
+        //     Log::error(truncate($e->getTraceAsString(), 200));
+        // }
     }
 
     private function structureTexts($text)

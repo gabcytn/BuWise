@@ -40,9 +40,6 @@
 
 /* Toolbar container */
 .invoice-toolbar {
-    max-width: 1200px;
-    margin: 0 auto 1.5rem;
-    padding: 0 2rem;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -174,10 +171,15 @@
 /* Invoice container */
 .invoice-container {
     margin: 0 auto 2rem;
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     background-color: var(--clear-white);
     border-radius: 8px;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 /* Table */

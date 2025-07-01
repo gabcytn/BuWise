@@ -64,6 +64,11 @@
                     <label for="description">Description</label>
                     <input type="text" name="description" id="description" value="{{ old('description') }}" />
                 </div>
+                <div class="form-row">
+                    <label for="withholding-tax">Withholding Tax (optional)</label>
+                    <input type="number" step="0.01" name="withholding_tax" id="withholding-tax"
+                        value="{{ old('withholding_tax') }}" placeholder="0.00" />
+                </div>
             </div>
         </div>
 
