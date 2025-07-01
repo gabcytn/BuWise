@@ -614,6 +614,31 @@ overflow-x: hidden; /* disables horizontal scrolling */
     background-position: 0% 50%;
   }
 }
+@media (max-width: 768px) {
+  .app-button {
+    font-size: 1rem;
+    padding: 12px 20px;
+    bottom: 30px;
+    white-space: normal;
+    width: 90%;
+    max-width: 320px;
+
+    left: 53%; /* shifted slightly to the right */
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-button {
+    font-size: 0.95rem;
+    padding: 10px 16px;
+    bottom: 20px;
+
+    left: 55%; /* more shift on smaller screens */
+    transform: translateX(-50%);
+  }
+}
+
 
 /* Our Services button */
 .btn-primary {
