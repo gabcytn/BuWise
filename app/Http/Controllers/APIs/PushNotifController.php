@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExpoToken;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -32,5 +33,11 @@ class PushNotifController extends Controller
         return Response::json([
             'message' => 'Successfully saved token',
         ]);
+    }
+
+    public function destroy(Notification $notification)
+    {
+        $notification->delete();
+        return response(null, 200);
     }
 }

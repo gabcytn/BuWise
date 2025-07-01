@@ -64,6 +64,7 @@ Route::middleware(['verify.api', 'auth:sanctum', 'suspended'])->group(function (
 
     Route::post('/push-token', [PushNotifController::class, 'store']);
     Route::get('/user/notifications', [PushNotifController::class, 'index']);
+    Route::delete('/user/notifications/{notification}', [PushNotifController::class, 'destroy']);
 
     Route::get('/two-factor-secret-key', [TwoFactorSecretKeyController::class, 'show'])
         ->middleware('throttle:1,1');
