@@ -57,6 +57,7 @@ class TrialBalanceController extends Controller
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->where('tr.client_id', '=', $clientId)
             ->whereIn('tr.status', ['approved', 'archived'])
+            ->where('tr.deleted_at', '=', null)
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->where(function ($q) use ($startDate, $endDate) {
                     $q

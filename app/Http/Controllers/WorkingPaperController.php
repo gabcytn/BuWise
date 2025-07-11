@@ -67,6 +67,7 @@ class WorkingPaperController extends Controller
             ->join('users', 'users.id', '=', 'tr.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->where('tr.client_id', '=', $clientId)
+            ->where('tr.deleted_at', '=', null)
             ->whereBetween('tr.date', [$startDate, $endDate])
             ->whereIn('tr.status', ['approved', 'archived'])
             ->where('acc.id', '=', $accId)

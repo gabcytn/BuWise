@@ -115,12 +115,10 @@ class JournalEntryController extends Controller
     {
         Gate::authorize('delete', $journalEntry);
         try {
-            $arr = [];
-            foreach ($journalEntry->ledger_entries as $data) {
-                $arr[] = $data;
-            }
             TransactionDeleted::dispatch($journalEntry->client_id, $journalEntry->date);
-            Transaction::destroy($journalEntry->id);
+            Log::info($journalEntry->id . ' has been deleted');
+            $journalEntry->delete();
+            // Transaction::destroy($journalEntry->id);
         } catch (\Exception $e) {
             Log::emergency('Exception while destroying a journal entry');
             Log::emergency($e->getMessage());
