@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Events\TransactionDeleted;
 use App\Jobs\ParseInvoiceUpload;
-use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Services\InvoiceStore;
@@ -126,7 +125,7 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, Transaction $invoice)
+    public function edit(Transaction $invoice)
     {
         $image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
             Log::info('Getting new temp. URL from AWS');
