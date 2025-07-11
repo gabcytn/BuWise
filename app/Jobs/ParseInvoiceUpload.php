@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class ScanInvoiceInWeb implements ShouldQueue
+class ParseInvoiceUpload implements ShouldQueue
 {
     use Queueable;
 
@@ -32,10 +32,10 @@ class ScanInvoiceInWeb implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        private User $accountant,
-        private User $client,
-        private string $filename,
-        private string $transaction_type
+        private readonly User $accountant,
+        private readonly User $client,
+        private readonly string $filename,
+        private readonly string $transaction_type
     ) {
         //
     }

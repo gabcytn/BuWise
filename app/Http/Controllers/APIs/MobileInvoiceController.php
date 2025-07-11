@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\InvoiceReceived;
-use App\Jobs\ScanInvoiceInWeb;
+use App\Jobs\ParseInvoiceUpload;
 use App\Models\FailedInvoice;
 use App\Models\Transaction;
 use App\Models\User;
@@ -53,12 +52,11 @@ class MobileInvoiceController extends Controller
             $filename = time() . '_' . Str::uuid();
 
             Storage::disk('public')->put("temp/$filename", file_get_contents($file));
-            // InvoiceReceived::dispatch($filename, $transactionType, $request->user());
 
             $client = $request->user();
             $accountant_id = getAccountantId($client);
             $accountant = User::find($accountant_id);
-            ScanInvoiceInWeb::dispatch($accountant, $client, $filename, $transactionType);
+            ParseInvoiceUpload::dispatch($accountant, $client, $filename, $transactionType);
 
             return Response::json([
                 'message' => 'Successfully created invoice'

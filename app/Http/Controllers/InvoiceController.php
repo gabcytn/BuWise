@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TransactionDeleted;
-use App\Jobs\ScanInvoiceInWeb;
+use App\Jobs\ParseInvoiceUpload;
 use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
@@ -180,7 +180,7 @@ class InvoiceController extends Controller
         $filename = time() . '_' . Str::uuid();
         $request->file('invoice')->storeAs('temp/', $filename, 'public');
 
-        ScanInvoiceInWeb::dispatch($request->user(), $client, $filename, $request->transaction_type);
+        ParseInvoiceUpload::dispatch($request->user(), $client, $filename, $request->transaction_type);
         return redirect()->back()->with('status', 'Success');
     }
 }
