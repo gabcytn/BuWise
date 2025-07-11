@@ -93,6 +93,7 @@ class IncomeStatementController extends Controller
             ->join('users', 'users.id', '=', 'tr.client_id')
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->where('tr.client_id', '=', $clientId)
+            ->where('tr.deleted_at', '=', null)
             ->whereIn('tr.status', ['approved', 'archived'])
             ->whereBetween('tr.date', [$startDate, $endDate])
             ->whereIn('acc.account_group_id', [AccountGroup::REVENUE, AccountGroup::EXPENSES])

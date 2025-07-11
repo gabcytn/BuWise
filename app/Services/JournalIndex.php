@@ -100,7 +100,8 @@ class JournalIndex
                 'je.date'
             )
             ->where('client.accountant_id', '=', $accId)
-            ->where('je.type', '=', 'journal');
+            ->where('je.type', '=', 'journal')
+            ->where('je.deleted_at', '=', null);
         return $this->route === 'archives'
             ? $query->where('je.status', '=', 'archived')
             : $query->where('je.status', '!=', 'archived');

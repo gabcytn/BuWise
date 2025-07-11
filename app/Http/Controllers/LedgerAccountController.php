@@ -156,6 +156,7 @@ class LedgerAccountController extends Controller
             )
             ->where('ledger_accounts.id', '=', $ledgerAccountId)
             ->whereIn('transactions.status', ['approved', 'archived'])
+            ->where('transactions.deleted_at', '=', null)
             ->where('transactions.client_id', $userId);
 
         if ($endDate !== null) {
@@ -242,7 +243,7 @@ class LedgerAccountController extends Controller
             $ids = [];
             foreach ($transactions as $transaction)
                 $ids[] = $transaction->id;
-            Transaction::destroy($ids);
+            Transaction::forceDestroy($ids);
             $ledgerAccount->delete();
             DB::commit();
             return redirect()->back()->with('status', 'Successfully deleted account.');

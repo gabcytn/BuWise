@@ -104,6 +104,7 @@ class ReportsController extends Controller
             ->join('ledger_accounts AS acc', 'acc.id', '=', 'le.account_id')
             ->join('account_groups', 'account_groups.id', '=', 'acc.account_group_id')
             ->where('tr.client_id', '=', $clientId)
+            ->where('tr.deleted_at', '=', null)
             ->whereIn('tr.status', ['approved', 'archived'])
             ->whereBetween('tr.date', [$startDate, $endDate])
             ->groupBy('acc.id', 'acc.name', 'acc.account_group_id')
