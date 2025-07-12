@@ -21,6 +21,15 @@
         </div>
         <div class="privacy-row">
             <div class="privacy-row__text">
+                <h3>Recycle Bin</h3>
+                <p>View all your deleted invoices and journal entries.</p>
+            </div>
+            <form class="privacy-row__button" action="{{ route('bin') }}" style="display: block;">
+                <button type="submit" id="bin">Bin</button>
+            </form>
+        </div>
+        <div class="privacy-row">
+            <div class="privacy-row__text">
                 <h3>Logout</h3>
                 <p>Logout of your session on this device.</p>
             </div>

@@ -134,6 +134,7 @@ hr {
     color: var(--grey);
 }
 
+#bin,
 .privacy-section button {
     width: 9rem;
     padding: 0.5rem 0.75rem;
@@ -147,6 +148,10 @@ hr {
 
 #update-password {
     background-color: var(--main-blue);
+}
+
+#bin {
+    background-color: var(--grey);
 }
 
 #logout {
