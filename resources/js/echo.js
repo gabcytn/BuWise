@@ -18,6 +18,10 @@ window.Echo = new Echo({
 
 startup();
 
+if (Notification.permission === "default") {
+    Notification.requestPermission();
+}
+
 let USER_ID;
 async function fetchUserDetails() {
     const res = await fetch("/user/details", {
@@ -55,6 +59,7 @@ async function startup() {
         document
             .querySelector("#notification-banner")
             .classList.remove("d-none");
+        new Notification(notif.title, { body: notif.description });
     });
 }
 
