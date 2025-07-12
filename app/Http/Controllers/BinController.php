@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
 
 class BinController extends Controller
@@ -65,6 +66,8 @@ class BinController extends Controller
                         $tr->restore();
                         break;
                     case 'delete':
+                        if ($tr->image)
+                            Storage::delete('invoices/' . $tr->image);
                         $tr->forceDelete();
                         break;
                     default:
