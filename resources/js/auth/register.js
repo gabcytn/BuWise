@@ -4,6 +4,7 @@ const passwordFeedback = document.querySelector("#password-feedback");
 const confirmFeedback = document.querySelector("#confirm-feedback");
 const form = document.querySelector("#register-form");
 const submitButton = document.querySelector("button[type='submit']");
+const passwordCriteriaContents = document.querySelector(".password-criteria");
 
 const strengthChart = new Map();
 strengthChart.set(0, "Very weak");
@@ -12,43 +13,62 @@ strengthChart.set(2, "Medium");
 strengthChart.set(3, "Strong");
 strengthChart.set(4, "Very Strong");
 
+const strengthCheck = document.getElementById("strength-check");
+const lengthCheck = document.getElementById("length-check");
+const comboCheck = document.getElementById("combo-check");
 password.addEventListener("input", (e) => {
-    const v = zxcvbn(password.value);
-    if (password.value === "")
-        passwordFeedback.textContent = ""
-    else {
-        passwordFeedback.textContent = strengthChart.get(v.score);
-        updateFeedback(v.score)
+    const val = password.value;
+    if (!val) {
+        passwordCriteriaContents.style.display = "none";
+        return;
     }
 
-})
+    const v = zxcvbn(password.value);
+    passwordCriteriaContents.style.display = "flex";
+    passwordFeedback.textContent = strengthChart.get(v.score);
+    updateFeedbackColor(v.score);
 
-confirmPassword.addEventListener("input", () => {
-    if (confirmPassword.value !== password.value && confirmPassword.value !== "") {
+    updateCriteriaIcon(lengthCheck, val.length >= 8);
+    updateCriteriaIcon(
+        comboCheck,
+        /[A-Za-z]/.test(val) && (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val)),
+    );
+    updateCriteriaIcon(strengthCheck, v.score >= 3); // Strong = score 3 or 4
+
+    validateConfirmPassword();
+});
+
+function validateConfirmPassword() {
+    if (
+        confirmPassword.value !== password.value &&
+        confirmPassword.value !== ""
+    ) {
         confirmFeedback.textContent = "Passwords do not match";
     } else {
         confirmFeedback.textContent = "";
     }
-})
+}
 
-function updateFeedback(score) {
+confirmPassword.addEventListener("input", validateConfirmPassword);
+
+function updateFeedbackColor(score) {
     switch (score) {
         case 0:
         case 1:
-            clearFeedbackClassName()
+            clearFeedbackClassName();
             passwordFeedback.classList.add("weak");
             break;
         case 2:
-            clearFeedbackClassName()
-            passwordFeedback.classList.add("medium")
+            clearFeedbackClassName();
+            passwordFeedback.classList.add("medium");
             break;
         case 3:
         case 4:
-            clearFeedbackClassName()
-            passwordFeedback.classList.add("strong")
+            clearFeedbackClassName();
+            passwordFeedback.classList.add("strong");
             break;
         default:
-            clearFeedbackClassName()
+            clearFeedbackClassName();
     }
 }
 
@@ -56,36 +76,10 @@ function clearFeedbackClassName() {
     passwordFeedback.className = "feedback";
 }
 
-form.addEventListener("submit", (e) => {
-    if (zxcvbn(password.value).score <= 2 || password.value !== confirmPassword.value) {
-        e.preventDefault();
-    }
-})
-
-const strengthCheck = document.getElementById("strength-check");
-const lengthCheck = document.getElementById("length-check");
-const comboCheck = document.getElementById("combo-check");
-
-password.addEventListener("input", () => {
-    const val = password.value;
-    const score = zxcvbn(val).score;
-
-    updateCriteria(lengthCheck, val.length >= 8);
-    updateCriteria(comboCheck, /[A-Za-z]/.test(val) && (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val)));
-    updateCriteria(strengthCheck, score >= 3); // Strong = score 3 or 4
-});
-
-function updateCriteria(element, passed) {
+function updateCriteriaIcon(element, passed) {
     const icon = element.querySelector("i");
     icon.className = passed ? "fas fa-check icon-check" : "fas fa-times icon-x";
 }
-confirmPassword.addEventListener("input", () => {
-    if (confirmPassword.value !== password.value && confirmPassword.value !== "") {
-        confirmFeedback.textContent = "Passwords do not match";
-    } else {
-        confirmFeedback.textContent = "";
-    }
-});
 
 // Password toggle functionality
 document.querySelectorAll(".toggle-password").forEach((icon) => {
@@ -98,3 +92,11 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
     });
 });
 
+form.addEventListener("submit", (e) => {
+    if (
+        zxcvbn(password.value).score <= 2 ||
+        password.value !== confirmPassword.value
+    ) {
+        e.preventDefault();
+    }
+});

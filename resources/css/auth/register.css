@@ -1,14 +1,15 @@
 /* Simplified and matched to UI in image */
-body, html {
+body,
+html {
     height: 100%;
     margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     background: #fff;
 }
 
 .navbar {
     background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     padding: 20px 0;
     top: 0;
     width: 100%;
@@ -32,7 +33,8 @@ body, html {
 
 .logo {
     height: 70px;
-    transform: translateX(-138px); /* move it left */
+    transform: translateX(-138px);
+    /* move it left */
 
 }
 
@@ -40,8 +42,10 @@ body, html {
 
     font-size: 0.9rem;
     color: #333;
-    margin-right: 10px; /* optional, if spacing from edge */
-    transform: translateX(173px); /* move it left */
+    margin-right: 10px;
+    /* optional, if spacing from edge */
+    transform: translateX(173px);
+    /* move it left */
 }
 
 
@@ -119,24 +123,29 @@ body, html {
     font-size: 15px;
     color: #6c757d;
     margin-bottom: 2rem;
-    text-align: center !important; /* ensures it is centered */
+    text-align: center !important;
+    /* ensures it is centered */
 }
+
 .subtitle {
     margin-bottom: 0;
 }
 
-.subtitle + .subtitle {
+.subtitle+.subtitle {
     margin-top: 0;
 }
 
 
 
 .input-group {
-    margin-top: 1rem; /* or try 1.2rem for more spacing */
+    margin-top: 1rem;
+    /* or try 1.2rem for more spacing */
     margin-bottom: 1.2rem;
 }
+
 .full-name-group {
-    margin-top: 2.5rem; /* Adjust value as needed */
+    margin-top: 2.5rem;
+    /* Adjust value as needed */
 }
 
 
@@ -160,6 +169,7 @@ body, html {
 .input-box:hover {
     border: 2px solid #1B80C3;
 }
+
 .input-box input {
     flex: 1;
     border: none;
@@ -168,18 +178,24 @@ body, html {
     background: transparent;
     color: #212529;
 }
+
 .icon,
 .toggle-password {
     color: #1B80C3;
     font-size: 1rem;
 }
+
 .input-box .toggle-password {
-    margin-left: 10px; /* spacing between input and eye icon */
+    margin-left: 10px;
+    /* spacing between input and eye icon */
     cursor: pointer;
 }
+
 .input-box .icon {
-    margin-right: 10px; /* add spacing between icon and input text */
+    margin-right: 10px;
+    /* add spacing between icon and input text */
 }
+
 .toggle-password {
     color: #1B80C3;
     font-size: 1rem;
@@ -230,19 +246,22 @@ body, html {
 .feedback.strong {
     color: #28a745;
 }
+
 .password-criteria {
     display: none;
 }
 
-.input-group:focus-within .password-criteria {
-    display: flex;
+.input-group .password-criteria {
+    display: none;
     flex-direction: column;
     gap: 0.5rem;
     margin-top: 0.75rem;
 }
+
 .feedback {
     font-size: 0.85rem;
-    color: #dc3545; /* red */
+    color: #dc3545;
+    /* red */
     margin-top: 0.4rem;
 }
 
@@ -289,6 +308,7 @@ body, html {
     margin-top: 0.25rem;
     text-align: center;
 }
+
 @media (max-width: 1024px) {
     .register-page {
         flex-direction: column;
@@ -361,33 +381,32 @@ body, html {
 }
 
 @media (max-width: 768px) {
-  .nav-wrapper {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 0.5rem;
-  }
+    .nav-wrapper {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
 
-  .logo {
-    height: 60px;
-  }
+    .logo {
+        height: 60px;
+    }
 
-  .nav-text {
-    flex-direction: column;
-    font-size: 0.85rem;
-    gap: 4px;
-    align-items: center;
-  }
+    .nav-text {
+        flex-direction: column;
+        font-size: 0.85rem;
+        gap: 4px;
+        align-items: center;
+    }
 }
 
 @media (max-width: 480px) {
-  .logo {
-    height: 50px;
-  }
+    .logo {
+        height: 50px;
+    }
 
-  .nav-text {
-    font-size: 0.8rem;
-  }
+    .nav-text {
+        font-size: 0.8rem;
+    }
 }
-
