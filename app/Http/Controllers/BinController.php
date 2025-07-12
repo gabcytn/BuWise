@@ -28,6 +28,8 @@ class BinController extends Controller
             $transactions = $transactions->where('type', '=', $filter_by);
         if ($order_by)
             $transactions = $transactions->orderBy($order_by);
+        else
+            $transactions = $transactions->orderBy('deleted_at');
         if ($search && is_numeric($search))
             $transactions = $transactions->where('reference_no', '=', $search);
 
