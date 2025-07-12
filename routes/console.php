@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\EmptyRecycleBin;
 use App\Jobs\TaskNearing;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -10,3 +11,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::job(new TaskNearing)->dailyAt('7:00');
+Schedule::job(new EmptyRecycleBin)->dailyAt('3:00');
