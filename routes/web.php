@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BalanceSheetController;
+use App\Http\Controllers\BinController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
@@ -75,6 +76,10 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     Route::resource('/organizations', OrganizationController::class)
         ->withoutMiddleware('onboarding')
         ->only(['create', 'store']);
+
+    Route::get('/bin', [BinController::class, 'index'])->name('bin');
+    Route::post('/bin/restore', [BinController::class, 'restore']);
+    Route::post('/bin/delete', [BinController::class, 'delete']);
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/charts/tasks', [DashboardController::class, 'getTasks']);
