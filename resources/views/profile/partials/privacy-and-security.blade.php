@@ -11,6 +11,15 @@
     <div class="profile-section__wrapper privacy-section">
         <div class="privacy-row">
             <div class="privacy-row__text">
+                <h3>Data</h3>
+                <p>Download all your transaction data.</p>
+            </div>
+            <form class="privacy-row__button" action="{{ route('data.download') }}" style="display: block;">
+                <button type="submit" id="download">Download</button>
+            </form>
+        </div>
+        <div class="privacy-row">
+            <div class="privacy-row__text">
                 <h3>Password</h3>
                 <p>Update your password here. Ensure your account is using a long, random password to stay
                     secure.</p>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\DataExport;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\BinController;
 use App\Http\Controllers\BotController;
@@ -24,6 +25,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 use \App\Http\Controllers\StaffController;
 
 Route::get('/privacy', function () {
@@ -80,6 +82,9 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     Route::get('/bin', [BinController::class, 'index'])->name('bin');
     Route::post('/bin/restore', [BinController::class, 'restore']);
     Route::post('/bin/delete', [BinController::class, 'delete']);
+    Route::get('/data/download', function (Request $request) {
+        return Excel::download(new DataExport($request->user()->id), 'data.xlsx');
+    })->name('data.download');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/charts/tasks', [DashboardController::class, 'getTasks']);

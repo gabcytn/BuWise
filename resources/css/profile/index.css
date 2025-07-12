@@ -135,6 +135,7 @@ hr {
 }
 
 #bin,
+#download,
 .privacy-section button {
     width: 9rem;
     padding: 0.5rem 0.75rem;
@@ -146,18 +147,13 @@ hr {
     cursor: pointer;
 }
 
+#download,
+#bin,
 #update-password {
     background-color: var(--main-blue);
 }
 
-#bin {
-    background-color: var(--grey);
-}
-
-#logout {
-    background-color: #db6e00;
-}
-
+#logout,
 #disable-two-factor,
 #delete-account {
     background-color: #CA3A3A;
