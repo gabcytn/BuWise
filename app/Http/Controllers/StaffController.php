@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
@@ -41,12 +43,13 @@ class StaffController extends Controller
             'last_name' => 'required|string|max:100',
             'email' => 'required|string|lowercase|max:255|email|unique:' . User::class,
             'staff_type' => 'required|in:2,3',
-            'password' => ['required', Password::min(8)],
             'profile_img' => ['required', File::image()->max(5000)]
         ]);
 
         $name = $validated['first_name'] . ' ' . $validated['last_name'];
         $filename = $this->helper->storeImageToPublic($name, $request->file('profile_img'));
+
+        $generatedPassword = Str::password(12, true, true, false, false);
 
         $current_user = $request->user()->id;
         User::create([
@@ -55,9 +58,11 @@ class StaffController extends Controller
             'accountant_id' => $current_user,
             'created_by' => $current_user,
             'role_id' => (int) $validated['staff_type'],
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make($generatedPassword),
             'profile_img' => $filename,
         ]);
+
+        Session::flash('password', $generatedPassword);
 
         return to_route('staff.index')->with('status', 'Successfully created client.');
     }

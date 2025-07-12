@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
@@ -44,7 +46,6 @@ class ClientController extends Controller
             'phone_number' => 'required|string|regex:/^0\d{10}$/',
             'tin' => 'required|string|regex:/^\d{3}-\d{3}-\d{3}$/',
             'client_type' => 'required|string|max:100',
-            'password' => ['required', Password::min(8)],
             'profile_img' => ['required', File::image()->max(5000)],
         ]);
 
@@ -53,6 +54,8 @@ class ClientController extends Controller
 
         $currentUser = $request->user();
         $accountantId = getAccountantId($currentUser);
+
+        $generatedPassword = Str::password(12, true, true, false, false);
 
         User::create([
             'accountant_id' => $accountantId,
@@ -64,8 +67,10 @@ class ClientController extends Controller
             'client_type' => $validated['client_type'],
             'name' => $validated['name'],
             'profile_img' => $filename,
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make($generatedPassword),
         ]);
+
+        Session::flash('password', $generatedPassword);
 
         return redirect()->back()->with('status', 'Successfully created a client.');
     }

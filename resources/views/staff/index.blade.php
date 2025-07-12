@@ -45,6 +45,9 @@
                 </tr>
             @endforeach
         </x-table-management>
+        @if (session('password'))
+            <p>The generated password is: <strong>{{ session('password') }}</strong></p>
+        @endif
         {{ $users->links() }}
     @else
         <h2 style="text-align: center;">No staff</h2>
@@ -85,10 +88,6 @@
                 <option value="2">Liaison Officer</option>
                 <option value="3">Clerk</option>
             </select>
-        </div>
-        <div class="input-box">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" required />
         </div>
         <div class="buttons">
             <button type="submit">Add</button>
