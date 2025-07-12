@@ -158,7 +158,7 @@ class InvoiceController extends Controller
      */
     public function destroy(Transaction $invoice)
     {
-        Storage::delete('invoices/' . $invoice->image);
+        // Storage::delete('invoices/' . $invoice->image);
         TransactionDeleted::dispatch($invoice->client_id, $invoice->date);
         Transaction::destroy($invoice->id);
         return to_route('invoices.index');
