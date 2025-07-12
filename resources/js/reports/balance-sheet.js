@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const assetsTotal = calculateTotalAssets();
-    const liabilitiesTotal = calculateTotalLiabilities();
-    const equitiesTotal = calculateTotalEquities();
+    const assetsTotal = calculateSum(".assets");
+    const liabilitiesTotal = calculateSum(".liabilities");
+    const equitiesTotal = calculateSum(".equities");
 
     document.querySelector(".assets-total strong").textContent = formatNumber(
         assetsTotal,
@@ -22,39 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 });
 
-function calculateTotalAssets() {
-    const assets = document.querySelectorAll(".assets");
-    let assetsTotal = 0;
+function calculateSum(className) {
+    const list = document.querySelectorAll(className);
+    let total = 0;
 
-    assets.forEach((asset) => {
-        assetsTotal += parseFloat(asset.textContent.replaceAll(",", ""));
+    list.forEach((item) => {
+        const currentValue = parseFloat(item.textContent.replaceAll(",", ""));
+        total += currentValue;
+        if (currentValue < 0) item.style.color = "red";
     });
 
-    return assetsTotal;
-}
-
-function calculateTotalLiabilities() {
-    const liabilities = document.querySelectorAll(".liabilities");
-    let liabilitiesTotal = 0;
-
-    liabilities.forEach((liability) => {
-        liabilitiesTotal += parseFloat(
-            liability.textContent.replaceAll(",", ""),
-        );
-    });
-
-    return liabilitiesTotal;
-}
-
-function calculateTotalEquities() {
-    const equities = document.querySelectorAll(".equities");
-    let equitiesTotal = 0;
-
-    equities.forEach((equity) => {
-        equitiesTotal += parseFloat(equity.textContent.replaceAll(",", ""));
-    });
-
-    return equitiesTotal;
+    return total;
 }
 
 function formatNumber(number, decimals) {

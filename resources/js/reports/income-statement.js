@@ -1,21 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const revenues = document.querySelectorAll(".revenues");
-    let revenueTotal = 0;
-    revenues.forEach((revenue) => {
-        revenueTotal += parseFloat(revenue.innerText.replaceAll(",", ""));
-    });
-
+    const revenueTotal = calculateSum(".revenues");
     document.querySelector(".revenues-total").innerText = formatNumber(
         revenueTotal,
         2,
     );
 
-    const expenses = document.querySelectorAll(".expenses");
-    let expenseTotal = 0;
-    expenses.forEach((expense) => {
-        expenseTotal += parseFloat(expense.innerText.replaceAll(",", ""));
-    });
-
+    const expenseTotal = calculateSum(".expenses");
     document.querySelector(".expenses-total").innerText = formatNumber(
         expenseTotal,
         2,
@@ -26,6 +16,19 @@ document.addEventListener("DOMContentLoaded", () => {
         2,
     );
 });
+
+function calculateSum(className) {
+    const list = document.querySelectorAll(className);
+    let total = 0;
+
+    list.forEach((item) => {
+        const currentValue = parseFloat(item.textContent.replaceAll(",", ""));
+        total += currentValue;
+        if (currentValue < 0) item.style.color = "red";
+    });
+
+    return total;
+}
 
 function formatNumber(number, decimals) {
     return Number(number).toLocaleString("en-US", {

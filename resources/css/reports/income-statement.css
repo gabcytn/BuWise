@@ -131,6 +131,7 @@ hr {
     border-color: var(--border-gray);
     margin: 1rem 0;
 }
+
 /* Dropdown styling */
 .dropdown {
     position: relative;
@@ -187,6 +188,14 @@ hr {
     font-size: 0.875rem;
     color: #9ca3af;
     cursor: not-allowed;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 
