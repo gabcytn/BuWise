@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'LBJ Services') }}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/nav-logo.png') }}" />
-    @vite(['resources/css/contact.css'])
+    @vite(['resources/css/contact.css', 'resources/js/contact-us.js'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,7 +121,7 @@
 
             <!-- Right Contact Form -->
             <div class="contact-form">
-                <form action="/contact" method="POST">
+                <form action="/contact" method="POST" id="contact-form">
                     @csrf
                     <label for="name">Full Name</label>
                     <input name="full_name" type="text" id="name" placeholder="Enter Full Name" required>
@@ -131,6 +131,7 @@
                         <i class="mdi mdi-email-outline"></i>
                         <input name="email" type="email" id="email" placeholder="name@domain.com" required>
                     </div>
+                    <span id="email-feedback">Invalid email</span>
 
                     <label for="message">Message</label>
                     <textarea id="message" name="message" placeholder="Message" required></textarea>

@@ -42,7 +42,7 @@ class ContactUsEmail extends Notification
             ->greeting('Greetings, ' . $notifiable->name . '.')
             ->line('A customer has just inquired about your services.')
             ->line($this->message)
-            ->line('If you are interested, contanct me at: ' . $this->email);
+            ->line('If you are interested, contact me at: ' . $this->email);
     }
 
     /**
