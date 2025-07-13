@@ -153,11 +153,6 @@
             </div>
             <h3 class="team-name">Lallaine Jayag</h3>
             <p class="team-role">External Accountant</p>
-            <div class="team-icons">
-                <a href="#"><i class="mdi mdi-facebook"></i></a>
-                <a href="#"><i class="mdi mdi-email-outline"></i></a>
-                <a href="#"><i class="mdi mdi-phone-outline"></i></a>
-            </div>
         </div>
         <div class="team-card">
             <div class="team-image">
@@ -165,11 +160,6 @@
             </div>
             <h3 class="team-name">Liezel Bernadino</h3>
             <p class="team-role">Liaison Officer</p>
-            <div class="team-icons">
-                <a href="#"><i class="mdi mdi-facebook"></i></a>
-                <a href="#"><i class="mdi mdi-email-outline"></i></a>
-                <a href="#"><i class="mdi mdi-phone-outline"></i></a>
-            </div>
         </div>
         <div class="team-card">
             <div class="team-image">
@@ -177,11 +167,6 @@
             </div>
             <h3 class="team-name">Camille Ann Gatre</h3>
             <p class="team-role">Accounting Clerk</p>
-            <div class="team-icons">
-                <a href="#"><i class="mdi mdi-facebook"></i></a>
-                <a href="#"><i class="mdi mdi-email-outline"></i></a>
-                <a href="#"><i class="mdi mdi-phone-outline"></i></a>
-            </div>
         </div>
     </div>
 </section>

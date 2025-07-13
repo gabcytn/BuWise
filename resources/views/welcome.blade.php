@@ -197,9 +197,7 @@
             <h2>Generate realtime <span class="highlight">reports</span> in your mobile device <span class="highlight">data</span></h2>
             <p>Our mobile app enables clients to generate real-time bookkeeping reports—such as Income Statements, Balance Sheets, and other key financial documents—directly from our centralized system. By providing instant access to accurate and up-to-date financial data, the app empowers business owners and managers to monitor performance trends, assess profitability, and ensure financial stability at any time. This level of insight supports better decision-making, improves operational efficiency, and helps businesses stay compliant with reporting standards and regulatory requirements.</p>
         </div>
-        <a href="/register" class="app-button">
-  DOWNLOAD THE ANDROID APP NOW <span class="arrow">→</span>
-</a>
+
 
     </div>
 </section>
