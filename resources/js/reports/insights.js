@@ -5,7 +5,7 @@ import { getPLData } from "./insights/profit-and-loss.js";
 
 document
     .querySelector(".insights-header form")
-    .addEventListener("submit", async (e) => {
+    .addEventListener("submit", (e) => {
         e.preventDefault();
         const selectClient = document.querySelector("select[name='client']");
         const client = selectClient[selectClient.selectedIndex].value;
