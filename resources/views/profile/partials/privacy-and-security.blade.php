@@ -15,8 +15,17 @@
                 <p>Download all your transaction data.</p>
             </div>
             <form class="privacy-row__button" action="{{ route('data.download') }}" style="display: block;">
-                <button type="submit" id="download">Download</button>
+                <button type="submit" id="download" class="blue-btn">Download</button>
             </form>
+        </div>
+        <div class="privacy-row">
+            <div class="privacy-row__text">
+                <h3>Notifications</h3>
+                <p>Allow notifications for important updates and alerts.</p>
+            </div>
+            <div class="privacy-row__button">
+                <button class="blue-btn" id="notif-btn">Allow</button>
+            </div>
         </div>
         <div class="privacy-row">
             <div class="privacy-row__text">
@@ -25,7 +34,7 @@
                     secure.</p>
             </div>
             <div class="privacy-row__button">
-                <button id="update-password">Update Password</button>
+                <button class="blue-btn" id="update-password">Update Password</button>
             </div>
         </div>
         <div class="privacy-row">
@@ -34,7 +43,7 @@
                 <p>View all your deleted invoices and journal entries.</p>
             </div>
             <form class="privacy-row__button" action="{{ route('bin') }}" style="display: block;">
-                <button type="submit" id="bin">Bin</button>
+                <button class="blue-btn" type="submit" id="bin">Bin</button>
             </form>
         </div>
         <div class="privacy-row">

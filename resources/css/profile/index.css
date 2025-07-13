@@ -147,9 +147,7 @@ hr {
     cursor: pointer;
 }
 
-#download,
-#bin,
-#update-password {
+.blue-btn {
     background-color: var(--main-blue);
 }
 

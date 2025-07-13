@@ -58,3 +58,19 @@ function listener(input, button, valueToType) {
         button.disabled = true;
     }
 }
+
+// notifications
+
+document.querySelector("#notif-btn").addEventListener("click", () => {
+    if (!("Notification" in window)) {
+        alert("Your browser does not support notifications.");
+    } else if (Notification.permission === "granted") {
+        alert("Notifications are already granted.");
+    } else if (Notification.permission === "denied") {
+        alert(
+            "Notifications are blocked. Please enable them in your browser settings.",
+        );
+    } else {
+        Notification.requestPermission();
+    }
+});
