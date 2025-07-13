@@ -61,6 +61,10 @@ function createSummary(entries) {
     const accountValues = entries.map((entry) => entry.amount);
 
     const summaryDiv = document.querySelector(".receivables-summary");
+    // remove all existing summary (from previous client seletion)
+    summaryDiv.querySelectorAll("div").forEach((item) => {
+        item.remove();
+    });
 
     for (let i = 0; i < accountNames.length; i++) {
         const div = document.createElement("div");
