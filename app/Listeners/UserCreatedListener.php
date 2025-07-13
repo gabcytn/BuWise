@@ -54,7 +54,7 @@ class UserCreatedListener implements ShouldQueue
             if ($creator->role_id === Role::LIAISON)
                 $accountant->notify(new LiaisonCreatedClient($accountant, $creator));
 
-            $user_created->sendEmailVerificationNotification();
+            // $user_created->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::warning('Error handling event listener: ' . $e->getMessage());
         }

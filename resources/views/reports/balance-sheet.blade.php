@@ -6,6 +6,12 @@
 @endphp
 <x-app-layout title="Reports">
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/balance-sheet.js'])
+    @if ($has_data && request()->query('client') && request()->query('period'))
+        <form id="csv-export-form" action="{{ route('reports.balance-sheet.csv', request()->query('client')) }}"
+            method="GET" style="display: none;">
+            <input value="{{ request()->query('period') }}" name="period" />
+        </form>
+    @endif
     <div class="container">
         <h2 id="page-title">Balance Sheet</h2>
         <p id="page-subtitle">Generate reports to examine your client's financial standing.</p>
@@ -35,7 +41,8 @@
                             All Time</option>
                     </select>
                     <select required name="client">
-                        <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select Client
+                        <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select
+                            Client
                         </option>
                         @foreach ($clients as $client)
                             <option {{ request()->query('client') === $client->id ? 'selected' : '' }}
@@ -45,8 +52,8 @@
                     <button type="submit">Run Report</button>
                 </div>
                 <div class="report-header__right">
-                    @if ($has_data)
-                        <button type="button" id="download-table-btn">Export to CSV</button>
+                    @if ($has_data && request()->query('client'))
+                        <button type="submit" form="csv-export-form" id="download-table-btn">Export to CSV</button>
                     @endif
                 </div>
             </div>

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BalanceSheetExport;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BalanceSheetController extends Controller
 {
@@ -37,21 +40,22 @@ class BalanceSheetController extends Controller
             abort(404);
         $period = getStartAndEndDate($request->period);
         $request_period = $request->period;
-        if ($request_period === 'this_year' || $request_period === 'this_quarter') {
-            // cache this year's || this quarter's balance sheet
-            $structured_data = Cache::remember(
-                $selected_client->id . "-balance-sheet-$request_period",
-                300,
-                function () use ($selected_client, $period, $request_period) {
-                    Log::info("Calculating new balance sheet (web): $request_period");
-                    $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
-                    return $this->structureData($data);
-                }
-            );
-        } else {
-            $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
-            $structured_data = $this->structureData($data);
-        }
+        // if ($request_period === 'this_year' || $request_period === 'this_quarter') {
+        //     // cache this year's || this quarter's balance sheet
+        //     $structured_data = Cache::remember(
+        //         $selected_client->id . "-balance-sheet-$request_period",
+        //         300,
+        //         function () use ($selected_client, $period, $request_period) {
+        //             Log::info("Calculating new balance sheet (web): $request_period");
+        //             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+        //             return $this->structureData($data);
+        //         }
+        //     );
+        // } else {
+        //     $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+        //     $structured_data = $this->structureData($data);
+        // }
+        $structured_data = $this->getData($request_period, $selected_client);
         return view('reports.balance-sheet', [
             'has_data' => true,
             'clients' => $clients,
@@ -117,5 +121,46 @@ class BalanceSheetController extends Controller
                 DB::raw("SUM(CASE WHEN le.entry_type = 'credit' THEN le.amount ELSE 0 END) AS credit")
             )
             ->get();
+    }
+
+    public function csv(Request $request, User $client)
+    {
+        $request->validate([
+            'period' => 'required|in:this_year,this_quarter,this_month,this_week,today,last_week,last_month,last_quarter,all_time',
+        ]);
+        $time_now = Carbon::now()->format('Y-m-d') . '_' . time();
+        $client_name = $client->name;
+        $data = $this->getData($request->period, $client);
+
+        $net_profit = $data['net-profit-and-loss'];
+        $data['equities'][] = (object) [
+            'acc_name' => "Current period's earnings",
+            'debit' => $net_profit < 0 ? $net_profit : 0.0,
+            'credit' => $net_profit > 0 ? $net_profit : 0.0,
+        ];
+
+        return Excel::download(new BalanceSheetExport($data), "balance-sheet_{$time_now}_{$client_name}-{$request->period}.xlsx");
+    }
+
+    private function getData(string $request_period, User $selected_client)
+    {
+        $period = getStartAndEndDate($request_period);
+        if ($request_period === 'this_year' || $request_period === 'this_quarter') {
+            // cache this year's || this quarter's balance sheet
+            $structured_data = Cache::remember(
+                $selected_client->id . "-balance-sheet-$request_period",
+                300,
+                function () use ($selected_client, $period, $request_period) {
+                    Log::info("Calculating new balance sheet (web): $request_period");
+                    $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+                    return $this->structureData($data);
+                }
+            );
+        } else {
+            $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
+            $structured_data = $this->structureData($data);
+        }
+
+        return $structured_data;
     }
 }
