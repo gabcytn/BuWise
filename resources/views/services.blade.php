@@ -176,12 +176,6 @@
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>
         </ul>
-        <div class="footer-socials">
-            <a href="#" aria-label="Facebook"><i class="mdi mdi-facebook"></i></a>
-            <a href="#" aria-label="Twitter"><i class="mdi mdi-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="mdi mdi-instagram"></i></a>
-            <a href="#" aria-label="GitHub"><i class="mdi mdi-github"></i></a>
-        </div>
     </div>
 </footer>
 

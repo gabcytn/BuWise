@@ -153,11 +153,6 @@
             </div>
             <h3 class="team-name">Lallaine Jayag</h3>
             <p class="team-role">External Accountant</p>
-            <div class="team-icons">
-                <a href="#"><i class="mdi mdi-facebook"></i></a>
-                <a href="#"><i class="mdi mdi-email-outline"></i></a>
-                <a href="#"><i class="mdi mdi-phone-outline"></i></a>
-            </div>
         </div>
         <div class="team-card">
             <div class="team-image">
@@ -165,11 +160,6 @@
             </div>
             <h3 class="team-name">Liezel Bernadino</h3>
             <p class="team-role">Liaison Officer</p>
-            <div class="team-icons">
-                <a href="#"><i class="mdi mdi-facebook"></i></a>
-                <a href="#"><i class="mdi mdi-email-outline"></i></a>
-                <a href="#"><i class="mdi mdi-phone-outline"></i></a>
-            </div>
         </div>
         <div class="team-card">
             <div class="team-image">
@@ -177,11 +167,6 @@
             </div>
             <h3 class="team-name">Camille Ann Gatre</h3>
             <p class="team-role">Accounting Clerk</p>
-            <div class="team-icons">
-                <a href="#"><i class="mdi mdi-facebook"></i></a>
-                <a href="#"><i class="mdi mdi-email-outline"></i></a>
-                <a href="#"><i class="mdi mdi-phone-outline"></i></a>
-            </div>
         </div>
     </div>
 </section>
@@ -257,12 +242,6 @@
             <li><a href="{{ route('register') }}">SIGN UP</a></li>
             <li><a href="{{ route('login') }}">LOGIN</a></li>
         </ul>
-        <div class="footer-socials">
-            <a href="#" aria-label="Facebook"><i class="mdi mdi-facebook"></i></a>
-            <a href="#" aria-label="Twitter"><i class="mdi mdi-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="mdi mdi-instagram"></i></a>
-            <a href="#" aria-label="GitHub"><i class="mdi mdi-github"></i></a>
-        </div>
     </div>
 </footer>
 
