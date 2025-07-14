@@ -1,14 +1,21 @@
 const updatePasswordBtn = document.querySelector("button#update-password");
 const disableMfaBtn = document.querySelector("button#disable-two-factor");
 const deleteAccBtn = document.querySelector("button#delete-account");
+const updateDefaultBtn = document.querySelector("button#change-default-btn");
 
 const updatePassDialog = document.querySelector("dialog.password-dialog");
 const disableMfaDialog = document.querySelector("dialog.mfa-dialog");
 const deleteAccDialog = document.querySelector("dialog.delete-dialog");
+const defaultPasswordDialog = document.querySelector(
+    "dialog.default-password-dialog",
+);
 
 const closeUpdatePass = updatePassDialog.querySelector("input[type='reset']");
 const closeMfaDialog = disableMfaDialog.querySelector("input[type='reset']");
 const closeDeleteDialog = deleteAccDialog.querySelector("input[type='reset']");
+const closeDefaultPasswordDialog = defaultPasswordDialog.querySelector(
+    "input[type='reset']",
+);
 
 updatePasswordBtn.addEventListener("click", () => {
     updatePassDialog.showModal();
@@ -58,6 +65,25 @@ function listener(input, button, valueToType) {
         button.disabled = true;
     }
 }
+
+document.querySelector("#new-default").addEventListener("input", (e) => {
+    const val = e.target.value;
+    const submitBtn = defaultPasswordDialog.querySelector(
+        "button[type='submit']",
+    );
+    if (val.length < 8) {
+        submitBtn.disabled = true;
+    } else {
+        submitBtn.disabled = false;
+    }
+});
+updateDefaultBtn.addEventListener("click", () => {
+    defaultPasswordDialog.showModal();
+});
+
+closeDefaultPasswordDialog.addEventListener("click", () => {
+    defaultPasswordDialog.close();
+});
 
 // notifications
 

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DefaultPassword;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
 
 class ProfileInformationController extends Controller
@@ -53,5 +56,22 @@ class ProfileInformationController extends Controller
 
         $user->update($data);
         return back();
+    }
+
+    public function updateDefaultPassword(Request $request)
+    {
+        $user = $request->user();
+        if ($user->role_id !== Role::ACCOUNTANT)
+            abort(403);
+
+        $request->validate([
+            'password' => ['required', Password::min(8)],
+        ]);
+
+        DefaultPassword::upsert([
+            ['user_id' => $user->id, 'password' => Hash::make($request->password)],
+        ], uniqueBy: ['user_id'], update: ['password']);
+
+        return redirect()->back()->with('status', 'Successfully updated default passwords for user creation.');
     }
 }

@@ -59,6 +59,9 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
         return to_route('login');
     })->name('user.delete');
 
+    Route::put('/user/default-password', [ProfileInformationController::class, 'updateDefaultPassword'])
+        ->name('default-password.update');
+
     Route::get('/suspended', function (Request $request) {
         if ($request->user()->suspended)
             return 'Your account has been suspended. If this is a mistake, please contact your accountant';

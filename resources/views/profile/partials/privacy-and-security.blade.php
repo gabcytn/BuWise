@@ -27,6 +27,17 @@
                 <button class="blue-btn" id="notif-btn">Allow</button>
             </div>
         </div>
+        @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
+            <div class="privacy-row">
+                <div class="privacy-row__text">
+                    <h3>Default Password</h3>
+                    <p>Change the default password for user accounts you create.</p>
+                </div>
+                <div class="privacy-row__button">
+                    <button class="blue-btn" id="change-default-btn">Edit</button>
+                </div>
+            </div>
+        @endif
         <div class="privacy-row">
             <div class="privacy-row__text">
                 <h3>Password</h3>
@@ -139,5 +150,24 @@
     <div class="dialog-buttons">
         <button class="disabled" disabled type="submit" form="delete-form">Delete Account</button>
         <input type="reset" form="delete-form" value="Discard Changes" />
+    </div>
+</dialog>
+
+<dialog class="default-password-dialog">
+    <h3>Update Default Password</h3>
+    <form action="{{ route('default-password.update') }}" method="POST" id="default-password-form">
+        @csrf
+        @method('PUT')
+        <!-- New Password -->
+        <div>
+            <label for="new-default">New Password</label>
+            <input id="new-default" name="password" type="password" required />
+            <p style="font-size: 0.75rem;">Password must be at least 8 characters long</p>
+        </div>
+    </form>
+    <hr />
+    <div class="dialog-buttons">
+        <button type="submit" form="default-password-form">Update Password</button>
+        <input type="reset" form="default-password-form" value="Discard Changes" />
     </div>
 </dialog>
