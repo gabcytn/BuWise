@@ -52,7 +52,9 @@
             @endforeach
         </x-table-management>
         @if (session('password'))
-            <p>The generated password is: <strong>{{ session('password') }}</strong></p>
+            <p style="font-size: 0.85rem;">The user default password is: <strong>{{ session('password') }}</strong></p>
+            <p style="font-size: 0.7rem; color: #CA3A3A">Warning: you will only see this once, but you may change it in
+                your settings.</p>
         @endif
         {{ $users->links() }}
     @else
@@ -91,8 +93,8 @@
         </div>
         <div class="input-box">
             <label for="email">Email</label>
-            <input name="email" type="email" placeholder="companymail@domain.com" value="{{ old('email') }}"
-                required />
+            <input id="email" name="email" type="email" placeholder="companymail@domain.com"
+                value="{{ old('email') }}" required />
         </div>
         <div class="d-flex">
             <div class="input-box">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ClientDeleted;
+use App\Models\DefaultPassword;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\UserControllerHelper;
@@ -55,7 +56,18 @@ class ClientController extends Controller
         $currentUser = $request->user();
         $accountantId = getAccountantId($currentUser);
 
-        $generatedPassword = Str::password(12, true, true, false, false);
+        $defaultPassword = DefaultPassword::find($currentUser->id);
+        if ($defaultPassword) {
+            $hashedGeneratedPassword = $defaultPassword->password;
+        } else {
+            $generatedPassword = Str::password(12, true, true, false, false);
+            $hashedGeneratedPassword = Hash::make($generatedPassword);
+            DefaultPassword::create([
+                'user_id' => $currentUser->id,
+                'password' => $hashedGeneratedPassword,
+            ]);
+            Session::flash('password', $generatedPassword);
+        }
 
         User::create([
             'accountant_id' => $accountantId,
@@ -67,10 +79,8 @@ class ClientController extends Controller
             'client_type' => $validated['client_type'],
             'name' => $validated['name'],
             'profile_img' => $filename,
-            'password' => Hash::make($generatedPassword),
+            'password' => $hashedGeneratedPassword,
         ]);
-
-        Session::flash('password', $generatedPassword);
 
         return redirect()->back()->with('status', 'Successfully created a client.');
     }

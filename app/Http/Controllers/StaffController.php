@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DefaultPassword;
 use App\Models\User;
 use App\Services\UserControllerHelper;
 use Illuminate\Http\RedirectResponse;
@@ -49,20 +50,30 @@ class StaffController extends Controller
         $name = $validated['first_name'] . ' ' . $validated['last_name'];
         $filename = $this->helper->storeImageToPublic($name, $request->file('profile_img'));
 
-        $generatedPassword = Str::password(12, true, true, false, false);
+        $current_user = $request->user();
 
-        $current_user = $request->user()->id;
+        $defaultPassword = DefaultPassword::find($current_user->id);
+        if ($defaultPassword) {
+            $hashedGeneratedPassword = $defaultPassword->password;
+        } else {
+            $generatedPassword = Str::password(12, true, true, false, false);
+            $hashedGeneratedPassword = Hash::make($generatedPassword);
+            DefaultPassword::create([
+                'user_id' => $current_user->id,
+                'password' => $hashedGeneratedPassword,
+            ]);
+            Session::flash('password', $generatedPassword);
+        }
+
         User::create([
             'name' => $name,
             'email' => $validated['email'],
-            'accountant_id' => $current_user,
-            'created_by' => $current_user,
+            'accountant_id' => $current_user->id,
+            'created_by' => $current_user->id,
             'role_id' => (int) $validated['staff_type'],
-            'password' => Hash::make($generatedPassword),
+            'password' => $hashedGeneratedPassword,
             'profile_img' => $filename,
         ]);
-
-        Session::flash('password', $generatedPassword);
 
         return to_route('staff.index')->with('status', 'Successfully created client.');
     }
