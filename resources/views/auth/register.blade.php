@@ -45,6 +45,7 @@
                         <input id="email" type="email" name="email" placeholder="name@domain.com" required
                             autocomplete="username">
                     </div>
+                    <span class="feedback" style="display: none;" id="email-input-feedback">Invalid email.</span>
                 </div>
 
                 <div class="input-group">

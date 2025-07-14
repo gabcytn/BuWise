@@ -81,6 +81,28 @@ function updateCriteriaIcon(element, passed) {
     icon.className = passed ? "fas fa-check icon-check" : "fas fa-times icon-x";
 }
 
+// email validation
+const emailInput = document.querySelector("input#email");
+const emailInputFeedback = document.querySelector("#email-input-feedback");
+emailInput.addEventListener("input", () => {
+    const val = emailInput.value;
+
+    if (validateEmail(val)) {
+        emailInputFeedback.style.display = "none";
+        return;
+    }
+    if (val) {
+        emailInputFeedback.style.display = "inline";
+    } else {
+        emailInputFeedback.style.display = "none";
+    }
+});
+const validateEmail = (email) => {
+    return email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    );
+};
+
 // Password toggle functionality
 document.querySelectorAll(".toggle-password").forEach((icon) => {
     icon.addEventListener("click", () => {
@@ -95,7 +117,8 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
 form.addEventListener("submit", (e) => {
     if (
         zxcvbn(password.value).score <= 2 ||
-        password.value !== confirmPassword.value
+        password.value !== confirmPassword.value ||
+        !validateEmail(emailInput.value || "")
     ) {
         e.preventDefault();
     }
