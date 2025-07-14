@@ -16,7 +16,7 @@ strengthChart.set(4, "Very Strong");
 const strengthCheck = document.getElementById("strength-check");
 const lengthCheck = document.getElementById("length-check");
 const comboCheck = document.getElementById("combo-check");
-password.addEventListener("input", (e) => {
+password.addEventListener("input", () => {
     const val = password.value;
     if (!val) {
         passwordCriteriaContents.style.display = "none";
@@ -29,10 +29,7 @@ password.addEventListener("input", (e) => {
     updateFeedbackColor(v.score);
 
     updateCriteriaIcon(lengthCheck, val.length >= 8);
-    updateCriteriaIcon(
-        comboCheck,
-        /[A-Za-z]/.test(val) && (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val)),
-    );
+    updateCriteriaIcon(comboCheck, passwordCombinationCheck(val));
     updateCriteriaIcon(strengthCheck, v.score >= 3); // Strong = score 3 or 4
 
     validateConfirmPassword();
@@ -114,11 +111,18 @@ document.querySelectorAll(".toggle-password").forEach((icon) => {
     });
 });
 
+function passwordCombinationCheck(val) {
+    return (
+        /[A-Za-z]/.test(val) && (/[0-9]/.test(val) || /[^A-Za-z0-9]/.test(val))
+    );
+}
+
 form.addEventListener("submit", (e) => {
     if (
         zxcvbn(password.value).score <= 2 ||
         password.value !== confirmPassword.value ||
-        !validateEmail(emailInput.value || "")
+        !validateEmail(emailInput.value || "") ||
+        !passwordCombinationCheck(password.value)
     ) {
         e.preventDefault();
     }
