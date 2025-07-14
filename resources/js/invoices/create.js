@@ -160,3 +160,20 @@ function updatePaymentLabel() {
             break;
     }
 }
+
+const invoiceForm = document.querySelector("form.invoice-container");
+const confirmationDialog = document.querySelector("dialog#confirm-dialog");
+invoiceForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    confirmationDialog.showModal();
+});
+
+document
+    .querySelector("button.confirm-button")
+    .addEventListener("click", () => {
+        invoiceForm.submit();
+    });
+
+document.querySelector("button.cancel-button").addEventListener("click", () => {
+    confirmationDialog.close();
+});

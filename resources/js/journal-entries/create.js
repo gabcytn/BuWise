@@ -1,10 +1,13 @@
+const confirmationDialog = document.querySelector("dialog#confirm-dialog");
 document.querySelector(".add-row-btn").addEventListener("click", () => {
     addRow();
 });
 
-document.querySelector("#cancel-button").addEventListener("click", function () {
-    window.history.back();
-});
+document
+    .querySelector(".button-container .cancel-button")
+    .addEventListener("click", function () {
+        window.history.back();
+    });
 
 let rowCounter = 0; // Used to create unique names for form elements
 
@@ -17,9 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document
         .getElementById("journalForm")
         .addEventListener("submit", (event) => {
-            if (!validateForm()) {
-                event.preventDefault();
-            }
+            event.preventDefault();
+            if (!validateForm()) return;
+            confirmationDialog.showModal();
+        });
+
+    document
+        .querySelector("#confirm-dialog .confirm-button")
+        .addEventListener("click", () => {
+            document.querySelector("#journalForm").submit();
+        });
+    document
+        .querySelector("#confirm-dialog .cancel-button")
+        .addEventListener("click", () => {
+            confirmationDialog.close();
         });
 });
 

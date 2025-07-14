@@ -105,3 +105,15 @@
         </div>
     </form>
 </x-app-layout>
+<!-- confirmation dialog -->
+<dialog id="confirm-dialog">
+    <h2><i class="fa-solid fa-circle-info"></i>Confirm Creation</h2>
+    <div class="content">
+        <h3>Are you sure?</h3>
+        <p>Publishing this entry will automatically create a ledger entry. Are you sure you want to proceed?</p>
+        <div class="buttons-row">
+            <button class="confirm-button">Confirm</button>
+            <button class="cancel-button">Cancel</button>
+        </div>
+    </div>
+</dialog>
