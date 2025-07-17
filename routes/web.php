@@ -6,6 +6,7 @@ use App\Http\Controllers\BinController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContacUsController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FailedInvoiceController;
 use App\Http\Controllers\IncomeStatementController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\InsightsController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerAccountController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\ProfileInformationController;
@@ -170,6 +172,14 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
         }
         return view('auth.enable-mfa');
     })->name('mfa.enable')->withoutMiddleware(['enable.mfa', 'onboarding']);
+
+    // chats/conversations
+    Route::resource('/messages', MessageController::class)
+        ->only('store', 'destroy');
+    // Route::resource('/conversations/members', ConversationMemberController::class)
+    //     ->only('store');
+    Route::resource('/conversations', ConversationController::class)
+        ->only('index', 'store', 'destroy');
 });
 
 // allow email verification without signing in
