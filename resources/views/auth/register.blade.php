@@ -68,7 +68,7 @@
                         </div>
                         <div class="criteria-item" id="combo-check">
                             <i class="fas fa-times icon-x"></i>
-                            <span>Any combination of letters, numbers, and symbols</span>
+                            <span>Use at least 1 uppercase letter, 1 number, and 1 special character (e.g., @, #, !)</span>
                         </div>
                     </div>
                 </div>
