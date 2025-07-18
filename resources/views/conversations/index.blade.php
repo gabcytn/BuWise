@@ -2,10 +2,6 @@
     @vite(['resources/css/conversations/index.css', 'resources/js/conversations/index.js'])
     <div class="container">
         <div class="chats">
-            <form class="conversation-header">
-                <input type="search" name="search" placeholder="Search user" value="{{ request()->query('search') }}" />
-                <button type="submit">Find</button>
-            </form>
             <ul class="conversation-list">
                 <li class="conversation-item">
                     <img class="conversation-profile" src="{{ asset('storage/profiles/default.png') }}"
@@ -61,8 +57,12 @@
             </div>
 
             <div class="input-container">
-                <textarea class="message-input" id="messageInput" placeholder="Type a message..." rows="1"></textarea>
-                <button class="send-button" id="sendButton">➤</button>
+                <div class="input-wrapper">
+                    <textarea class="message-input" id="messageInput" placeholder="Type a message..." rows="1"></textarea>
+                </div>
+                <div class="button-wrapper">
+                    <button class="send-button" id="sendButton">➤</button>
+                </div>
             </div>
         </div>
     </div>
