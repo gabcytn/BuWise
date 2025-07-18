@@ -1,3 +1,7 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+
 class ChatApp {
     constructor() {
         this.messagesContainer = document.getElementById("messagesContainer");
@@ -213,4 +217,8 @@ class ChatApp {
 // Initialize the chat app
 document.addEventListener("DOMContentLoaded", () => {
     new ChatApp();
+    document.querySelectorAll("p.time").forEach((item) => {
+        const time = item.dataset.time;
+        item.textContent = time ? dayjs().to(dayjs(time)) : "";
+    });
 });
