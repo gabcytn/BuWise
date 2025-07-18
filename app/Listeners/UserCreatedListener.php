@@ -3,6 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\UserCreated;
+use App\Models\Conversation;
+use App\Models\ConversationMember;
+use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\Role;
 use App\Models\User;
@@ -54,9 +57,23 @@ class UserCreatedListener implements ShouldQueue
             if ($creator->role_id === Role::LIAISON)
                 $accountant->notify(new LiaisonCreatedClient($accountant, $creator));
 
+            // add user in conversations
+            if ($user_created->role_id === Role::LIAISON || $user_created->role_id === Role::CLERK)
+                $this->createConversation($user_created, $creator, $organization);
+
             // $user_created->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::warning('Error handling event listener: ' . $e->getMessage());
         }
+    }
+
+    private function createConversation(User $user_created, User $creator, Organization $organization)
+    {
+        $convo = Conversation::create([]);
+        ConversationMember::insert([
+            ['user_id' => $user_created->id, 'conversation_id' => $convo->id],
+            ['user_id' => $creator->id, 'conversation_id' => $convo->id],
+            ['user_id' => $user_created->id, 'conversation_id' => $organization->conversation_id],
+        ]);
     }
 }
