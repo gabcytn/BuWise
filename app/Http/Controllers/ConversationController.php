@@ -13,9 +13,32 @@ class ConversationController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $org = $user->organization;
+
         $conversations = Conversation::with(['messages', 'members.user'])->whereHas('members', function ($query) use ($user) {
             return $query->with('user')->where('user_id', '=', $user->id);
         })->get();
+
+        foreach ($conversations as $convo) {
+            if ($org->conversation_id === $convo->id) {
+                $org = $user->organization;
+                $convo->image = asset('storage/organizations/' . $org->logo);
+                $convo->name = $org->name;
+            } else {
+                $members = $convo->members;
+                $sender = $members->where('user.id', '!=', $user->id)->first()->user;
+                $convo->image = asset('storage/profiles/' . $sender->profile_img);
+                $convo->name = $sender->name;
+            }
+            $latest_message = $convo->messages()->orderByDesc('id')->first();
+            if ($latest_message) {
+                $convo->latest_message = $latest_message->message;
+                $convo->latest_message_time = $latest_message->created_at;
+            } else {
+                $convo->latest_message = 'No messages yet.';
+                $convo->latest_message_time = '';
+            }
+        }
         return view('conversations.index', [
             'conversations' => $conversations,
         ]);

@@ -3,50 +3,20 @@
     <div class="container">
         <div class="chats">
             <ul class="conversation-list">
-                <li class="conversation-item">
-                    <img class="conversation-profile" src="{{ asset('storage/profiles/default.png') }}"
-                        alt="Profile Picture"</img>
-                    <div class="conversation-details">
-                        <h3>Name</h3>
-                        <div class="conversation-message">
-                            <p class="message">My first message</p>
-                            <p class="time">3h ago</p>
+                @foreach ($conversations as $item)
+                    <li class="conversation-item">
+                        <img class="conversation-profile" src="{{ $item->image }}" alt="Profile Picture"</img>
+                        <div class="conversation-details">
+                            <h3 title="{{ $item->name }}">{{ truncate($item->name, 20) }}</h3>
+                            <div class="conversation-message">
+                                <p class="message" title="{{ $item->latest_message }}">
+                                    {{ truncate($item->latest_message) }}</p>
+                                <p class="time" data-time="{{ $item->latest_message_time }}">
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="conversation-item">
-                    <img class="conversation-profile" src="{{ asset('storage/profiles/default.png') }}"
-                        alt="Profile Picture"</img>
-                    <div class="conversation-details">
-                        <h3>Name</h3>
-                        <div class="conversation-message">
-                            <p class="message">My first message</p>
-                            <p class="time">3h ago</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="conversation-item">
-                    <img class="conversation-profile" src="{{ asset('storage/profiles/default.png') }}"
-                        alt="Profile Picture"</img>
-                    <div class="conversation-details">
-                        <h3>Name</h3>
-                        <div class="conversation-message">
-                            <p class="message">My first message</p>
-                            <p class="time">3h ago</p>
-                        </div>
-                    </div>
-                </li>
-                <li class="conversation-item">
-                    <img class="conversation-profile" src="{{ asset('storage/profiles/default.png') }}"
-                        alt="Profile Picture"</img>
-                    <div class="conversation-details">
-                        <h3>Name</h3>
-                        <div class="conversation-message">
-                            <p class="message">My first message</p>
-                            <p class="time">3h ago</p>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                @endforeach
             </ul>
         </div>
         <div class="chat-container">
