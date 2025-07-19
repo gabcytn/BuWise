@@ -23,9 +23,6 @@ class OrganizationConversationsSeeder extends Seeder
             DB::beginTransaction();
             $orgs = Organization::with('members')->get();
 
-            Log::info("Org count: {$orgs->count()}");
-            assert($orgs->count() === 1);
-
             foreach ($orgs as $org) {
                 $convo = Conversation::create([]);
 
@@ -35,7 +32,9 @@ class OrganizationConversationsSeeder extends Seeder
 
                 // add all existing org members in the convo
                 foreach ($org->members as $member) {
-                    Log::info("Member: {$member}");
+                    // exclude clients
+                    if ($member->user->role_id === Role::CLIENT)
+                        continue;
                     ConversationMember::create([
                         'conversation_id' => $convo->id,
                         'user_id' => $member->user_id,
@@ -46,6 +45,7 @@ class OrganizationConversationsSeeder extends Seeder
             // get all accountants
             $accountants = User::where('role_id', '=', Role::ACCOUNTANT)->get();
             foreach ($accountants as $accountant) {
+                $staff_list = [];
                 // create conversation for each accountant's staff
                 foreach ($accountant->staff as $staff) {
                     $convo = Conversation::create([]);
@@ -53,6 +53,16 @@ class OrganizationConversationsSeeder extends Seeder
                         ['conversation_id' => $convo->id, 'user_id' => $staff->id],
                         ['conversation_id' => $convo->id, 'user_id' => $accountant->id]
                     ]);
+
+                    // create conversation among each staff
+                    foreach ($staff_list as $staff_item) {
+                        $convo = Conversation::create([]);
+                        ConversationMember::insert([
+                            ['conversation_id' => $convo->id, 'user_id' => $staff_item->id],
+                            ['conversation_id' => $convo->id, 'user_id' => $staff->id]
+                        ]);
+                    }
+                    $staff_list[] = $staff;
                 }
             }
             DB::commit();
