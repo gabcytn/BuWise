@@ -40,7 +40,7 @@ class ConversationController extends Controller
             }
         }
         return view('conversations.index', [
-            'conversations' => $conversations,
+            'conversations' => $conversations->sortByDesc('latest_message_time'),
         ]);
     }
 
