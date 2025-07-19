@@ -16,7 +16,9 @@ class MessageController extends Controller
     {
         // TODO: add gate authorize
         $user = $request->user();
-        $messages = Message::where('conversation_id', '=', $conversation->id)->paginate(20);
+        $messages = Message::where('conversation_id', '=', $conversation->id)
+            ->orderByDesc('created_at')
+            ->paginate(20);
 
         // determines if current user is sender or receiver of the message
         foreach ($messages as $message)

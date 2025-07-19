@@ -22,6 +22,7 @@ class ChatApp {
         ).dataset.chatId;
 
         this.messages = [];
+        this.nextPageUrl = null;
 
         this.init();
     }
@@ -29,7 +30,6 @@ class ChatApp {
     init() {
         this.setupEventListeners();
         this.loadInitialMessages();
-        this.scrollToBottom();
     }
 
     setupEventListeners() {
@@ -55,7 +55,7 @@ class ChatApp {
         this.messagesContainer.addEventListener("scroll", () => {
             if (
                 this.messagesContainer.scrollTop === 0 &&
-                this.canLoadMore &&
+                this.hasNextPage() &&
                 !this.isLoading
             ) {
                 this.loadOlderMessages();
@@ -67,9 +67,12 @@ class ChatApp {
                 this.selectedChat = item.dataset.chatId;
                 this.messagesList.innerHTML = "";
                 this.loadInitialMessages();
-                this.scrollToBottom();
             });
         });
+    }
+
+    hasNextPage() {
+        return this.canLoadMore;
     }
 
     async loadInitialMessages() {
@@ -77,7 +80,9 @@ class ChatApp {
             `chat-${this.selectedChat}`,
         );
         if (savedMessages) {
-            this.messages = JSON.parse(savedMessages);
+            this.messages = JSON.parse(savedMessages).messages;
+            this.nextPageUrl = JSON.parse(savedMessages).nextPageUrl;
+            this.canLoadMore = this.nextPageUrl !== null;
             this.displayMessages();
             return;
         }
@@ -86,9 +91,11 @@ class ChatApp {
         const payload = data.messages;
 
         const nextPageUrl = payload.next_page_url;
+        this.canLoadMore = nextPageUrl !== null;
+        this.nextPageUrl = nextPageUrl;
 
         const payloadData = payload.data;
-        const initialMessages = payloadData.map((item) => {
+        const initialMessages = payloadData.reverse().map((item) => {
             return {
                 text: item.message,
                 sent: item.sent,
@@ -98,7 +105,10 @@ class ChatApp {
 
         sessionStorage.setItem(
             `chat-${this.selectedChat}`,
-            JSON.stringify(initialMessages),
+            JSON.stringify({
+                messages: initialMessages,
+                nextPageUrl: nextPageUrl,
+            }),
         );
 
         this.messages = initialMessages;
@@ -109,6 +119,8 @@ class ChatApp {
         this.messages.forEach((msg) => {
             this.addMessage(msg.text, msg.sent, msg.time);
         });
+
+        this.scrollToBottom();
     }
 
     async loadOlderMessages() {
@@ -120,29 +132,38 @@ class ChatApp {
         // Store current scroll position
         const scrollHeight = this.messagesContainer.scrollHeight;
 
-        // Simulate API call delay
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log(this.nextPageUrl);
+        const res = await fetch(this.nextPageUrl);
+        const data = await res.json();
 
-        // Generate older messages
-        const olderMessages = [
-            { text: "Good morning!", sent: false, time: "9:00 AM" },
-            {
-                text: "Morning! Ready for the day?",
-                sent: true,
-                time: "9:02 AM",
-            },
-            {
-                text: "Absolutely! Got some coding to do",
-                sent: false,
-                time: "9:05 AM",
-            },
-            {
-                text: "Same here! What are you working on?",
-                sent: true,
-                time: "9:07 AM",
-            },
-            { text: "A new chat application", sent: false, time: "9:10 AM" },
-        ];
+        const payload = data.messages;
+
+        const nextPageUrl = payload.next_page_url;
+        this.canLoadMore = nextPageUrl !== null;
+        this.nextPageUrl = nextPageUrl;
+
+        console.log(payload);
+
+        const payloadData = payload.data;
+
+        const olderMessages = payloadData.map((item) => {
+            return {
+                text: item.message,
+                sent: item.sent,
+                time: dayjs().to(dayjs(item.created_at)),
+            };
+        });
+
+        const savedData = JSON.parse(
+            sessionStorage.getItem(`chat-${this.selectedChat}`),
+        );
+        console.log(savedData);
+        savedData.messages.unshift(...olderMessages.reverse());
+        savedData.nextPageUrl = nextPageUrl;
+        sessionStorage.setItem(
+            `chat-${this.selectedChat}`,
+            JSON.stringify(savedData),
+        );
 
         // Add older messages to the top
         olderMessages.reverse().forEach((msg) => {
@@ -155,12 +176,6 @@ class ChatApp {
 
         this.loadingIndicator.classList.remove("show");
         this.isLoading = false;
-
-        // Simulate reaching the end of messages after a few loads
-        this.messageId += olderMessages.length;
-        if (this.messageId > 20) {
-            this.canLoadMore = false;
-        }
     }
 
     async sendMessage() {
@@ -214,18 +229,18 @@ class ChatApp {
     }
 
     appendInSessionStorage(message) {
-        const previousMessages = JSON.parse(
+        const storedData = JSON.parse(
             sessionStorage.getItem(`chat-${this.selectedChat}`),
         );
 
-        previousMessages.push({
+        storedData.messages.push({
             text: message,
             sent: true,
             time: dayjs().to(dayjs(new Date())),
         });
         sessionStorage.setItem(
             `chat-${this.selectedChat}`,
-            JSON.stringify(previousMessages),
+            JSON.stringify(storedData),
         );
     }
 
