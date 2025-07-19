@@ -174,12 +174,10 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     })->name('mfa.enable')->withoutMiddleware(['enable.mfa', 'onboarding']);
 
     // chats/conversations
-    Route::resource('/messages', MessageController::class)
-        ->only('store', 'destroy');
-    // Route::resource('/conversations/members', ConversationMemberController::class)
-    //     ->only('store');
-    Route::resource('/conversations', ConversationController::class)
+    Route::resource('/conversations/{conversation}/messages', MessageController::class)
         ->only('index', 'store', 'destroy');
+    Route::resource('/conversations', ConversationController::class)
+        ->only('index');
 });
 
 // allow email verification without signing in

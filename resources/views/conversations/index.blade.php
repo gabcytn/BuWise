@@ -4,7 +4,7 @@
         <div class="chats">
             <ul class="conversation-list">
                 @foreach ($conversations as $item)
-                    <li class="conversation-item">
+                    <li class="conversation-item" data-chat-id="{{ $item->id }}">
                         <img class="conversation-profile" src="{{ $item->image }}" alt="Profile Picture"</img>
                         <div class="conversation-details">
                             <h3 title="{{ $item->name }}">{{ truncate($item->name, 20) }}</h3>

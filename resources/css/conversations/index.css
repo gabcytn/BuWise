@@ -129,6 +129,10 @@ main {
     resize: none;
 }
 
+.message-input:focus {
+    border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
 .button-wrapper {
     width: max-content;
     display: flex;
