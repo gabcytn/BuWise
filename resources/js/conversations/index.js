@@ -9,10 +9,19 @@ class ChatApp {
         this.messageInput = document.getElementById("messageInput");
         this.sendButton = document.getElementById("sendButton");
         this.loadingIndicator = document.getElementById("loadingIndicator");
+        this.conversationItems = document.querySelectorAll(
+            "li.conversation-item",
+        );
 
         this.messageId = 0;
         this.isLoading = false;
         this.canLoadMore = true;
+
+        this.selectedChat = document.querySelector(
+            "li.conversation-item:first-child",
+        ).dataset.chatId;
+
+        this.messages = [];
 
         this.init();
     }
@@ -52,35 +61,51 @@ class ChatApp {
                 this.loadOlderMessages();
             }
         });
+
+        this.conversationItems.forEach((item) => {
+            item.addEventListener("click", () => {
+                this.selectedChat = item.dataset.chatId;
+                this.messagesList.innerHTML = "";
+                this.loadInitialMessages();
+            });
+        });
     }
 
-    loadInitialMessages() {
-        const initialMessages = [
-            { text: "Hey! How are you doing?", sent: false, time: "10:30 AM" },
-            {
-                text: "I'm good, thanks! Just working on some projects",
-                sent: true,
-                time: "10:32 AM",
-            },
-            {
-                text: "That sounds interesting! What kind of projects?",
-                sent: false,
-                time: "10:33 AM",
-            },
-            {
-                text: "Building a mobile chat UI actually 😄",
-                sent: true,
-                time: "10:35 AM",
-            },
-            { text: "Cool! How's it going?", sent: false, time: "10:36 AM" },
-            {
-                text: "Pretty well! Just adding the scroll-to-load feature",
-                sent: true,
-                time: "10:38 AM",
-            },
-        ];
+    async loadInitialMessages() {
+        const savedMessages = sessionStorage.getItem(
+            `chat-${this.selectedChat}`,
+        );
+        if (savedMessages) {
+            this.messages = JSON.parse(savedMessages);
+            this.displayMessages();
+            return;
+        }
+        const res = await fetch(`/conversations/${this.selectedChat}/messages`);
+        const data = await res.json();
+        const payload = data.messages;
 
-        initialMessages.forEach((msg) => {
+        const nextPageUrl = payload.next_page_url;
+
+        const payloadData = payload.data;
+        const initialMessages = payloadData.map((item) => {
+            return {
+                text: item.message,
+                sent: item.sent,
+                time: dayjs().to(dayjs(item.created_at)),
+            };
+        });
+
+        sessionStorage.setItem(
+            `chat-${this.selectedChat}`,
+            JSON.stringify(initialMessages),
+        );
+
+        this.messages = initialMessages;
+        this.displayMessages();
+    }
+
+    displayMessages() {
+        this.messages.forEach((msg) => {
             this.addMessage(msg.text, msg.sent, msg.time);
         });
     }
@@ -137,34 +162,58 @@ class ChatApp {
         }
     }
 
-    sendMessage() {
+    async sendMessage() {
         const text = this.messageInput.value.trim();
-        if (!text) return;
+        if (!text || text.length > 255) return;
 
-        this.addMessage(text, true, this.getCurrentTime());
+        const res = await fetch(
+            `/conversations/${this.selectedChat}/messages`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    "X-CSRF-TOKEN": document.querySelector(
+                        "meta[name='csrf-token']",
+                    ).content,
+                },
+                body: JSON.stringify({
+                    message: text,
+                }),
+            },
+        );
+
+        if (!res.ok) throw new Error(`Failed to send message: ${res.status}`);
+
+        this.addMessage(text, true, "Just now");
         this.messageInput.value = "";
         this.messageInput.style.height = "auto";
         this.scrollToBottom();
+        this.updateChatItemLastMessage(text);
+        this.appendInSessionStorage(text);
+    }
 
-        // Simulate response after a short delay
-        setTimeout(
-            () => {
-                const responses = [
-                    "That's interesting!",
-                    "I see what you mean",
-                    "Sounds good to me",
-                    "Tell me more about that",
-                    "That's a great idea!",
-                    "I agree with you",
-                    "How did that go?",
-                    "That's awesome!",
-                ];
-                const randomResponse =
-                    responses[Math.floor(Math.random() * responses.length)];
-                this.addMessage(randomResponse, false, this.getCurrentTime());
-                this.scrollToBottom();
-            },
-            1000 + Math.random() * 2000,
+    updateChatItemLastMessage(message) {
+        document.querySelector(
+            `li.conversation-item[data-chat-id='${this.selectedChat}'] .message`,
+        ).textContent = message;
+    }
+
+    appendInSessionStorage(message) {
+        const previousMessages = JSON.parse(
+            sessionStorage.getItem(`chat-${this.selectedChat}`),
+        );
+
+        console.log(previousMessages);
+
+        previousMessages.push({
+            text: message,
+            sent: true,
+            time: dayjs().to(dayjs(new Date())),
+        });
+        sessionStorage.setItem(
+            `chat-${this.selectedChat}`,
+            JSON.stringify(previousMessages),
         );
     }
 
@@ -197,20 +246,10 @@ class ChatApp {
     }
 
     scrollToBottom() {
-        console.log(this.messagesContainer.scrollTop);
-        console.log(this.messagesContainer.scrollHeight);
         setTimeout(() => {
             this.messagesContainer.scrollTop =
                 this.messagesContainer.scrollHeight;
         }, 100);
-    }
-
-    getCurrentTime() {
-        return new Date().toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-        });
     }
 }
 

@@ -2,17 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, Conversation $conversation)
     {
-        //
+        // TODO: add gate authorize
+        $user = $request->user();
+        $messages = Message::where('conversation_id', '=', $conversation->id)->paginate(20);
+
+        // determines if current user is sender or receiver of the message
+        foreach ($messages as $message)
+            $message->sent = $message->user_id === $user->id;
+
+        return Response::json([
+            'messages' => $messages,
+        ]);
     }
 
     /**
@@ -26,9 +38,27 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Conversation $conversation)
     {
-        //
+        // TODO: gate authorization
+        $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+        $user = $request->user();
+
+        Message::create([
+            'user_id' => $user->id,
+            'conversation_id' => $conversation->id,
+            'message' => $request->message,
+        ]);
+
+        $receivers = $conversation->members()->where('user_id', '!=', $user->id)->get();
+        // TODO: notify member
+        foreach ($receivers as $receiver) {
+            // $receiver->notify();
+        }
+
+        return response(null, 200);
     }
 
     /**
