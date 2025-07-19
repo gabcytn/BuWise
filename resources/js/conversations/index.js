@@ -67,6 +67,7 @@ class ChatApp {
                 this.selectedChat = item.dataset.chatId;
                 this.messagesList.innerHTML = "";
                 this.loadInitialMessages();
+                this.scrollToBottom();
             });
         });
     }
@@ -191,20 +192,31 @@ class ChatApp {
         this.scrollToBottom();
         this.updateChatItemLastMessage(text);
         this.appendInSessionStorage(text);
+        this.updateChatListOrder();
+    }
+
+    updateChatListOrder() {
+        const currentChat = document.querySelector(
+            `li.conversation-item[data-chat-id='${this.selectedChat}']`,
+        );
+
+        const chatList = document.querySelector("ul.conversation-list");
+        chatList.insertBefore(currentChat, chatList.firstChild);
     }
 
     updateChatItemLastMessage(message) {
-        document.querySelector(
-            `li.conversation-item[data-chat-id='${this.selectedChat}'] .message`,
-        ).textContent = message;
+        const currentChatItem = document.querySelector(
+            `li.conversation-item[data-chat-id='${this.selectedChat}']`,
+        );
+
+        currentChatItem.querySelector(".message").textContent = message;
+        currentChatItem.querySelector(".time").textContent = "Just now";
     }
 
     appendInSessionStorage(message) {
         const previousMessages = JSON.parse(
             sessionStorage.getItem(`chat-${this.selectedChat}`),
         );
-
-        console.log(previousMessages);
 
         previousMessages.push({
             text: message,
