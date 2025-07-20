@@ -1,5 +1,5 @@
 <x-app-layout>
-    @vite(['resources/css/conversations/index.css', 'resources/js/conversations/index.js', 'resources/js/conversations/listener.js'])
+    @vite(['resources/css/conversations/index.css', 'resources/js/conversations/index.js'])
     <div class="container">
         <div class="chats">
             <ul class="conversation-list">
