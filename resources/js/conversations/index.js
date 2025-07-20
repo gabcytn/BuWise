@@ -76,7 +76,7 @@ class ChatApp {
         });
 
         window.Echo.private(`user.${sessionStorage.getItem("userId")}`).listen(
-            "ChatMessage",
+            "NewChatMessage",
             (e) => {
                 const msg = e.message.message;
                 const chatId = e.message.conversation_id;

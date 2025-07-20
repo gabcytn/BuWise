@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ChatMessage;
+use App\Events\NewChatMessage;
 use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 class MessageController extends Controller
@@ -63,7 +62,7 @@ class MessageController extends Controller
         // broadcasts to all members of the conversation (excluding current user)
         $receivers = $conversation->members()->where('user_id', '!=', $user->id)->get();
         foreach ($receivers as $receiver) {
-            ChatMessage::dispatch($receiver->user, $new_message, $user);
+            NewChatMessage::dispatch($receiver->user, $new_message, $user);
         }
 
         return response(null, 200);

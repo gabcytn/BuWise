@@ -65,7 +65,7 @@ async function startup() {
     });
 
     window.Echo.private(`user.${sessionStorage.getItem("userId")}`).listen(
-        "ChatMessage",
+        "NewChatMessage",
         (e) => {
             if (window.location.pathname.startsWith("/conversations")) return;
             const msg = e.message.message;
