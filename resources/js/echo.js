@@ -64,6 +64,38 @@ async function startup() {
             });
         }
     });
+
+    window.Echo.private(`user.${sessionStorage.getItem("userId")}`).listen(
+        "ChatMessage",
+        (e) => {
+            if (window.location.pathname.startsWith("/conversations")) {
+                alert("CANCEL");
+                return;
+            }
+            const msg = e.message.message;
+            const chatId = e.message.conversation_id;
+            const notif = new Notification("You received a message.", {
+                body: msg,
+            });
+            notif.onclick = (e) => {
+                e.preventDefault();
+                location.href = `${origin}/conversations`;
+            };
+
+            const savedData = JSON.parse(
+                sessionStorage.getItem(`chat-${chatId}`),
+            );
+            if (!savedData) return;
+
+            savedData.messages.push({
+                text: msg,
+                sent: false,
+                time: dayjs().to(dayjs(new Date())),
+            });
+
+            sessionStorage.setItem(`chat-${chatId}`, JSON.stringify(savedData));
+        },
+    );
 }
 
 function addItemInNotificationPanel(notif, isNew = false) {
