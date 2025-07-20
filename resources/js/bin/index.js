@@ -88,7 +88,4 @@ async function submitForm(action) {
             items: items,
         }),
     });
-
-    const data = await res.json();
-    console.log(data);
 }

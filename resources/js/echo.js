@@ -56,7 +56,6 @@ async function startup() {
         document
             .querySelector("#notification-banner")
             .classList.remove("d-none");
-        console.log(Notification.permission);
         if (Notification.permission === "granted") {
             new Notification(notif.title, {
                 body: notif.description,

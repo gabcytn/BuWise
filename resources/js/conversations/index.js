@@ -148,7 +148,6 @@ class ChatApp {
         // Store current scroll position
         const scrollHeight = this.messagesContainer.scrollHeight;
 
-        console.log(this.nextPageUrl);
         const res = await fetch(this.nextPageUrl);
         const data = await res.json();
 
@@ -157,8 +156,6 @@ class ChatApp {
         const nextPageUrl = payload.next_page_url;
         this.canLoadMore = nextPageUrl !== null;
         this.nextPageUrl = nextPageUrl;
-
-        console.log(payload);
 
         const payloadData = payload.data;
 
@@ -173,7 +170,6 @@ class ChatApp {
         const savedData = JSON.parse(
             sessionStorage.getItem(`chat-${this.selectedChat}`),
         );
-        console.log(savedData);
         savedData.messages.unshift(...olderMessages.reverse());
         savedData.nextPageUrl = nextPageUrl;
         sessionStorage.setItem(
