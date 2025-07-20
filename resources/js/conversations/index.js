@@ -81,12 +81,22 @@ class ChatApp {
                 const msg = e.message.message;
                 const chatId = e.message.conversation_id;
                 if (chatId === parseInt(this.selectedChat))
-                    this.addMessage(msg, false, "Just now");
+                    this.addMessage(
+                        msg,
+                        false,
+                        "Just now",
+                        e.sender.profile_img,
+                    );
                 this.messageInput.value = "";
                 this.messageInput.style.height = "auto";
                 this.scrollToBottom();
                 this.updateChatItemLastMessage(msg, chatId);
-                this.appendInSessionStorage(msg, chatId, false);
+                this.appendInSessionStorage(
+                    msg,
+                    chatId,
+                    false,
+                    e.sender.profile_img,
+                );
                 this.updateChatListOrder(chatId);
             },
         );
@@ -121,6 +131,7 @@ class ChatApp {
                 text: item.message,
                 sent: item.sent,
                 time: dayjs().to(dayjs(item.created_at)),
+                img: item.img,
             };
         });
 
@@ -137,8 +148,9 @@ class ChatApp {
     }
 
     displayMessages() {
+        console.log(this.messages);
         this.messages.forEach((msg) => {
-            this.addMessage(msg.text, msg.sent, msg.time);
+            this.addMessage(msg.text, msg.sent, msg.time, msg.img);
         });
 
         this.scrollToBottom();
@@ -169,6 +181,7 @@ class ChatApp {
                 text: item.message,
                 sent: item.sent,
                 time: dayjs().to(dayjs(item.created_at)),
+                img: item.img,
             };
         });
 
@@ -184,7 +197,7 @@ class ChatApp {
 
         // Add older messages to the top
         olderMessages.reverse().forEach((msg) => {
-            this.prependMessage(msg.text, msg.sent, msg.time);
+            this.prependMessage(msg.text, msg.sent, msg.time, msg.img);
         });
 
         // Restore scroll position
@@ -249,6 +262,7 @@ class ChatApp {
         message = "",
         chatToInsertTo = this.selectedChat,
         sent = true,
+        img = null,
     ) {
         const storedData = JSON.parse(
             sessionStorage.getItem(`chat-${chatToInsertTo}`),
@@ -260,6 +274,7 @@ class ChatApp {
             text: message,
             sent: sent,
             time: dayjs().to(dayjs(new Date())),
+            img: img,
         });
         sessionStorage.setItem(
             `chat-${chatToInsertTo}`,
@@ -267,21 +282,26 @@ class ChatApp {
         );
     }
 
-    addMessage(text, sent, time) {
-        const messageElement = this.createMessageElement(text, sent, time);
+    addMessage(text, sent, time, img = null) {
+        const messageElement = this.createMessageElement(text, sent, time, img);
         this.messagesList.appendChild(messageElement);
         this.messageId++;
     }
 
-    prependMessage(text, sent, time) {
-        const messageElement = this.createMessageElement(text, sent, time);
+    prependMessage(text, sent, time, image) {
+        const messageElement = this.createMessageElement(
+            text,
+            sent,
+            time,
+            image,
+        );
         this.messagesList.insertBefore(
             messageElement,
             this.messagesList.firstChild,
         );
     }
 
-    createMessageElement(text, sent, time) {
+    createMessageElement(text, sent, time, img = null) {
         const messageDiv = document.createElement("div");
         messageDiv.className = `message ${sent ? "sent" : "received"}`;
 
@@ -291,6 +311,13 @@ class ChatApp {
                         <div class="message-time">${time}</div>
                     </div>
                 `;
+
+        if (!sent && img) {
+            const imgElement = document.createElement("img");
+            imgElement.src = `${origin}/storage/profiles/${img}`;
+            imgElement.classList.add("msg-img");
+            messageDiv.prepend(imgElement);
+        }
 
         return messageDiv;
     }

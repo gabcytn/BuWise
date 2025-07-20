@@ -18,13 +18,17 @@ class MessageController extends Controller
     {
         // TODO: add gate authorize
         $user = $request->user();
-        $messages = Message::where('conversation_id', '=', $conversation->id)
+        $messages = Message::with('user')
+            ->where('conversation_id', '=', $conversation->id)
             ->orderByDesc('created_at')
             ->paginate(20);
 
         // determines if current user is sender or receiver of the message
-        foreach ($messages as $message)
+        // and adds profile picture of sender
+        foreach ($messages as $message) {
             $message->sent = $message->user_id === $user->id;
+            $message->img = $message->user->profile_img;
+        }
 
         return Response::json([
             'messages' => $messages,
@@ -59,7 +63,7 @@ class MessageController extends Controller
         // broadcasts to all members of the conversation (excluding current user)
         $receivers = $conversation->members()->where('user_id', '!=', $user->id)->get();
         foreach ($receivers as $receiver) {
-            ChatMessage::dispatch($receiver->user, $new_message);
+            ChatMessage::dispatch($receiver->user, $new_message, $user);
         }
 
         return response(null, 200);
