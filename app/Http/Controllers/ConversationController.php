@@ -15,9 +15,12 @@ class ConversationController extends Controller
         $user = $request->user();
         $org = $user->organization;
 
-        $conversations = Conversation::with(['messages', 'members.user'])->whereHas('members', function ($query) use ($user) {
-            return $query->with('user')->where('user_id', '=', $user->id);
-        })->get();
+        $conversations = Conversation::with(['messages', 'members.user'])
+            ->whereHas('members', function ($query) use ($user) {
+                $query->where('user_id', '=', $user->id);
+            })
+            ->has('members', '>', 1)  // Only include conversations with more than 1 member
+            ->get();
 
         foreach ($conversations as $convo) {
             if ($org->conversation_id === $convo->id) {
