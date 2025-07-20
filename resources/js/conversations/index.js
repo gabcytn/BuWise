@@ -69,6 +69,25 @@ class ChatApp {
                 this.loadInitialMessages();
             });
         });
+
+        window.Echo.private(`user.${sessionStorage.getItem("userId")}`).listen(
+            "ChatMessage",
+            (e) => {
+                const msg = e.message.message;
+                const chatId = e.message.conversation_id;
+                console.log(chatId);
+                console.log(this.selectedChat);
+                console.log(chatId === this.selectedChat);
+                if (chatId === parseInt(this.selectedChat))
+                    this.addMessage(msg, false, "Just now");
+                this.messageInput.value = "";
+                this.messageInput.style.height = "auto";
+                this.scrollToBottom();
+                this.updateChatItemLastMessage(msg, chatId);
+                this.appendInSessionStorage(msg, chatId);
+                this.updateChatListOrder(chatId);
+            },
+        );
     }
 
     hasNextPage() {
@@ -210,28 +229,30 @@ class ChatApp {
         this.updateChatListOrder();
     }
 
-    updateChatListOrder() {
+    updateChatListOrder(chatToRenderFirst = this.selectedChat) {
         const currentChat = document.querySelector(
-            `li.conversation-item[data-chat-id='${this.selectedChat}']`,
+            `li.conversation-item[data-chat-id='${chatToRenderFirst}']`,
         );
 
         const chatList = document.querySelector("ul.conversation-list");
         chatList.insertBefore(currentChat, chatList.firstChild);
     }
 
-    updateChatItemLastMessage(message) {
+    updateChatItemLastMessage(message = "", chatToUpdate = this.selectedChat) {
         const currentChatItem = document.querySelector(
-            `li.conversation-item[data-chat-id='${this.selectedChat}']`,
+            `li.conversation-item[data-chat-id='${chatToUpdate}']`,
         );
 
         currentChatItem.querySelector(".message").textContent = message;
         currentChatItem.querySelector(".time").textContent = "Just now";
     }
 
-    appendInSessionStorage(message) {
+    appendInSessionStorage(message = "", chatToInsertTo = this.selectedChat) {
         const storedData = JSON.parse(
-            sessionStorage.getItem(`chat-${this.selectedChat}`),
+            sessionStorage.getItem(`chat-${chatToInsertTo}`),
         );
+
+        if (!storedData) return;
 
         storedData.messages.push({
             text: message,
@@ -239,7 +260,7 @@ class ChatApp {
             time: dayjs().to(dayjs(new Date())),
         });
         sessionStorage.setItem(
-            `chat-${this.selectedChat}`,
+            `chat-${chatToInsertTo}`,
             JSON.stringify(storedData),
         );
     }

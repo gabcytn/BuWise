@@ -28,6 +28,7 @@ async function fetchUserDetails() {
 
     const data = await res.json();
     USER_ID = data.id;
+    sessionStorage.setItem("userId", data.id);
     sessionStorage.setItem("role", data.role.name);
 }
 
