@@ -17,10 +17,6 @@ class ChatApp {
         this.isLoading = false;
         this.canLoadMore = true;
 
-        this.selectedChat = document.querySelector(
-            "li.conversation-item:first-child",
-        ).dataset.chatId;
-
         this.messages = [];
         this.nextPageUrl = null;
 
@@ -28,6 +24,11 @@ class ChatApp {
     }
 
     init() {
+        const firstChatItem = document.querySelector(
+            "li.conversation-item:first-child",
+        );
+        this.selectedChat = firstChatItem.dataset.chatId;
+        firstChatItem.classList.add("active-chat");
         this.setupEventListeners();
         this.loadInitialMessages();
     }
@@ -64,8 +65,12 @@ class ChatApp {
 
         this.conversationItems.forEach((item) => {
             item.addEventListener("click", () => {
+                this.conversationItems.forEach((item) => {
+                    item.classList.remove("active-chat");
+                });
                 this.selectedChat = item.dataset.chatId;
                 this.messagesList.innerHTML = "";
+                item.classList.add("active-chat");
                 this.loadInitialMessages();
             });
         });
