@@ -110,6 +110,11 @@
 
 }
 
+a#conversation-route {
+    color: var(--main-blue);
+    text-decoration: none;
+}
+
 @media (min-width: 800px) {
     .header-side__account {
         display: flex;
