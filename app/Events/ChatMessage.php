@@ -23,6 +23,7 @@ class ChatMessage implements ShouldBroadcast
     public function __construct(
         public User $user,
         public Message $message,
+        public User $sender,
     ) {}
 
     /**

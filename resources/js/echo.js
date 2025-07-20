@@ -67,10 +67,7 @@ async function startup() {
     window.Echo.private(`user.${sessionStorage.getItem("userId")}`).listen(
         "ChatMessage",
         (e) => {
-            if (window.location.pathname.startsWith("/conversations")) {
-                alert("CANCEL");
-                return;
-            }
+            if (window.location.pathname.startsWith("/conversations")) return;
             const msg = e.message.message;
             const chatId = e.message.conversation_id;
             const notif = new Notification("You received a message.", {
@@ -90,6 +87,7 @@ async function startup() {
                 text: msg,
                 sent: false,
                 time: dayjs().to(dayjs(new Date())),
+                img: e.sender.profile_img,
             });
 
             sessionStorage.setItem(`chat-${chatId}`, JSON.stringify(savedData));
