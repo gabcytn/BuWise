@@ -75,16 +75,13 @@ class ChatApp {
             (e) => {
                 const msg = e.message.message;
                 const chatId = e.message.conversation_id;
-                console.log(chatId);
-                console.log(this.selectedChat);
-                console.log(chatId === this.selectedChat);
                 if (chatId === parseInt(this.selectedChat))
                     this.addMessage(msg, false, "Just now");
                 this.messageInput.value = "";
                 this.messageInput.style.height = "auto";
                 this.scrollToBottom();
                 this.updateChatItemLastMessage(msg, chatId);
-                this.appendInSessionStorage(msg, chatId);
+                this.appendInSessionStorage(msg, chatId, false);
                 this.updateChatListOrder(chatId);
             },
         );
@@ -247,7 +244,11 @@ class ChatApp {
         currentChatItem.querySelector(".time").textContent = "Just now";
     }
 
-    appendInSessionStorage(message = "", chatToInsertTo = this.selectedChat) {
+    appendInSessionStorage(
+        message = "",
+        chatToInsertTo = this.selectedChat,
+        sent = true,
+    ) {
         const storedData = JSON.parse(
             sessionStorage.getItem(`chat-${chatToInsertTo}`),
         );
@@ -256,7 +257,7 @@ class ChatApp {
 
         storedData.messages.push({
             text: message,
-            sent: true,
+            sent: sent,
             time: dayjs().to(dayjs(new Date())),
         });
         sessionStorage.setItem(
