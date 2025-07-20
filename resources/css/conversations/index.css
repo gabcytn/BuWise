@@ -24,8 +24,8 @@ main {
     padding: 0.75rem 0.5rem;
 
     img.conversation-profile {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border-radius: 100%;
     }
 
@@ -46,7 +46,6 @@ main {
     flex-direction: column;
     height: 100%;
     position: relative;
-    /* border: 2px solid red; */
 }
 
 .messages-container {
@@ -111,7 +110,6 @@ main {
     position: absolute;
     bottom: 0;
     width: 100%;
-    /* background-color: white; */
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -198,15 +196,19 @@ main {
     border-radius: 2px;
 }
 
+.active-chat {
+    background-color: #DDD;
+}
+
+.msg-img {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+}
+
 @media(min-width: 650px) {
     .conversation-item {
         gap: 0.5rem;
-
-        img.conversation-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-        }
 
         .conversation-details {
             display: flex;
@@ -237,26 +239,10 @@ main {
     }
 }
 
-.active-chat {
-    background-color: #DDD;
-}
-
-.msg-img {
-    width: 20px;
-    height: 20px;
-    border-radius: 100%;
-}
-
 @media(min-width: 800px) {
 
     .conversation-item {
         gap: 0.5rem;
-
-        img.conversation-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 100%;
-        }
 
         .conversation-details {
             h3 {

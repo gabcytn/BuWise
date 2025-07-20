@@ -22,6 +22,7 @@
                 </div>
                 <i class="fa-solid fa-circle-chevron-down"></i>
             </div>
+            <a id="conversation-route" href="/conversations"><i class="fa-solid fa-message"></i></a>
             <i class="fa-solid fa-bell" id="notifToggle"></i>
         </div>
     </header>
