@@ -233,6 +233,15 @@ function updateChartLabels(
     subtitle.textContent = `${remainingLength} out of ${totalLength} remaining`;
 }
 
+// make font color red if the due date is overdue
+document.querySelectorAll(".todo-table.content tbody tr").forEach((item) => {
+    const date = new Date(item.querySelector("td:nth-child(7)").textContent);
+    if (date < new Date()) {
+        item.querySelectorAll("td").forEach((i) => (i.style.color = "red"));
+    }
+});
+
+// transform dates to readable format
 document.querySelectorAll("td:nth-child(7)").forEach((item) => {
     const textContent = item.textContent;
     const dateOptions = { month: "short", year: "numeric", day: "2-digit" };
