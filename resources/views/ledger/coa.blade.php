@@ -142,4 +142,6 @@
             </div>
         </div>
     </dialog>
+    <x-accounts-informational-dialog id="information-dialog" />
 </x-app-layout>
+<script></script>

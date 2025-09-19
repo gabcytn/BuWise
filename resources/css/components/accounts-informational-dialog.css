@@ -1,0 +1,36 @@
+.accinfo-section {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+
+    &:first-child {
+        margin-top: 2.5rem;
+    }
+
+    &:last-child {
+        margin-bottom: 2.5rem;
+    }
+}
+
+.accinfo-section+.accinfo-section {
+    margin-top: 1.25rem;
+}
+
+.fa-xmark {
+    cursor: pointer;
+    font-size: 1.25rem;
+}
+
+.accinfo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+        color: var(--main-blue);
+    }
+}
+
+p {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
