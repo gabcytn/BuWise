@@ -1,20 +1,12 @@
 <x-app-layout title="Dashboard">
     @vite(['resources/css/user-management/dashboard.css', 'resources/js/dashboard.js'])
+    @php
+        $user = request()->user();
+    @endphp
 
     <div class="container">
         <!-- Profile Image & Greeting -->
-        <div class="profile-section">
-            <div class="profile-img-wrapper">
-                <img id="profile-img" src="{{ asset('storage/profiles/' . Auth::user()->profile_img) }}"
-                    alt="Profile Image" />
-            </div>
-            <div class="profile-info">
-                <h2 class="dashboard-title">
-                    Welcome, {{ Auth::user()->name }}!
-                </h2>
-                <p class="dashboard-role">{{ $role }} of {{ $organization }}</p>
-            </div>
-        </div>
+        <x-dashboard-greeting />
 
         <!-- Stats Section -->
         <section class="cards-row">
@@ -82,7 +74,7 @@
                     <div class="no-tasks-container">
                         <i class="fa-solid fa-ban"></i>
                         <h1>No tasks yet</h1>
-                        @if (request()->user()->role_id === \App\Models\Role::ACCOUNTANT)
+                        @if ($user->role_id === \App\Models\Role::ACCOUNTANT)
                             <form action="/tasks">
                                 <button type="submit">Add New Task</button>
                             </form>
@@ -107,6 +99,7 @@
         <script>
             const clientsChart = document.querySelector("canvas#clients-chart");
             const arr = @json($client_types);
+            console.log(arr);
             if (arr.length < 1) {
                 clientsChart.style.display = "none";
                 throw new Error("Insufficient data")

@@ -1,0 +1,27 @@
+.profile-section {
+    display: flex;
+    gap: 1rem;
+
+    .profile-img-wrapper {
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+    }
+
+    .profile-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .dashboard-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .dashboard-role {
+        font-size: 0.85rem;
+        color: var(--grey);
+    }
+}

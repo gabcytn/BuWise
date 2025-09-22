@@ -34,8 +34,6 @@ class DashboardController extends Controller
         })->get();
         $invoices_count = $transactions->where('type', '=', 'invoice')->count();
         $journals_count = $transactions->where('type', '=', 'journal')->count();
-        $organization = $user->organization->name;
-        $role = $user->role->name;
         return view('dashboard', [
             'tasks' => $tasks,
             'clients_count' => $clients->count(),
@@ -43,8 +41,6 @@ class DashboardController extends Controller
             'journals_count' => $journals_count,
             'invoices_count' => $invoices_count,
             'client_types' => $type_count,
-            'organization' => $organization,
-            'role' => $role,
         ]);
     }
 
