@@ -18,46 +18,10 @@
 
         <!-- Stats Section -->
         <section class="cards-row">
-            <!-- Card 1 -->
-            <div class="card">
-                <div class="icon-container">
-                    <i class="fa-regular fa-user"></i>
-                </div>
-                <div class="card-details">
-                    <h3>Total Active Clients</h3>
-                    <p>{{ $clients_count }}</p>
-                </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="card">
-                <div class="icon-container">
-                    <i class="fa-regular fa-file-lines"></i>
-                </div>
-                <div class="card-details">
-                    <h3>Invoices Uploaded</h3>
-                    <p>{{ $invoices_count }}</p>
-                </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="card">
-                <div class="icon-container">
-                    <i class="fa-regular fa-newspaper"></i>
-                </div>
-                <div class="card-details">
-                    <h3>Total Entries</h3>
-                    <p>{{ $journals_count }}</p>
-                </div>
-            </div>
-            <!-- Card 4 -->
-            <div class="card">
-                <div class="icon-container">
-                    <i class="fa-regular fa-address-card"></i>
-                </div>
-                <div class="card-details">
-                    <h3>Total Active Staff</h3>
-                    <p>{{ $staff_count }}</p>
-                </div>
-            </div>
+            <x-dashboard-numeric-card icon="fa-user" title="Total Active Clients" count="{{ $clients_count }}" />
+            <x-dashboard-numeric-card icon="fa-file-lines" title="Invoices Uploaded" count="{{ $invoices_count }}" />
+            <x-dashboard-numeric-card icon="fa-newspaper" title="Total Entries" count="{{ $journals_count }}" />
+            <x-dashboard-numeric-card icon="fa-address-card" title="Total Active Staff" count="{{ $staff_count }}" />
         </section>
 
         <section class="charts-section">
