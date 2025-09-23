@@ -30,7 +30,7 @@
 
 .header-side__account {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: flex-start;
     justify-content: center;
     position: relative;
@@ -126,13 +126,13 @@ a#conversation-route {
     }
 
     #account-name {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         color: #2B3C56;
         /* Name text in details */
     }
 
     #account-role {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: #1B80C3;
         /* Role text in details */
     }
