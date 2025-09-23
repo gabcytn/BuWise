@@ -3,6 +3,7 @@
     @php
         $user = request()->user();
     @endphp
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <div class="container">
         <x-dashboard-greeting />
@@ -15,42 +16,11 @@
         </section>
 
         <section class="charts-section">
-            <x-dashboard-pie-chart-card typeCount="{{ count($client_types) }}" />
-            <x-dashboard-line-chart />
+            <x-dashboard-pie-chart-card typeCount="{{ count($client_types) }}" :clientTypes="$client_types" />
+            <x-dashboard-line-chart :values="$line_chart_data" />
             <x-dashboard-todo-list :tasks="$todo_list" />
-            <x-dashboard-bar-chart />
+            <x-dashboard-bar-chart :values="$bar_chart_data" />
         </section>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            const clientsChart = document.querySelector("canvas#clients-chart");
-            const arr = @json($client_types);
-            console.log(arr);
-            if (arr.length < 1) {
-                clientsChart.style.display = "none";
-                throw new Error("Insufficient data")
-            };
-            const data = {
-                labels: Object.keys(arr),
-                datasets: [{
-                    data: Object.values(arr),
-                    hoverOffset: 4,
-                }, ],
-            };
-
-            const config = {
-                type: "doughnut",
-                data: data,
-                options: {
-                    plugins: {
-                        legend: {
-                            position: "bottom",
-                        },
-                    },
-                },
-            };
-
-            new Chart(clientsChart, config);
-        </script>
 
 </x-app-layout>

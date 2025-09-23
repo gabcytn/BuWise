@@ -36,6 +36,8 @@ class DashboardController extends Controller
             'invoices_count' => $transactions->where('type', '=', 'invoice')->count(),
             'client_types' => $this->getClientTypesToCountMap($clients),
             'todo_list' => $this->getTodoList($user),
+            'line_chart_data' => $this->getTasks($user),
+            'bar_chart_data' => $this->getJournals($user),
         ]);
     }
 
@@ -56,9 +58,9 @@ class DashboardController extends Controller
         return $count_map;
     }
 
-    public function getTasks(Request $request)
+    private function getTasks(User $user)
     {
-        $user = $request->user();
+        // $user = $request->user();
         $accountant_id = getAccountantId($user);
         $tasks = Task::with('user')
             ->where('created_by', '=', $accountant_id)
@@ -87,9 +89,8 @@ class DashboardController extends Controller
         return $data_map;
     }
 
-    public function getJournals(Request $request)
+    private function getJournals(User $user)
     {
-        $user = $request->user();
         $transactions = Transaction::where('created_by', '=', $user->id)
             ->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()])
             ->where('type', '=', 'journal')
@@ -104,9 +105,7 @@ class DashboardController extends Controller
             $data[$month_idx] += 1;
         }
 
-        return Response::json([
-            'values' => $data,
-        ]);
+        return $data;
     }
 
     private function getTodoList(User $user)

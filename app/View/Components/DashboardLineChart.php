@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\Component;
 use Closure;
 
@@ -11,10 +12,9 @@ class DashboardLineChart extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        public array $values
+    ) {}
 
     /**
      * Get the view / contents that represent the component.

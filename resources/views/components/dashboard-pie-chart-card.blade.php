@@ -1,4 +1,4 @@
-@props(['typeCount'])
+@props(['typeCount', 'clientTypes'])
 <div class="chart-card grid-child-1">
     <div class="chart-header">
         <h3>Total Registered Clients</h3>
@@ -22,3 +22,33 @@
         @endif
     </div>
 </div>
+
+<script>
+    const clientsChart = document.querySelector("canvas#clients-chart");
+    const arr = @json($clientTypes);
+    if (arr.length < 1) {
+        clientsChart.style.display = "none";
+        throw new Error("Insufficient data")
+    };
+    const data = {
+        labels: Object.keys(arr),
+        datasets: [{
+            data: Object.values(arr),
+            hoverOffset: 4,
+        }, ],
+    };
+
+    const config = {
+        type: "doughnut",
+        data: data,
+        options: {
+            plugins: {
+                legend: {
+                    position: "bottom",
+                },
+            },
+        },
+    };
+
+    new Chart(clientsChart, config);
+</script>

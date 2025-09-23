@@ -13,6 +13,7 @@ class DashboardPieChartCard extends Component
      */
     public function __construct(
         public int $typeCount,
+        public array $clientTypes,
     ) {
         //
     }
