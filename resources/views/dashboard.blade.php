@@ -17,7 +17,7 @@
         <section class="charts-section">
             <x-dashboard-pie-chart-card typeCount="{{ count($client_types) }}" />
             <x-dashboard-line-chart />
-            <x-dashboard-todo-list :tasks="$tasks" />
+            <x-dashboard-todo-list :tasks="$todo_list" />
             <x-dashboard-bar-chart />
         </section>
 
