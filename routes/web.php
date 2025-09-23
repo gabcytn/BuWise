@@ -82,8 +82,6 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     })->name('data.download');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/charts/tasks', [DashboardController::class, 'getTasks']);
-    Route::get('/dashboard/charts/journals', [DashboardController::class, 'getJournals']);
 
     Route::get('/profile', function (Request $request) {
         $user = $request->user();
