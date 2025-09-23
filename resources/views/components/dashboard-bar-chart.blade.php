@@ -1,5 +1,5 @@
 @props(['values'])
-<div class="chart-card grid-child-4">
+<div class="chart-card grid-child-3">
     <div class="chart-header">
         <h3>Total Journal Entries Published</h3>
     </div>

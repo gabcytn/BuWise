@@ -1,0 +1,28 @@
+.grid-child-1 {
+    .pie-chart {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+canvas#clients-chart {
+    width: 12rem !important;
+    height: auto !important;
+}
+
+@media(min-width: 600px) {
+    canvas#clients-chart {
+        width: 15rem !important;
+    }
+}
+
+@media(min-width: 1500px) {
+    .grid-child-1 {
+        .pie-chart {
+            margin-top: 2.5rem;
+        }
+    }
+}

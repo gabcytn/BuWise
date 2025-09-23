@@ -1,3 +1,4 @@
+@vite(['resources/css/components/dashboard/pie-chart-card.css'])
 @props(['typeCount', 'clientTypes'])
 <div class="chart-card grid-child-1">
     <div class="chart-header">

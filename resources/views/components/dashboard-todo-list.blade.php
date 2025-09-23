@@ -1,6 +1,7 @@
 @props(['tasks'])
-<div class="chart-card grid-child-3">
-    <div class="tasks-header">
+@vite(['resources/css/components/dashboard/todo-list.css'])
+<div class="chart-card grid-child-4">
+    <div class="chart-header">
         <h3>To Do List</h3>
     </div>
     @if (count($tasks) > 0)

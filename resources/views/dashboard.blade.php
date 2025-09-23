@@ -18,8 +18,8 @@
         <section class="charts-section">
             <x-dashboard-pie-chart-card typeCount="{{ count($client_types) }}" :clientTypes="$client_types" />
             <x-dashboard-line-chart :values="$line_chart_data" />
-            <x-dashboard-todo-list :tasks="$todo_list" />
             <x-dashboard-bar-chart :values="$bar_chart_data" />
+            <x-dashboard-todo-list :tasks="$todo_list" />
         </section>
 
     </div>
