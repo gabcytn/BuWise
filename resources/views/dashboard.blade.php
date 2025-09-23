@@ -1,5 +1,5 @@
 <x-app-layout title="Dashboard">
-    @vite(['resources/css/user-management/dashboard.css', 'resources/js/dashboard.js'])
+    @vite(['resources/css/user-management/dashboard.css'])
     @php
         $user = request()->user();
     @endphp
@@ -21,6 +21,8 @@
             <x-dashboard-todo-list :tasks="$todo_list" />
             <x-dashboard-bar-chart :values="$bar_chart_data" />
         </section>
+
+    </div>
 
 
 </x-app-layout>
