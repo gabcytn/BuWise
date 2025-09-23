@@ -5,10 +5,8 @@
     @endphp
 
     <div class="container">
-        <!-- Profile Image & Greeting -->
         <x-dashboard-greeting />
 
-        <!-- Stats Section -->
         <section class="cards-row">
             <x-dashboard-numeric-card icon="fa-user" title="Total Active Clients" count="{{ $clients_count }}" />
             <x-dashboard-numeric-card icon="fa-file-lines" title="Invoices Uploaded" count="{{ $invoices_count }}" />
@@ -17,84 +15,12 @@
         </section>
 
         <section class="charts-section">
-            <!-- doughnut chart -->
-            <div class="chart-card grid-child-1">
-                <div class="chart-header">
-                    <h3>Total Registered Clients</h3>
-                </div>
-                <div class="pie-chart">
-                    <canvas id="clients-chart"></canvas>
-                    @if (count($client_types) < 1)
-                        <div class="no-tasks-container">
-                            <i class="fa-solid fa-ban"></i>
-                            <h1>No clients yet</h1>
-                            @if (in_array(request()->user()->role_id, [\App\Models\Role::ACCOUNTANT, \App\Models\Role::LIAISON]))
-                                <form action="/clients">
-                                    <button type="submit">Add New Client</button>
-                                </form>
-                            @else
-                                <form action="/contact">
-                                    <button type="submit">Contact Accountant</button>
-                                </form>
-                            @endif
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- line chart -->
-            <div class="chart-card grid-child-2">
-                <div class="chart-header">
-                    <h3>Total Tasks Completed per User</h3>
-                </div>
-                <div class="line-chart">
-                    <canvas id="tasks-chart"></canvas>
-                </div>
-            </div>
-
-            <!-- Todo list -->
-            <div class="chart-card grid-child-3">
-                <div class="tasks-header">
-                    <h3>To Do List</h3>
-                </div>
-                @if (count($tasks) > 0)
-                    <ul class="tasks-list">
-                        @foreach ($tasks as $item)
-                            <li class="task-item">
-                                <div class="task-content">
-                                    <div class="task-title">{{ $item->name }}</div>
-                                    <div class="task-meta">Due:
-                                        {{ \Carbon\Carbon::createFromDate($item->end_date)->format('M d Y') }}</div>
-                                    <div class="task-assigned">Created by {{ $item->creator->name }}</div>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                @else
-                    <div class="no-tasks-container">
-                        <i class="fa-solid fa-ban"></i>
-                        <h1>No tasks yet</h1>
-                        @if ($user->role_id === \App\Models\Role::ACCOUNTANT)
-                            <form action="/tasks">
-                                <button type="submit">Add New Task</button>
-                            </form>
-                        @endif
-                    </div>
-                @endif
-            </div>
-            <!-- Bar chart -->
-            <div class="chart-card grid-child-4">
-                <div class="chart-header">
-                    <h3>Total Journal Entries Published</h3>
-                </div>
-                <div class="bar-chart">
-                    <canvas id="journals-chart"></canvas>
-                </div>
-            </div>
-
+            <x-dashboard-pie-chart-card typeCount="{{ count($client_types) }}" />
+            <x-dashboard-line-chart />
+            <x-dashboard-todo-list :tasks="$tasks" />
+            <x-dashboard-bar-chart />
         </section>
 
-        <!-- Chart.js Library -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             const clientsChart = document.querySelector("canvas#clients-chart");
