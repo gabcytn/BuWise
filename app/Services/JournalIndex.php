@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class JournalIndex
 {
-    private const ITEMS_PER_PAGE = 6;
+    private const ITEMS_PER_PAGE = 8;
 
     private string $title;
     private string $subtitle;

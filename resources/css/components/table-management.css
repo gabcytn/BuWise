@@ -5,33 +5,33 @@
     border: 1px solid var(--off-white);
 }
 
-table {
+.table-management {
     background-color: var(--clear-white);
     width: 100%;
+    min-width: 800px;
     border-collapse: separate;
     border-spacing: 0;
-}
-
-td {
-    border: 1px solid var(--off-white);
 }
 
 thead {
     background-color: var(--main-blue);
 }
 
-th {
-    padding: 0.5rem 0;
+
+.table-management th,
+.table-management td {
+    padding: 1rem 0 1rem 1rem;
     font-size: 0.7rem;
-    color: var(--off-white);
     text-align: left;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 5rem;
 }
 
-tr td {
-    padding: 0.75rem 0rem;
-    text-align: center;
-    font-size: 0.7rem;
-    text-align: left;
+.table-management th {
+    color: var(--off-white);
 }
 
 tbody tr+tr td {
@@ -42,44 +42,24 @@ tbody tr:hover {
     background-color: var(--off-white);
 }
 
-tr td:first-child,
-tr th:first-child {
-    padding-left: 0.75rem;
-}
-
-.item-img {
-    width: 45px;
-    height: 45px;
-    border-radius: 100%;
-}
-
 .action-column div {
     display: flex;
     gap: 0.5rem;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+
+    button {
+        /* display: flex; */
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
 }
 
-.journal-row td {
-    padding: 1.25rem 0;
-}
+@media(min-width: 1200px) {
 
-@media (min-width: 768px) {
-    .table-wrapper {
-        overflow: auto;
-    }
-
-    th {
-        padding: 1.15rem 0;
-    }
-
-    th,
-    tr td {
-        font-size: 0.9rem;
-        text-align: center;
-    }
-
-    .item-img {
-        width: 50px;
-        height: 50px;
+    .table-management th,
+    .table-management td {
+        font-size: 0.85rem;
     }
 }

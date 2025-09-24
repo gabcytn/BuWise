@@ -23,10 +23,7 @@
             <div class="button-container">
                 @if (request()->routeIs('journal-entries.index'))
                     <button type="submit">Create</button>
-                    <button type="button" id="dropdown-button">&#11206;</button>
-                    <a class="dropdown-import d-none" href="#">
-                        Import Excel
-                    </a>
+                    <button type="button" class="dropdown-import">Import</button>
                 @endif
             </div>
         </form>
@@ -86,41 +83,28 @@
                 <x-table-management :headers=$headers>
                     @foreach ($entries as $key => $entry)
                         <tr class="journal-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
+                            <td>{{ $entry->reference_no }}</td>
+                            <td>{{ $entry->client_name }}</td>
+                            <td>{{ ucfirst($entry->transaction_type) }}</td>
+                            <td>{{ truncate($entry->description) }}</td>
+                            <td>&#8369;{{ number_format($entry->amount, 2) }}</td>
+                            <td>{{ formatDate($entry->date) }}</td>
+                            <td>{{ $entry->creator }}</td>
                             <td>
-                                <p>{{ $entry->reference_no }}</p>
-                            </td>
-                            <td>
-                                <p>{{ $entry->client_name }}</p>
-                            </td>
-                            <td>
-                                <p>{{ ucfirst($entry->transaction_type) }}</p>
-                            </td>
-                            <td>
-                                <p>{{ truncate($entry->description) }}</p>
-                            </td>
-                            <td>
-                                <p>&#8369;{{ number_format($entry->amount, 2) }}
-                            </td>
-                            <td>
-                                <p>{{ formatDate($entry->date) }}</p>
-                            </td>
-                            <td>
-                                <p>{{ $entry->creator }}</p>
-                            </td>
-                            <td>
-                                <strong class="{{ $entry->status }}">{{ ucfirst($entry->status) }}</strong>
+                                <strong class="{{ $entry->status }} status">{{ ucfirst($entry->status) }}</strong>
                             </td>
                             <td class="action-column">
                                 <div>
-                                    <a href="{{ route('journal-entries.edit', $entry->id) }}">
-                                        <i class="fa-regular fa-pen-to-square"></i>
-                                    </a>
+                                    <button>
+                                        <a href="{{ route('journal-entries.edit', $entry->id) }}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </a>
+                                    </button>
                                     <form action="{{ route('journal-entries.destroy', $entry->id) }}" method="POST"
                                         id="{{ 'form-' . $entry->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button"
-                                            style="display: flex; background-color: transparent; border: none; outline: none;">
+                                        <button type="button">
                                             <i class="fa-regular fa-trash-can"
                                                 style="color: #ff0000; cursor: pointer"></i>
                                         </button>
