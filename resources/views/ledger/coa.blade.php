@@ -53,37 +53,26 @@
                 <input type="search" id="account-search" placeholder="Search Accounts.." />
             </div>
         </form>
-        <div class="coa-table-wrapper">
-            <table class="coa-table">
-                <thead>
-                    <tr>
-                        @foreach ($headers as $header)
-                            <th>{{ $header }}</th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($accounts as $account)
-                        <tr class="ledger-account" data-account-code="{{ $account->id }}">
-                            <td>{{ $account->code }}</td>
-                            <td>{{ $account->name }}</td>
-                            <td>{{ ucfirst($account->accountGroup->name) }}</td>
-                            <td class="action-column">
-                                @if ($account->accountant_id)
-                                    <form action="{{ route('ledger.delete-account', $account) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submi"><i class="fa-solid fa-trash"></i></button>
-                                    </form>
-                                @else
-                                    <button type="button"><i class="fa-solid fa-lock"></i></button>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <x-table-management :headers="$headers">
+            @foreach ($accounts as $account)
+                <tr class="ledger-account" data-account-code="{{ $account->id }}">
+                    <td>{{ $account->code }}</td>
+                    <td>{{ $account->name }}</td>
+                    <td>{{ ucfirst($account->accountGroup->name) }}</td>
+                    <td class="action-column">
+                        @if ($account->accountant_id)
+                            <form action="{{ route('ledger.delete-account', $account) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submi"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        @else
+                            <button type="button"><i class="fa-solid fa-lock"></i></button>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </x-table-management>
     </div>
     <dialog id="add-new-account">
         <h2>Add New Account</h2>
@@ -144,4 +133,3 @@
     </dialog>
     <x-accounts-informational-dialog id="information-dialog" />
 </x-app-layout>
-<script></script>
