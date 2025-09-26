@@ -56,7 +56,7 @@ class InvoiceController extends Controller
         $invoices = $invoices
             ->where('type', '=', 'invoice')
             ->orderBy('id', 'DESC')
-            ->paginate(6)
+            ->paginate(8)
             ->appends($filters);
 
         return view('invoices.index', [

@@ -1,78 +1,66 @@
-.d-block {
-    display: block !important;
-}
-
-/* Layout container */
 .dashboard-wrapper {
     max-width: 1500px;
     width: 95%;
     margin: 0 auto;
 }
 
-/* Header Row (Title + Button) */
 .invoice-header-row {
-    margin: 2rem 0;
-    /* padding: 0 2rem; */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
-/* Header */
 .invoice-header h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1f2d3d;
-    margin-bottom: 0.25rem;
+    font-size: 1.75rem;
 }
 
 .invoice-header p {
-    font-size: 0.9rem;
-    color: #66788a;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
 }
 
-/* Button Toolbar (inside flex row) */
-.top-toolbar {
+.create-invoice-buttons {
     display: flex;
-    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    button {
+        width: 5rem;
+        height: 2.5rem;
+        background-color: var(--main-blue);
+        border: none;
+        border-radius: 0.275rem;
+        color: var(--off-white);
+        font-size: 0.75rem;
+        outline: none;
+        cursor: pointer;
+        transition: opacity 0.25s;
+    }
+
+    #import-btn {
+        background-color: var(--dark-blue);
+    }
 }
 
-/* Toolbar container */
-.invoice-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+.invoice-container {
+    margin: 1.25rem 0;
+    padding: 1.5rem 1rem;
+    background-color: var(--clear-white);
+    border-radius: 0.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-/* Fixed select padding */
+.invoice-toolbar .left>*,
+.invoice-toolbar .right>* {
+    margin-bottom: 0.85rem;
+}
+
 .invoice-toolbar select {
-    padding-top: 0.45rem;
-    padding-bottom: 0.45rem;
-    padding-left: 2.8rem;
-    padding-right: 2.5rem;
-    background-repeat: no-repeat;
-    background-position: left 12px center, right 12px center;
-    background-size: 18px 18px, 14px 14px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    min-width: 180px;
-    background-color: white;
-    appearance: none;
-    cursor: pointer;
-}
-
-/* Selects & search input */
-.invoice-toolbar input {
-    padding: 0.45rem 0.8rem;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    min-width: 180px;
-    background-color: white;
+    font-family: "Plus Jakarta Sans", FontAwesome;
+    width: 100%;
+    background-color: var(--clear-white);
+    padding: 0.65rem;
+    border: 1px solid var(--grey);
+    border-radius: 5px;
+    font-size: 0.75rem;
 }
 
 .search-input {
@@ -80,197 +68,96 @@
     flex-grow: 1;
 }
 
-.search-input input {
-    padding: 0.5rem 1rem 0.5rem 2.2rem;
-    /* Leave space for icon on left */
-    width: 100%;
-    font-size: 0.95rem;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-}
-
 .search-icon {
     position: absolute;
-    left: 12px;
+    left: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
     pointer-events: none;
     opacity: 0.6;
+    font-size: 0.75rem;
 }
 
-#run-button {
-    padding: 0.5rem 1.25rem;
-    background-color: var(--main-blue);
-    color: var(--off-white);
-    border: none;
-    border-radius: 0.15rem;
+.invoice-toolbar input[type="search"] {
+    padding: 0.65rem 0.65rem 0.65rem 30px;
+    font-size: 0.75rem;
+    background-color: var(--off-white);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
     outline: none;
+    width: 100%;
+}
+
+
+#run-button {
+    font-size: 0.75rem;
+    padding: 0.65rem 0;
+    background-color: var(--main-blue);
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    color: var(--off-white);
+    transition: opacity 0.25s;
     cursor: pointer;
-    transition: opacity 0.15s;
+    width: 100%;
 }
 
 #run-button:hover {
     opacity: 0.85;
 }
 
-/* New Invoice Button */
-.btn-new-invoice {
-    background-color: #1B80C3;
-    color: white;
-    padding: 0.5rem 1.2rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.btn-new-invoice:hover {
-    opacity: 0.9;
-}
-
-/* Dropdown */
-.dropdown {
-    position: relative;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 110%;
-    right: 0;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 0.5rem 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    min-width: 160px;
-    z-index: 999;
-}
-
-/* .dropdown:hover .dropdown-menu { */
-/*     display: block; */
-/* } */
-
-.dropdown-menu a {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: #333;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-
-.dropdown-menu a:hover {
-    background-color: #f0f4f8;
-}
-
-/* Invoice container */
-.invoice-container {
-    margin: 0 auto 2rem;
-    padding: 1.5rem 2rem;
-    background-color: var(--clear-white);
-    border-radius: 8px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
-}
-
-.table-wrapper {
-    max-width: 100%;
-    overflow-x: auto;
-}
-
-/* Table */
-.invoice-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    background: white;
-    margin-top: 1.5rem;
-}
-
-.invoice-table thead {
-    background-color: #1B80C3;
-    color: white;
-}
-
-.invoice-table th,
-.invoice-table td {
-    padding: 0.75rem 1rem;
-    border: 1px solid #e0e0e0;
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* Status pills */
 .status {
-    padding: 0.4rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    display: inline-block;
-    min-width: 70px;
+    font-size: 0.7rem;
 }
 
-.status.unpaid {
-    background-color: #fce4e4;
-    color: #c0392b;
+.status.approved {
+    color: var(--green);
 }
 
-.status.paid {
-    background-color: #e6f4ea;
-    color: #27ae60;
+.status.pending {
+    color: goldenrod;
 }
 
-/* Actions */
-.action-view,
-.action-edit,
-.action-delete {
-    margin-right: 6px;
-    display: inline-block;
-    vertical-align: middle;
-    text-decoration: none;
+.status.rejected {
+    color: red;
 }
 
-.action-view img,
-.action-edit img,
-.action-delete img {
-    display: block;
+@media(min-width: 700px) {
+    .invoice-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .create-invoice-buttons {
+        margin-top: 0rem;
+    }
 }
 
-.action-view:hover,
-.action-edit:hover,
-.action-delete:hover {
-    transform: scale(1.1);
-    color: #000;
-}
+@media(min-width: 800px) {
+    .invoice-toolbar {
+        display: flex;
+        justify-content: space-between;
+    }
 
-.action-delete button {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-}
+    .left>*,
+    .right>* {
+        margin-bottom: 0;
+    }
 
-.action-delete {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    box-shadow: none;
-}
+    .left,
+    .right {
+        display: flex;
+        gap: 0.5rem;
+    }
 
-.action-delete:focus,
-.action-delete:active {
-    outline: none !important;
-    box-shadow: none !important;
+    #run-button {
+        width: 5rem;
+    }
+
 }
 
 /* upload invoice dialog */
-
 dialog#scan-invoice-dialog {
     max-width: 550px;
     width: 95%;
@@ -316,4 +203,9 @@ dialog#scan-invoice-dialog {
             justify-content: flex-start;
         }
     }
+}
+
+.table-management td:nth-child(5),
+.table-management th:nth-child(5) {
+    text-align: right;
 }
