@@ -110,7 +110,7 @@
             @if (count($invoices) > 0)
                 <x-table-management :headers="$headers">
                     @foreach ($invoices as $invoice)
-                        <tr>
+                        <tr data-item-id="{{ $invoice->id }}">
                             <td>{{ $invoice->reference_no }}</td>
                             <td>{{ $invoice->client->name }}</td>
                             <td>{{ $invoice->date }}</td>
@@ -131,11 +131,10 @@
                                         </a>
                                     </button>
                                     <form action="{{ route('invoices.destroy', $invoice->id) }}" method="POST"
-                                        id="{{ 'form-' . $invoice->id }}"
-                                        onsubmit="return confirm('Delete Invoice No. {{ $invoice->reference_no }}?')">
+                                        class="delete-item-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" title="Delete">
+                                        <button type="submit" title="Delete" class="delete-item-btn">
                                             <i class="fa-regular fa-trash-can"
                                                 style="color: #ff0000; cursor: pointer"></i>
                                         </button>
@@ -145,6 +144,7 @@
                         </tr>
                     @endforeach
                 </x-table-management>
+                <x-confirmable-dialog title="Confirm deletion" affirmText="Delete" denyText="Cancel" />
                 {{ $invoices->links() }}
             @else
                 <h2 style="text-align: center;">No invoices found.</h2>

@@ -205,6 +205,10 @@ dialog#scan-invoice-dialog {
     }
 }
 
+.table-management tbody tr {
+    cursor: pointer;
+}
+
 .table-management td:nth-child(5),
 .table-management th:nth-child(5) {
     text-align: right;
