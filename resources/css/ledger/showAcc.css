@@ -1,124 +1,37 @@
 .container {
     max-width: 1000px;
+    width: 95%;
     margin: 2rem auto;
     padding: 1.5rem;
-    background-color: #fff;
+    background-color: var(--clear-white);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    font-family: 'Segoe UI', sans-serif;
 }
+
 .title-row {
-    border-bottom: 1px solid #ccc;  /* light gray separator line */
-    padding-bottom: 0.5rem;          /* some spacing below text */
-    margin-bottom: 1rem;             /* space below the line */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
 }
 
 .title-row h1 {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 600;
     margin-bottom: 1rem;
-}
-
-form.filter-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-}
-
-/* Label + select wrapper */
-.select-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: 1px solid #ccc;       /* box border */
-    border-radius: 6px;
-    padding: 0.4rem 0.8rem;
-    background-color: #f9f9f9;
-    max-width: 260px;             /* to nicely contain label + select */
-}
-
-/* Make the label not too wide, aligned nicely */
-.select-container label {
-    font-weight: 500;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    user-select: none;
-}
-.custom-select-wrapper {
-    position: relative; /* Add this */
-    display: inline-block;
-}
-
-
-/* Adjust select styling to fit nicely inside the box */
-.custom-select-wrapper select {
-    width: 140px;                 /* reduce width so combined fits well */
-    padding: 0.4rem 2.5rem 0.4rem 1rem;
-    border: none;                 /* remove border since parent has border */
-    background-color: transparent; /* transparent to blend with container */
-    font-size: 0.95rem;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-.dropdown-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    pointer-events: none;
 }
 
 form button[type="submit"] {
     padding: 0.5rem 1rem;
-    background-color: #1B80C3;
-    color: white;
+    background-color: var(--main-blue);
+    color: var(--off-white);
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-weight: 500;
-    margin-left: auto;
-    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    transition: opacity 0.15s;
 }
 
 form button[type="submit"]:hover {
-    background-color: #1B80C3;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-    font-size: 0.95rem;
-}
-
-table thead {
-    background-color: #1B80C3;
-    color: white;
-}
-
-table thead th {
-    padding: 0.75rem;
-    text-align: left;
-}
-
-table tbody td {
-    padding: 0.75rem;
-    border-bottom: 1px solid #eee;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-table tbody .bg-off-white {
-    background-color: #f1f1f1;
-    font-weight: 600;
+    opacity: 0.85;
 }
 
 #back-button {
@@ -136,81 +49,26 @@ table tbody .bg-off-white {
     background-color: #a0a0a0;
 }
 
-dialog {
-    border: none;
-    border-radius: 8px;
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    font-family: 'Segoe UI', sans-serif;
-}
-.dialog-header {
-    background-color: #1B80C3;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    padding: 0.75rem 1rem;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+.table-management td:nth-child(6),
+.table-management th:nth-child(6),
+.table-management td:nth-child(7),
+.table-management th:nth-child(7) {
+    text-align: right;
 }
 
-dialog h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: #1B80C3;
+.table-management td:nth-child(7),
+.table-management th:nth-child(7) {
+    padding-right: 1.5rem;
 }
 
-#date-range-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
+@media(min-width: 360px) {
+    .filter-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-.date-input-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.date-input-wrapper input[type="date"] {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-
-.submit-btn-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-}
-
-.submit-btn-wrapper button {
-    padding: 0.45rem 1rem;
-    font-size: 0.95rem;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.submit-btn-wrapper button[type="submit"] {
-    background-color: #1B80C3;
-    color: white;
-}
-
-.submit-btn-wrapper button[type="submit"]:hover {
-    background-color: #1567a7;
-}
-
-.submit-btn-wrapper button[type="button"] {
-    background-color: #e0e0e0;
-    color: #333;
-}
-
-.submit-btn-wrapper button[type="button"]:hover {
-    background-color: #c7c7c7;
+    form button[type="submit"] {
+        margin-top: 0;
+    }
 }

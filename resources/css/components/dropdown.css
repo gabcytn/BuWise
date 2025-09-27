@@ -1,0 +1,38 @@
+.select-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding-left: 1rem;
+    background-color: var(--off-white);
+    width: max-content;
+
+    label {
+        margin-right: 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .fa-angle-down {
+        font-size: 0.6rem;
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.select-container__select {
+    position: relative;
+
+    select {
+        border: none;
+        outline: none;
+        appearance: none;
+        padding: 0.75rem 3rem 0.75rem 1rem;
+        background: none;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

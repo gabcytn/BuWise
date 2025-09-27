@@ -1,8 +1,9 @@
 @php
     $headers = ['Date', 'Description', 'Transaction Type', 'Account Name', 'Account Group', 'Debit', 'Credit'];
+    $options = ['This year', 'This month', 'This week', 'Last week', 'Last month', 'Last year', 'All time'];
 @endphp
 
-@vite(['resources/css/ledger/showAcc.css', 'resources/js/ledger/showAcc.js'])
+@vite(['resources/css/ledger/showAcc.css'])
 
 <x-app-layout title="Ledger">
     <div class="container">
@@ -10,40 +11,19 @@
             <h1>{{ $user->name }}'s {{ $account->name }}</h1>
         </div>
 
+
         <form action="{{ route('ledger.coa.show', [$account, $user]) }}" method="GET" class="filter-row">
-            <div class="select-container">
-                <div class="custom-select-wrapper">
-                    <label for="date-range-select">Period:
-                        <select required name="period" id="date-range-select">
-                            <option value="this_year"
-                                {{ request()->query('period') === 'this_year' ? 'selected' : '' }}>This year</option>
-                            <option value="this_month"
-                                {{ request()->query('period') === 'this_month' ? 'selected' : '' }}>This month</option>
-                            <option value="this_week"
-                                {{ request()->query('period') === 'this_week' ? 'selected' : '' }}>This week</option>
-                            <option value="last_week"
-                                {{ request()->query('period') === 'last_week' ? 'selected' : '' }}>Last week</option>
-                            <option value="last_month"
-                                {{ request()->query('period') === 'last_month' ? 'selected' : '' }}>Last month</option>
-                            <option value="last_year"
-                                {{ request()->query('period') === 'last_year' ? 'selected' : '' }}>Last year</option>
-                            <option value="all_time" {{ request()->query('period') === 'all_time' ? 'selected' : '' }}>
-                                All time</option>
-                            <option id="custom-option" value="custom"
-                                {{ request()->query('start') && request()->query('end') ? 'selected' : '' }}>Custom
-                            </option>
-                        </select>
-                        <img src="{{ asset('images/menudown.png') }}" alt="▼" class="dropdown-icon">
-                    </label>
-                </div>
-            </div>
+            <x-dropdown label="Period" :options="$options" name="period" />
             <button type="submit">Run</button>
         </form>
 
         <x-table-management :headers=$headers>
+            @php
+                $firstRow = 'Opening balance (excluded in total)';
+            @endphp
             <tr>
                 <td></td>
-                <td>Opening balance (excluded in total)</td>
+                <td title="{{ $firstRow }}">{{ $firstRow }}</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -54,8 +34,9 @@
                 @if ($datum->transaction_date >= $start && $datum->transaction_date <= $end)
                     <tr>
                         <td>{{ formatDate($datum->transaction_date) }}</td>
-                        <td>{{ truncate($datum->transaction_description) }}</td>
-                        <td>{{ $datum->transaction_type }}</td>
+                        <td title="{{ $datum->transaction_description }}">
+                            {{ truncate($datum->transaction_description) }}</td>
+                        <td>{{ ucfirst($datum->transaction_type) }}</td>
                         <td>{{ $datum->acc_name }}</td>
                         <td>{{ ucfirst($datum->acc_group) }}</td>
                         <td>{{ $datum->debit ? number_format($datum->debit, 2) : '' }}</td>
@@ -85,22 +66,10 @@
 
         <button type="button" id="back-button">Go Back</button>
     </div>
-
-    <dialog id="set-custom-date-range-dialog">
-        <div class="dialog-container">
-            <div class="dialog-header">Custom Date</div>
-            <h2>Choose starting and ending date</h2>
-            <form id="date-range-form">
-                <div class="date-input-wrapper">
-                    <input type="date" name="start" id="start" required />
-                    <input type="date" name="end" id="end" required />
-                </div>
-                <div class="submit-btn-wrapper">
-                    <button type="submit">Run</button>
-                    <button type="button">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
+    <script>
+        document.querySelector("#back-button").addEventListener("click", () => {
+            window.history.back();
+        });
+    </script>
 
 </x-app-layout>
