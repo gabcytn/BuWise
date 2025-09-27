@@ -30,7 +30,10 @@ confirmableDialog
 // redirect to view the invoice details
 document.querySelectorAll(".table-management tbody tr").forEach((row) => {
     const itemId = row.dataset.itemId;
-    row.addEventListener("click", () => {
+    row.addEventListener("click", (e) => {
+        if (e.target.classList.contains("fa-trash-can")) {
+            return;
+        }
         window.location.href = `/invoices/${itemId}`;
     });
 });
