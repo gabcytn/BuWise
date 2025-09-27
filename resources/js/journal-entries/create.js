@@ -1,13 +1,6 @@
-const confirmationDialog = document.querySelector("dialog#confirm-dialog");
 document.querySelector(".add-row-btn").addEventListener("click", () => {
     addRow();
 });
-
-document
-    .querySelector(".button-container .cancel-button")
-    .addEventListener("click", function () {
-        window.history.back();
-    });
 
 let rowCounter = 0; // Used to create unique names for form elements
 
@@ -22,18 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
         .addEventListener("submit", (event) => {
             event.preventDefault();
             if (!validateForm()) return;
-            confirmationDialog.showModal();
-        });
-
-    document
-        .querySelector("#confirm-dialog .confirm-button")
-        .addEventListener("click", () => {
-            document.querySelector("#journalForm").submit();
-        });
-    document
-        .querySelector("#confirm-dialog .cancel-button")
-        .addEventListener("click", () => {
-            confirmationDialog.close();
+            if (confirm("Submit journal?")) {
+                event.target.submit();
+            }
         });
 });
 
