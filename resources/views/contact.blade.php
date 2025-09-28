@@ -36,7 +36,7 @@
                 <li><a href="/privacy">LBJ Services</a></li>
                 <li><a href="/contact" style="color: #279CE9;">Contact Us</a></li>
             </ul>
-            <a href="/login" class="btn-signin desktop-signin">Sign In</a>
+            <a href="/login" class="btn-signin desktop-signin">{{ Auth::check() ? 'Dashboard' : 'Sign In' }}</a>
 
         </div>
     </nav>
@@ -54,7 +54,7 @@
             <li><a href="/privacy">LBJ Services</a></li>
             <li><a href="/contact" style="color: #279CE9;">Contact Us</a></li>
         </ul>
-        <a href="/login" class="btn-signin mobile-signin">Sign In</a>
+        <a href="/login" class="btn-signin mobile-signin">{{ Auth::check() ? 'Dashboard' : 'Sign In' }}</a>
 
     </div>
 
