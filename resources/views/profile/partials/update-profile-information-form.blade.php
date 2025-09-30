@@ -1,3 +1,4 @@
+@vite(['resources/css/profile/partials/update-profile-info.css'])
 <section class="profile-section">
     <div class="profile-section__wrapper">
         <div class="profile-section__header">

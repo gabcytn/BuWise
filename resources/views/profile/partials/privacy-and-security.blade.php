@@ -89,7 +89,8 @@
     </div>
 </section>
 
-<dialog class="password-dialog">
+{{-- change password dialog --}}
+<dialog class="password-dialog security-dialog">
     <h3>Update Password</h3>
     <form action="/user/password" method="POST" id="password-form">
         @csrf
@@ -119,7 +120,8 @@
     </div>
 </dialog>
 
-<dialog class="mfa-dialog">
+{{-- disable 2FA dialog --}}
+<dialog class="mfa-dialog security-dialog">
     <h3>Confirm Disabling of Two Factor Authentication</h3>
     <form action="/user/two-factor-authentication" method="POST" id="mfa-form">
         @csrf
@@ -136,7 +138,8 @@
     </div>
 </dialog>
 
-<dialog class="delete-dialog">
+{{-- delete account dialog --}}
+<dialog class="delete-dialog security-dialog">
     <h3>Confirm Deletion of Account</h3>
     <form action="{{ route('user.delete') }}" method="POST" id="delete-form">
         @csrf
@@ -153,7 +156,8 @@
     </div>
 </dialog>
 
-<dialog class="default-password-dialog">
+{{-- change default password dialog --}}
+<dialog class="default-password-dialog security-dialog">
     <h3>Update Default Password</h3>
     <form action="{{ route('default-password.update') }}" method="POST" id="default-password-form">
         @csrf
@@ -162,7 +166,7 @@
         <div>
             <label for="new-default">New Password</label>
             <input id="new-default" name="password" type="password" required />
-            <p style="font-size: 0.75rem;">Password must be at least 8 characters long</p>
+            <p style="font-size: 0.675rem;">Password must be at least 8 characters long</p>
         </div>
     </form>
     <hr />
