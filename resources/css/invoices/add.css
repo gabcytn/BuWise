@@ -16,16 +16,16 @@
 }
 
 .page-title {
-    font-size: 1.65rem;
+    font-size: 1rem;
     font-weight: 500;
 }
 
 .page-header select {
-    /* width: 250px; */
-    padding: 0.65rem 1rem;
+    padding: 0.65rem;
     border-radius: 6px;
     border: 1px solid #ccc;
     background-color: #fff;
+    font-size: 12px;
 }
 
 
@@ -61,13 +61,14 @@
 
 .form-row label {
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.775rem;
+    margin-bottom: 0.25rem;
 }
 
 .form-row input,
 .form-row select {
     padding: 10px;
-    font-size: 14px;
+    font-size: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
     background-color: var(--clear-white);
@@ -81,24 +82,44 @@
 .invoice-items-table {
     border-radius: 0.65rem;
     width: 100%;
+    min-width: 800px;
     border-collapse: collapse;
-    /* font-size: 14px; */
-}
-
-.invoice-items-table thead {
-    background-color: var(--main-blue);
-    color: white;
-}
-
-.invoice-items-table th {
-    font-size: 0.9rem;
-    padding: 0.5rem 0;
-}
-
-.invoice-items-table td {
     border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 0.5rem 0;
-    text-align: center;
+
+    th,
+    td {
+        text-align: left;
+        padding: 0.5rem 0 0.5rem 1rem;
+    }
+
+    thead {
+        background-color: var(--main-blue);
+        color: white;
+
+        th {
+            font-size: 0.85rem;
+            padding: 1rem 0rem 1rem 1rem;
+        }
+    }
+
+    th:last-child,
+    td:last-child {
+        padding-right: 1rem;
+    }
+
+    input,
+    select {
+        padding: 0.5rem;
+        width: 100%;
+        font-size: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #table-body td:nth-child(6),
+    #total-sum {
+        font-size: 0.85rem;
+    }
 }
 
 .invoice-items-table tbody td:last-child {
@@ -115,27 +136,27 @@
     }
 }
 
+.invoice-items-table th:nth-child(3),
+.invoice-items-table td:nth-child(3),
+.invoice-items-table th:nth-child(4),
+.invoice-items-table td:nth-child(4),
+.invoice-items-table th:nth-child(5),
+.invoice-items-table td:nth-child(5),
+.invoice-items-table th:nth-child(6),
+.invoice-items-table td:nth-child(6) {
+    text-align: right;
+
+    input {
+        text-align: right;
+    }
+}
+
 .invoice-items-table tfoot td {
-    font-weight: bold;
+    font-weight: 600;
     background-color: #f1f1f1;
 }
 
-.invoice-items-table tfoot td:last-child,
-.invoice-items-table td:nth-child(6) {
-    font-size: 0.85rem;
-}
-
-.invoice-items-table input,
-.invoice-items-table select {
-    padding: 6px;
-    width: 10rem;
-    font-size: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 .actions {
-    /* padding: 1.75rem; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -280,5 +301,11 @@
         font-size: 0.75rem;
         border: 1px solid #ccc;
         border-radius: 4px;
+    }
+}
+
+@media(min-width: 600px) {
+    .page-title {
+        font-size: 1.25rem;
     }
 }

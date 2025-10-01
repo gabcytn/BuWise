@@ -81,7 +81,8 @@
                         <th>Unit Price</th>
                         <th>Less: Discount</th>
                         <th>Tax (per qty)</th>
-                        <th>Total Amount</th>
+                        <th>Total</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -89,8 +90,13 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5"><strong>Total</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td id="total-sum">0.00</td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>

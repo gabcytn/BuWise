@@ -83,10 +83,10 @@
                 <x-table-management :headers=$headers>
                     @foreach ($entries as $key => $entry)
                         <tr class="journal-row" style="cursor: pointer;" data-url={{ "journal-entries/$entry->id" }}>
-                            <td>{{ $entry->reference_no }}</td>
-                            <td>{{ $entry->client_name }}</td>
+                            <td title="{{ $entry->reference_no }}">{{ $entry->reference_no }}</td>
+                            <td title="{{ $entry->client_name }}">{{ $entry->client_name }}</td>
                             <td>{{ ucfirst($entry->transaction_type) }}</td>
-                            <td>{{ truncate($entry->description) }}</td>
+                            <td title="{{ $entry->description }}">{{ truncate($entry->description) }}</td>
                             <td>&#8369;{{ number_format($entry->amount, 2) }}</td>
                             <td>{{ formatDate($entry->date) }}</td>
                             <td>{{ $entry->creator }}</td>
