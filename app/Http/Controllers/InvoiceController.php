@@ -50,8 +50,9 @@ class InvoiceController extends Controller
             $invoices = $invoices->where('client_id', '=', $filters['client']);
         if ($filters['search'])
             $invoices = $invoices->where('reference_no', '=', $filters['search']);
-        if ($filters['period'] === 'this_year')
-            $invoices = $invoices->whereBetween('date', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()]);
+
+        $startAndEnd = getStartAndEndDate($filters['period']);
+        $invoices = $invoices->whereBetween('date', [$startAndEnd[0], $startAndEnd[1]]);
 
         $invoices = $invoices
             ->where('type', '=', 'invoice')
