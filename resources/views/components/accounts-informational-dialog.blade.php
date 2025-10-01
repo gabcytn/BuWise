@@ -42,6 +42,12 @@
         <p>Costs of running the business, like rent, salaries, utilities, and supplies. Expenses reduce profit and are
             compared with revenues to measure performance.</h3>
     </section>
+
+    <section class="accounting-equation">
+        <h3>Assets = Liabilities + Owner's Equity</h3>
+        <p>The fundamental accounting equation that must always balance. Revenue increases equity, while expenses
+            decrease equity.</p>
+    </section>
 </dialog>
 
 <script>

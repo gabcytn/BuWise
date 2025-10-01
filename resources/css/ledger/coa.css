@@ -1,24 +1,25 @@
  /* Page header */
  .coa-page-header {
      max-width: 1200px;
+     width: 95%;
      margin: 2rem auto 1.5rem auto;
      padding: 0 1rem;
      display: flex;
+     gap: 0.75rem;
      justify-content: space-between;
      align-items: center;
      flex-wrap: wrap;
  }
 
  .coa-page-header h2 {
-     font-size: 2rem;
+     font-size: 1.5rem;
      font-weight: 700;
-     color: #1f2d3d;
-     margin-bottom: 0.25rem;
+     color: var(--soft-black);
  }
 
  .coa-page-header p {
-     font-size: 0.85rem;
-     color: #66788a;
+     font-size: 0.775rem;
+     color: var(--grey);
  }
 
  .coa-page-header .add-account-btn {
@@ -27,7 +28,7 @@
      padding: 0.5rem 1.2rem;
      border: none;
      border-radius: 6px;
-     font-size: 0.9rem;
+     font-size: 0.8rem;
      cursor: pointer;
  }
 
@@ -35,11 +36,11 @@
  .coa-box {
      background: #fff;
      max-width: 1200px;
+     width: 95%;
      margin: 0 auto 2rem auto;
      padding: 2rem;
      border-radius: 8px;
      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-     font-family: 'Segoe UI', sans-serif;
  }
 
  /* Controls */
@@ -56,21 +57,6 @@
      display: flex;
      align-items: center;
      gap: 0.75rem;
- }
-
- .filter-btn {
-     background: #f0f4f8;
-     border: 1px solid #cbd5e0;
-     padding: 0.4rem 1rem;
-     border-radius: 6px;
-     font-size: 0.9rem;
-     cursor: pointer;
-     display: flex;
-     align-items: center;
-     gap: 6px;
-     position: relative;
-     padding-right: 2rem;
-     /* Add space for right-side icon */
  }
 
  .menu-down-icon {
@@ -124,8 +110,10 @@
      padding-right: 40px;
      border: 1px solid #cbd5e0;
      border-radius: 6px;
-     font-size: 0.9rem;
+     font-size: 0.75rem;
      appearance: none;
+
+     width: 100%;
  }
 
  /* Icons */
@@ -157,7 +145,6 @@
  /* Search */
  .search-wrapper {
      position: relative;
-     width: 220px;
  }
 
  .search-wrapper .search-icon {
@@ -175,7 +162,7 @@
      border-radius: 6px;
      border: 1px solid #cbd5e0;
      width: 100%;
-     font-size: 0.95rem;
+     font-size: 0.75rem;
  }
 
  /* Table */
@@ -225,6 +212,11 @@
      }
  }
 
+ .table-management {
+     min-width: 500px !important;
+ }
+
+
  /* dialog */
  #add-new-account {
      padding: 0;
@@ -233,7 +225,7 @@
          padding: 1rem 2rem;
          background-color: var(--main-blue);
          color: var(--off-white);
-         font-size: 1.5rem;
+         font-size: 1.125rem;
      }
 
      form {
@@ -258,8 +250,14 @@
                  padding: 0.375rem;
                  width: 15rem;
                  color: var(--soft-black);
+                 font-size: 0.75rem;
              }
          }
+     }
+
+     label {
+         font-size: 0.8rem;
+         margin-bottom: 0.25rem;
      }
 
      .dialog-description {
@@ -270,20 +268,18 @@
          textarea {
              resize: vertical;
              padding: 0.375rem;
-             font-size: .85rem;
+             font-size: 0.75rem;
          }
-     }
-
-     hr {
-         color: rgba(0, 0, 0, 0.3);
      }
 
      .dialog-button-container {
          display: flex;
          gap: 0.5rem;
+         padding: 0 2rem 1.5rem 2rem;
 
          button {
              width: 7.5rem;
+             font-size: 0.75rem;
          }
 
          button:hover {

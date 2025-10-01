@@ -10,7 +10,7 @@
             <p>Manage your organization’s Chart of Accounts</p>
         </div>
         <div class="right" style="display: flex; align-items: center; gap: 0.5rem;">
-            <button class="add-account-btn">+ Add Account</button>
+            <button class="add-account-btn">Add Account</button>
             <button class="more-btn" aria-label="More options">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#1f2d3d">
                     <circle cx="12" cy="5" r="2" />
@@ -57,7 +57,7 @@
             @foreach ($accounts as $account)
                 <tr class="ledger-account" data-account-code="{{ $account->id }}">
                     <td>{{ $account->code }}</td>
-                    <td>{{ $account->name }}</td>
+                    <td title="{{ $account->name }}">{{ $account->name }}</td>
                     <td>{{ ucfirst($account->accountGroup->name) }}</td>
                     <td class="action-column">
                         @if ($account->accountant_id)
@@ -108,8 +108,7 @@
                     <textarea rows="5" id="account-description" name="account_description"></textarea>
                 </div>
             </div>
-            <hr />
-            <div class="dialog-padding dialog-button-container">
+            <div class="dialog-button-container">
                 <button type="submit">Save</button>
                 <button type="button" id="close-account-dialog-btn">Cancel</button>
             </div>

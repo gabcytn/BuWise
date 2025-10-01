@@ -9,6 +9,11 @@
     &:last-child {
         margin-bottom: 2.5rem;
     }
+
+    p {
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
 }
 
 .accinfo-section+.accinfo-section {
@@ -27,10 +32,63 @@
 
     h1 {
         color: var(--main-blue);
+        font-size: 1.5rem;
     }
 }
 
-p {
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
+.accounting-equation {
+    background-color: var(--main-blue);
+    padding: 1rem 0.25rem;
+    margin: 1.25rem 2.5rem 1.25rem 2.5rem;
+    border-radius: 6px;
+
+    h3,
+    p {
+        text-align: center;
+        color: var(--off-white);
+    }
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    p {
+        font-size: 0.85rem;
+        font-style: italic;
+        margin-top: 0.5rem;
+    }
+}
+
+@media(max-width: 600px) {
+    .accinfo-section {
+        margin-left: 1rem;
+        margin-right: 1rem;
+
+        &:first-child {
+            margin-top: 1rem;
+        }
+
+        &:last-child {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1rem !important;
+        }
+    }
+
+    .accounting-equation {
+        margin: 1rem;
+    }
+
+    .accinfo-header h1 {
+        font-size: 1.25rem !important;
+    }
+
 }
