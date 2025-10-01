@@ -64,7 +64,7 @@
                             <form action="{{ route('ledger.delete-account', $account) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submi"><i class="fa-solid fa-trash"></i></button>
+                                <button type="submit"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         @else
                             <button type="button"><i class="fa-solid fa-lock"></i></button>
