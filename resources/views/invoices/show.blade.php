@@ -13,7 +13,7 @@
         }
 
         $total *= $qty;
-        return number_format($total, 2);
+        return $total;
     }
 @endphp
 <x-app-layout title="Invoices">
@@ -64,29 +64,18 @@
                     @endif
                 </div>
             </div>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            @foreach ($headers as $header)
-                                <th>{{ $header }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($invoice->invoice_lines as $item)
-                            <tr>
-                                <td>{{ $item->item_name }}</td>
-                                <td>{{ $item->quantity }}</td>
-                                <td>{{ $item->unit_price }}</td>
-                                <td>{{ $item->discount ? $item->discount : '0' }}</td>
-                                <td>{{ $item->tax ? $item->tax : '0' }}</td>
-                                <td>{{ calculateTotal($item) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            <x-table-management :headers="$headers">
+                @foreach ($invoice->invoice_lines as $item)
+                    <tr>
+                        <td>{{ $item->item_name }}</td>
+                        <td>{{ $item->quantity }}</td>
+                        <td>{{ number_format($item->unit_price, 2) }}</td>
+                        <td>{{ number_format($item->discount ? $item->discount : '0', 2) }}</td>
+                        <td>{{ number_format($item->tax ? $item->tax : '0', 2) }}</td>
+                        <td>{{ number_format(calculateTotal($item), 2) }}</td>
+                    </tr>
+                @endforeach
+            </x-table-management>
         </div>
         <hr />
         <div class="p-3 button-container">
