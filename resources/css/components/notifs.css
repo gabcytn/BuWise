@@ -1,8 +1,8 @@
 .notifications-panel {
     position: absolute;
     top: 70px;
-    right: 20px;
-    width: 400px;
+    right: 5px;
+    width: 300px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -10,9 +10,10 @@
     overflow: hidden;
     font-family: 'Segoe UI', sans-serif;
 }
+
 .notifications-header span {
     color: #1B80C3;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
 }
 
@@ -97,7 +98,7 @@
 .notification-item {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     padding: 1rem;
     border-bottom: 1px solid #f0f0f0;
     position: relative;
@@ -108,7 +109,7 @@
 }
 
 .notification-icon {
-    font-size: 1.25rem;
+    font-size: 0.85rem;
     color: var(--main-blue, #1B80C3);
     margin-right: 0.75rem;
 }
@@ -120,10 +121,11 @@
 .notification-title {
     font-weight: 600;
     margin-bottom: 0.25rem;
+    font-size: 0.8rem;
 }
 
 .notification-time {
-    font-size: 0.85rem;
+    font-size: 0.65rem;
     color: #1B80C3;
 }
 
@@ -136,4 +138,10 @@
 
 .notification-close:hover {
     color: #d33;
+}
+
+@media(min-width: 600px) {
+    .notifications-panel {
+        right: 1rem;
+    }
 }
