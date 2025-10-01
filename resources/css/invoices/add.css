@@ -304,6 +304,21 @@
     }
 }
 
+@media(max-width: 400px) {
+    .actions {
+        gap: 5px;
+
+        button {
+            font-size: 0.625rem;
+        }
+    }
+
+    .submit-buttons {
+        gap: 5px;
+    }
+
+}
+
 @media(min-width: 600px) {
     .page-title {
         font-size: 1.25rem;

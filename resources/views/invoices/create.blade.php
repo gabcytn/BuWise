@@ -103,9 +103,9 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="btn add-row">+ Add New Row</button>
+            <button type="button" class="btn add-row">Add Row</button>
             <div class="submit-buttons">
-                <button type="submit" class="btn btn-primary">Proceed to Journal</button>
+                <button type="submit" class="btn btn-primary">Proceed</button>
                 <button type="button" class="btn btn-secondary">Cancel</button>
             </div>
         </div>
