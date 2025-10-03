@@ -68,7 +68,8 @@
                         </div>
                         <div class="criteria-item" id="combo-check">
                             <i class="fas fa-times icon-x"></i>
-                            <span>Use at least 1 uppercase letter, 1 number, and 1 special character (e.g., @, #, !)</span>
+                            <span>Use at least 1 uppercase letter, 1 number, and 1 special character (e.g., @, #,
+                                !)</span>
                         </div>
                     </div>
                 </div>
@@ -88,6 +89,9 @@
 
 
                 <button type="submit" class="btn-primary">Create Account</button>
+                <div class="separator">or</div>
+                <a class="btn-primary" href="{{ route('google.auth.redirect') }}"><i
+                        class="fa-brands fa-google"></i>&#8194;Continue with Google</a>
 
                 @if ($errors->any())
                     <p class="error-msg">{{ $errors->first() }}</p>

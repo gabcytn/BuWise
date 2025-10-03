@@ -62,6 +62,9 @@
                 </div>
 
                 <button type="submit" class="btn-primary">Log In</button>
+                <div class="separator">or</div>
+                <a class="btn-primary" href="{{ route('google.auth.redirect') }}"><i
+                        class="fa-brands fa-google"></i>&#8194;Continue with Google</a>
 
                 @if ($errors->any())
                     <p class="error-msg">{{ $errors->first() }}</p>

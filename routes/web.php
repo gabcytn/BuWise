@@ -191,3 +191,5 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
 
     return to_route('dashboard');
 })->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
+
+require __DIR__ . '/oauth.php';

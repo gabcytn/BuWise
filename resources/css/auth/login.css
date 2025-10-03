@@ -1,14 +1,15 @@
 /* Simplified and matched to UI in image */
-body, html {
+body,
+html {
     height: 100%;
     margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     background: #fff;
 }
 
 .navbar {
     background-color: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     padding: 20px 0;
     top: 0;
     width: 100%;
@@ -32,14 +33,16 @@ body, html {
 
 .logo {
     height: 70px;
-    transform: translateX(-138px); /* move it left */
+    transform: translateX(-138px);
+    /* move it left */
 }
 
 .nav-text {
     font-size: 0.9rem;
     color: #333;
     margin-right: 10px;
-    transform: translateX(173px); /* move it right */
+    transform: translateX(173px);
+    /* move it right */
 }
 
 .nav-text span {
@@ -58,7 +61,8 @@ body, html {
 
 .register-page {
     display: flex;
-    flex-direction: row-reverse; /* 🔁 Switch left and right */
+    flex-direction: row-reverse;
+    /* 🔁 Switch left and right */
     height: 100vh;
     align-items: center;
     justify-content: center;
@@ -100,7 +104,7 @@ body, html {
 }
 
 .title {
-    font-size: 39px;
+    font-size: 2rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -112,13 +116,13 @@ body, html {
 }
 
 .subtitle {
-    font-size: 15px;
+    font-size: 13px;
     color: #6c757d;
     margin-bottom: 0;
     text-align: center !important;
 }
 
-.subtitle + .subtitle {
+.subtitle+.subtitle {
     margin-top: 0;
     margin-bottom: 2rem;
 }
@@ -159,7 +163,7 @@ body, html {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 1rem;
+    font-size: 0.85rem;
     background: transparent;
     color: #212529;
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -209,21 +213,39 @@ body, html {
 }
 
 /* Submit Button */
-button.btn-primary {
+.btn-primary {
     width: 100%;
     padding: 0.9rem;
     background-color: #1879ca;
     color: #fff;
     border: none;
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
+.separator {
+    text-align: center;
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+}
+
+a.btn-primary {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #EEE;
+    color: #555;
+}
+
 button.btn-primary:hover {
     background-color: #125a8d;
+}
+
+a.btn-primary:hover {
+    opacity: 0.85;
 }
 
 /* Error Message */
@@ -233,12 +255,14 @@ button.btn-primary:hover {
     margin-top: 0.25rem;
     text-align: center;
 }
+
 /* -----------------------------------
    Responsive Media Queries
 ----------------------------------- */
 @media (max-width: 1024px) {
     .register-page {
-        flex-direction: column; /* ⬅️ Hero image now appears above form */
+        flex-direction: column;
+        /* ⬅️ Hero image now appears above form */
         height: auto;
         padding-top: 100px;
     }
@@ -326,7 +350,7 @@ button.btn-primary:hover {
         font-size: 0.9rem;
     }
 
-    button.btn-primary {
+    .btn-primary {
         font-size: 0.95rem;
     }
 }

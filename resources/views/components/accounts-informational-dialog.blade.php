@@ -22,7 +22,7 @@
             land or machinery).</h3>
     </section>
     <section class="accinfo-section">
-        <h3>Liabilitiess</h3>
+        <h3>Liabilities</h3>
         <p>Obligations the business owes to others, including loans, accounts payable, salaries payable, and taxes due.
             Liabilities may be current (due within a year) or long-term (due after a year).</h3>
     </section>
