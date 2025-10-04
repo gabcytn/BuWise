@@ -10,24 +10,13 @@
                     <td id="td-item-img"><img class="item-img"
                             src="{{ asset('storage/profiles/' . $client->profile_img) }}" alt="Company Logo" />
                     </td>
-                    <td>
-                        <p>{{ $client->name }}</p>
-                    </td>
-                    <td>
-                        <p>{{ $client->client_type }}</p>
-                    </td>
-                    <td>
-                        <p>{{ $client->tin }}</p>
-                    </td>
-                    <td>
-                        <p>{{ $client->email }}</p>
-                    </td>
-                    <td>
-                        <p>{{ $client->phone_number }}</p>
-                    </td>
+                    <td title="{{ $client->name }}">{{ $client->name }}</td>
+                    <td title="{{ $client->client_type }}">{{ $client->client_type }}</td>
+                    <td>{{ $client->tin }}</td>
+                    <td title="{{ $client->email }}">{{ $client->email }}</td>
+                    <td>{{ $client->phone_number }}</td>
                     <td class="{{ $client->suspended ? 'suspended' : 'active' }}">
-                        <p>{{ $client->suspended ? 'Suspended' : 'Active' }}</p>
-                    </td>
+                        {{ $client->suspended ? 'Suspended' : 'Active' }}</td>
                     <td class="action-column">
                         <div>
                             <a title="Edit" href="{{ route('clients.edit', $client) }}">
@@ -40,7 +29,10 @@
                                     <i class="fa-solid fa-ban" style="color: #ff0000; cursor: pointer"></i>
                                 </button>
                             </form>
-                            <form id="delete-form" action="{{ route('clients.destroy', $client) }}">
+                            <form id="delete-form" action="{{ route('clients.destroy', $client) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete {{ $client->name }}')">
+                                @csrf
+                                @method('DELETE')
                                 <button title="Delete" type="submit"
                                     style="background-color: transparent; border: none; outline: none;">
                                     <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
@@ -61,18 +53,6 @@
         <h2 style="text-align: center;">No clients</h2>
     @endif
 </x-user-management>
-
-<dialog class="delete-item-dialog">
-    <h3>Confirm Delete</h3>
-    <form action="#" method="POST">
-        @csrf
-        @method('DELETE')
-        <h4>Are you sure you want to delete this item?</h4>
-        <p>This action is irreversible</p>
-        <button style="margin-right: 0.25rem;" type="submit">Delete</button>
-        <button style="margin-left: 0.25rem;" type="button">Cancel</button>
-    </form>
-</dialog>
 
 <x-dialog id="add-company-dialog" title="Add Company" formId="add-company-form" route="clients.store">
     <div class="form-img">

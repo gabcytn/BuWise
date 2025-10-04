@@ -18,7 +18,7 @@
                     <td>{{ $firstName }}</td>
                     <td>{{ $lastName }}</td>
                     <td>{{ $staff->role->name }}</td>
-                    <td>{{ $staff->email }}</td>
+                    <td title="{{ $staff->email }}">{{ $staff->email }}</td>
                     <td class="{{ $staff->suspended ? 'suspended' : 'active' }}">
                         <p>{{ $staff->suspended ? 'Suspended' : 'Active' }}</p>
                     </td>
@@ -34,7 +34,10 @@
                                     <i class="fa-solid fa-ban" style="color: #ff0000; cursor: pointer"></i>
                                 </button>
                             </form>
-                            <form id="delete-form" action="{{ route('staff.destroy', $staff) }}">
+                            <form id="delete-form" action="{{ route('staff.destroy', $staff) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete staff {{ $firstName }}')">
+                                @csrf
+                                @method('DELETE')
                                 <button title="Delete" type="submit"
                                     style="background-color: transparent; border: none; outline: none;">
                                     <i class="fa-regular fa-trash-can" style="color: #ff0000; cursor: pointer"></i>
