@@ -6,7 +6,7 @@
     $roleId = $user->role_id;
     $routeName = request()->route()->getName();
 
-    $organization = Cache::rememberForever($user->id . '-organization', function () use ($user) {
+    $organization = Cache::remember($user->id . '-organization', 60 * 5, function () use ($user) {
         return $user->organization;
     });
 @endphp
