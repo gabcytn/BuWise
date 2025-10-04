@@ -69,7 +69,6 @@
             <hr />
             <div class="bottom-section">
                 <button type="submit" form="organization-form">Let's Get Started!</button>
-                <a href="#">Privacy Policy</a>
             </div>
         </div>
     </section>

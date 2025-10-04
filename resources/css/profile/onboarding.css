@@ -47,13 +47,18 @@ form .greetings h1 {
 }
 
 form .greetings p {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
 }
 
 form .input-box {
     margin-top: 1rem;
     margin-bottom: 1.5rem;
     display: grid;
+
+    label {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
 }
 
 form .input-box span {
@@ -61,7 +66,7 @@ form .input-box span {
 }
 
 form .input-box input {
-    padding: 0.375rem;
+    padding: 0.75rem;
     font-size: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 0.375rem;
@@ -77,7 +82,7 @@ form .input-box input:focus {
 }
 
 form .input-box p {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     color: var(--grey);
     margin: 1em 0 0 0.25rem;
 }
@@ -91,9 +96,6 @@ hr {
 }
 
 .bottom-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 1.5rem 3rem;
 }
 
