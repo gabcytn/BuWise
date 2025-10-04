@@ -70,3 +70,15 @@
 .table-wrapper {
     margin-top: 0 !important;
 }
+
+.table-management td:nth-child(5),
+.table-management th:nth-child(5),
+.table-management td:nth-child(6),
+.table-management th:nth-child(6) {
+    text-align: right;
+}
+
+.table-management td:nth-child(6),
+.table-management th:nth-child(6) {
+    padding-right: 1.5rem;
+}

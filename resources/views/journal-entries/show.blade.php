@@ -11,11 +11,11 @@
             @foreach ($ledgerEntries as $entry)
                 <tr class="journal-row">
                     <td>{{ $entry->account_code }}</td>
-                    <td>{{ $entry->account_name }}</td>
+                    <td title="{{ $entry->account_name }}">{{ $entry->account_name }}</td>
                     <td>{{ ucfirst($entry->account_group_name) }}</td>
                     <td title="{{ $entry->description }}">{{ truncate($entry->description) }}</td>
-                    <td>{{ $entry->debit }}</td>
-                    <td>{{ $entry->credit }}</td>
+                    <td>{{ $entry->debit ? number_format($entry->debit, 2) : '' }}</td>
+                    <td>{{ $entry->credit ? number_format($entry->credit, 2) : '' }}</td>
                 </tr>
             @endforeach
         </x-table-management>

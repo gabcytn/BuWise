@@ -118,7 +118,7 @@
                 </div>
 
                 <div class="button-container">
-                    <button type="submit" class="submit-btn" id="submitButton">Update</button>
+                    <button type="submit" class="btn submit-btn" id="submitButton">Update</button>
                     <p id="balanceWarning" style="color: red; display: none;">
                         Debits and credits must be equal before submitting.
                     </p>
