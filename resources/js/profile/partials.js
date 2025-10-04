@@ -1,71 +1,65 @@
+// ---------- UPDATE PASSWORD ----------
 const updatePasswordBtn = document.querySelector("button#update-password");
-const disableMfaBtn = document.querySelector("button#disable-two-factor");
-const deleteAccBtn = document.querySelector("button#delete-account");
-const updateDefaultBtn = document.querySelector("button#change-default-btn");
-
 const updatePassDialog = document.querySelector("dialog.password-dialog");
-const disableMfaDialog = document.querySelector("dialog.mfa-dialog");
-const deleteAccDialog = document.querySelector("dialog.delete-dialog");
-const defaultPasswordDialog = document.querySelector(
-    "dialog.default-password-dialog",
-);
-
 const closeUpdatePass = updatePassDialog.querySelector("input[type='reset']");
-const closeMfaDialog = disableMfaDialog.querySelector("input[type='reset']");
-const closeDeleteDialog = deleteAccDialog.querySelector("input[type='reset']");
-const closeDefaultPasswordDialog = defaultPasswordDialog.querySelector(
-    "input[type='reset']",
-);
-
-updatePasswordBtn.addEventListener("click", () => {
-    updatePassDialog.showModal();
-});
 
 closeUpdatePass.addEventListener("click", () => {
     updatePassDialog.close();
 });
-
-const mfaButton = disableMfaDialog.querySelector("button[type='submit']");
-const disableInput = document.querySelector("#disable");
-disableMfaBtn.addEventListener("click", () => {
-    listener(disableInput, mfaButton, "disable");
-    disableMfaDialog.showModal();
+updatePasswordBtn.addEventListener("click", () => {
+    updatePassDialog.showModal();
 });
 
-closeMfaDialog.addEventListener("click", () => {
-    disableMfaDialog.close();
-});
+// ---------- DISABLE TWO-FACTOR AUTH  ----------
+const disableMfaBtn = document.querySelector("button#disable-two-factor");
+if (disableMfaBtn) {
+    const disableMfaDialog = document.querySelector("dialog.mfa-dialog");
+    const closeMfaDialog = disableMfaDialog.querySelector(
+        "input[type='reset']",
+    );
+    const mfaButton = disableMfaDialog.querySelector("button[type='submit']");
+    const disableInput = document.querySelector("#disable");
 
+    disableMfaBtn.addEventListener("click", () => {
+        disableMfaDialog.showModal();
+    });
+    closeMfaDialog.addEventListener("click", () => {
+        mfaButton.classList.add("disabled");
+        mfaButton.disabled = true;
+        disableMfaDialog.close();
+    });
+    disableInput.addEventListener("input", () => {
+        listener(disableInput, mfaButton, "disable");
+    });
+}
+
+// ---------- DELETE ACCOUNT ----------
+const deleteAccBtn = document.querySelector("button#delete-account");
+const deleteAccDialog = document.querySelector("dialog.delete-dialog");
+const closeDeleteDialog = deleteAccDialog.querySelector("input[type='reset']");
 const deleteButton = deleteAccDialog.querySelector("button[type='submit']");
 const deleteInput = document.querySelector("#delete");
+
 deleteAccBtn.addEventListener("click", () => {
-    listener(deleteInput, deleteButton, "delete");
     deleteAccDialog.showModal();
 });
-
 closeDeleteDialog.addEventListener("click", () => {
+    deleteButton.classList.add("disabled");
+    deleteButton.disabled = true;
     deleteAccDialog.close();
 });
-
-disableInput.addEventListener("input", () => {
-    listener(disableInput, mfaButton, "disable");
-});
-
 deleteInput.addEventListener("input", () => {
     listener(deleteInput, deleteButton, "delete");
 });
 
-function listener(input, button, valueToType) {
-    const v = input.value;
-    if (v === valueToType) {
-        button.classList.remove("disabled");
-        button.disabled = false;
-    } else {
-        button.classList.add("disabled");
-        button.disabled = true;
-    }
-}
-
+// ---------- UPDATE DEFAULT NEW USERS PASSWORD ----------
+const updateDefaultBtn = document.querySelector("button#change-default-btn");
+const defaultPasswordDialog = document.querySelector(
+    "dialog.default-password-dialog",
+);
+const closeDefaultPasswordDialog = defaultPasswordDialog.querySelector(
+    "input[type='reset']",
+);
 document.querySelector("#new-default").addEventListener("input", (e) => {
     const val = e.target.value;
     const submitBtn = defaultPasswordDialog.querySelector(
@@ -80,13 +74,23 @@ document.querySelector("#new-default").addEventListener("input", (e) => {
 updateDefaultBtn.addEventListener("click", () => {
     defaultPasswordDialog.showModal();
 });
-
 closeDefaultPasswordDialog.addEventListener("click", () => {
     defaultPasswordDialog.close();
 });
 
-// notifications
+// ---------- HELPER FUNCTION ----------
+function listener(input, button, valueToType) {
+    const v = input.value;
+    if (v === valueToType) {
+        button.classList.remove("disabled");
+        button.disabled = false;
+    } else {
+        button.classList.add("disabled");
+        button.disabled = true;
+    }
+}
 
+// ---------- NOTIFICATIONS GRANTING ----------
 document.querySelector("#notif-btn").addEventListener("click", () => {
     if (!("Notification" in window)) {
         alert("Your browser does not support notifications.");
