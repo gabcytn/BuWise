@@ -1,6 +1,6 @@
 @vite(['resources/js/profile/partials.js', 'resources/css/profile/password-dialog.css'])
 
-<form action="/logout" method="POST" id="logout-form">
+<form action="/logout" method="POST" id="logout-form" onsubmit="return confirm('Are your sure you want to logout?')">
     @csrf
 </form>
 <section class="profile-section">
@@ -66,19 +66,17 @@
                 <button type="submit" form="logout-form" id="logout">Logout</button>
             </div>
         </div>
-        @if (!request()->user()->google_id)
-            <div class="privacy-row">
-                <div class="privacy-row__text">
-                    <h3>Disable Two-Factor Authentication</h3>
-                    <p>Warning: If you lose the mobile device used for 2FA, temporarily disabling 2FA will also block
-                        login
-                        access until you set up 2FA on a new phone.</p>
-                </div>
-                <div class="privacy-row__button">
-                    <button id="disable-two-factor">Disable Two-Factor</button>
-                </div>
+        <div class="privacy-row">
+            <div class="privacy-row__text">
+                <h3>Disable Two-Factor Authentication</h3>
+                <p>Warning: If you lose the mobile device used for 2FA, temporarily disabling 2FA will also block
+                    login
+                    access until you set up 2FA on a new phone.</p>
             </div>
-        @endif
+            <div class="privacy-row__button">
+                <button id="disable-two-factor">Disable Two-Factor</button>
+            </div>
+        </div>
         <div class="privacy-row">
             <div class="privacy-row__text">
                 <h3>Delete Account</h3>
@@ -123,25 +121,23 @@
     </div>
 </dialog>
 
-@if (!request()->user()->google_id)
-    {{-- disable 2FA dialog --}}
-    <dialog class="mfa-dialog security-dialog">
-        <h3>Confirm Disabling of Two Factor Authentication</h3>
-        <form action="/user/two-factor-authentication" method="POST" id="mfa-form">
-            @csrf
-            @method('DELETE')
-            <div>
-                <label for="disable">Type "disable" to disable 2FA</label>
-                <input type="text" id="disable" />
-            </div>
-        </form>
-        <hr />
-        <div class="dialog-buttons">
-            <button class="disabled" disabled type="submit" form="mfa-form">Disable Two-Factor</button>
-            <input type="reset" form="mfa-form" value="Discard Changes" />
+{{-- disable 2FA dialog --}}
+<dialog class="mfa-dialog security-dialog">
+    <h3>Confirm Disabling of Two Factor Authentication</h3>
+    <form action="/user/two-factor-authentication" method="POST" id="mfa-form">
+        @csrf
+        @method('DELETE')
+        <div>
+            <label for="disable">Type "disable" to disable 2FA</label>
+            <input type="text" id="disable" />
         </div>
-    </dialog>
-@endif
+    </form>
+    <hr />
+    <div class="dialog-buttons">
+        <button class="disabled" disabled type="submit" form="mfa-form">Disable Two-Factor</button>
+        <input type="reset" form="mfa-form" value="Discard Changes" />
+    </div>
+</dialog>
 
 {{-- delete account dialog --}}
 <dialog class="delete-dialog security-dialog">

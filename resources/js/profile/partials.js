@@ -12,26 +12,22 @@ updatePasswordBtn.addEventListener("click", () => {
 
 // ---------- DISABLE TWO-FACTOR AUTH  ----------
 const disableMfaBtn = document.querySelector("button#disable-two-factor");
-if (disableMfaBtn) {
-    const disableMfaDialog = document.querySelector("dialog.mfa-dialog");
-    const closeMfaDialog = disableMfaDialog.querySelector(
-        "input[type='reset']",
-    );
-    const mfaButton = disableMfaDialog.querySelector("button[type='submit']");
-    const disableInput = document.querySelector("#disable");
+const disableMfaDialog = document.querySelector("dialog.mfa-dialog");
+const closeMfaDialog = disableMfaDialog.querySelector("input[type='reset']");
+const mfaButton = disableMfaDialog.querySelector("button[type='submit']");
+const disableInput = document.querySelector("#disable");
 
-    disableMfaBtn.addEventListener("click", () => {
-        disableMfaDialog.showModal();
-    });
-    closeMfaDialog.addEventListener("click", () => {
-        mfaButton.classList.add("disabled");
-        mfaButton.disabled = true;
-        disableMfaDialog.close();
-    });
-    disableInput.addEventListener("input", () => {
-        listener(disableInput, mfaButton, "disable");
-    });
-}
+disableMfaBtn.addEventListener("click", () => {
+    disableMfaDialog.showModal();
+});
+closeMfaDialog.addEventListener("click", () => {
+    mfaButton.classList.add("disabled");
+    mfaButton.disabled = true;
+    disableMfaDialog.close();
+});
+disableInput.addEventListener("input", () => {
+    listener(disableInput, mfaButton, "disable");
+});
 
 // ---------- DELETE ACCOUNT ----------
 const deleteAccBtn = document.querySelector("button#delete-account");

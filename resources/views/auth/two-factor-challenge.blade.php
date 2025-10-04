@@ -25,16 +25,7 @@
         <div class="right-section">
             <div class="form-card">
                 <h2 class="title">Enter <span>One–Time Password (OTP)</span></h2>
-
-                @php
-                    $email = old('email') ?? (session('email') ?? (auth()->user()->email ?? null));
-                @endphp
-
-                @if ($email)
-                    <p class="subtitle">We’ve sent a verification code to <a href="#">{{ $email }}</a></p>
-                @else
-                    <p class="subtitle">Please open your authenticator application to view your verification code.</p>
-                @endif
+                <p class="subtitle">Please open your authenticator application to view your verification code.</p>
 
                 <!-- OTP Form -->
                 <form method="POST" action="/two-factor-challenge" id="two-factor-form">
@@ -74,6 +65,5 @@
 
             </div>
         </div>
-    </div>
     </div>
 </x-root-layout>

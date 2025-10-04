@@ -16,8 +16,12 @@ Route::get('/auth/callback', function () {
 
     $user = User::where('email', '=', $google_user->getEmail())->first();
     if ($user && $user->google_id) {
-        Auth::login($user, true);
-        return to_route('dashboard');
+        request()->session()->put([
+            'login.id' => $user->id,
+            'login.remember' => true,
+        ]);
+
+        return to_route('two-factor.login');
     } else if ($user && !$user->google_id) {
         return to_route('login')->withErrors(['This account was created via email & password. Please sign in using the same method.']);
     } else if (!$user) {

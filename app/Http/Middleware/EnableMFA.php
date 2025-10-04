@@ -16,9 +16,6 @@ class EnableMFA
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        if ($user->google_id) {
-            return $next($request);
-        }
         if (!$user->two_factor_confirmed_at) {
             return to_route('mfa.enable');
         }
