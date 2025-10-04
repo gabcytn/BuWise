@@ -61,6 +61,18 @@ class UserCreatedListener implements ShouldQueue
             if ($user_created->role_id === Role::LIAISON || $user_created->role_id === Role::CLERK)
                 $this->createConversation($user_created, $creator, $organization);
 
+            // create private conversation among staff
+            $subordinates = User::where('accountant_id', '=', $creator->id)->get();
+            foreach ($subordinates as $item) {
+                if ($item->id === $user_created->id)
+                    continue;
+                $c = Conversation::create([]);
+                ConversationMember::insert([
+                    ['user_id' => $item->id, 'conversation_id' => $c->id],
+                    ['user_id' => $user_created->id, 'conversation_id' => $c->id]
+                ]);
+            }
+
             // $user_created->sendEmailVerificationNotification();
         } catch (\Exception $e) {
             Log::warning('Error handling event listener: ' . $e->getMessage());

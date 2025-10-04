@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
+use App\Models\ConversationMember;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
 use Illuminate\Http\Request;
@@ -45,14 +47,20 @@ class OrganizationController extends Controller
         $user->onboarded = true;
         $user->save();
 
+        $c = Conversation::create([]);
         $org = Organization::create([
             'name' => $request->name,
             'address' => $request->address,
             'logo' => $filename,
+            'conversation_id' => $c->id,
         ]);
         OrganizationMember::create([
             'user_id' => $user->id,
             'organization_id' => $org->id,
+        ]);
+        ConversationMember::insert([
+            'user_id' => $user->id,
+            'conversation_id' => $c->id,
         ]);
 
         return to_route('dashboard');
