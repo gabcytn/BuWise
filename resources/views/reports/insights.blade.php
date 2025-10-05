@@ -20,7 +20,7 @@
             <div class="receivables-vs-payables">
                 <div class="receivables">
                     <div class="p-3">
-                        <div class="receivables-texts">
+                        <div class="pr-texts">
                             <h2>Total Receivables</h2>
                         </div>
                         <div class="chart-container">
@@ -29,14 +29,14 @@
                     </div>
                     <hr />
                     <div class="p-3">
-                        <div class="receivables-summary">
+                        <div class="receivables-summary pr-summary">
 
                         </div>
                     </div>
                 </div>
                 <div class="payables">
                     <div class="p-3">
-                        <div class="payables-texts">
+                        <div class="pr-texts">
                             <h2>Total Payables</h2>
                         </div>
                         <div class="chart-container">
@@ -45,21 +45,21 @@
                     </div>
                     <hr />
                     <div class="p-3">
-                        <div class="payables-summary">
+                        <div class="payables-summary pr-summary">
 
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="profit-and-loss">
-                <div class="pl-header">
+            <div class="barchart-card">
+                <div class="barchart-card__header">
                     <h2>Profit and Loss</h2>
                 </div>
-                <div class="pl-body">
+                <div class="barchart-card__body">
                     <div class="chart-container">
                         <canvas id="pl-canvas"></canvas>
                     </div>
-                    <div class="pl-texts">
+                    <div class="barchart-card__body--texts">
                         <div class="summary-card pl-revenue">
                             <h6 class="card-label">Total Revenue</h6>
                             <p class="card-value"></p>
@@ -75,15 +75,15 @@
                     </div>
                 </div>
             </div>
-            <div class="cash-flow">
-                <div class="cash-flow__header">
+            <div class="barchart-card">
+                <div class="barchart-card__header">
                     <h3>Cash Flow</h3>
                 </div>
-                <div class="cash-flow__body">
+                <div class="barchart-card__body">
                     <div class="chart-container">
                         <canvas id="cash-flow__body--canvas"></canvas>
                     </div>
-                    <div class="cash-flow__body--texts">
+                    <div class="barchart-card__body--texts">
                         <div class="inflows summary-card">
                             <h6 class="card-label">Inflows</h6>
                             <p class="card-value"></p>

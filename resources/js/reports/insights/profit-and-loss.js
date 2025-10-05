@@ -110,6 +110,7 @@ function start(revenues, expenses, net) {
                     beginAtZero: true,
                 },
             },
+            responsive: true,
         },
     };
     const receivablesCanvas = document.querySelector("#pl-canvas");

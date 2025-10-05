@@ -5,18 +5,14 @@
 }
 
 .insights-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
     p {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         margin-top: 0.25rem;
         color: var(--grey);
     }
 
     #page-title {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
     }
 
     select {
@@ -38,6 +34,7 @@
 }
 
 .insights-header__right {
+    margin-top: 1rem;
     display: flex;
     gap: 1rem;
 
@@ -64,7 +61,59 @@
     margin: 1rem 0;
 }
 
-.cash-flow {
+/* ---------- RECEIVABLES & PAYABLES ---------- */
+.receivables-vs-payables {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .receivables,
+    .payables {
+        background-color: var(--clear-white);
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+
+        .chart-container {
+            max-width: 20rem;
+            width: 90%;
+            margin: 1rem auto 0;
+        }
+    }
+
+    .p-3 {
+        padding: 1rem;
+    }
+
+    .pr-texts h2 {
+        font-size: 1.125rem;
+    }
+
+    .pr-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+
+        div {
+            flex-basis: 200px;
+        }
+
+        h3 {
+            font-size: 0.85rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+    }
+
+    hr {
+        color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+
+/* ---------- PROFIT & LOSS AND CASH FLOW ---------- */
+.barchart-card {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -73,40 +122,23 @@
     padding: 1rem;
     margin: 1rem 0;
     box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
-}
 
-.cash-flow__header {
-    display: flex;
-    justify-content: space-between;
-
-    h3 {
-        font-size: 1.25rem;
+    .barchart-card__header h2 {
+        font-size: 1.125rem;
     }
 
-    select {
-        background-color: var(--off-white);
-        border: none;
-        outline: none;
-        padding: 0.375rem 1rem;
-    }
-}
-
-.cash-flow__body {
-    display: flex;
-
-    .chart-container {
-        flex: 2;
-        position: relative;
-        height: 400px;
-    }
-
-    .cash-flow__body--texts {
-        flex: 1;
+    .barchart-card__body {
         display: flex;
-        justify-content: flex-end;
         flex-direction: column;
-        gap: 1rem;
+
+        .barchart-card__body--texts {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
     }
+
 }
 
 .summary-card {
@@ -126,6 +158,22 @@
     }
 }
 
+.pl-revenue {
+    background: var(--light-green);
+}
+
+.pl-expenses {
+    background: var(--light-blue);
+}
+
+.pl-profit {
+    background: var(--orange);
+}
+
+.card-value {
+    color: var(--soft-black);
+}
+
 .inflows {
     background-color: var(--peach);
 }
@@ -134,113 +182,48 @@
     background-color: var(--violet)
 }
 
-.receivables-vs-payables {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 1rem;
-
-    >* {
-        background-color: var(--clear-white);
-        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-
-        .chart-container {
-            max-width: 20rem;
-            width: 90%;
-            margin: 0 auto;
-        }
-    }
-
-    .p-3 {
-        padding: 1rem;
-    }
-
-    .receivables-texts h2,
-    .payables-texts h2 {
-        font-size: 1.25rem;
-    }
-
-    .receivables-summary,
-    .payables-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        row-gap: 0.75rem;
-
-        h3 {
-            font-size: 0.9rem;
-        }
-
-        p {
-            font-size: 0.85rem;
-        }
-    }
-
-    hr {
-        color: rgba(0, 0, 0, 0.3);
-    }
-}
-
-.profit-and-loss {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    background-color: var(--clear-white);
-    border-radius: 0.375rem;
-    padding: 1rem;
-    margin: 1rem 0;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
-
-    .pl-header {
+@media(min-width: 600px) {
+    .insights-header {
         display: flex;
         justify-content: space-between;
-
-        h2 {
-            font-size: 1.25rem;
-        }
-
+        align-items: center;
     }
 
-    .pl-body {
-        display: flex;
-
-        .chart-container {
-            flex: 2;
-            position: relative;
-            height: 400px;
-        }
-
-        .pl-texts {
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-            flex-direction: column;
-            gap: 1rem;
-        }
+    .insights-header__right {
+        margin: 0;
     }
-
-    .pl-revenue {
-        background: var(--light-green);
-    }
-
-    .pl-expenses {
-        background: var(--light-blue);
-    }
-
-    .pl-profit {
-        background: var(--orange);
-    }
-
-    .card-value {
-        color: var(--soft-black);
-    }
-
 }
 
-@media (max-width: 1236px) {
+@media(min-width: 800px) {
+    .receivables-vs-payables {
+        flex-direction: row;
 
-    .cash-flow__body,
-    .pl-body {
-        flex-direction: column;
-        gap: 1rem;
+        .receivables,
+        .payables {
+            width: 100%;
+        }
+
+        .pr-summary {
+            div {
+                flex-basis: 150px;
+            }
+        }
+    }
+
+    .barchart-card {
+        .barchart-card__body {
+            flex-direction: row;
+            gap: 1rem;
+
+            .chart-container {
+                width: 60%;
+            }
+
+            .barchart-card__body--texts {
+                width: 40%;
+                justify-self: flex-end;
+                align-self: flex-end;
+            }
+        }
     }
 }
