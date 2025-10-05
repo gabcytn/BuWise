@@ -76,6 +76,18 @@
     opacity: 0.9;
 }
 
+.table-management td:nth-child(3),
+.table-management th:nth-child(3),
+.table-management td:nth-child(4),
+.table-management th:nth-child(4) {
+    text-align: right;
+}
+
+.table-management td:nth-child(4),
+.table-management th:nth-child(4) {
+    padding-right: 1.75rem;
+}
+
 @media (max-width: 450px) {
     #report-form {
         flex-direction: column;
