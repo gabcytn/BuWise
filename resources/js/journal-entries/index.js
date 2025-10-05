@@ -1,5 +1,7 @@
 const tr = document.querySelectorAll(".journal-row");
-const deleteEntryButtons = document.querySelectorAll(".action-column button");
+const deleteEntryButtons = document.querySelectorAll(
+    ".action-column button[type='button']",
+);
 
 const confirmableDialog = document.querySelector(".confirmable-dialog");
 const confirmableDialogAffirmButton = document.querySelector(".affirm-button");
