@@ -4,7 +4,7 @@
         <div class="insights-header">
             <div class="insights-header__left">
                 <h2 id="page-title">Client Overview</h2>
-                <p>{{ \Carbon\Carbon::now()->format('Y M d') }} | {{ request()->user()->role->name }}</p>
+                <p>{{ \Carbon\Carbon::now()->format('Y') }} | {{ request()->user()->role->name }}</p>
             </div>
             <form class="insights-header__right">
                 <select name="client" required>
