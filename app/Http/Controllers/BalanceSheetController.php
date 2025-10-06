@@ -40,21 +40,6 @@ class BalanceSheetController extends Controller
             abort(404);
         $period = getStartAndEndDate($request->period);
         $request_period = $request->period;
-        // if ($request_period === 'this_year' || $request_period === 'this_quarter') {
-        //     // cache this year's || this quarter's balance sheet
-        //     $structured_data = Cache::remember(
-        //         $selected_client->id . "-balance-sheet-$request_period",
-        //         300,
-        //         function () use ($selected_client, $period, $request_period) {
-        //             Log::info("Calculating new balance sheet (web): $request_period");
-        //             $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
-        //             return $this->structureData($data);
-        //         }
-        //     );
-        // } else {
-        //     $data = $this->getIncomeStatementData($selected_client->id, $period[0], $period[1]);
-        //     $structured_data = $this->structureData($data);
-        // }
         $structured_data = $this->getData($request_period, $selected_client);
         return view('reports.balance-sheet', [
             'has_data' => true,
