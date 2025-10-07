@@ -1,5 +1,5 @@
 <x-app-layout>
-    @vite(['resources/css/user-management/index.css', 'resources/js/user-management/index.js'])
+    @vite(['resources/css/user-management/index.css'])
     <div class="container">
         <div class="container-header">
             <div class="container-header__texts">

@@ -1,4 +1,4 @@
-@vite(['resources/js/client/index.js', 'resources/js/user-management/index.js'])
+@vite(['resources/js/client/index.js'])
 @php
     $headers = ['Logo', 'Company Name', 'Business Type', 'TIN', 'Email', 'Phone', 'Status', 'Action'];
 @endphp
