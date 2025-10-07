@@ -141,7 +141,7 @@ Route::middleware(['auth', 'verified', 'suspended', 'enable.mfa', 'onboarding'])
     Route::get('/reports/balance-sheet', [BalanceSheetController::class, 'index'])->name('reports.balance-sheet');
     Route::get('/reports/balance-sheet/csv/{client}', [BalanceSheetController::class, 'csv'])->name('reports.balance-sheet.csv');
     Route::get('/reports/income-statement', [IncomeStatementController::class, 'index'])->name('reports.income-statement');
-    Route::get('/reports/income-statement/csv', [IncomeStatementController::class, 'csv'])->name('reports.income-statement.csv');
+    Route::get('/reports/income-statement/csv/{client}', [IncomeStatementController::class, 'csv'])->name('reports.income-statement.csv');
     Route::get('/reports/working-paper', [WorkingPaperController::class, 'index'])->name('reports.working-paper');
     Route::get('/reports/insights', [InsightsController::class, 'index'])->name('reports.insights');
 

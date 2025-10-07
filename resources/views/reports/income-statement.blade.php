@@ -4,6 +4,12 @@
         return number_format(abs($account->debit - $account->credit), 2);
     }
 @endphp
+@if ($has_data && request()->query('client') && request()->query('period'))
+    <form id="download-csv" action="{{ route('reports.income-statement.csv', request()->query('client')) }}"
+        style="display:none;">
+        <input value="{{ request()->query('period') }}" name="period" />
+    </form>
+@endif
 <x-app-layout title="Reports">
     @vite(['resources/css/reports/income-statement.css', 'resources/js/reports/income-statement.js'])
 
@@ -39,7 +45,8 @@
                     </select>
 
                     <select required name="client">
-                        <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select Client
+                        <option value="" {{ request()->query('client') ? '' : 'selected' }} disabled>Select
+                            Client
                         </option>
                         @foreach ($clients as $client)
                             <option {{ request()->query('client') === $client->id ? 'selected' : '' }}
@@ -52,12 +59,8 @@
 
                 <div class="report-header__right">
                     @if ($has_data)
-                        <div class="dropdown">
-                            <button type="button" class="dropdown-toggle">Download File ▾</button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" id="download-table-btn">✅ Download as CSV</a></li>
-                                <li><span class="disabled-item">🚫 Download as PDF</span></li>
-                            </ul>
+                        <div>
+                            <button type="submit" form="download-csv" id="download-table-btn">Export to CSV</button>
                         </div>
                     @endif
                 </div>

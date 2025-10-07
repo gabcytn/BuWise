@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProfitAndLossExport;
 use App\Models\AccountGroup;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IncomeStatementController extends Controller
 {
@@ -65,6 +68,18 @@ class IncomeStatementController extends Controller
             'revenues' => $revenues,
             'expenses' => $expenses,
         ]);
+    }
+
+    public function csv(Request $request, User $client)
+    {
+        $request->validate([
+            'period' => 'required|in:this_year,this_quarter,this_month,this_week,today,last_week,last_month,last_quarter,all_time',
+        ]);
+        $period = getStartAndEndDate($request->period);
+        $data = $this->getIncomeStatementData($client->id, $period[0], $period[1]);
+        $structured_data = $this->structureData($data);
+        $time_now = Carbon::now()->format('Y-m-d') . '_' . time();
+        return Excel::download(new ProfitAndLossExport($structured_data), "balance-sheet_{$time_now}_{$client->name}-{$request->period}.xlsx");
     }
 
     private function structureData(Collection $data)
