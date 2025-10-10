@@ -25,7 +25,7 @@ class EmptyRecycleBin implements ShouldQueue
      */
     public function handle(): void
     {
-        $transactions = Transaction::withTrashed()->get();
+        $transactions = Transaction::onlyTrashed()->get();
         foreach ($transactions as $transaction) {
             $deletion_date = Carbon::parse($transaction->deleted_at)->addDays(30);
             if (!$deletion_date->isToday())
