@@ -29,12 +29,4 @@ tr.forEach((row) => {
             location = window.origin + "/" + row.dataset.url;
         }
     });
-
-    // format date to readable format
-    const dateColumn = row.querySelector("td:nth-child(6)");
-    const date = new Date(dateColumn.textContent);
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    const formatted = date.toLocaleDateString("en-US", options);
-
-    dateColumn.textContent = formatted;
 });

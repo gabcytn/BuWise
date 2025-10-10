@@ -40,7 +40,7 @@
                         <td><input type="checkbox" /></td>
                         <td>{{ $item->reference_no }}</td>
                         <td>{{ $item->client->name }}</td>
-                        <td>{{ \Carbon\Carbon::createFromDate($item->date)->format('M d, Y') }}</td>
+                        <td>{{ formatDate($item->date) }}</td>
                         <td>{{ ucfirst($item->kind) }}</td>
                         <td>{{ number_format($item->amount, 2) }}</td>
                         <td>{{ $item->creator->name }}</td>

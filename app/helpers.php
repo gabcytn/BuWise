@@ -3,6 +3,7 @@
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 if (!function_exists('truncate')) {
     function truncate($text, $max = 25)
@@ -14,8 +15,7 @@ if (!function_exists('truncate')) {
 if (!function_exists('formatDate')) {
     function formatDate($date)
     {
-        $res = \Carbon\Carbon::parse($date);
-        return $res->format('Y-m-d');
+        return Carbon::createFromDate($date)->format('M d, Y');
     }
 }
 

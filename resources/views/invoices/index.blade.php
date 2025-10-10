@@ -88,7 +88,7 @@
                         <tr data-item-id="{{ $invoice->id }}">
                             <td>{{ $invoice->reference_no }}</td>
                             <td>{{ $invoice->client->name }}</td>
-                            <td>{{ $invoice->date }}</td>
+                            <td>{{ formatDate($invoice->date) }}</td>
                             <td>{{ ucfirst($invoice->kind) }}</td>
                             <td>&#8369;{{ number_format($invoice->amount, 2) }}</td>
                             <td>
