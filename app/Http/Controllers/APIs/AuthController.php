@@ -60,15 +60,23 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        return DB::table('users')
-            ->join('roles', 'roles.id', '=', 'users.role_id')
-            ->where('users.id', '=', $request->user()->id)
-            ->select(
-                'users.name',
-                'users.client_type AS clientType',
-                'roles.name AS userType',
-                'users.email'
-            )
-            ->first();
+        $user = User::find($request->user()->id);
+        return response()->json([
+            'name' => $user->name,
+            'role' => $user->role->name,
+            'email' => $user->email,
+            'clientType' => $user->client_type,
+            'image' => url('/storage/profiles') . '/' . $user->profile_img,
+        ]);
+        // return DB::table('users')
+        //     ->join('roles', 'roles.id', '=', 'users.role_id')
+        //     ->where('users.id', '=', $request->user()->id)
+        //     ->select(
+        //         'users.name',
+        //         'users.client_type AS clientType',
+        //         'roles.name AS userType',
+        //         'users.email'
+        //     )
+        //     ->first();
     }
 }
