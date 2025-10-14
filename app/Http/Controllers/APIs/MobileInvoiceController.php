@@ -28,7 +28,7 @@ class MobileInvoiceController extends Controller
         foreach ($invoices as $invoice) {
             $invoice->image = Cache::remember($invoice->id . '-image', 604800, function () use ($invoice) {
                 Log::info('Requesting for new temp. url');
-                Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
+                return Storage::temporaryUrl('invoices/' . $invoice->image, now()->addWeek());
             });
         }
 
