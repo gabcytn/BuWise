@@ -86,7 +86,7 @@ class MobileInvoiceController extends Controller
     {
         $invoices = FailedInvoice::where('client_id', '=', $request->user()->id)->get();
         foreach ($invoices as $invoice) {
-            $invoice->image = asset('temp/' . $invoice->filename);
+            $invoice->image = url('storage/temp/' . $invoice->filename);
         }
 
         return Response::json([
