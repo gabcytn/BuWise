@@ -77,12 +77,12 @@ class ReportsController extends Controller
             $datum->amount = $amount . ' ' . $entryType;
         }
         $equityFromIncomeStatement = $revenuesTotal - $expensesTotal;
-        $debit = $equityFromIncomeStatement < 0 ? $equityFromIncomeStatement : 0;
+        $debit = $equityFromIncomeStatement < 0 ? abs($equityFromIncomeStatement) : 0;
         $credit = $equityFromIncomeStatement > 0 ? $equityFromIncomeStatement : 0;
         $amount = abs($debit - $credit);
         $entryType = $debit > $credit ? 'DR' : 'CR';
         $equities[] = json_decode(json_encode([
-            'acc_name' => "Current Period's Earnings",
+            'acc_name' => "Selected Period's Earnings",
             'acc_code' => '3xx',
             'acc_group' => 'Equity',
             'debit' => $debit,
