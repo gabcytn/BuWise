@@ -14,7 +14,7 @@ class PushNotifController extends Controller
     {
         $user = $request->user();
         return Response::json([
-            'notifications' => $user->notifications,
+            'notifications' => $user->notifications()->orderBy('id', 'desc')->get(),
         ]);
     }
 
