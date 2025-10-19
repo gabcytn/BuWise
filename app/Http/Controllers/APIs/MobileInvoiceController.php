@@ -61,9 +61,15 @@ class MobileInvoiceController extends Controller
 
             Storage::disk('public')->put("temp/$filename", file_get_contents($file));
 
-            $client = $request->user();
-            $accountant_id = getAccountantId($client);
-            $accountant = User::find($accountant_id);
+            if ($request->is_from_bookkeeper) {
+                $client = $request->client_id;
+                $accountant = $request->user();
+            } else {
+                $client = $request->user();
+                $accountant_id = getAccountantId($client);
+                $accountant = User::find($accountant_id);
+            }
+
             ParseInvoiceUpload::dispatch($accountant, $client, $filename, $transactionType);
 
             return Response::json([
