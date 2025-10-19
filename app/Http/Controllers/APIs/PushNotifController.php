@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ExpoToken;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 class PushNotifController extends Controller
@@ -24,14 +25,20 @@ class PushNotifController extends Controller
             'token' => 'required|string',
         ]);
         $user = $request->user();
-        ExpoToken::create([
-            'owner_id' => $user->id,
-            'owner_type' => $user->role->name,
-            'value' => $request->token,
-        ]);
+        try {
+            ExpoToken::create([
+                'owner_id' => $user->id,
+                'owner_type' => $user->role->name,
+                'value' => $request->token,
+            ]);
+            $message = 'Successfully saved token.';
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $message = 'Token already exists.';
+        }
 
         return Response::json([
-            'message' => 'Successfully saved token',
+            'message' => $message,
         ]);
     }
 
