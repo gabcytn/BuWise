@@ -28,7 +28,7 @@ class NewSampleNotification extends Notification
             'user_id' => $this->user->id,
             'description' => 'The invoice you have submitted does not look like an invoice. Please resubmit.'
         ]);
-        $expo_token = $notifiable->expoTokens()->orderByDesc('created_at')->first();
+        $expo_token = $notifiable->expoTokens()->orderByDesc('id')->first();
         return (new ExpoMessage())
             ->to([$expo_token->value])
             ->title($n->title)

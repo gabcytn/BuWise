@@ -35,7 +35,8 @@ class ParseInvoiceUpload implements ShouldQueue
         private readonly User $accountant,
         private readonly User $client,
         private readonly string $filename,
-        private readonly string $transaction_type
+        private readonly string $transaction_type,
+        private readonly bool $is_from_bookkeeper = true
     ) {
         //
     }
@@ -269,10 +270,11 @@ class ParseInvoiceUpload implements ShouldQueue
             'filename' => $this->filename,
         ]);
 
-        if ($this->client->role_id === Role::CLIENT) {
-            $this->client->notify(new NewSampleNotification($this->client));
-        } else {
+        if (!$this->client->role_id === Role::CLIENT) {
             ScanFailed::dispatch($this->accountant);
+            $this->accountant->notify(new NewSampleNotification($this->client));
+        } else {
+            $this->client->notify(new NewSampleNotification($this->client));
         }
     }
 }
