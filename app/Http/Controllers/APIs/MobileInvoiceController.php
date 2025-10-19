@@ -62,7 +62,7 @@ class MobileInvoiceController extends Controller
             Storage::disk('public')->put("temp/$filename", file_get_contents($file));
 
             if ($request->is_from_bookkeeper) {
-                $client = $request->client_id;
+                $client = User::find($request->client_id);
                 $accountant = $request->user();
             } else {
                 $client = $request->user();
