@@ -53,6 +53,9 @@ Route::middleware(['verify.api', 'auth:sanctum', 'suspended'])->group(function (
         ]);
     });
 
+    Route::get('/bookkeeper/clients/invoices/failed/{clientId}', [MobileInvoiceController::class, 'failedInvoicesOfClient']);
+    Route::get('/bookkeeper/clients/invoices/{clientId}', [MobileInvoiceController::class, '']);
+
     Route::get('/invoices/failed', [MobileInvoiceController::class, 'failedInvoices']);
     Route::post('/invoices/failed/resent', [MobileInvoiceController::class, 'resentInvoice']);
     Route::get('/invoices', [MobileInvoiceController::class, 'index']);

@@ -19,9 +19,18 @@ class MobileInvoiceController extends Controller
 {
     public function index(Request $request)
     {
-        $user = $request->user();
+        return $this->invoices($request->user()->id);
+    }
+
+    public function invoicesOfClient(string $clientId)
+    {
+        return $this->invoices($clientId);
+    }
+
+    private function invoices(string $userId)
+    {
         $invoices = Transaction::where('type', '=', 'invoice')
-            ->where('client_id', '=', $user->id)
+            ->where('client_id', '=', $userId)
             ->orderBy('id', 'DESC')
             ->get();
 
@@ -84,14 +93,12 @@ class MobileInvoiceController extends Controller
 
     public function failedInvoices(Request $request)
     {
-        $invoices = FailedInvoice::where('client_id', '=', $request->user()->id)->get();
-        foreach ($invoices as $invoice) {
-            $invoice->image = url('storage/temp/' . $invoice->filename);
-        }
+        return $this->getFailedInvoices($request->user()->id);
+    }
 
-        return Response::json([
-            'invoices' => $invoices,
-        ]);
+    public function failedInvoicesOfClient(string $clientId)
+    {
+        return $this->getFailedInvoices($clientId);
     }
 
     public function resentInvoice(Request $request, FailedInvoice $invoice)
@@ -100,5 +107,17 @@ class MobileInvoiceController extends Controller
         Cache::forget($invoice->id . '-image');
         $invoice->delete();
         return response(null, 200);
+    }
+
+    private function getFailedInvoices(string $userId)
+    {
+        $invoices = FailedInvoice::where('client_id', '=', $userId)->get();
+        foreach ($invoices as $invoice) {
+            $invoice->image = url('storage/temp/' . $invoice->filename);
+        }
+
+        return Response::json([
+            'invoices' => $invoices,
+        ]);
     }
 }
