@@ -270,7 +270,7 @@ class ParseInvoiceUpload implements ShouldQueue
             'filename' => $this->filename,
         ]);
 
-        if (!$this->client->role_id === Role::CLIENT) {
+        if ($this->is_from_bookkeeper) {
             ScanFailed::dispatch($this->accountant);
             $this->accountant->notify(new NewSampleNotification($this->client));
         } else {
