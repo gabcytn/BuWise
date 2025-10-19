@@ -4,6 +4,9 @@ document.querySelector(".add-row-btn").addEventListener("click", () => {
 
 let rowCounter = 0; // Used to create unique names for form elements
 
+const onSubmitConfirmationDialog = document.querySelector(
+    "dialog#confirm-dialog",
+);
 // Add initial two rows
 document.addEventListener("DOMContentLoaded", () => {
     addRow(); // Debit row
@@ -14,10 +17,19 @@ document.addEventListener("DOMContentLoaded", () => {
         .getElementById("journalForm")
         .addEventListener("submit", (event) => {
             event.preventDefault();
+            console.log("preventing default");
             if (!validateForm()) return;
-            if (confirm("Submit journal?")) {
-                event.target.submit();
-            }
+            onSubmitConfirmationDialog.showModal();
+        });
+    onSubmitConfirmationDialog
+        .querySelector("button.confirm-button")
+        .addEventListener("click", () => {
+            document.getElementById("journalForm").submit();
+        });
+    onSubmitConfirmationDialog
+        .querySelector("button.cancel-button")
+        .addEventListener("click", () => {
+            onSubmitConfirmationDialog.close();
         });
 });
 
