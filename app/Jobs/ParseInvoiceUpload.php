@@ -48,7 +48,7 @@ class ParseInvoiceUpload implements ShouldQueue
     {
         $helper = new Llmwhisperer($this->filename);
         $output_text = $helper->extract();
-        if ($output_text === '') {
+        if (trim($output_text) === '') {
             Log::error('LLMWhisperer returned an empty string');
             $this->createFailedInvoice();
             return;
