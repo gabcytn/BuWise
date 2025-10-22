@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Messages">
     @vite(['resources/css/conversations/index.css', 'resources/js/conversations/index.js'])
     <div class="container">
         <div class="chats">
