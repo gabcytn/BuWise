@@ -209,6 +209,14 @@
                     photos of invoices or upload existing files, track the real-time status of their submissions, and
                     access their financial reports on demand, fostering seamless collaboration and faster turnaround
                     times.</p>
+
+                <form action="https://drive.google.com/file/d/16b07mjqAvB97s8VF3rfxF96wv8MDxfdl/view"
+                    style="margin-top: 1rem;" target="_blank">
+                    <button type="submit" class="download-app-btn">Download the Android app <span
+                            class="arrow">→</span></button>
+
+                </form>
+
             </div>
         </div>
     </section>
