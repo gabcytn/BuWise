@@ -79,7 +79,7 @@ class IncomeStatementController extends Controller
         $data = $this->getIncomeStatementData($client->id, $period[0], $period[1]);
         $structured_data = $this->structureData($data);
         $time_now = Carbon::now()->format('Y-m-d') . '_' . time();
-        return Excel::download(new ProfitAndLossExport($structured_data), "balance-sheet_{$time_now}_{$client->name}-{$request->period}.xlsx");
+        return Excel::download(new ProfitAndLossExport($structured_data), "income-statement_{$time_now}_{$client->name}-{$request->period}.xlsx");
     }
 
     private function structureData(Collection $data)
