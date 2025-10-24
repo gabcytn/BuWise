@@ -35,9 +35,11 @@ class InvoiceUploadProcessed extends Notification
             'description' => 'The invoice you submitted has been processed.'
         ]);
         $expo_token = $notifiable->expoTokens()->orderByDesc('id')->first();
+        if (!$expo_token)
+            return new ExpoMessage();
 
         return (new ExpoMessage())
-            ->to($expo_token->value)
+            ->to([$expo_token->value])
             ->title($notif->title)
             ->body($notif->description)
             ->channelId('default');
