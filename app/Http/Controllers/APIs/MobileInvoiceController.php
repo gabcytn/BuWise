@@ -93,10 +93,10 @@ class MobileInvoiceController extends Controller
 
         Storage::disk('public')->delete('temp/' . $request->filename);
 
-        $accountant_id = getAccountantId($request->clientId);
+        $client = User::find($request->clientId);
+        $accountant_id = getAccountantId($client);
 
         $accountant = User::find($accountant_id);
-        $client = User::find($request->clientId);
 
         SendProcessedInvoiceNotification::dispatch($accountant);
         SendProcessedInvoiceNotification::dispatch($client);
