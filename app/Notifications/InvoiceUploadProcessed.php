@@ -27,7 +27,7 @@ class InvoiceUploadProcessed extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toExpoNotifications(object $notifiable): ExpoMessage
+    public function toExpoNotification(object $notifiable): ExpoMessage
     {
         $notif = ModelsNotification::create([
             'title' => 'Invoice Processed',
