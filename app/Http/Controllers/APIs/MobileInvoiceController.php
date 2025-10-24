@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APIs;
 
 use App\Http\Controllers\Controller;
 use App\Jobs\ParseInvoiceUpload;
+use App\Jobs\SendProcessedInvoiceNotification;
 use App\Models\FailedInvoice;
 use App\Models\Transaction;
 use App\Models\User;
@@ -92,10 +93,13 @@ class MobileInvoiceController extends Controller
 
         Storage::disk('public')->delete('temp/' . $request->filename);
 
-        // $failed_invoice = FailedInvoice::create([
-        //     'client_id' => $request->clientId,
-        //     'filename' => $request->filename,
-        // ]);
+        $accountant_id = getAccountantId($request->clientId);
+
+        $accountant = User::find($accountant_id);
+        $client = User::find($request->clientId);
+
+        SendProcessedInvoiceNotification::dispatch($accountant);
+        SendProcessedInvoiceNotification::dispatch($client);
     }
 
     public function failedInvoices(Request $request)
