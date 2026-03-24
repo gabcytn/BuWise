@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Notifications\ContactUsEmail;
 use Illuminate\Http\Request;
 
 class ContacUsController extends Controller
 {
-    //
+    /*
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function index(Request $request)
     {
         $request->validate([
@@ -17,8 +17,6 @@ class ContacUsController extends Controller
             'message' => 'required|string',
         ]);
 
-        $user = User::where('email', '=', 'cayetanogabriel03@outlook.com')->first();
-        $user->notify(new ContactUsEmail($request->full_name, $request->email, $request->message));
         return redirect()->to('/contact');
     }
 }
